@@ -1,0 +1,231 @@
+/* Alert Component Styles */
+/* Uses design tokens from tokens.css */
+
+.alert {
+  display: flex;
+  position: relative;
+  font-family: var(--font-family-primary);
+}
+
+/* ============================================
+   Page Variant
+   ============================================ */
+
+.page {
+  height: 52px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.pageContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 0 80px;
+}
+
+.pageMain {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.page .dismissButton {
+  position: absolute;
+  right: var(--spacing-6);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background-color var(--duration-fast) var(--easing-standard);
+}
+
+.page .dismissButton:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.page .dismissButton:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Section Variant (Single Line)
+   ============================================ */
+
+.section {
+  padding: 14px var(--spacing-4);
+  border-radius: var(--radius-md);
+  gap: var(--spacing-3);
+  align-items: center;
+  width: 100%;
+  max-width: 454px;
+}
+
+.sectionContent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex: 1;
+  min-width: 0;
+}
+
+/* ============================================
+   Section Multi-line Variant
+   ============================================ */
+
+.section-multiline {
+  padding: var(--spacing-4);
+  border-radius: var(--radius-md);
+  gap: var(--spacing-3);
+  align-items: flex-start;
+  width: 100%;
+  max-width: 454px;
+}
+
+.sectionMultiContent {
+  display: flex;
+  gap: var(--spacing-3);
+  flex: 1;
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.textColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  flex: 1;
+  min-width: 0;
+}
+
+/* ============================================
+   Shared Elements
+   ============================================ */
+
+.icon {
+  flex-shrink: 0;
+}
+
+.textContent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.message {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-gray-90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.messageMulti {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-gray-90);
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.link {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-blue-60);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px var(--spacing-3);
+  background-color: var(--color-brand-white);
+  border: none;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+  color: var(--color-brand-gray-90);
+  letter-spacing: -0.072px;
+  transition: background-color var(--duration-fast) var(--easing-standard);
+  white-space: nowrap;
+}
+
+.actionButton:hover {
+  background-color: var(--color-brand-gray-10);
+}
+
+.actionButton:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: 2px;
+}
+
+.dismissButtonSmall {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--easing-standard);
+  flex-shrink: 0;
+}
+
+.dismissButtonSmall:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.dismissButtonSmall:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Status-specific Overrides
+   ============================================ */
+
+/* Muted variant doesn't have icon, so adjust text column */
+.muted .textColumn {
+  margin-left: 0;
+}

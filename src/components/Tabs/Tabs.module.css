@@ -1,0 +1,54 @@
+/* Tabs Component Styles */
+/* Uses design tokens from tokens.css */
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--color-brand-gray-20);
+  background-color: var(--color-brand-white);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-6);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-gray-60);
+  transition: all var(--duration-fast) var(--easing-standard);
+  margin-bottom: -1px;
+}
+
+.tab:hover {
+  color: var(--color-brand-gray-90);
+  background-color: var(--color-brand-gray-10);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.tab.active {
+  color: var(--color-brand-blue-60);
+  border-bottom-color: var(--color-brand-blue-60);
+  font-weight: var(--font-weight-semibold);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  white-space: nowrap;
+}

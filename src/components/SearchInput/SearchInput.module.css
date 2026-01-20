@@ -1,0 +1,48 @@
+/* SearchInput Component Styles */
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: 8px 12px;
+  background-color: var(--color-brand-white);
+  border: 1px solid var(--color-brand-gray-30);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--duration-fast) var(--easing-standard);
+}
+
+.container:focus-within {
+  border-color: var(--color-brand-blue-60);
+  outline: none;
+}
+
+.container.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--color-brand-gray-50);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-gray-90);
+}
+
+.input::placeholder {
+  color: var(--color-brand-gray-50);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+

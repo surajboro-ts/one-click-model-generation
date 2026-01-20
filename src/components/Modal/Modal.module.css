@@ -1,0 +1,123 @@
+/* Modal Component Styles */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface-overlay);
+  z-index: var(--z-index-modal);
+  padding: var(--spacing-6);
+  animation: fadeIn var(--duration-fast) var(--easing-decelerate);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-brand-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
+  max-height: calc(100vh - var(--spacing-12));
+  overflow: hidden;
+  animation: slideUp var(--duration-normal) var(--easing-decelerate);
+}
+
+/* Modal Sizes */
+.small {
+  width: 100%;
+  max-width: 360px;
+}
+
+.medium {
+  width: 100%;
+  max-width: 480px;
+}
+
+.large {
+  width: 100%;
+  max-width: 640px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  padding: var(--spacing-5) var(--spacing-6);
+  border-bottom: 1px solid var(--color-brand-gray-20);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-lg);
+  color: var(--color-brand-gray-90);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  border-radius: var(--radius-md);
+  color: var(--color-brand-gray-60);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--easing-standard),
+              color var(--duration-fast) var(--easing-standard);
+}
+
+.closeButton:hover {
+  background-color: var(--color-brand-gray-10);
+  color: var(--color-brand-gray-90);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: 2px;
+}
+
+/* Content */
+.content {
+  flex: 1;
+  padding: var(--spacing-6);
+  overflow-y: auto;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4) var(--spacing-6);
+  border-top: 1px solid var(--color-brand-gray-20);
+  background-color: var(--color-brand-gray-10);
+}

@@ -1,0 +1,391 @@
+/**
+ * Design Tokens - CSS Custom Properties
+ * Generated from Figma design system
+ * 
+ * Usage:
+ * - Import this file in your main CSS/JS entry point
+ * - Use CSS variables like: var(--color-primary-default)
+ * - Switch themes by adding data-theme="dark" to html element
+ */
+
+/* ============================================
+   BASE TOKENS (Theme Independent)
+   ============================================ */
+
+:root {
+  /* Font Families */
+  --font-family-primary: "Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Droid Sans Mono", "Source Code Pro", monospace;
+
+  /* Font Sizes */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 40px;
+
+  /* Font Weights */
+  --font-weight-light: 375;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Line Heights */
+  --line-height-xs: 16px;
+  --line-height-sm: 18px;
+  --line-height-md: 20px;
+  --line-height-lg: 24px;
+  --line-height-xl: 28px;
+  --line-height-2xl: 32px;
+  --line-height-3xl: 40px;
+  --line-height-4xl: 48px;
+
+  /* Spacing */
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-7: 28px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-14: 56px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+
+  /* Border Radius */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-none: none;
+  --shadow-xs: 0px 1px 2px rgba(29, 35, 47, 0.05);
+  --shadow-sm: 0px 1px 3px rgba(29, 35, 47, 0.1), 0px 1px 2px rgba(29, 35, 47, 0.06);
+  --shadow-md: 0px 4px 6px -1px rgba(29, 35, 47, 0.1), 0px 2px 4px -1px rgba(29, 35, 47, 0.06);
+  --shadow-lg: 0px 10px 15px -3px rgba(29, 35, 47, 0.1), 0px 4px 6px -2px rgba(29, 35, 47, 0.05);
+  --shadow-xl: 0px 20px 25px -5px rgba(29, 35, 47, 0.1), 0px 10px 10px -5px rgba(29, 35, 47, 0.04);
+  --shadow-2xl: 0px 25px 50px -12px rgba(29, 35, 47, 0.25);
+  --shadow-inner: inset 0px 2px 4px rgba(29, 35, 47, 0.06);
+  --shadow-focus-ring: 0 0 0 3px rgba(39, 112, 239, 0.4);
+  --shadow-focus-ring-error: 0 0 0 3px rgba(226, 43, 61, 0.4);
+
+  /* Border Widths */
+  --border-width-none: 0px;
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-width-thick: 3px;
+
+  /* Durations */
+  --duration-instant: 0ms;
+  --duration-fastest: 50ms;
+  --duration-faster: 100ms;
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 400ms;
+  --duration-slowest: 500ms;
+
+  /* Easings */
+  --easing-linear: linear;
+  --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);
+
+  /* Z-Index */
+  --z-index-hide: -1;
+  --z-index-base: 0;
+  --z-index-raised: 1;
+  --z-index-dropdown: 10;
+  --z-index-sticky: 20;
+  --z-index-overlay: 30;
+  --z-index-modal: 40;
+  --z-index-popover: 50;
+  --z-index-tooltip: 60;
+  --z-index-toast: 70;
+  --z-index-max: 9999;
+
+  /* Brand Colors */
+  --color-brand-blue-100: #001740;
+  --color-brand-blue-80: #163772;
+  --color-brand-blue-70: #2359B6;
+  --color-brand-blue-60: #2770EF;
+  --color-brand-blue-50: #71A1F4;
+  --color-brand-blue-40: #ABC7F9;
+  --color-brand-blue-30: #CEDCF5;
+  --color-brand-blue-20: #DEE8FA;
+  --color-brand-blue-10: #EBF2FD;
+
+  --color-brand-gray-100: #000000;
+  --color-brand-gray-90: #1D232F;
+  --color-brand-gray-80: #323946;
+  --color-brand-gray-70: #4A515E;
+  --color-brand-gray-60: #777E8B;
+  --color-brand-gray-50: #A5ACB9;
+  --color-brand-gray-40: #C0C6CF;
+  --color-brand-gray-30: #DBDFE7;
+  --color-brand-gray-20: #EAEDF2;
+  --color-brand-gray-10: #F6F8FA;
+  --color-brand-gray-0: #FFFFFF;
+
+  --color-brand-green-70: #049160;
+  --color-brand-green-60: #06BF7F;
+  --color-brand-green-50: #56D3A8;
+  --color-brand-green-40: #9BE5CB;
+  --color-brand-green-30: #C7F2E3;
+  --color-brand-green-20: #E0F8EF;
+  --color-brand-green-10: #EDFFF9;
+
+  --color-brand-yellow-70: #BF982A;
+  --color-brand-yellow-60: #FCC838;
+  --color-brand-yellow-50: #FCD977;
+  --color-brand-yellow-40: #FDE9AF;
+  --color-brand-yellow-30: #FCF1D1;
+  --color-brand-yellow-20: #FFF8E5;
+  --color-brand-yellow-10: #FFFBF0;
+
+  --color-brand-red-70: #B6313E;
+  --color-brand-red-60: #E22B3D;
+  --color-brand-red-50: #F47E89;
+  --color-brand-red-40: #F9B3B9;
+  --color-brand-red-30: #FCD4D7;
+  --color-brand-red-20: #FFEBEC;
+  --color-brand-red-10: #FFF0F0;
+
+  --color-brand-purple-70: #6A4ABA;
+  --color-brand-purple-60: #8C62F5;
+  --color-brand-purple-50: #B094F8;
+  --color-brand-purple-40: #D1C0FB;
+  --color-brand-purple-30: #E3D9FC;
+  --color-brand-purple-20: #F0EBFF;
+  --color-brand-purple-10: #F7F5FF;
+
+  --color-brand-orange-70: #C26232;
+  --color-brand-orange-60: #FF8142;
+  --color-brand-orange-50: #FFA97E;
+  --color-brand-orange-40: #FFCCB3;
+  --color-brand-orange-30: #FFDDCC;
+  --color-brand-orange-20: #FFEEE5;
+  --color-brand-orange-10: #FFF5F0;
+
+  --color-brand-teal-70: #369FAA;
+  --color-brand-teal-60: #48D1E0;
+  --color-brand-teal-50: #82DFE9;
+  --color-brand-teal-40: #B5ECF2;
+  --color-brand-teal-30: #C9F0F5;
+  --color-brand-teal-20: #DFFAFC;
+  --color-brand-teal-10: #EDFDFF;
+
+  --color-brand-white: #FFFFFF;
+  --color-brand-black: #000000;
+}
+
+/* ============================================
+   LIGHT THEME (Default)
+   ============================================ */
+
+:root,
+[data-theme="light"] {
+  /* Semantic Colors */
+  --color-primary: var(--color-brand-blue-60);
+  --color-primary-hover: var(--color-brand-blue-70);
+  --color-primary-active: var(--color-brand-blue-80);
+
+  --color-success: var(--color-brand-green-60);
+  --color-success-bg: var(--color-brand-green-20);
+  --color-warning: var(--color-brand-yellow-60);
+  --color-warning-bg: var(--color-brand-yellow-20);
+  --color-error: var(--color-brand-red-60);
+  --color-error-bg: var(--color-brand-red-20);
+  --color-info: var(--color-brand-blue-60);
+  --color-info-bg: var(--color-brand-blue-20);
+
+  /* Text Colors */
+  --color-text-default: var(--color-brand-gray-90);
+  --color-text-secondary: var(--color-brand-gray-60);
+  --color-text-tertiary: var(--color-brand-gray-50);
+  --color-text-disabled: var(--color-brand-gray-40);
+  --color-text-inverse: var(--color-brand-white);
+  --color-text-accent: var(--color-brand-blue-60);
+
+  /* Background Colors */
+  --color-bg-primary: var(--color-brand-white);
+  --color-bg-secondary: var(--color-brand-gray-10);
+  --color-bg-tertiary: var(--color-brand-gray-20);
+  --color-bg-inverse: var(--color-brand-gray-90);
+
+  /* Border Colors */
+  --color-border-default: var(--color-brand-gray-40);
+  --color-border-subtle: var(--color-brand-gray-20);
+  --color-border-strong: var(--color-brand-gray-60);
+  --color-border-focus: var(--color-brand-blue-60);
+
+  /* Divider */
+  --color-divider: var(--color-brand-gray-20);
+
+  /* Interactive States */
+  --color-hover: rgba(192, 198, 207, 0.12);
+  --color-active: rgba(192, 198, 207, 0.24);
+  --color-selected: var(--color-brand-blue-20);
+
+  /* Surface Colors */
+  --color-surface: var(--color-brand-white);
+  --color-surface-raised: var(--color-brand-white);
+  --color-surface-overlay: rgba(29, 35, 47, 0.5);
+}
+
+/* ============================================
+   DARK THEME
+   ============================================ */
+
+[data-theme="dark"] {
+  /* Semantic Colors */
+  --color-primary: var(--color-brand-blue-60);
+  --color-primary-hover: var(--color-brand-blue-50);
+  --color-primary-active: var(--color-brand-blue-40);
+
+  --color-success: var(--color-brand-green-60);
+  --color-success-bg: rgba(6, 191, 127, 0.2);
+  --color-warning: var(--color-brand-yellow-60);
+  --color-warning-bg: rgba(252, 200, 56, 0.2);
+  --color-error: var(--color-brand-red-50);
+  --color-error-bg: rgba(226, 43, 61, 0.2);
+  --color-info: var(--color-brand-blue-50);
+  --color-info-bg: rgba(39, 112, 239, 0.2);
+
+  /* Text Colors */
+  --color-text-default: var(--color-brand-white);
+  --color-text-secondary: var(--color-brand-gray-50);
+  --color-text-tertiary: var(--color-brand-gray-60);
+  --color-text-disabled: var(--color-brand-gray-60);
+  --color-text-inverse: var(--color-brand-gray-90);
+  --color-text-accent: var(--color-brand-blue-50);
+
+  /* Background Colors */
+  --color-bg-primary: var(--color-brand-gray-90);
+  --color-bg-secondary: var(--color-brand-gray-80);
+  --color-bg-tertiary: var(--color-brand-gray-70);
+  --color-bg-inverse: var(--color-brand-white);
+
+  /* Border Colors */
+  --color-border-default: var(--color-brand-gray-60);
+  --color-border-subtle: var(--color-brand-gray-70);
+  --color-border-strong: var(--color-brand-gray-50);
+  --color-border-focus: var(--color-brand-blue-50);
+
+  /* Divider */
+  --color-divider: var(--color-brand-gray-70);
+
+  /* Interactive States */
+  --color-hover: rgba(119, 126, 139, 0.24);
+  --color-active: rgba(119, 126, 139, 0.36);
+  --color-selected: rgba(39, 112, 239, 0.3);
+
+  /* Surface Colors */
+  --color-surface: var(--color-brand-gray-80);
+  --color-surface-raised: var(--color-brand-gray-70);
+  --color-surface-overlay: rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================
+   SYSTEM PREFERENCE DARK MODE
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Inherits dark theme variables */
+    --color-primary: var(--color-brand-blue-60);
+    --color-primary-hover: var(--color-brand-blue-50);
+    --color-primary-active: var(--color-brand-blue-40);
+
+    --color-text-default: var(--color-brand-white);
+    --color-text-secondary: var(--color-brand-gray-50);
+    --color-text-tertiary: var(--color-brand-gray-60);
+    --color-text-disabled: var(--color-brand-gray-60);
+    --color-text-inverse: var(--color-brand-gray-90);
+    --color-text-accent: var(--color-brand-blue-50);
+
+    --color-bg-primary: var(--color-brand-gray-90);
+    --color-bg-secondary: var(--color-brand-gray-80);
+    --color-bg-tertiary: var(--color-brand-gray-70);
+    --color-bg-inverse: var(--color-brand-white);
+
+    --color-border-default: var(--color-brand-gray-60);
+    --color-border-subtle: var(--color-brand-gray-70);
+    --color-border-strong: var(--color-brand-gray-50);
+    --color-border-focus: var(--color-brand-blue-50);
+
+    --color-divider: var(--color-brand-gray-70);
+
+    --color-hover: rgba(119, 126, 139, 0.24);
+    --color-active: rgba(119, 126, 139, 0.36);
+    --color-selected: rgba(39, 112, 239, 0.3);
+
+    --color-surface: var(--color-brand-gray-80);
+    --color-surface-raised: var(--color-brand-gray-70);
+    --color-surface-overlay: rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* ============================================
+   TRANSITION UTILITIES
+   ============================================ */
+
+.transition-colors {
+  transition-property: color, background-color, border-color, fill, stroke;
+  transition-timing-function: var(--easing-standard);
+  transition-duration: var(--duration-fast);
+}
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: var(--easing-standard);
+  transition-duration: var(--duration-normal);
+}
+
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: var(--easing-standard);
+  transition-duration: var(--duration-normal);
+}
+
+.transition-shadow {
+  transition-property: box-shadow;
+  transition-timing-function: var(--easing-standard);
+  transition-duration: var(--duration-normal);
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: var(--easing-standard);
+  transition-duration: var(--duration-normal);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

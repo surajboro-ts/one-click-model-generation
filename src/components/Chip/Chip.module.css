@@ -1,0 +1,146 @@
+/* Chip Component Styles */
+/* Uses design tokens from tokens.css */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  height: 28px;
+  border-radius: var(--radius-2xl);
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-2xl);
+  transition: background-color var(--duration-fast) var(--easing-standard);
+  min-height: 28px;
+  box-sizing: border-box;
+}
+
+.body.clickable {
+  cursor: pointer;
+}
+
+.body.clickable:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: 2px;
+}
+
+/* Label text styles */
+.label {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-gray-90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Filter content (label + value) */
+.filterContent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  max-width: 274px;
+  overflow: hidden;
+}
+
+.filterLabel {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-gray-90);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.filterValue {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-gray-90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Chevron icon */
+.chevron {
+  flex-shrink: 0;
+}
+
+/* Delete button */
+.deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin-left: calc(-1 * var(--spacing-2));
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-full);
+  transition: transform var(--duration-fast) var(--easing-standard), 
+              opacity var(--duration-fast) var(--easing-standard);
+  position: relative;
+  z-index: 1;
+}
+
+.deleteButton:hover {
+  transform: scale(1.1);
+}
+
+.deleteButton:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+.chip.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.chip.disabled .body {
+  cursor: not-allowed;
+}
+
+/* Skeleton variant */
+.chip.skeleton .body {
+  border: 1px dashed var(--color-brand-gray-40);
+  background: transparent;
+  padding: 5px var(--spacing-4);
+  justify-content: center;
+  width: 200px;
+  max-width: 200px;
+}
+
+.chip.skeleton .label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+  color: var(--color-brand-gray-60);
+  text-align: center;
+  letter-spacing: -0.072px;
+}
+
+/* Type-specific colors are handled via inline styles for dynamic state management */
+/* But we can add some hover transitions here */
+.attribute .body,
+.measure .body,
+.filter .body {
+  transition: background-color var(--duration-fast) var(--easing-standard);
+}

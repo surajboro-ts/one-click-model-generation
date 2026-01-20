@@ -1,0 +1,69 @@
+/* Radio Component Styles */
+/* Uses design tokens from tokens.css */
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-brand-white);
+  border: 1px solid var(--color-brand-gray-50);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  transition: border-color var(--duration-fast) var(--easing-standard);
+}
+
+.radio:hover:not(.disabled) .circle {
+  border-color: var(--color-brand-blue-60);
+}
+
+.input:focus-visible + .circle {
+  outline: 2px solid var(--color-brand-blue-60);
+  outline-offset: 2px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand-blue-60);
+}
+
+.label {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-md);
+  color: var(--color-brand-gray-90);
+  white-space: nowrap;
+}
+
+.radio.disabled .label {
+  color: var(--color-brand-gray-90);
+}
