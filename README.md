@@ -241,7 +241,7 @@ Always capitalize these product features:
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd Figmamcp
+cd figmaradiant
 
 # Install dependencies
 npm install
@@ -304,7 +304,7 @@ const style = {
 ## 📁 Project Structure
 
 ```
-Figmamcp/
+figmaradiant/
 ├── .cursor/
 │   └── rules/                          # Automated Cursor AI rules
 │       ├── design-system.md            # Component creation standards
