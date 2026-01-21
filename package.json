@@ -8,9 +8,13 @@
     "preview": "vite preview"
   },
   "keywords": ["design-system", "react", "components"],
-  "author": "",
+  "author": "Faris",
   "license": "ISC",
   "description": "Radiant Design System - React component library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/faris-ts/figmaradiant.git"
+  },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
