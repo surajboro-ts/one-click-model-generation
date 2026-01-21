@@ -5,3 +5,6 @@ export { AlertsShowcase } from './AlertsShowcase';
 export { SelectionControlsShowcase } from './SelectionControlsShowcase';
 export { ButtonsShowcase } from './ButtonsShowcase';
 export { FormShowcase } from './FormShowcase';
+export { HomePage } from './HomePage';
+export { ComponentDocPage } from './ComponentDocPage';
+export { IconsShowcase } from './IconsShowcase';

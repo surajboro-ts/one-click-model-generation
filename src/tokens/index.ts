@@ -68,6 +68,10 @@ export {
 export * from './zIndex';
 export { zIndex, componentZIndex } from './zIndex';
 
+// Icons
+export * from './icons';
+export { iconSize, iconSizeAlias, iconStrokeWidth } from './icons';
+
 // CSS Variables
 export * from './css-variables';
 export {
@@ -101,6 +105,7 @@ import { componentAnimation } from './animation';
 import { breakpoints, mediaQueries } from './breakpoints';
 import { zIndex, componentZIndex } from './zIndex';
 import { themes } from './theme';
+import { iconSize, iconSizeAlias } from './icons';
 
 /**
  * Complete tokens object for easy access
@@ -132,6 +137,10 @@ export const tokens = {
   zIndex: {
     scale: zIndex,
     components: componentZIndex,
+  },
+  icons: {
+    size: iconSize,
+    sizeAlias: iconSizeAlias,
   },
   themes,
 } as const;

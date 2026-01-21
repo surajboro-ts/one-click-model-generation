@@ -1,11 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { 
-  InfoIcon, 
-  SuccessIcon, 
-  WarningIcon, 
-  ErrorIcon,
-  CloseIconSimple 
-} from '../icons';
+import { Icon } from '../icons';
+import type { IconName } from '../icons';
 import { statusColors, backgroundColors, textColors } from '../../tokens/colors';
 import styles from './Alert.module.css';
 
@@ -37,34 +32,38 @@ export interface AlertProps {
   className?: string;
 }
 
-/** Color configuration for each status - using semantic tokens */
-const statusConfig = {
+/** Color and icon configuration for each status - using semantic tokens */
+const statusConfig: Record<AlertStatus, {
+  background: string;
+  iconColor: string;
+  iconName: IconName;
+}> = {
   info: {
     background: statusColors.info.background,
     iconColor: statusColors.info.default,
-    Icon: InfoIcon,
+    iconName: 'information',
   },
   success: {
     background: statusColors.success.background,
     iconColor: statusColors.success.default,
-    Icon: SuccessIcon,
+    iconName: 'checkmark-circle',
   },
   warning: {
     background: statusColors.warning.background,
     iconColor: statusColors.warning.default,
-    Icon: WarningIcon,
+    iconName: 'exclamation-point-circle',
   },
   failure: {
     background: statusColors.error.background,
     iconColor: statusColors.error.default,
-    Icon: ErrorIcon,
+    iconName: 'cross-circle',
   },
   muted: {
     background: backgroundColors.secondary,
     iconColor: textColors.secondary,
-    Icon: InfoIcon,
+    iconName: 'information',
   },
-} as const;
+};
 
 /**
  * Alert Component (Banner)
@@ -126,7 +125,6 @@ export const Alert: React.FC<AlertProps> = ({
   if (!isVisible) return null;
 
   const config = statusConfig[status];
-  const StatusIcon = config.Icon;
 
   // Muted variant doesn't show icon
   const shouldShowIcon = showIcon && status !== 'muted';
@@ -150,8 +148,9 @@ export const Alert: React.FC<AlertProps> = ({
         <div className={styles.pageContent}>
           <div className={styles.pageMain}>
             {shouldShowIcon && (
-              <StatusIcon 
-                size={18} 
+              <Icon 
+                name={config.iconName}
+                size="l"
                 color={config.iconColor}
                 className={styles.icon}
               />
@@ -186,7 +185,7 @@ export const Alert: React.FC<AlertProps> = ({
             aria-label="Dismiss alert"
             type="button"
           >
-            <CloseIconSimple size={14} color={textColors.default} />
+            <Icon name="cross" size="s" color={textColors.default} />
           </button>
         )}
       </div>
@@ -203,8 +202,9 @@ export const Alert: React.FC<AlertProps> = ({
       >
         <div className={styles.sectionMultiContent}>
           {shouldShowIcon && (
-            <StatusIcon 
-              size={18} 
+            <Icon 
+              name={config.iconName}
+              size="l"
               color={config.iconColor}
               className={styles.icon}
             />
@@ -229,7 +229,7 @@ export const Alert: React.FC<AlertProps> = ({
             aria-label="Dismiss alert"
             type="button"
           >
-            <CloseIconSimple size={14} color={textColors.default} />
+            <Icon name="cross" size="s" color={textColors.default} />
           </button>
         )}
       </div>
@@ -245,8 +245,9 @@ export const Alert: React.FC<AlertProps> = ({
     >
       <div className={styles.sectionContent}>
         {shouldShowIcon && (
-          <StatusIcon 
-            size={18} 
+          <Icon 
+            name={config.iconName}
+            size="l"
             color={config.iconColor}
             className={styles.icon}
           />
@@ -271,7 +272,7 @@ export const Alert: React.FC<AlertProps> = ({
           aria-label="Dismiss alert"
           type="button"
         >
-          <CloseIconSimple size={14} color={textColors.default} />
+          <Icon name="cross" size="s" color={textColors.default} />
         </button>
       )}
     </div>

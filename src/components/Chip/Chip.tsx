@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { ChevronRightIcon, CloseIcon } from '../icons';
+import { Icon, isValidIconName } from '../icons';
+import type { IconName } from '../icons';
 import { componentColors, textColors } from '../../tokens/colors';
 import styles from './Chip.module.css';
 
@@ -13,6 +14,8 @@ export interface ChipProps {
   label: string;
   /** For filter type: the filter value */
   filterValue?: string;
+  /** Optional leading icon - can be an icon name or ReactNode */
+  icon?: IconName | React.ReactNode;
   /** Whether to show the trailing chevron icon */
   showChevron?: boolean;
   /** Whether to show delete button on hover */
@@ -59,6 +62,7 @@ export const Chip: React.FC<ChipProps> = ({
   type = 'attribute',
   label,
   filterValue,
+  icon,
   showChevron = true,
   deletable = false,
   disabled = false,
@@ -112,6 +116,23 @@ export const Chip: React.FC<ChipProps> = ({
   const isSkeleton = type === 'skeleton';
   const showDeleteButton = deletable && isHovered && !disabled && !isSkeleton;
 
+  // Render leading icon - supports both icon name strings and ReactNode
+  const renderIcon = () => {
+    if (!icon) return null;
+    
+    // If icon is a string, use the Icon component with xs size for chips
+    if (typeof icon === 'string' && isValidIconName(icon)) {
+      return (
+        <span className={styles.leadingIcon}>
+          <Icon name={icon as IconName} size="xs" />
+        </span>
+      );
+    }
+    
+    // Otherwise, render as ReactNode
+    return <span className={styles.leadingIcon}>{icon}</span>;
+  };
+
   // Build class names
   const chipClasses = [
     styles.chip,
@@ -146,6 +167,8 @@ export const Chip: React.FC<ChipProps> = ({
         tabIndex={onClick && !disabled ? 0 : undefined}
         aria-disabled={disabled}
       >
+        {renderIcon()}
+        
         {type === 'filter' && filterValue ? (
           <div className={styles.filterContent}>
             <span className={styles.filterLabel}>{label}</span>
@@ -156,8 +179,9 @@ export const Chip: React.FC<ChipProps> = ({
         )}
         
         {showChevron && !isSkeleton && (
-          <ChevronRightIcon 
-            size={14} 
+          <Icon 
+            name="chevron-right"
+            size="s"
             color={textColors.default}
             className={styles.chevron}
           />
@@ -171,7 +195,7 @@ export const Chip: React.FC<ChipProps> = ({
           aria-label={`Remove ${label}`}
           type="button"
         >
-          <CloseIcon size={16} />
+          <Icon name="cross" size="xs" />
         </button>
       )}
     </div>

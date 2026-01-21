@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { SearchIcon } from '../icons';
+import { Icon } from '../icons';
 import styles from './SearchInput.module.css';
 
 export interface SearchInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
@@ -41,7 +41,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(({
 
   return (
     <div className={containerClasses}>
-      <SearchIcon size={16} className={styles.icon} />
+      <Icon name="search" size="m" className={styles.icon} />
       <input
         ref={ref}
         type="text"

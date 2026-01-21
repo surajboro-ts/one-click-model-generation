@@ -9,4 +9,5 @@ export * from './Button';
 export * from './SearchInput';
 export * from './TextInput';
 export * from './Modal';
+export * from './Sidebar';
 export * from './icons';
