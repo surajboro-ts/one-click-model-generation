@@ -510,4 +510,10 @@ ISC
 
 ---
 
+## 🔗 Links
+
+- **Repository**: [github.com/faris-ts/figmaradiant](https://github.com/faris-ts/figmaradiant)
+
+---
+
 **Built with ❤️ for ThoughtSpot's Analytics Platform**
