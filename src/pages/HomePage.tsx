@@ -207,6 +207,33 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     { label: 'TypeScript', value: '100%', icon: '💪' },
   ];
 
+  const setupSteps = [
+    {
+      number: '1',
+      title: 'Clone repository',
+      description: 'Get the Radiant design system code from GitHub',
+      code: 'git clone https://github.com/faris-ts/figmaradiant.git\ncd figmaradiant',
+    },
+    {
+      number: '2',
+      title: 'Install dependencies',
+      description: 'Install all required npm packages',
+      code: 'npm install',
+    },
+    {
+      number: '3',
+      title: 'Start development server',
+      description: 'Launch the playground in your browser',
+      code: 'npm run dev',
+    },
+    {
+      number: '4',
+      title: 'Open playground',
+      description: 'Navigate to the local server in your browser',
+      code: 'http://localhost:5173/',
+    },
+  ];
+
   return (
     <div style={styles.container}>
       {/* Hero Section */}
@@ -238,6 +265,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
         <div style={styles.heroVisual}>
           <div style={styles.heroPattern} />
+        </div>
+      </section>
+
+      {/* Quick Setup Section */}
+      <section style={styles.setupSection}>
+        <div style={styles.setupHeader}>
+          <h2 style={styles.setupTitle}>Quick Setup</h2>
+          <p style={styles.setupSubtitle}>
+            Get the Radiant playground running locally in 4 simple steps
+          </p>
+        </div>
+        <div style={styles.setupSteps}>
+          {setupSteps.map((step) => (
+            <div key={step.number} style={styles.setupStep}>
+              <div style={styles.stepNumber}>{step.number}</div>
+              <div style={styles.stepContent}>
+                <h3 style={styles.stepTitle}>{step.title}</h3>
+                <p style={styles.stepDescription}>{step.description}</p>
+                <div style={styles.codeBlock}>
+                  <code style={styles.code}>{step.code}</code>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -576,6 +627,93 @@ const styles: Record<string, React.CSSProperties> = {
     color: brandColors.gray[50],
     lineHeight: '22px',
     margin: 0,
+  },
+
+  // Quick Setup Section
+  setupSection: {
+    marginBottom: '48px',
+    padding: '48px',
+    background: 'linear-gradient(135deg, #F6F8FA 0%, #FFFFFF 100%)',
+    borderRadius: '24px',
+    border: `1px solid ${brandColors.gray[20]}`,
+  },
+  setupHeader: {
+    textAlign: 'center' as const,
+    marginBottom: '40px',
+  },
+  setupTitle: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '28px',
+    fontWeight: 600,
+    color: brandColors.gray[90],
+    marginBottom: '8px',
+  },
+  setupSubtitle: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '16px',
+    fontWeight: 400,
+    color: brandColors.gray[60],
+    margin: 0,
+  },
+  setupSteps: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '24px',
+  },
+  setupStep: {
+    display: 'flex',
+    gap: '16px',
+    padding: '24px',
+    background: brandColors.white,
+    borderRadius: '12px',
+    border: `1px solid ${brandColors.gray[20]}`,
+    transition: 'all 200ms ease',
+  },
+  stepNumber: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '12px',
+    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
+    color: '#ffffff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '18px',
+    fontWeight: 700,
+    flexShrink: 0,
+  },
+  stepContent: {
+    flex: 1,
+  },
+  stepTitle: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '16px',
+    fontWeight: 600,
+    color: brandColors.gray[90],
+    marginBottom: '4px',
+  },
+  stepDescription: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '13px',
+    fontWeight: 400,
+    color: brandColors.gray[60],
+    marginBottom: '12px',
+    lineHeight: '20px',
+  },
+  codeBlock: {
+    padding: '12px 16px',
+    background: brandColors.gray[90],
+    borderRadius: '8px',
+    overflow: 'auto',
+  },
+  code: {
+    fontFamily: '"SF Mono", "Monaco", "Inconsolata", monospace',
+    fontSize: '13px',
+    color: '#06BF7F',
+    whiteSpace: 'pre' as const,
+    display: 'block',
+    lineHeight: '20px',
   },
 };
 
