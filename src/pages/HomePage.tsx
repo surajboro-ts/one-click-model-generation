@@ -56,6 +56,7 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const components = [
+    // Core Components
     {
       id: 'button',
       name: 'Button',
@@ -88,6 +89,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       variants: 2,
       status: 'stable' as const,
     },
+    // Input Components
     {
       id: 'textinput',
       name: 'TextInput',
@@ -105,13 +107,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       status: 'stable' as const,
     },
     {
-      id: 'chip',
-      name: 'Chip',
-      description: 'Pills for attributes, measures, and filters',
-      icon: '🏷️',
-      variants: 4,
-      status: 'stable' as const,
+      id: 'select',
+      name: 'Select',
+      description: 'Dropdown selection with search functionality',
+      icon: '📋',
+      variants: 3,
+      status: 'new' as const,
     },
+    // Feedback Components
     {
       id: 'alert',
       name: 'Alert',
@@ -129,6 +132,65 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       status: 'stable' as const,
     },
     {
+      id: 'confirmdialog',
+      name: 'ConfirmDialog',
+      description: 'Confirmation dialogs for user actions',
+      icon: '❓',
+      variants: 4,
+      status: 'new' as const,
+    },
+    // Modal Patterns
+    {
+      id: 'wizardmodal',
+      name: 'WizardModal',
+      description: 'Multi-step wizard with progress indicator',
+      icon: '🧙',
+      variants: 2,
+      status: 'new' as const,
+    },
+    {
+      id: 'formmodal',
+      name: 'FormModal',
+      description: 'Form-optimized modal with validation',
+      icon: '📄',
+      variants: 1,
+      status: 'new' as const,
+    },
+    {
+      id: 'filterdialog',
+      name: 'FilterDialog',
+      description: 'Filter selection with checkboxes',
+      icon: '🔧',
+      variants: 1,
+      status: 'new' as const,
+    },
+    // Overlay Components
+    {
+      id: 'popover',
+      name: 'Popover',
+      description: 'Floating overlay for contextual content',
+      icon: '💬',
+      variants: 3,
+      status: 'new' as const,
+    },
+    {
+      id: 'loadingindicator',
+      name: 'LoadingIndicator',
+      description: 'Spinner and overlay for loading states',
+      icon: '⏳',
+      variants: 2,
+      status: 'new' as const,
+    },
+    // Navigation
+    {
+      id: 'chip',
+      name: 'Chip',
+      description: 'Pills for attributes, measures, and filters',
+      icon: '🏷️',
+      variants: 4,
+      status: 'stable' as const,
+    },
+    {
       id: 'tabs',
       name: 'Tabs',
       description: 'Navigation tabs for content organization',
@@ -139,8 +201,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   ];
 
   const stats = [
-    { label: 'Components', value: '10', icon: '🧩' },
-    { label: 'Variants', value: '28', icon: '🎨' },
+    { label: 'Components', value: '17', icon: '🧩' },
+    { label: 'Variants', value: '42', icon: '🎨' },
     { label: 'Design Tokens', value: '150+', icon: '🎯' },
     { label: 'TypeScript', value: '100%', icon: '💪' },
   ];
@@ -152,7 +214,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div style={styles.heroContent}>
           <div style={styles.heroBadge}>
             <span style={styles.heroBadgeIcon}>✨</span>
-            <span>Design System v1.0</span>
+            <span>Design System v1.1</span>
           </div>
           <h1 style={styles.heroTitle}>Radiant</h1>
           <p style={styles.heroSubtitle}>

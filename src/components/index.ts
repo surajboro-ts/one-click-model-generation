@@ -11,3 +11,12 @@ export * from './TextInput';
 export * from './Modal';
 export * from './Sidebar';
 export * from './icons';
+
+// New modal-related components
+export * from './ConfirmDialog';
+export * from './WizardModal';
+export * from './LoadingIndicator';
+export * from './Select';
+export * from './Popover';
+export * from './FilterDialog';
+export * from './FormModal';

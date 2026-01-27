@@ -1,0 +1,124 @@
+/* Popover Component Styles */
+
+.container {
+  position: relative;
+  display: inline-flex;
+}
+
+.trigger {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.popover {
+  position: absolute;
+  z-index: 100;
+  min-width: 120px;
+  background-color: var(--color-brand-white, #ffffff);
+  border: 1px solid var(--color-brand-gray-20, #EAEDF2);
+  border-radius: var(--radius-lg, 8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  animation: popoverIn 150ms ease-out;
+}
+
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* Arrow */
+.arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-brand-white, #ffffff);
+  border: 1px solid var(--color-brand-gray-20, #EAEDF2);
+  transform: rotate(45deg);
+}
+
+.arrowTop {
+  top: -6px;
+  left: 50%;
+  margin-left: -6px;
+  border-bottom: none;
+  border-right: none;
+}
+
+.arrowBottom {
+  bottom: -6px;
+  left: 50%;
+  margin-left: -6px;
+  border-top: none;
+  border-left: none;
+}
+
+.arrowLeft {
+  left: -6px;
+  top: 50%;
+  margin-top: -6px;
+  border-top: none;
+  border-right: none;
+}
+
+.arrowRight {
+  right: -6px;
+  top: 50%;
+  margin-top: -6px;
+  border-bottom: none;
+  border-left: none;
+}
+
+/* Menu styles */
+.menu {
+  padding: var(--spacing-2, 8px);
+  min-width: 160px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  border: none;
+  background: none;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-brand-gray-90, #1D232F);
+  text-align: left;
+  border-radius: var(--radius-md, 6px);
+  cursor: pointer;
+  transition: background-color 100ms ease;
+}
+
+.menuItem:hover:not(:disabled) {
+  background-color: var(--color-brand-gray-10, #F6F8FA);
+}
+
+.menuItemDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.menuItemDanger {
+  color: var(--color-brand-red-60, #E22B3D);
+}
+
+.menuItemDanger:hover:not(:disabled) {
+  background-color: var(--color-brand-red-10, #FFF5F5);
+}
+
+.menuItemIcon {
+  display: flex;
+  margin-right: var(--spacing-2, 8px);
+  color: var(--color-brand-gray-50, #A5ACB9);
+}
+
+.menuItemDanger .menuItemIcon {
+  color: var(--color-brand-red-60, #E22B3D);
+}

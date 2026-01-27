@@ -7,3 +7,11 @@
 
 export * from './brand';
 export * from './semantic';
+export * from './alias';
+export * from './mapped';
+export * from './charts';
+
+// Named exports for convenience
+export { brandColors } from './brand';
+export { aliasColors } from './alias';
+export { lightThemeColors, darkThemeColors } from './mapped';

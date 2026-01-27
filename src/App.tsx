@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Routes, Route, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import { Sidebar, NavItem } from './components/Sidebar';
+import { InspectorProvider } from './context/InspectorContext';
+import { WelcomePage } from './pages/WelcomePage';
 import { HomePage } from './pages/HomePage';
 import { ComponentDocPage } from './pages/ComponentDocPage';
 import { PlaygroundShowcase } from './pages/PlaygroundShowcase';
 import { ArchitectureShowcase } from './pages/ArchitectureShowcase';
 import { IconsShowcase } from './pages/IconsShowcase';
+import { ComponentStatusPage } from './pages/ComponentStatusPage';
+import { ChangelogPage } from './pages/ChangelogPage';
+import { SettingsPanelDemo } from './pages/SettingsPanelDemo';
+import { DataDashboardDemo } from './pages/DataDashboardDemo';
+import { SpotterDashboard } from './pages/SpotterDashboard';
 import { brandColors } from './tokens/colors/brand';
 
 // Navigation icons
@@ -49,14 +57,104 @@ const IconsIcon = () => (
   </svg>
 );
 
-const App: React.FC = () => {
-  const [activePage, setActivePage] = useState('home');
+const StatusIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.75 9L8.25 10.5L11.25 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const ChangelogIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22064 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H13.5C13.8978 16.5 14.2794 16.342 14.5607 16.0607C14.842 15.7794 15 15.3978 15 15V6L10.5 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M10.5 1.5V6H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M6 9H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M6 12H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const PrototypeIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.5 2.25H2.25V7.5H7.5V2.25Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M15.75 2.25H10.5V7.5H15.75V2.25Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M15.75 10.5H10.5V15.75H15.75V10.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M7.5 10.5H2.25V15.75H7.5V10.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+// Layout component with sidebar
+const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get active page ID from current path
+  const getActiveId = (): string => {
+    const path = location.pathname;
+    
+    if (path === '/' || path === '/home') return 'home';
+    if (path === '/playground') return 'playground';
+    if (path === '/architecture') return 'architecture';
+    if (path === '/icons') return 'icons';
+    if (path === '/status') return 'status';
+    if (path === '/changelog') return 'changelog';
+    if (path === '/prototypes/filter-dialog') return 'filter-dialog';
+    if (path === '/prototypes/settings-panel') return 'settings-panel';
+    if (path === '/prototypes/data-dashboard') return 'data-dashboard';
+    if (path === '/prototypes/spotter-dashboard') return 'spotter-dashboard';
+    
+    // Check if it's a component page
+    if (path.startsWith('/components/')) {
+      return path.replace('/components/', '');
+    }
+    
+    return 'home';
+  };
+
+  const handleNavigate = (id: string) => {
+    // Map nav item IDs to routes
+    const routeMap: Record<string, string> = {
+      'home': '/',
+      'playground': '/playground',
+      'architecture': '/architecture',
+      'icons': '/icons',
+      'status': '/status',
+      'changelog': '/changelog',
+      // Component pages
+      'button': '/components/button',
+      'checkbox': '/components/checkbox',
+      'radio': '/components/radio',
+      'toggle': '/components/toggle',
+      'textinput': '/components/textinput',
+      'searchinput': '/components/searchinput',
+      'select': '/components/select',
+      'alert': '/components/alert',
+      'modal': '/components/modal',
+      'confirmdialog': '/components/confirmdialog',
+      'wizardmodal': '/components/wizardmodal',
+      'formmodal': '/components/formmodal',
+      'filterdialog': '/components/filterdialog',
+      'popover': '/components/popover',
+      'loadingindicator': '/components/loadingindicator',
+      'tabs': '/components/tabs',
+      'chip': '/components/chip',
+      // Prototype pages
+      'filter-dialog': '/prototypes/filter-dialog',
+      'settings-panel': '/prototypes/settings-panel',
+      'data-dashboard': '/prototypes/data-dashboard',
+      'spotter-dashboard': '/prototypes/spotter-dashboard',
+    };
+
+    const route = routeMap[id] || '/';
+    navigate(route);
+  };
 
   const navItems: NavItem[] = [
     { id: 'home', label: 'Home', icon: <HomeIcon />, type: 'item' },
     { id: 'playground', label: 'Playground', icon: <PlaygroundIcon />, type: 'item' },
     { id: 'architecture', label: 'Token Architecture', icon: <ArchitectureIcon />, type: 'item' },
-    { id: 'icons', label: 'Icons', icon: <IconsIcon />, type: 'item', badge: '40+' },
+    { id: 'icons', label: 'Icons', icon: <IconsIcon />, type: 'item', badge: '46' },
+    { id: 'status', label: 'Component Status', icon: <StatusIcon />, type: 'item' },
+    { id: 'changelog', label: 'Changelog', icon: <ChangelogIcon />, type: 'item' },
     { id: 'divider1', label: '', type: 'divider' },
     { id: 'components-section', label: 'Components', type: 'section' },
     { id: 'button', label: 'Button', icon: <ComponentIcon />, type: 'item', badge: '3' },
@@ -67,46 +165,42 @@ const App: React.FC = () => {
     { id: 'inputs-section', label: 'Inputs', type: 'section' },
     { id: 'textinput', label: 'TextInput', icon: <ComponentIcon />, type: 'item' },
     { id: 'searchinput', label: 'SearchInput', icon: <ComponentIcon />, type: 'item' },
+    { id: 'select', label: 'Select', icon: <ComponentIcon />, type: 'item', badge: 'new' },
     { id: 'divider3', label: '', type: 'divider' },
     { id: 'feedback-section', label: 'Feedback', type: 'section' },
     { id: 'alert', label: 'Alert', icon: <ComponentIcon />, type: 'item', badge: '5' },
     { id: 'modal', label: 'Modal', icon: <ComponentIcon />, type: 'item' },
+    { id: 'confirmdialog', label: 'ConfirmDialog', icon: <ComponentIcon />, type: 'item', badge: 'new' },
     { id: 'divider4', label: '', type: 'divider' },
+    { id: 'modals-section', label: 'Modal Patterns', type: 'section' },
+    { id: 'wizardmodal', label: 'WizardModal', icon: <ComponentIcon />, type: 'item', badge: 'new' },
+    { id: 'formmodal', label: 'FormModal', icon: <ComponentIcon />, type: 'item', badge: 'new' },
+    { id: 'filterdialog', label: 'FilterDialog', icon: <ComponentIcon />, type: 'item', badge: 'new' },
+    { id: 'divider5', label: '', type: 'divider' },
+    { id: 'overlay-section', label: 'Overlay', type: 'section' },
+    { id: 'popover', label: 'Popover', icon: <ComponentIcon />, type: 'item', badge: 'new' },
+    { id: 'loadingindicator', label: 'LoadingIndicator', icon: <ComponentIcon />, type: 'item', badge: 'new' },
+    { id: 'divider6', label: '', type: 'divider' },
     { id: 'navigation-section', label: 'Navigation', type: 'section' },
     { id: 'tabs', label: 'Tabs', icon: <ComponentIcon />, type: 'item' },
     { id: 'chip', label: 'Chip', icon: <ComponentIcon />, type: 'item', badge: '4' },
+    { id: 'divider7', label: '', type: 'divider' },
+    { id: 'prototypes-section', label: 'Example Prototypes', type: 'section' },
+    { id: 'spotter-dashboard', label: 'Spotter Dashboard', icon: <PrototypeIcon />, type: 'item', badge: 'new' },
+    { id: 'filter-dialog', label: 'Filter Dialog', icon: <PrototypeIcon />, type: 'item' },
+    { id: 'data-dashboard', label: 'Data Dashboard', icon: <PrototypeIcon />, type: 'item' },
+    { id: 'settings-panel', label: 'Settings Panel', icon: <PrototypeIcon />, type: 'item' },
   ];
-
-  const componentPages = ['button', 'checkbox', 'radio', 'toggle', 'textinput', 'searchinput', 'chip', 'alert', 'modal', 'tabs'];
-
-  const renderContent = () => {
-    if (activePage === 'home') {
-      return <HomePage onNavigate={setActivePage} />;
-    }
-    if (activePage === 'playground') {
-      return <PlaygroundShowcase />;
-    }
-    if (activePage === 'architecture') {
-      return <ArchitectureShowcase />;
-    }
-    if (activePage === 'icons') {
-      return <IconsShowcase />;
-    }
-    if (componentPages.includes(activePage)) {
-      return <ComponentDocPage componentId={activePage} />;
-    }
-    return <HomePage onNavigate={setActivePage} />;
-  };
 
   const SidebarHeader = () => (
     <div style={styles.sidebarHeader}>
-      <div style={styles.logoWrapper}>
+      <Link to="/" style={styles.logoWrapper}>
         <div style={styles.logo}>R</div>
         <div style={styles.logoText}>
           <span style={styles.logoTitle}>Radiant</span>
           <span style={styles.logoSubtitle}>Design System</span>
         </div>
-      </div>
+      </Link>
     </div>
   );
 
@@ -114,16 +208,95 @@ const App: React.FC = () => {
     <div style={styles.app}>
       <Sidebar
         items={navItems}
-        activeId={activePage}
-        onSelect={setActivePage}
+        activeId={getActiveId()}
+        onSelect={handleNavigate}
         header={<SidebarHeader />}
       />
       <main style={styles.main}>
         <div style={styles.content}>
-          {renderContent()}
+          {children}
         </div>
       </main>
     </div>
+  );
+};
+
+// Wrapper component for HomePage that needs navigation
+const HomePageWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  const handleNavigate = (id: string) => {
+    const routeMap: Record<string, string> = {
+      'playground': '/playground',
+      'architecture': '/architecture',
+      'status': '/status',
+      'changelog': '/changelog',
+      'button': '/components/button',
+      'checkbox': '/components/checkbox',
+      'radio': '/components/radio',
+      'toggle': '/components/toggle',
+      'textinput': '/components/textinput',
+      'searchinput': '/components/searchinput',
+      'select': '/components/select',
+      'chip': '/components/chip',
+      'alert': '/components/alert',
+      'modal': '/components/modal',
+      'confirmdialog': '/components/confirmdialog',
+      'wizardmodal': '/components/wizardmodal',
+      'formmodal': '/components/formmodal',
+      'filterdialog': '/components/filterdialog',
+      'popover': '/components/popover',
+      'loadingindicator': '/components/loadingindicator',
+      'tabs': '/components/tabs',
+    };
+    navigate(routeMap[id] || `/components/${id}`);
+  };
+  return <HomePage onNavigate={handleNavigate} />;
+};
+
+const App: React.FC = () => {
+  return (
+    <InspectorProvider>
+      <Routes>
+        {/* Landing page without sidebar */}
+        <Route path="/" element={<WelcomePage />} />
+        
+        {/* Main pages with sidebar */}
+        <Route path="/home" element={<MainLayout><HomePageWrapper /></MainLayout>} />
+        <Route path="/playground" element={<MainLayout><PlaygroundShowcase /></MainLayout>} />
+        <Route path="/architecture" element={<MainLayout><ArchitectureShowcase /></MainLayout>} />
+        <Route path="/icons" element={<MainLayout><IconsShowcase /></MainLayout>} />
+        <Route path="/status" element={<MainLayout><ComponentStatusPage /></MainLayout>} />
+        <Route path="/changelog" element={<MainLayout><ChangelogPage /></MainLayout>} />
+        
+        {/* Component documentation pages */}
+        <Route path="/components/button" element={<MainLayout><ComponentDocPage componentId="button" /></MainLayout>} />
+        <Route path="/components/checkbox" element={<MainLayout><ComponentDocPage componentId="checkbox" /></MainLayout>} />
+        <Route path="/components/radio" element={<MainLayout><ComponentDocPage componentId="radio" /></MainLayout>} />
+        <Route path="/components/toggle" element={<MainLayout><ComponentDocPage componentId="toggle" /></MainLayout>} />
+        <Route path="/components/textinput" element={<MainLayout><ComponentDocPage componentId="textinput" /></MainLayout>} />
+        <Route path="/components/searchinput" element={<MainLayout><ComponentDocPage componentId="searchinput" /></MainLayout>} />
+        <Route path="/components/select" element={<MainLayout><ComponentDocPage componentId="select" /></MainLayout>} />
+        <Route path="/components/chip" element={<MainLayout><ComponentDocPage componentId="chip" /></MainLayout>} />
+        <Route path="/components/alert" element={<MainLayout><ComponentDocPage componentId="alert" /></MainLayout>} />
+        <Route path="/components/modal" element={<MainLayout><ComponentDocPage componentId="modal" /></MainLayout>} />
+        <Route path="/components/confirmdialog" element={<MainLayout><ComponentDocPage componentId="confirmdialog" /></MainLayout>} />
+        <Route path="/components/wizardmodal" element={<MainLayout><ComponentDocPage componentId="wizardmodal" /></MainLayout>} />
+        <Route path="/components/formmodal" element={<MainLayout><ComponentDocPage componentId="formmodal" /></MainLayout>} />
+        <Route path="/components/filterdialog" element={<MainLayout><ComponentDocPage componentId="filterdialog" /></MainLayout>} />
+        <Route path="/components/popover" element={<MainLayout><ComponentDocPage componentId="popover" /></MainLayout>} />
+        <Route path="/components/loadingindicator" element={<MainLayout><ComponentDocPage componentId="loadingindicator" /></MainLayout>} />
+        <Route path="/components/tabs" element={<MainLayout><ComponentDocPage componentId="tabs" /></MainLayout>} />
+        
+        {/* Example Prototype pages */}
+        <Route path="/prototypes/spotter-dashboard" element={<MainLayout><SpotterDashboard /></MainLayout>} />
+        <Route path="/prototypes/filter-dialog" element={<MainLayout><PlaygroundShowcase /></MainLayout>} />
+        <Route path="/prototypes/settings-panel" element={<MainLayout><SettingsPanelDemo /></MainLayout>} />
+        <Route path="/prototypes/data-dashboard" element={<MainLayout><DataDashboardDemo /></MainLayout>} />
+        
+        {/* Catch-all redirect */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </InspectorProvider>
   );
 };
 
@@ -151,6 +324,8 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
+    textDecoration: 'none',
+    cursor: 'pointer',
   },
   logo: {
     width: '36px',

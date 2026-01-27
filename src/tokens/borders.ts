@@ -4,8 +4,6 @@
  * Border width, style, and composite border values.
  */
 
-import { aliasColors } from './colors/alias';
-
 // Border widths
 export const borderWidth = {
   none: 0,

@@ -123,8 +123,6 @@ const COMPONENT_TOKENS = {
   },
 };
 
-type InspectData = typeof COMPONENT_TOKENS[keyof typeof COMPONENT_TOKENS] | null;
-
 export const PlaygroundShowcase: React.FC = () => {
   // Filter Dialog State
   const [searchQuery, setSearchQuery] = useState('');

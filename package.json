@@ -7,7 +7,11 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
-  "keywords": ["design-system", "react", "components"],
+  "keywords": [
+    "design-system",
+    "react",
+    "components"
+  ],
   "author": "Faris",
   "license": "ISC",
   "description": "Radiant Design System - React component library",
@@ -17,7 +21,8 @@
   },
   "dependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",

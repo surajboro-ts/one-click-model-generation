@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Sidebar.module.css';
+import { useInspector } from '../../context/InspectorContext';
 
 export interface NavItem {
   id: string;
@@ -20,6 +21,26 @@ export interface SidebarProps {
   header?: React.ReactNode;
 }
 
+// Inspect icon component
+const InspectIcon: React.FC<{ active?: boolean }> = () => (
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path 
+      d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z" 
+      stroke="currentColor" 
+      strokeWidth="1.5" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    />
+    <path 
+      d="M14 14L10.5 10.5" 
+      stroke="currentColor" 
+      strokeWidth="1.5" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 /**
  * Sidebar Component
  * 
@@ -31,6 +52,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelect,
   header,
 }) => {
+  const { inspectMode, toggleInspectMode } = useInspector();
+  
   return (
     <aside className={styles.sidebar}>
       {header && (
@@ -71,7 +94,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
       
       <div className={styles.footer}>
-        <div className={styles.version}>v1.0.0</div>
+        <div className={styles.version}>v1.1.0</div>
+        <button 
+          className={`${styles.inspectButton} ${inspectMode ? styles.inspectActive : ''}`}
+          onClick={toggleInspectMode}
+          title={inspectMode ? 'Disable inspect mode' : 'Enable inspect mode'}
+        >
+          <InspectIcon active={inspectMode} />
+          <span>{inspectMode ? 'Inspecting' : 'Inspect'}</span>
+        </button>
       </div>
     </aside>
   );

@@ -1,0 +1,79 @@
+/* ConfirmDialog Component Styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-4) 0;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-bottom: var(--spacing-4);
+}
+
+/* Status-specific icon backgrounds */
+.iconWrapper.info {
+  background-color: var(--color-brand-blue-20);
+  color: var(--color-brand-blue-60);
+}
+
+.iconWrapper.warning {
+  background-color: var(--color-brand-yellow-20);
+  color: var(--color-brand-yellow-70);
+}
+
+.iconWrapper.danger {
+  background-color: var(--color-brand-red-20);
+  color: var(--color-brand-red-60);
+}
+
+.iconWrapper.success {
+  background-color: var(--color-brand-green-20);
+  color: var(--color-brand-green-60);
+}
+
+.title {
+  margin: 0 0 var(--spacing-3) 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-lg);
+  color: var(--color-brand-gray-90);
+}
+
+.message {
+  margin: 0 0 var(--spacing-6) 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+  color: var(--color-brand-gray-60);
+  max-width: 320px;
+}
+
+.message p {
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-3);
+  width: 100%;
+  justify-content: center;
+}
+
+/* Danger button override */
+.dangerButton {
+  background: linear-gradient(135deg, var(--color-brand-red-60) 0%, var(--color-brand-red-70) 100%) !important;
+}
+
+.dangerButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-brand-red-70) 0%, var(--color-brand-red-80) 100%) !important;
+}

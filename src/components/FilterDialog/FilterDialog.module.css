@@ -1,0 +1,75 @@
+/* FilterDialog Component Styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4, 16px);
+}
+
+.searchWrapper {
+  padding-bottom: var(--spacing-2, 8px);
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-4, 16px);
+  padding-bottom: var(--spacing-2, 8px);
+  border-bottom: 1px solid var(--color-brand-gray-20, #EAEDF2);
+}
+
+.actionButton {
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-brand-blue-60, #2770EF);
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.actionButton:hover {
+  color: var(--color-brand-blue-70, #2359B6);
+}
+
+.optionsList {
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0 calc(-1 * var(--spacing-2, 8px));
+  padding: 0 var(--spacing-2, 8px);
+}
+
+.optionItem {
+  padding: var(--spacing-2, 8px) 0;
+}
+
+.optionItem + .optionItem {
+  border-top: 1px solid var(--color-brand-gray-10, #F6F8FA);
+}
+
+.noResults {
+  padding: var(--spacing-6, 24px);
+  text-align: center;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-brand-gray-50, #A5ACB9);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.selectedCount {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-brand-gray-50, #A5ACB9);
+}
+
+.footerActions {
+  display: flex;
+  gap: var(--spacing-3, 12px);
+}

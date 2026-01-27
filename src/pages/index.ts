@@ -1,10 +1,11 @@
+export { WelcomePage } from './WelcomePage';
 export { PlaygroundShowcase } from './PlaygroundShowcase';
 export { ArchitectureShowcase } from './ArchitectureShowcase';
-export { ChipsShowcase } from './ChipsShowcase';
-export { AlertsShowcase } from './AlertsShowcase';
-export { SelectionControlsShowcase } from './SelectionControlsShowcase';
-export { ButtonsShowcase } from './ButtonsShowcase';
-export { FormShowcase } from './FormShowcase';
 export { HomePage } from './HomePage';
 export { ComponentDocPage } from './ComponentDocPage';
 export { IconsShowcase } from './IconsShowcase';
+export { ComponentStatusPage } from './ComponentStatusPage';
+export { ChangelogPage } from './ChangelogPage';
+export { SettingsPanelDemo } from './SettingsPanelDemo';
+export { DataDashboardDemo } from './DataDashboardDemo';
+export { SpotterDashboard } from './SpotterDashboard';

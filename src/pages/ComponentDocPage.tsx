@@ -9,6 +9,13 @@ import { Chip } from '../components/Chip';
 import { Alert } from '../components/Alert';
 import { Modal } from '../components/Modal';
 import { Tabs } from '../components/Tabs';
+import { Select } from '../components/Select';
+import { ConfirmDialog } from '../components/ConfirmDialog';
+import { WizardModal } from '../components/WizardModal';
+import { FormModal } from '../components/FormModal';
+import { FilterDialog } from '../components/FilterDialog';
+import { Popover, PopoverMenu, PopoverMenuItem } from '../components/Popover';
+import { LoadingIndicator } from '../components/LoadingIndicator';
 import { brandColors } from '../tokens/colors/brand';
 
 interface PropDefinition {
@@ -155,13 +162,108 @@ const componentDocs: Record<string, {
       { name: 'onTabChange', type: '(id: string) => void', description: 'Handler when a tab is selected' },
     ],
   },
+  select: {
+    name: 'Select',
+    description: 'A dropdown selection component with optional search functionality. Supports single selection with keyboard navigation.',
+    props: [
+      { name: 'options', type: 'Array<{ id: string, label: string, value?: string }>', description: 'Array of options to display' },
+      { name: 'value', type: 'string', description: 'Currently selected value' },
+      { name: 'onChange', type: '(value: string, option: SelectOption) => void', description: 'Handler when selection changes' },
+      { name: 'placeholder', type: 'string', default: "'Select an option'", description: 'Placeholder text when no selection' },
+      { name: 'label', type: 'string', description: 'Label text above the select' },
+      { name: 'searchable', type: 'boolean', default: 'false', description: 'Whether to show search input in dropdown' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether the select is disabled' },
+      { name: 'error', type: 'boolean', default: 'false', description: 'Whether the select has an error' },
+      { name: 'errorMessage', type: 'string', description: 'Error message to display' },
+    ],
+  },
+  confirmdialog: {
+    name: 'ConfirmDialog',
+    description: 'A confirmation dialog for user actions that require explicit confirmation. Supports status variants for different action types.',
+    props: [
+      { name: 'isOpen', type: 'boolean', description: 'Whether the dialog is open' },
+      { name: 'title', type: 'string', description: 'Dialog title' },
+      { name: 'message', type: 'string | ReactNode', description: 'Dialog message/description' },
+      { name: 'confirmText', type: 'string', default: "'Confirm'", description: 'Text for the confirm button' },
+      { name: 'cancelText', type: 'string', default: "'Cancel'", description: 'Text for the cancel button' },
+      { name: 'onConfirm', type: '() => void', description: 'Handler for confirm action' },
+      { name: 'onCancel', type: '() => void', description: 'Handler for cancel action' },
+      { name: 'status', type: "'info' | 'warning' | 'danger' | 'success'", default: "'info'", description: 'Status type affecting icon and styling' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Whether confirm button shows loading state' },
+    ],
+  },
+  wizardmodal: {
+    name: 'WizardModal',
+    description: 'A multi-step wizard modal for complex workflows. Supports step navigation, validation, and progress indication.',
+    props: [
+      { name: 'isOpen', type: 'boolean', description: 'Whether the wizard is open' },
+      { name: 'onClose', type: '() => void', description: 'Handler to close the wizard' },
+      { name: 'title', type: 'string', description: 'Wizard title' },
+      { name: 'steps', type: 'WizardStep[]', description: 'Array of wizard steps with id, title, and content' },
+      { name: 'onComplete', type: '() => void', description: 'Handler called when wizard is completed' },
+      { name: 'showProgress', type: 'boolean', default: 'true', description: 'Whether to show progress bar' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Whether content is loading' },
+      { name: 'error', type: 'string', description: 'Error message to display' },
+    ],
+  },
+  formmodal: {
+    name: 'FormModal',
+    description: 'A modal optimized for form content with validation and submission handling.',
+    props: [
+      { name: 'isOpen', type: 'boolean', description: 'Whether the modal is open' },
+      { name: 'onClose', type: '() => void', description: 'Handler to close the modal' },
+      { name: 'title', type: 'string', description: 'Modal title' },
+      { name: 'children', type: 'ReactNode', description: 'Form content' },
+      { name: 'onSubmit', type: '() => void', description: 'Handler called when form is submitted' },
+      { name: 'submitText', type: 'string', default: "'Save'", description: 'Submit button text' },
+      { name: 'isSubmitting', type: 'boolean', default: 'false', description: 'Whether the form is submitting' },
+      { name: 'isSubmitDisabled', type: 'boolean', default: 'false', description: 'Whether submit is disabled' },
+      { name: 'error', type: 'string', description: 'Error message to display' },
+    ],
+  },
+  filterdialog: {
+    name: 'FilterDialog',
+    description: 'A modal dialog for filter selection with checkboxes, search, and quick actions.',
+    props: [
+      { name: 'isOpen', type: 'boolean', description: 'Whether the dialog is open' },
+      { name: 'onClose', type: '() => void', description: 'Handler to close the dialog' },
+      { name: 'title', type: 'string', description: 'Dialog title' },
+      { name: 'options', type: 'FilterOption[]', description: 'Array of filter options with id and label' },
+      { name: 'selectedIds', type: 'string[]', description: 'Currently selected option IDs' },
+      { name: 'onApply', type: '(selectedIds: string[]) => void', description: 'Handler when filter is applied' },
+      { name: 'showSelectAll', type: 'boolean', default: 'true', description: 'Whether to show Select All button' },
+      { name: 'showSelectedCount', type: 'boolean', default: 'true', description: 'Whether to show selected count' },
+    ],
+  },
+  popover: {
+    name: 'Popover',
+    description: 'A floating overlay component for contextual content like menus, tooltips, or additional information.',
+    props: [
+      { name: 'trigger', type: 'ReactNode', description: 'Element that triggers the popover' },
+      { name: 'children', type: 'ReactNode', description: 'Content to display in the popover' },
+      { name: 'placement', type: 'PopoverPlacement', default: "'bottom'", description: 'Popover placement relative to trigger' },
+      { name: 'triggerType', type: "'click' | 'hover'", default: "'click'", description: 'How to trigger the popover' },
+      { name: 'isOpen', type: 'boolean', description: 'Whether popover is open (controlled mode)' },
+      { name: 'onOpenChange', type: '(open: boolean) => void', description: 'Callback when popover opens/closes' },
+      { name: 'hasArrow', type: 'boolean', default: 'false', description: 'Whether to show arrow pointer' },
+      { name: 'offset', type: 'number', default: '8', description: 'Offset from trigger in pixels' },
+    ],
+  },
+  loadingindicator: {
+    name: 'LoadingIndicator',
+    description: 'A spinning loader indicator for async operations. Includes LoadingOverlay for content loading states.',
+    props: [
+      { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", description: 'Size of the spinner' },
+      { name: 'text', type: 'string', description: 'Loading text to display' },
+      { name: 'centered', type: 'boolean', default: 'false', description: 'Whether to center in container' },
+    ],
+  },
 };
 
 export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId }) => {
   const doc = componentDocs[componentId];
   
   // State for interactive examples
-  const [buttonVariant, setButtonVariant] = useState<'primary' | 'secondary' | 'tertiary'>('primary');
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [radioValue, setRadioValue] = useState('option1');
   const [toggleChecked, setToggleChecked] = useState(false);
@@ -169,6 +271,14 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
   const [searchValue, setSearchValue] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('tab1');
+  // New component states
+  const [selectValue, setSelectValue] = useState('');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmStatus, setConfirmStatus] = useState<'info' | 'warning' | 'danger' | 'success'>('info');
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>(['opt1']);
 
   if (!doc) {
     return (
@@ -340,6 +450,201 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
             />
             <div style={{ marginTop: '16px', padding: '16px', background: brandColors.gray[10], borderRadius: '8px' }}>
               Content for {activeTab}
+            </div>
+          </div>
+        );
+      
+      case 'select':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleRow}>
+              <Select
+                label="Country"
+                placeholder="Select a country"
+                options={[
+                  { id: 'us', label: 'United States' },
+                  { id: 'uk', label: 'United Kingdom' },
+                  { id: 'ca', label: 'Canada' },
+                  { id: 'au', label: 'Australia' },
+                ]}
+                value={selectValue}
+                onChange={(value) => setSelectValue(value)}
+              />
+              <Select
+                label="Searchable"
+                placeholder="Search..."
+                searchable
+                options={[
+                  { id: 'opt1', label: 'Option 1' },
+                  { id: 'opt2', label: 'Option 2' },
+                  { id: 'opt3', label: 'Option 3' },
+                ]}
+                value=""
+                onChange={() => {}}
+              />
+            </div>
+            <div style={styles.exampleRow}>
+              <Select
+                label="Disabled"
+                placeholder="Cannot select"
+                disabled
+                options={[{ id: 'opt', label: 'Option' }]}
+                value=""
+                onChange={() => {}}
+              />
+              <Select
+                label="Error"
+                placeholder="Select required"
+                error
+                errorMessage="This field is required"
+                options={[{ id: 'opt', label: 'Option' }]}
+                value=""
+                onChange={() => {}}
+              />
+            </div>
+          </div>
+        );
+      
+      case 'confirmdialog':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleRow}>
+              <Button variant="primary" onClick={() => { setConfirmStatus('info'); setIsConfirmOpen(true); }}>
+                Info Dialog
+              </Button>
+              <Button variant="secondary" onClick={() => { setConfirmStatus('warning'); setIsConfirmOpen(true); }}>
+                Warning Dialog
+              </Button>
+              <Button variant="secondary" onClick={() => { setConfirmStatus('danger'); setIsConfirmOpen(true); }}>
+                Danger Dialog
+              </Button>
+              <Button variant="secondary" onClick={() => { setConfirmStatus('success'); setIsConfirmOpen(true); }}>
+                Success Dialog
+              </Button>
+            </div>
+            <ConfirmDialog
+              isOpen={isConfirmOpen}
+              title={`${confirmStatus.charAt(0).toUpperCase() + confirmStatus.slice(1)} Confirmation`}
+              message="Are you sure you want to proceed with this action? This is a sample confirmation dialog."
+              status={confirmStatus}
+              onConfirm={() => setIsConfirmOpen(false)}
+              onCancel={() => setIsConfirmOpen(false)}
+            />
+          </div>
+        );
+      
+      case 'wizardmodal':
+        return (
+          <div style={styles.exampleContent}>
+            <Button variant="primary" onClick={() => setIsWizardOpen(true)}>
+              Open Wizard
+            </Button>
+            <WizardModal
+              isOpen={isWizardOpen}
+              onClose={() => setIsWizardOpen(false)}
+              title="Setup Wizard"
+              steps={[
+                { id: 'step1', title: 'Step 1: Basic Info', content: <div style={{ padding: '20px' }}>Enter your basic information here.</div> },
+                { id: 'step2', title: 'Step 2: Preferences', content: <div style={{ padding: '20px' }}>Configure your preferences.</div> },
+                { id: 'step3', title: 'Step 3: Review', content: <div style={{ padding: '20px' }}>Review and confirm your settings.</div> },
+              ]}
+              onComplete={() => setIsWizardOpen(false)}
+              showProgress
+            />
+          </div>
+        );
+      
+      case 'formmodal':
+        return (
+          <div style={styles.exampleContent}>
+            <Button variant="primary" onClick={() => setIsFormModalOpen(true)}>
+              Open Form Modal
+            </Button>
+            <FormModal
+              isOpen={isFormModalOpen}
+              onClose={() => setIsFormModalOpen(false)}
+              title="Create New Item"
+              onSubmit={() => setIsFormModalOpen(false)}
+              submitText="Create"
+            >
+              <TextInput label="Name" placeholder="Enter name..." value="" onChange={() => {}} />
+              <TextInput label="Description" placeholder="Enter description..." value="" onChange={() => {}} />
+            </FormModal>
+          </div>
+        );
+      
+      case 'filterdialog':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleRow}>
+              <Button variant="primary" onClick={() => setIsFilterOpen(true)}>
+                Open Filter Dialog
+              </Button>
+              <span style={{ color: brandColors.gray[50], fontSize: '14px' }}>
+                Selected: {selectedFilters.length > 0 ? selectedFilters.join(', ') : 'None'}
+              </span>
+            </div>
+            <FilterDialog
+              isOpen={isFilterOpen}
+              onClose={() => setIsFilterOpen(false)}
+              title="Filter by Category"
+              options={[
+                { id: 'opt1', label: 'Electronics' },
+                { id: 'opt2', label: 'Clothing' },
+                { id: 'opt3', label: 'Home & Garden' },
+                { id: 'opt4', label: 'Sports' },
+                { id: 'opt5', label: 'Books' },
+              ]}
+              selectedIds={selectedFilters}
+              onApply={setSelectedFilters}
+            />
+          </div>
+        );
+      
+      case 'popover':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleRow}>
+              <Popover
+                trigger={<Button variant="primary">Click Menu</Button>}
+                placement="bottom-start"
+              >
+                <PopoverMenu>
+                  <PopoverMenuItem onClick={() => alert('Edit')}>Edit</PopoverMenuItem>
+                  <PopoverMenuItem onClick={() => alert('Duplicate')}>Duplicate</PopoverMenuItem>
+                  <PopoverMenuItem onClick={() => alert('Delete')} danger>Delete</PopoverMenuItem>
+                </PopoverMenu>
+              </Popover>
+              <Popover
+                trigger={<Button variant="secondary">Hover Me</Button>}
+                triggerType="hover"
+                placement="top"
+              >
+                <div style={{ padding: '12px 16px', maxWidth: '200px' }}>
+                  <p style={{ margin: 0, fontSize: '14px', color: brandColors.gray[70] }}>
+                    This is a hover popover with some helpful information.
+                  </p>
+                </div>
+              </Popover>
+            </div>
+          </div>
+        );
+      
+      case 'loadingindicator':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleRow}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                <LoadingIndicator size="small" />
+                <LoadingIndicator size="medium" />
+                <LoadingIndicator size="large" />
+              </div>
+            </div>
+            <div style={styles.exampleRow}>
+              <LoadingIndicator size="medium" text="Loading data..." />
+            </div>
+            <div style={{ marginTop: '16px', padding: '24px', background: brandColors.gray[10], borderRadius: '8px' }}>
+              <LoadingIndicator size="large" text="Fetching results..." centered />
             </div>
           </div>
         );
