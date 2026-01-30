@@ -2,9 +2,10 @@ import React from 'react';
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Sidebar, NavItem } from './components/Sidebar';
 import { HomePage } from './pages/HomePage';
-import { WelcomePage } from './pages/WelcomePage';
+import { RadiantHomePage } from './pages/RadiantHomePage';
 import { ComponentDocPage } from './pages/ComponentDocPage';
-import { PlaygroundShowcase } from './pages/PlaygroundShowcase';
+import { PlaygroundGallery } from './pages/PlaygroundGallery';
+import { PlaygroundProject } from './pages/PlaygroundProject';
 import { ArchitectureShowcase } from './pages/ArchitectureShowcase';
 import { IconsShowcase } from './pages/IconsShowcase';
 import { brandColors } from './tokens/colors/brand';
@@ -19,14 +20,6 @@ const HomeIcon = () => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2.25 6.75L9 1.5L15.75 6.75V15C15.75 15.3978 15.592 15.7794 15.3107 16.0607C15.0294 16.342 14.6478 16.5 14.25 16.5H3.75C3.35218 16.5 2.97064 16.342 2.68934 16.0607C2.40804 15.7794 2.25 15.3978 2.25 15V6.75Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M6.75 16.5V9H11.25V16.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-const PlaygroundIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M14.25 2.25H3.75C2.92157 2.25 2.25 2.92157 2.25 3.75V14.25C2.25 15.0784 2.92157 15.75 3.75 15.75H14.25C15.0784 15.75 15.75 15.0784 15.75 14.25V3.75C15.75 2.92157 15.0784 2.25 14.25 2.25Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M6 6.75L8.25 9L6 11.25" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M9.75 11.25H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
@@ -58,34 +51,36 @@ const IconsIcon = () => (
 
 // Route definitions for cleaner mapping
 const ROUTES = {
-  welcome: '/',
-  components: '/components',
-  playground: '/playground',
-  architecture: '/architecture',
-  icons: '/icons',
+  home: '/',
+  // Radiant routes
+  radiant: '/radiant',
+  radiantArchitecture: '/radiant/architecture',
+  radiantIcons: '/radiant/icons',
   // Example prototypes
-  filterDialog: '/examples/filter-dialog',
-  dataDashboard: '/examples/data-dashboard',
-  settingsPanel: '/examples/settings-panel',
+  filterDialog: '/radiant/examples/filter-dialog',
+  dataDashboard: '/radiant/examples/data-dashboard',
+  settingsPanel: '/radiant/examples/settings-panel',
   // Component documentation
-  button: '/components/button',
-  checkbox: '/components/checkbox',
-  radio: '/components/radio',
-  toggle: '/components/toggle',
-  textinput: '/components/textinput',
-  searchinput: '/components/searchinput',
-  select: '/components/select',
-  alert: '/components/alert',
-  modal: '/components/modal',
-  tooltip: '/components/tooltip',
-  popover: '/components/popover',
-  table: '/components/table',
-  tabs: '/components/tabs',
-  chip: '/components/chip',
+  button: '/radiant/components/button',
+  checkbox: '/radiant/components/checkbox',
+  radio: '/radiant/components/radio',
+  toggle: '/radiant/components/toggle',
+  textinput: '/radiant/components/textinput',
+  searchinput: '/radiant/components/searchinput',
+  select: '/radiant/components/select',
+  alert: '/radiant/components/alert',
+  modal: '/radiant/components/modal',
+  tooltip: '/radiant/components/tooltip',
+  popover: '/radiant/components/popover',
+  table: '/radiant/components/table',
+  tabs: '/radiant/components/tabs',
+  chip: '/radiant/components/chip',
+  // Playground routes
+  playground: '/playground',
 } as const;
 
-// Layout component with sidebar
-const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Layout component with sidebar for Radiant section
+const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -99,54 +94,52 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     }
     
     // Check if it's a component page
-    if (path.startsWith('/components/')) {
-      const componentId = path.replace('/components/', '');
+    if (path.startsWith('/radiant/components/')) {
+      const componentId = path.replace('/radiant/components/', '');
       return componentId;
     }
     
     // Check if it's an example page
-    if (path.startsWith('/examples/')) {
-      const exampleId = path.replace('/examples/', '');
+    if (path.startsWith('/radiant/examples/')) {
+      const exampleId = path.replace('/radiant/examples/', '');
       return `example-${exampleId}`;
     }
     
-    return 'components';
+    return 'radiant';
   };
 
   const handleNavigate = (id: string) => {
     // Map nav item IDs to routes
     const routeMap: Record<string, string> = {
-      'components': '/components',
-      'playground': '/playground',
-      'architecture': '/architecture',
-      'icons': '/icons',
-      'example-filter-dialog': '/examples/filter-dialog',
-      'example-data-dashboard': '/examples/data-dashboard',
-      'example-settings-panel': '/examples/settings-panel',
+      'radiant': '/radiant',
+      'architecture': '/radiant/architecture',
+      'icons': '/radiant/icons',
+      'example-filter-dialog': '/radiant/examples/filter-dialog',
+      'example-data-dashboard': '/radiant/examples/data-dashboard',
+      'example-settings-panel': '/radiant/examples/settings-panel',
       // Component pages
-      'button': '/components/button',
-      'checkbox': '/components/checkbox',
-      'radio': '/components/radio',
-      'toggle': '/components/toggle',
-      'textinput': '/components/textinput',
-      'searchinput': '/components/searchinput',
-      'select': '/components/select',
-      'alert': '/components/alert',
-      'modal': '/components/modal',
-      'tooltip': '/components/tooltip',
-      'popover': '/components/popover',
-      'table': '/components/table',
-      'tabs': '/components/tabs',
-      'chip': '/components/chip',
+      'button': '/radiant/components/button',
+      'checkbox': '/radiant/components/checkbox',
+      'radio': '/radiant/components/radio',
+      'toggle': '/radiant/components/toggle',
+      'textinput': '/radiant/components/textinput',
+      'searchinput': '/radiant/components/searchinput',
+      'select': '/radiant/components/select',
+      'alert': '/radiant/components/alert',
+      'modal': '/radiant/components/modal',
+      'tooltip': '/radiant/components/tooltip',
+      'popover': '/radiant/components/popover',
+      'table': '/radiant/components/table',
+      'tabs': '/radiant/components/tabs',
+      'chip': '/radiant/components/chip',
     };
 
-    const route = routeMap[id] || '/components';
+    const route = routeMap[id] || '/radiant';
     navigate(route);
   };
 
   const navItems: NavItem[] = [
-    { id: 'components', label: 'Components', icon: <HomeIcon />, type: 'item' },
-    { id: 'playground', label: 'Playground', icon: <PlaygroundIcon />, type: 'item' },
+    { id: 'radiant', label: 'Components', icon: <HomeIcon />, type: 'item' },
     { id: 'architecture', label: 'Token Architecture', icon: <ArchitectureIcon />, type: 'item' },
     { id: 'icons', label: 'Icons', icon: <IconsIcon />, type: 'item', badge: '46' },
     { id: 'divider0', label: '', type: 'divider' },
@@ -215,76 +208,71 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-// Wrapper component for pages that need navigation
-const HomePageWrapper: React.FC = () => {
+// Wrapper component for RadiantHomePage that passes navigation
+const RadiantHomePageWrapper: React.FC = () => {
   const navigate = useNavigate();
   const handleNavigate = (id: string) => {
     const routeMap: Record<string, string> = {
-      'playground': '/playground',
-      'architecture': '/architecture',
-      'button': '/components/button',
-      'checkbox': '/components/checkbox',
-      'radio': '/components/radio',
-      'toggle': '/components/toggle',
-      'textinput': '/components/textinput',
-      'searchinput': '/components/searchinput',
-      'chip': '/components/chip',
-      'alert': '/components/alert',
-      'modal': '/components/modal',
-      'tabs': '/components/tabs',
+      'architecture': '/radiant/architecture',
+      'icons': '/radiant/icons',
+      'button': '/radiant/components/button',
+      'checkbox': '/radiant/components/checkbox',
+      'radio': '/radiant/components/radio',
+      'toggle': '/radiant/components/toggle',
+      'textinput': '/radiant/components/textinput',
+      'searchinput': '/radiant/components/searchinput',
+      'chip': '/radiant/components/chip',
+      'alert': '/radiant/components/alert',
+      'modal': '/radiant/components/modal',
+      'tabs': '/radiant/components/tabs',
     };
-    navigate(routeMap[id] || `/components/${id}`);
+    navigate(routeMap[id] || `/radiant/components/${id}`);
   };
-  return <HomePage onNavigate={handleNavigate} />;
-};
-
-const WelcomePageWrapper: React.FC = () => {
-  const navigate = useNavigate();
-  const handleNavigate = (id: string) => {
-    const routeMap: Record<string, string> = {
-      'playground': '/playground',
-      'home': '/components',
-      'components': '/components',
-      'architecture': '/architecture',
-      'icons': '/icons',
-    };
-    navigate(routeMap[id] || '/components');
-  };
-  return <WelcomePage onNavigate={handleNavigate} />;
+  return <RadiantHomePage onNavigate={handleNavigate} />;
 };
 
 const App: React.FC = () => {
   return (
     <Routes>
-      {/* Welcome page - full width, no sidebar */}
-      <Route path="/" element={<WelcomePageWrapper />} />
+      {/* Home - Simple split page */}
+      <Route path="/" element={<HomePage />} />
       
-      {/* Main pages with sidebar */}
-      <Route path="/components" element={<MainLayout><HomePageWrapper /></MainLayout>} />
-      <Route path="/playground" element={<MainLayout><PlaygroundShowcase /></MainLayout>} />
-      <Route path="/architecture" element={<MainLayout><ArchitectureShowcase /></MainLayout>} />
-      <Route path="/icons" element={<MainLayout><IconsShowcase /></MainLayout>} />
+      {/* Radiant Section - With sidebar */}
+      <Route path="/radiant" element={<RadiantLayout><RadiantHomePageWrapper /></RadiantLayout>} />
+      <Route path="/radiant/architecture" element={<RadiantLayout><ArchitectureShowcase /></RadiantLayout>} />
+      <Route path="/radiant/icons" element={<RadiantLayout><IconsShowcase /></RadiantLayout>} />
       
       {/* Example prototypes */}
-      <Route path="/examples/filter-dialog" element={<MainLayout><FilterDialogExample /></MainLayout>} />
-      <Route path="/examples/data-dashboard" element={<MainLayout><DataDashboardExample /></MainLayout>} />
-      <Route path="/examples/settings-panel" element={<MainLayout><SettingsPanelExample /></MainLayout>} />
+      <Route path="/radiant/examples/filter-dialog" element={<RadiantLayout><FilterDialogExample /></RadiantLayout>} />
+      <Route path="/radiant/examples/data-dashboard" element={<RadiantLayout><DataDashboardExample /></RadiantLayout>} />
+      <Route path="/radiant/examples/settings-panel" element={<RadiantLayout><SettingsPanelExample /></RadiantLayout>} />
       
       {/* Component documentation pages */}
-      <Route path="/components/button" element={<MainLayout><ComponentDocPage componentId="button" /></MainLayout>} />
-      <Route path="/components/checkbox" element={<MainLayout><ComponentDocPage componentId="checkbox" /></MainLayout>} />
-      <Route path="/components/radio" element={<MainLayout><ComponentDocPage componentId="radio" /></MainLayout>} />
-      <Route path="/components/toggle" element={<MainLayout><ComponentDocPage componentId="toggle" /></MainLayout>} />
-      <Route path="/components/textinput" element={<MainLayout><ComponentDocPage componentId="textinput" /></MainLayout>} />
-      <Route path="/components/searchinput" element={<MainLayout><ComponentDocPage componentId="searchinput" /></MainLayout>} />
-      <Route path="/components/select" element={<MainLayout><ComponentDocPage componentId="select" /></MainLayout>} />
-      <Route path="/components/chip" element={<MainLayout><ComponentDocPage componentId="chip" /></MainLayout>} />
-      <Route path="/components/alert" element={<MainLayout><ComponentDocPage componentId="alert" /></MainLayout>} />
-      <Route path="/components/modal" element={<MainLayout><ComponentDocPage componentId="modal" /></MainLayout>} />
-      <Route path="/components/tooltip" element={<MainLayout><ComponentDocPage componentId="tooltip" /></MainLayout>} />
-      <Route path="/components/popover" element={<MainLayout><ComponentDocPage componentId="popover" /></MainLayout>} />
-      <Route path="/components/table" element={<MainLayout><ComponentDocPage componentId="table" /></MainLayout>} />
-      <Route path="/components/tabs" element={<MainLayout><ComponentDocPage componentId="tabs" /></MainLayout>} />
+      <Route path="/radiant/components/button" element={<RadiantLayout><ComponentDocPage componentId="button" /></RadiantLayout>} />
+      <Route path="/radiant/components/checkbox" element={<RadiantLayout><ComponentDocPage componentId="checkbox" /></RadiantLayout>} />
+      <Route path="/radiant/components/radio" element={<RadiantLayout><ComponentDocPage componentId="radio" /></RadiantLayout>} />
+      <Route path="/radiant/components/toggle" element={<RadiantLayout><ComponentDocPage componentId="toggle" /></RadiantLayout>} />
+      <Route path="/radiant/components/textinput" element={<RadiantLayout><ComponentDocPage componentId="textinput" /></RadiantLayout>} />
+      <Route path="/radiant/components/searchinput" element={<RadiantLayout><ComponentDocPage componentId="searchinput" /></RadiantLayout>} />
+      <Route path="/radiant/components/select" element={<RadiantLayout><ComponentDocPage componentId="select" /></RadiantLayout>} />
+      <Route path="/radiant/components/chip" element={<RadiantLayout><ComponentDocPage componentId="chip" /></RadiantLayout>} />
+      <Route path="/radiant/components/alert" element={<RadiantLayout><ComponentDocPage componentId="alert" /></RadiantLayout>} />
+      <Route path="/radiant/components/modal" element={<RadiantLayout><ComponentDocPage componentId="modal" /></RadiantLayout>} />
+      <Route path="/radiant/components/tooltip" element={<RadiantLayout><ComponentDocPage componentId="tooltip" /></RadiantLayout>} />
+      <Route path="/radiant/components/popover" element={<RadiantLayout><ComponentDocPage componentId="popover" /></RadiantLayout>} />
+      <Route path="/radiant/components/table" element={<RadiantLayout><ComponentDocPage componentId="table" /></RadiantLayout>} />
+      <Route path="/radiant/components/tabs" element={<RadiantLayout><ComponentDocPage componentId="tabs" /></RadiantLayout>} />
+      
+      {/* Playground Section - No sidebar */}
+      <Route path="/playground" element={<PlaygroundGallery />} />
+      <Route path="/playground/:projectName" element={<PlaygroundProject />} />
+      
+      {/* Legacy redirects - redirect old routes to new structure */}
+      <Route path="/components" element={<Navigate to="/radiant" replace />} />
+      <Route path="/components/*" element={<Navigate to="/radiant" replace />} />
+      <Route path="/architecture" element={<Navigate to="/radiant/architecture" replace />} />
+      <Route path="/icons" element={<Navigate to="/radiant/icons" replace />} />
+      <Route path="/examples/*" element={<Navigate to="/radiant" replace />} />
       
       {/* Catch-all redirect */}
       <Route path="*" element={<Navigate to="/" replace />} />

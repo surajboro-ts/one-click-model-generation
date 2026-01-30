@@ -1,719 +1,320 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { brandColors } from '../tokens/colors/brand';
 
-interface ComponentCardProps {
-  name: string;
-  description: string;
-  icon: string;
-  variants: number;
-  status: 'stable' | 'beta' | 'new';
-  onClick: () => void;
-}
-
-const ComponentCard: React.FC<ComponentCardProps> = ({
-  name,
-  description,
-  icon,
-  variants,
-  status,
-  onClick,
-}) => {
-  const statusColors = {
-    stable: { bg: '#06BF7F1A', text: '#06BF7F' },
-    beta: { bg: '#F5A6231A', text: '#F5A623' },
-    new: { bg: '#2770EF1A', text: '#2770EF' },
-  };
-
-  return (
-    <button onClick={onClick} style={styles.card}>
-      <div style={styles.cardIcon}>{icon}</div>
-      <div style={styles.cardContent}>
-        <div style={styles.cardHeader}>
-          <h3 style={styles.cardTitle}>{name}</h3>
-          <span
-            style={{
-              ...styles.cardStatus,
-              backgroundColor: statusColors[status].bg,
-              color: statusColors[status].text,
-            }}
-          >
-            {status}
-          </span>
-        </div>
-        <p style={styles.cardDescription}>{description}</p>
-        <div style={styles.cardMeta}>
-          <span style={styles.cardVariants}>{variants} variant{variants !== 1 ? 's' : ''}</span>
-        </div>
-      </div>
-      <div style={styles.cardArrow}>→</div>
-    </button>
-  );
-};
-
-interface HomePageProps {
-  onNavigate: (id: string) => void;
-}
-
-export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
-  const components = [
-    // Core Components
-    {
-      id: 'button',
-      name: 'Button',
-      description: 'Primary, secondary, and tertiary buttons for actions',
-      icon: '🔘',
-      variants: 3,
-      status: 'stable' as const,
-    },
-    {
-      id: 'checkbox',
-      name: 'Checkbox',
-      description: 'Selection controls for multiple choices',
-      icon: '☑️',
-      variants: 3,
-      status: 'stable' as const,
-    },
-    {
-      id: 'radio',
-      name: 'Radio',
-      description: 'Single selection from a group of options',
-      icon: '🔘',
-      variants: 2,
-      status: 'stable' as const,
-    },
-    {
-      id: 'toggle',
-      name: 'Toggle',
-      description: 'Switch control for on/off states',
-      icon: '🔀',
-      variants: 2,
-      status: 'stable' as const,
-    },
-    // Input Components
-    {
-      id: 'textinput',
-      name: 'TextInput',
-      description: 'Text input fields with labels and validation',
-      icon: '📝',
-      variants: 3,
-      status: 'stable' as const,
-    },
-    {
-      id: 'searchinput',
-      name: 'SearchInput',
-      description: 'Search input with icon and clear functionality',
-      icon: '🔍',
-      variants: 1,
-      status: 'stable' as const,
-    },
-    {
-      id: 'select',
-      name: 'Select',
-      description: 'Dropdown selection with search functionality',
-      icon: '📋',
-      variants: 3,
-      status: 'new' as const,
-    },
-    // Feedback Components
-    {
-      id: 'alert',
-      name: 'Alert',
-      description: 'Notification banners for important messages',
-      icon: '⚠️',
-      variants: 5,
-      status: 'stable' as const,
-    },
-    {
-      id: 'modal',
-      name: 'Modal',
-      description: 'Overlay dialogs for focused interactions',
-      icon: '🪟',
-      variants: 3,
-      status: 'stable' as const,
-    },
-    {
-      id: 'confirmdialog',
-      name: 'ConfirmDialog',
-      description: 'Confirmation dialogs for user actions',
-      icon: '❓',
-      variants: 4,
-      status: 'new' as const,
-    },
-    // Modal Patterns
-    {
-      id: 'wizardmodal',
-      name: 'WizardModal',
-      description: 'Multi-step wizard with progress indicator',
-      icon: '🧙',
-      variants: 2,
-      status: 'new' as const,
-    },
-    {
-      id: 'formmodal',
-      name: 'FormModal',
-      description: 'Form-optimized modal with validation',
-      icon: '📄',
-      variants: 1,
-      status: 'new' as const,
-    },
-    {
-      id: 'filterdialog',
-      name: 'FilterDialog',
-      description: 'Filter selection with checkboxes',
-      icon: '🔧',
-      variants: 1,
-      status: 'new' as const,
-    },
-    // Overlay Components
-    {
-      id: 'popover',
-      name: 'Popover',
-      description: 'Floating overlay for contextual content',
-      icon: '💬',
-      variants: 3,
-      status: 'new' as const,
-    },
-    {
-      id: 'loadingindicator',
-      name: 'LoadingIndicator',
-      description: 'Spinner and overlay for loading states',
-      icon: '⏳',
-      variants: 2,
-      status: 'new' as const,
-    },
-    // Navigation
-    {
-      id: 'chip',
-      name: 'Chip',
-      description: 'Pills for attributes, measures, and filters',
-      icon: '🏷️',
-      variants: 4,
-      status: 'stable' as const,
-    },
-    {
-      id: 'tabs',
-      name: 'Tabs',
-      description: 'Navigation tabs for content organization',
-      icon: '📑',
-      variants: 2,
-      status: 'stable' as const,
-    },
-  ];
-
-  const stats = [
-    { label: 'Components', value: '17', icon: '🧩' },
-    { label: 'Variants', value: '42', icon: '🎨' },
-    { label: 'Design Tokens', value: '150+', icon: '🎯' },
-    { label: 'TypeScript', value: '100%', icon: '💪' },
-  ];
-
-  const setupSteps = [
-    {
-      number: '1',
-      title: 'Clone repository',
-      description: 'Get the Radiant design system code from GitHub',
-      code: 'git clone https://github.com/faris-ts/figmaradiant.git\ncd figmaradiant',
-    },
-    {
-      number: '2',
-      title: 'Install dependencies',
-      description: 'Install all required npm packages',
-      code: 'npm install',
-    },
-    {
-      number: '3',
-      title: 'Start development server',
-      description: 'Launch the playground in your browser',
-      code: 'npm run dev',
-    },
-    {
-      number: '4',
-      title: 'Open playground',
-      description: 'Navigate to the local server in your browser',
-      code: 'http://localhost:5173/',
-    },
-  ];
+/**
+ * HomePage - Simple split landing page
+ * 
+ * Two large cards for navigating to:
+ * - Radiant: Design system preview (components, tokens, icons)
+ * - Playground: Project gallery for designer prototypes
+ */
+export const HomePage: React.FC = () => {
+  const navigate = useNavigate();
 
   return (
     <div style={styles.container}>
-      {/* Hero Section */}
-      <section style={styles.hero}>
-        <div style={styles.heroContent}>
-          <div style={styles.heroBadge}>
-            <span style={styles.heroBadgeIcon}>✨</span>
-            <span>Design System v1.1</span>
-          </div>
-          <h1 style={styles.heroTitle}>Radiant</h1>
-          <p style={styles.heroSubtitle}>
-            A comprehensive React component library built with TypeScript. 
-            Designed for consistency, accessibility, and developer experience.
-          </p>
-          <div style={styles.heroActions}>
-            <button 
-              style={styles.primaryButton}
-              onClick={() => onNavigate('playground')}
-            >
-              Open Playground
-            </button>
-            <button 
-              style={styles.secondaryButton}
-              onClick={() => onNavigate('button')}
-            >
-              Browse Components
-            </button>
-          </div>
+      {/* Header */}
+      <header style={styles.header}>
+        <div style={styles.logo}>
+          <div style={styles.logoIcon}>R</div>
+          <span style={styles.logoText}>Radiant</span>
         </div>
-        <div style={styles.heroVisual}>
-          <div style={styles.heroPattern} />
-        </div>
-      </section>
+      </header>
 
-      {/* Quick Setup Section */}
-      <section style={styles.setupSection}>
-        <div style={styles.setupHeader}>
-          <h2 style={styles.setupTitle}>Quick Setup</h2>
-          <p style={styles.setupSubtitle}>
-            Get the Radiant playground running locally in 4 simple steps
+      {/* Main Content */}
+      <main style={styles.main}>
+        <div style={styles.heroText}>
+          <h1 style={styles.title}>Design and prototype with Radiant</h1>
+          <p style={styles.subtitle}>
+            Explore the design system or build your own prototypes using ThoughtSpot's component library.
           </p>
         </div>
-        <div style={styles.setupSteps}>
-          {setupSteps.map((step) => (
-            <div key={step.number} style={styles.setupStep}>
-              <div style={styles.stepNumber}>{step.number}</div>
-              <div style={styles.stepContent}>
-                <h3 style={styles.stepTitle}>{step.title}</h3>
-                <p style={styles.stepDescription}>{step.description}</p>
-                <div style={styles.codeBlock}>
-                  <code style={styles.code}>{step.code}</code>
-                </div>
+
+        {/* Split Cards */}
+        <div style={styles.cardsContainer}>
+          {/* Radiant Card */}
+          <button
+            style={styles.card}
+            onClick={() => navigate('/radiant')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px rgba(39, 112, 239, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+            }}
+          >
+            <div style={styles.cardIconWrapper}>
+              <div style={{ ...styles.cardIcon, background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section style={styles.statsSection}>
-        {stats.map((stat, index) => (
-          <div key={index} style={styles.statCard}>
-            <span style={styles.statIcon}>{stat.icon}</span>
-            <span style={styles.statValue}>{stat.value}</span>
-            <span style={styles.statLabel}>{stat.label}</span>
-          </div>
-        ))}
-      </section>
-
-      {/* Components Grid */}
-      <section style={styles.componentsSection}>
-        <div style={styles.sectionHeader}>
-          <h2 style={styles.sectionTitle}>Components</h2>
-          <p style={styles.sectionDescription}>
-            Explore all available components with live examples and documentation
-          </p>
-        </div>
-        <div style={styles.componentsGrid}>
-          {components.map((component) => (
-            <ComponentCard
-              key={component.id}
-              name={component.name}
-              description={component.description}
-              icon={component.icon}
-              variants={component.variants}
-              status={component.status}
-              onClick={() => onNavigate(component.id)}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Quick Links */}
-      <section style={styles.quickLinksSection}>
-        <div style={styles.quickLinkCard} onClick={() => onNavigate('playground')}>
-          <div style={styles.quickLinkIcon}>🎮</div>
-          <div style={styles.quickLinkContent}>
-            <h3 style={styles.quickLinkTitle}>Interactive Playground</h3>
-            <p style={styles.quickLinkDescription}>
-              Experiment with components in a real-world scenario. Perfect for designers and developers.
+            <h2 style={styles.cardTitle}>Radiant</h2>
+            <p style={styles.cardDescription}>
+              Explore the complete design system. Browse components, design tokens, icons, and documentation.
             </p>
-          </div>
-        </div>
-        <div style={styles.quickLinkCard} onClick={() => onNavigate('architecture')}>
-          <div style={styles.quickLinkIcon}>🏗️</div>
-          <div style={styles.quickLinkContent}>
-            <h3 style={styles.quickLinkTitle}>Token Architecture</h3>
-            <p style={styles.quickLinkDescription}>
-              Understand the design token system that powers our consistent visual language.
+            <div style={styles.cardStats}>
+              <span style={styles.cardStat}>17 Components</span>
+              <span style={styles.cardStatDivider}>·</span>
+              <span style={styles.cardStat}>46 Icons</span>
+              <span style={styles.cardStatDivider}>·</span>
+              <span style={styles.cardStat}>150+ Tokens</span>
+            </div>
+            <div style={styles.cardCta}>
+              <span>Browse components</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </button>
+
+          {/* Playground Card */}
+          <button
+            style={styles.card}
+            onClick={() => navigate('/playground')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px rgba(6, 191, 127, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+            }}
+          >
+            <div style={styles.cardIconWrapper}>
+              <div style={{ ...styles.cardIcon, background: 'linear-gradient(135deg, #06BF7F 0%, #059669 100%)' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 14.66V20C20 20.5304 19.7893 21.0391 19.4142 21.4142C19.0391 21.7893 18.5304 22 18 22H4C3.46957 22 2.96086 21.7893 2.58579 21.4142C2.21071 21.0391 2 20.5304 2 20V6C2 5.46957 2.21071 4.96086 2.58579 4.58579C2.96086 4.21071 3.46957 4 4 4H9.34" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M18 2L22 6L12 16H8V12L18 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <h2 style={styles.cardTitle}>Playground</h2>
+            <p style={styles.cardDescription}>
+              Build interactive prototypes with AI assistance. Create, experiment, and iterate on your designs.
             </p>
-          </div>
+            <div style={styles.cardStats}>
+              <span style={styles.cardStat}>Full-page experience</span>
+              <span style={styles.cardStatDivider}>·</span>
+              <span style={styles.cardStat}>AI-powered</span>
+            </div>
+            <div style={{ ...styles.cardCta, color: '#06BF7F' }}>
+              <span>Open projects</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </button>
         </div>
-      </section>
+
+        {/* Footer Links */}
+        <div style={styles.footer}>
+          <a 
+            href="https://github.com/faris-ts/figmaradiant" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={styles.footerLink}
+          >
+            GitHub
+          </a>
+          <span style={styles.footerDivider}>·</span>
+          <button 
+            onClick={() => navigate('/radiant/architecture')}
+            style={styles.footerLink}
+          >
+            Documentation
+          </button>
+          <span style={styles.footerDivider}>·</span>
+          <button 
+            onClick={() => navigate('/radiant/icons')}
+            style={styles.footerLink}
+          >
+            Icons
+          </button>
+        </div>
+      </main>
     </div>
   );
 };
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-  },
-
-  // Hero
-  hero: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '60px',
-    padding: '60px',
-    background: 'linear-gradient(135deg, #1A1F2E 0%, #0F1419 100%)',
-    borderRadius: '24px',
-    marginBottom: '32px',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  heroContent: {
-    flex: 1,
-    zIndex: 1,
-  },
-  heroBadge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '8px',
-    padding: '8px 16px',
-    background: 'rgba(39, 112, 239, 0.15)',
-    borderRadius: '20px',
-    marginBottom: '24px',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13px',
-    fontWeight: 500,
-    color: '#5B9AFF',
-  },
-  heroBadgeIcon: {
-    fontSize: '14px',
-  },
-  heroTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '64px',
-    fontWeight: 700,
-    color: '#ffffff',
-    marginBottom: '16px',
-    letterSpacing: '-2px',
-    background: 'linear-gradient(135deg, #ffffff 0%, #A5ACB9 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-  },
-  heroSubtitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '18px',
-    fontWeight: 400,
-    color: 'rgba(255, 255, 255, 0.6)',
-    lineHeight: '28px',
-    maxWidth: '480px',
-    marginBottom: '32px',
-  },
-  heroActions: {
-    display: 'flex',
-    gap: '16px',
-  },
-  primaryButton: {
-    padding: '14px 28px',
-    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
-    border: 'none',
-    borderRadius: '12px',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '15px',
-    fontWeight: 500,
-    color: '#ffffff',
-    cursor: 'pointer',
-    transition: 'all 150ms ease',
-    boxShadow: '0 4px 16px rgba(39, 112, 239, 0.4)',
-  },
-  secondaryButton: {
-    padding: '14px 28px',
-    background: 'rgba(255, 255, 255, 0.1)',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    borderRadius: '12px',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '15px',
-    fontWeight: 500,
-    color: 'rgba(255, 255, 255, 0.8)',
-    cursor: 'pointer',
-    transition: 'all 150ms ease',
-  },
-  heroVisual: {
-    width: '300px',
-    height: '300px',
-    position: 'relative',
-  },
-  heroPattern: {
-    width: '100%',
-    height: '100%',
-    background: `
-      radial-gradient(circle at 50% 50%, rgba(39, 112, 239, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(39, 112, 239, 0.2) 0%, transparent 40%),
-      radial-gradient(circle at 20% 80%, rgba(6, 191, 127, 0.2) 0%, transparent 40%)
-    `,
-    borderRadius: '50%',
-    animation: 'pulse 4s ease-in-out infinite',
-  },
-
-  // Stats
-  statsSection: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '16px',
-    marginBottom: '48px',
-  },
-  statCard: {
+    minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    gap: '8px',
-    padding: '24px',
-    background: brandColors.white,
-    borderRadius: '16px',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
-  },
-  statIcon: {
-    fontSize: '28px',
-  },
-  statValue: {
+    background: `linear-gradient(180deg, ${brandColors.gray[10]} 0%, ${brandColors.white} 100%)`,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '32px',
-    fontWeight: 700,
-    color: brandColors.gray[90],
-  },
-  statLabel: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13px',
-    fontWeight: 500,
-    color: brandColors.gray[50],
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
   },
 
-  // Components
-  componentsSection: {
-    marginBottom: '48px',
-  },
-  sectionHeader: {
-    marginBottom: '24px',
-  },
-  sectionTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '28px',
-    fontWeight: 600,
-    color: brandColors.gray[90],
-    marginBottom: '8px',
-  },
-  sectionDescription: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '16px',
-    fontWeight: 400,
-    color: brandColors.gray[50],
-  },
-  componentsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '16px',
-  },
-  card: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '16px',
-    padding: '20px',
-    background: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '16px',
-    cursor: 'pointer',
-    transition: 'all 200ms ease',
-    textAlign: 'left',
-  },
-  cardIcon: {
-    fontSize: '32px',
-    width: '56px',
-    height: '56px',
+  // Header
+  header: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: brandColors.gray[10],
-    borderRadius: '12px',
+    padding: '24px 32px',
   },
-  cardContent: {
-    flex: 1,
-  },
-  cardHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    marginBottom: '6px',
-  },
-  cardTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '16px',
-    fontWeight: 600,
-    color: brandColors.gray[90],
-    margin: 0,
-  },
-  cardStatus: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '10px',
-    fontWeight: 600,
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
-    padding: '3px 8px',
-    borderRadius: '6px',
-  },
-  cardDescription: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13px',
-    fontWeight: 400,
-    color: brandColors.gray[50],
-    margin: 0,
-    marginBottom: '8px',
-    lineHeight: '18px',
-  },
-  cardMeta: {
+  logo: {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
   },
-  cardVariants: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '12px',
-    fontWeight: 500,
-    color: brandColors.gray[40],
-  },
-  cardArrow: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '20px',
-    color: brandColors.gray[30],
-    transition: 'all 200ms ease',
-  },
-
-  // Quick Links
-  quickLinksSection: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '16px',
-  },
-  quickLinkCard: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '20px',
-    padding: '28px',
-    background: `linear-gradient(135deg, ${brandColors.gray[10]} 0%, ${brandColors.white} 100%)`,
-    border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '16px',
-    cursor: 'pointer',
-    transition: 'all 200ms ease',
-  },
-  quickLinkIcon: {
-    fontSize: '40px',
-  },
-  quickLinkContent: {
-    flex: 1,
-  },
-  quickLinkTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '18px',
-    fontWeight: 600,
-    color: brandColors.gray[90],
-    marginBottom: '8px',
-  },
-  quickLinkDescription: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '14px',
-    fontWeight: 400,
-    color: brandColors.gray[50],
-    lineHeight: '22px',
-    margin: 0,
-  },
-
-  // Quick Setup Section
-  setupSection: {
-    marginBottom: '48px',
-    padding: '48px',
-    background: 'linear-gradient(135deg, #F6F8FA 0%, #FFFFFF 100%)',
-    borderRadius: '24px',
-    border: `1px solid ${brandColors.gray[20]}`,
-  },
-  setupHeader: {
-    textAlign: 'center' as const,
-    marginBottom: '40px',
-  },
-  setupTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '28px',
-    fontWeight: 600,
-    color: brandColors.gray[90],
-    marginBottom: '8px',
-  },
-  setupSubtitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '16px',
-    fontWeight: 400,
-    color: brandColors.gray[60],
-    margin: 0,
-  },
-  setupSteps: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '24px',
-  },
-  setupStep: {
-    display: 'flex',
-    gap: '16px',
-    padding: '24px',
-    background: brandColors.white,
-    borderRadius: '12px',
-    border: `1px solid ${brandColors.gray[20]}`,
-    transition: 'all 200ms ease',
-  },
-  stepNumber: {
+  logoIcon: {
     width: '40px',
     height: '40px',
     borderRadius: '12px',
     background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
-    color: '#ffffff',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '18px',
+    fontSize: '20px',
     fontWeight: 700,
-    flexShrink: 0,
+    color: '#ffffff',
+    boxShadow: '0 4px 12px rgba(39, 112, 239, 0.3)',
   },
-  stepContent: {
-    flex: 1,
-  },
-  stepTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '16px',
+  logoText: {
+    fontSize: '20px',
     fontWeight: 600,
     color: brandColors.gray[90],
-    marginBottom: '4px',
+    letterSpacing: '-0.5px',
   },
-  stepDescription: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13px',
+
+  // Main
+  main: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '0 32px 48px',
+    maxWidth: '900px',
+    margin: '0 auto',
+    width: '100%',
+  },
+
+  // Hero Text
+  heroText: {
+    textAlign: 'center',
+    marginBottom: '48px',
+  },
+  title: {
+    fontSize: '42px',
+    fontWeight: 700,
+    color: brandColors.gray[90],
+    marginBottom: '16px',
+    letterSpacing: '-1px',
+    lineHeight: 1.2,
+  },
+  subtitle: {
+    fontSize: '18px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: brandColors.gray[50],
+    lineHeight: 1.6,
+    maxWidth: '560px',
+    margin: '0 auto',
+  },
+
+  // Cards Container
+  cardsContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '24px',
+    width: '100%',
+    marginBottom: '48px',
+  },
+
+  // Card
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: '40px 32px',
+    background: brandColors.white,
+    border: `1px solid ${brandColors.gray[20]}`,
+    borderRadius: '20px',
+    cursor: 'pointer',
+    transition: 'all 200ms ease',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+  },
+  cardIconWrapper: {
+    marginBottom: '24px',
+  },
+  cardIcon: {
+    width: '72px',
+    height: '72px',
+    borderRadius: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+  },
+  cardTitle: {
+    fontSize: '24px',
+    fontWeight: 600,
+    color: brandColors.gray[90],
     marginBottom: '12px',
-    lineHeight: '20px',
+    letterSpacing: '-0.5px',
   },
-  codeBlock: {
-    padding: '12px 16px',
-    background: brandColors.gray[90],
-    borderRadius: '8px',
-    overflow: 'auto',
+  cardDescription: {
+    fontSize: '15px',
+    fontWeight: 400,
+    color: brandColors.gray[50],
+    lineHeight: 1.6,
+    marginBottom: '20px',
+    maxWidth: '280px',
   },
-  code: {
-    fontFamily: '"SF Mono", "Monaco", "Inconsolata", monospace',
+  cardStats: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    marginBottom: '24px',
+  },
+  cardStat: {
     fontSize: '13px',
-    color: '#06BF7F',
-    whiteSpace: 'pre' as const,
-    display: 'block',
-    lineHeight: '20px',
+    fontWeight: 500,
+    color: brandColors.gray[40],
+  },
+  cardStatDivider: {
+    color: brandColors.gray[30],
+  },
+  cardCta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '15px',
+    fontWeight: 500,
+    color: brandColors.blue[60],
+  },
+
+  // Footer
+  footer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '12px',
+  },
+  footerLink: {
+    fontSize: '14px',
+    fontWeight: 400,
+    color: brandColors.gray[50],
+    textDecoration: 'none',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 0,
+    transition: 'color 150ms ease',
+  },
+  footerDivider: {
+    color: brandColors.gray[30],
   },
 };
 

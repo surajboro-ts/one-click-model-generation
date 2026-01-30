@@ -1,12 +1,17 @@
-export { WelcomePage } from './WelcomePage';
-export { PlaygroundShowcase } from './PlaygroundShowcase';
-export { ArchitectureShowcase } from './ArchitectureShowcase';
+// Main pages
 export { HomePage } from './HomePage';
-export { WelcomePage } from './WelcomePage';
+export { RadiantHomePage } from './RadiantHomePage';
+export { PlaygroundGallery } from './PlaygroundGallery';
+export { PlaygroundProject } from './PlaygroundProject';
+
+// Documentation pages
 export { ComponentDocPage } from './ComponentDocPage';
+export { ArchitectureShowcase } from './ArchitectureShowcase';
 export { IconsShowcase } from './IconsShowcase';
-export { ComponentStatusPage } from './ComponentStatusPage';
-export { ChangelogPage } from './ChangelogPage';
-export { SettingsPanelDemo } from './SettingsPanelDemo';
-export { DataDashboardDemo } from './DataDashboardDemo';
-export { SpotterDashboard } from './SpotterDashboard';
+
+// Component showcase pages
+export { ChipsShowcase } from './ChipsShowcase';
+export { AlertsShowcase } from './AlertsShowcase';
+export { SelectionControlsShowcase } from './SelectionControlsShowcase';
+export { ButtonsShowcase } from './ButtonsShowcase';
+export { FormShowcase } from './FormShowcase';
