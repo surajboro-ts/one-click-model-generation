@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Sidebar.module.css';
 import { useInspector } from '../../context/InspectorContext';
+import {
+  getCurrentVersion,
+  getRecentVersions,
+  getChangeTypeColor,
+  getChangeTypeIcon,
+  getVersionTypeLabel,
+  type VersionEntry,
+  type VersionChange,
+} from '../../data/versionHistory';
 
 export interface NavItem {
   id: string;
@@ -45,6 +54,53 @@ const InspectIcon: React.FC<{ active?: boolean }> = () => (
 );
 
 /**
+ * Version History Panel Component
+ */
+const VersionHistoryPanel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const versions = getRecentVersions(5);
+
+  return (
+    <div className={styles.versionPanel}>
+      <div className={styles.versionPanelHeader}>
+        <span className={styles.versionPanelTitle}>Version History</span>
+        <button className={styles.versionPanelClose} onClick={onClose}>
+          &times;
+        </button>
+      </div>
+      <div className={styles.versionPanelContent}>
+        {versions.map((version: VersionEntry) => (
+          <div key={version.version} className={styles.versionEntry}>
+            <div className={styles.versionEntryHeader}>
+              <span className={styles.versionNumber}>v{version.version}</span>
+              <span className={styles.versionType}>{getVersionTypeLabel(version.type)}</span>
+            </div>
+            <div className={styles.versionDate}>{version.date}</div>
+            <div className={styles.versionChanges}>
+              {version.changes.slice(0, 3).map((change: VersionChange, idx: number) => (
+                <div key={idx} className={styles.versionChange}>
+                  <span
+                    className={styles.changeIcon}
+                    style={{ color: getChangeTypeColor(change.type) }}
+                  >
+                    {getChangeTypeIcon(change.type)}
+                  </span>
+                  <span className={styles.changeComponent}>{change.component}</span>
+                </div>
+              ))}
+              {version.changes.length > 3 && (
+                <div className={styles.moreChanges}>
+                  +{version.changes.length - 3} more
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/**
  * Sidebar Component
  * 
  * A navigation sidebar for the Storybook-like interface.
@@ -58,7 +114,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   header,
 }) => {
   const { inspectMode, toggleInspectMode } = useInspector();
-  
+  const [isVersionPanelOpen, setIsVersionPanelOpen] = useState(false);
+  const currentVersion = getCurrentVersion();
+
   return (
     <aside className={styles.sidebar}>
       {header && (
@@ -116,7 +174,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
       
       <div className={styles.footer}>
-        <div className={styles.version}>v1.1.0</div>
+        <button
+          className={styles.versionButton}
+          onClick={() => setIsVersionPanelOpen(!isVersionPanelOpen)}
+          title="View version history"
+        >
+          <span className={styles.version}>v{currentVersion}</span>
+          <span className={styles.versionIcon}>{isVersionPanelOpen ? '▼' : '▲'}</span>
+        </button>
         <button 
           className={`${styles.inspectButton} ${inspectMode ? styles.inspectActive : ''}`}
           onClick={toggleInspectMode}
@@ -126,6 +191,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <span>{inspectMode ? 'Inspecting' : 'Inspect'}</span>
         </button>
       </div>
+
+      {isVersionPanelOpen && (
+        <VersionHistoryPanel onClose={() => setIsVersionPanelOpen(false)} />
+      )}
     </aside>
   );
 };

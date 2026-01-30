@@ -21,11 +21,7 @@
 export { PrototypeTemplate } from './_template';
 
 // Examples
-export {
-  FilterDialogExample,
-  DataDashboardExample,
-  SettingsPanelExample,
-} from './_examples';
+export { FilterDialogExample } from './_examples';
 
 // Prototypes
 // Add your prototype exports here

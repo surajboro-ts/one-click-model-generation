@@ -18,11 +18,17 @@ export type PopoverTrigger = 'click' | 'hover';
 /**
  * Popover Props
  */
+interface TriggerProps {
+  onClick?: (e: React.MouseEvent) => void;
+  onMouseEnter?: (e: React.MouseEvent) => void;
+  onMouseLeave?: (e: React.MouseEvent) => void;
+}
+
 export interface PopoverProps {
   /** Popover content */
   content: React.ReactNode;
   /** Element that triggers the popover */
-  children: React.ReactElement;
+  children: React.ReactElement<TriggerProps>;
   /** Placement of the popover */
   placement?: PopoverPlacement;
   /** How to trigger the popover */

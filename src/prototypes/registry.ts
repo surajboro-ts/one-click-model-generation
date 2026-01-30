@@ -39,6 +39,8 @@ export interface ProjectMeta {
 // Import project components
 // Use dynamic imports for better code splitting
 const HomepageExample = React.lazy(() => import('./Homepage_example'));
+const Liveboard = React.lazy(() => import('./Liveboard'));
+const Cmdk = React.lazy(() => import('./Cmdk'));
 
 /**
  * All registered projects
@@ -50,6 +52,20 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'A sample homepage prototype demonstrating the template structure.',
     author: 'Template',
     component: HomepageExample,
+  },
+  {
+    id: 'Liveboard',
+    name: 'Liveboard',
+    description: 'TSE Business Overview dashboard with KPIs, charts, and regional data visualization.',
+    author: 'Design Team',
+    component: Liveboard,
+  },
+  {
+    id: 'Cmdk',
+    name: 'Command Palette',
+    description: 'Command-K interface for quick navigation and actions with keyboard shortcuts.',
+    author: 'Design Team',
+    component: Cmdk,
   },
   // Add more projects here as they are created
   // {

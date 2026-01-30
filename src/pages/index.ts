@@ -3,6 +3,7 @@ export { HomePage } from './HomePage';
 export { RadiantHomePage } from './RadiantHomePage';
 export { PlaygroundGallery } from './PlaygroundGallery';
 export { PlaygroundProject } from './PlaygroundProject';
+export { ComponentRegistryPage } from './ComponentRegistryPage';
 
 // Documentation pages
 export { ComponentDocPage } from './ComponentDocPage';

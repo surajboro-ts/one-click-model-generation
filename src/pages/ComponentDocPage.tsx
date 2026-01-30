@@ -227,7 +227,6 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
   const doc = componentDocs[componentId];
   
   // State for interactive examples
-  const [buttonVariant, setButtonVariant] = useState<'primary' | 'secondary' | 'tertiary'>('primary');
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [radioValue, setRadioValue] = useState('option1');
   const [toggleChecked, setToggleChecked] = useState(false);
