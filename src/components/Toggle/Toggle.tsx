@@ -1,5 +1,4 @@
 import React, { useCallback, useId } from 'react';
-import { brandColors } from '../../tokens/colors/brand';
 import styles from './Toggle.module.css';
 
 export type LabelPosition = 'left' | 'right';

@@ -6,5 +6,3 @@
  */
 
 export { FilterDialogExample } from './FilterDialog';
-export { DataDashboardExample } from './DataDashboard';
-export { SettingsPanelExample } from './SettingsPanel';

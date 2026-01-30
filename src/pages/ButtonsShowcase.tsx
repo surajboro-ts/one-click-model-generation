@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '../components/Button';
-import { PlusIcon, ChevronDownIcon, DownloadIcon, SearchIcon, TrashIcon, EditIcon } from '../components/icons';
+import { PlusIcon, ChevronDownIcon, DownloadIcon, TrashIcon, EditIcon } from '../components/icons';
 import { brandColors } from '../tokens/colors/brand';
 
 export const ButtonsShowcase: React.FC = () => {

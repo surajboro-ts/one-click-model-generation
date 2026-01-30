@@ -6,8 +6,6 @@ import { brandColors } from '../tokens/colors/brand';
 
 export const SelectionControlsShowcase: React.FC = () => {
   // Checkbox state
-  const [checkbox1, setCheckbox1] = useState(false);
-  const [checkbox2, setCheckbox2] = useState(true);
   const [checkboxGroup, setCheckboxGroup] = useState<string[]>(['option2']);
 
   // Radio state

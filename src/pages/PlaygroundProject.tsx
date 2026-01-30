@@ -8,7 +8,8 @@ import { Icon } from '../components/icons';
  * PlaygroundProject
  * 
  * Full-page wrapper for individual playground projects.
- * Provides a distraction-free environment with only a floating back button.
+ * Provides a completely distraction-free environment.
+ * Press Escape to navigate back to the Playground gallery.
  */
 export const PlaygroundProject: React.FC = () => {
   const { projectName } = useParams<{ projectName: string }>();
@@ -59,22 +60,6 @@ export const PlaygroundProject: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      {/* Floating Back Button */}
-      <button
-        style={styles.backButton}
-        onClick={handleBack}
-        title="Back to Playground (Esc)"
-      >
-        <Icon name="arrow-left" size="m" />
-        <span style={styles.backButtonText}>Back</span>
-      </button>
-
-      {/* Project Name Badge */}
-      <div style={styles.projectBadge}>
-        <Icon name="folder" size="s" />
-        <span>{project.name}</span>
-      </div>
-
       {/* Project Content */}
       <div style={styles.projectContainer}>
         <Suspense fallback={<LoadingState />}>
@@ -102,48 +87,6 @@ const styles: Record<string, React.CSSProperties> = {
     minHeight: '100vh',
     position: 'relative',
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-  },
-
-  // Back Button
-  backButton: {
-    position: 'fixed',
-    top: '16px',
-    left: '16px',
-    zIndex: 1000,
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    padding: '10px 16px',
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '10px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: brandColors.gray[70],
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    transition: 'all 150ms ease',
-  },
-  backButtonText: {
-    // Text shown alongside icon
-  },
-
-  // Project Badge
-  projectBadge: {
-    position: 'fixed',
-    top: '16px',
-    right: '16px',
-    zIndex: 1000,
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    padding: '8px 14px',
-    backgroundColor: brandColors.gray[90],
-    borderRadius: '8px',
-    fontSize: '13px',
-    fontWeight: 500,
-    color: brandColors.white,
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
   },
 
   // Project Container

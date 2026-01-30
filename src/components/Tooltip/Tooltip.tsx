@@ -6,6 +6,13 @@ import styles from './Tooltip.module.css';
  */
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
+interface TriggerProps {
+  onMouseEnter?: (e: React.MouseEvent) => void;
+  onMouseLeave?: (e: React.MouseEvent) => void;
+  onFocus?: (e: React.FocusEvent) => void;
+  onBlur?: (e: React.FocusEvent) => void;
+}
+
 /**
  * Tooltip Props
  */
@@ -13,7 +20,7 @@ export interface TooltipProps {
   /** Tooltip content */
   content: React.ReactNode;
   /** Element that triggers the tooltip */
-  children: React.ReactElement;
+  children: React.ReactElement<TriggerProps>;
   /** Placement of the tooltip */
   placement?: TooltipPlacement;
   /** Delay before showing (ms) */

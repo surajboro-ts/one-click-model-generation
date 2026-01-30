@@ -11,7 +11,6 @@
 
 // Colors
 export * from './colors';
-export { colors } from './colors';
 
 // Typography
 export * from './typography';
@@ -95,7 +94,7 @@ export {
 } from './theme';
 
 // Convenience re-exports
-import { brandColors, aliasColors, lightThemeColors, darkThemeColors } from './colors';
+import { brandColors } from './colors';
 import { textStyles } from './typography';
 import { spacing, componentSpacing } from './spacing';
 import { radius, componentRadius } from './radius';
@@ -113,9 +112,6 @@ import { iconSize, iconSizeAlias } from './icons';
 export const tokens = {
   colors: {
     brand: brandColors,
-    alias: aliasColors,
-    light: lightThemeColors,
-    dark: darkThemeColors,
   },
   typography: textStyles,
   spacing: {

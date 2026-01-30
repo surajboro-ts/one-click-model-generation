@@ -233,7 +233,7 @@ export const Table = forwardRef<HTMLDivElement, TableProps>(({
                 className={styles.loadingCell}
               >
                 <div className={styles.loadingContent}>
-                  <Icon name="refresh" size="l" className={styles.loadingSpinner} />
+                  <Icon name="sync" size="l" className={styles.loadingSpinner} />
                   <span>Loading...</span>
                 </div>
               </td>
@@ -245,7 +245,7 @@ export const Table = forwardRef<HTMLDivElement, TableProps>(({
                 className={styles.emptyCell}
               >
                 <div className={styles.emptyContent}>
-                  <Icon name="folder" size="xl" className={styles.emptyIcon} />
+                  <Icon name="folder" size="l" className={styles.emptyIcon} />
                   <span>{emptyMessage}</span>
                 </div>
               </td>
