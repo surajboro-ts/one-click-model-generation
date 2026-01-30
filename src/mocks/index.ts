@@ -65,27 +65,6 @@ import formsData, {
 } from './forms';
 export type { SelectOption, FilterOption } from './forms';
 
-// Command+K data
-import commandKData, {
-  recent as commandKRecent,
-  recommended as commandKRecommended,
-  quickLinks as commandKQuickLinks,
-  adminSettings as commandKAdminSettings,
-  filters as commandKFilters,
-  keyboardShortcuts,
-  searchPlaceholder,
-  iconMap,
-  typeLabelVariants,
-  allResults,
-} from './commandK';
-export type { 
-  CommandKResult, 
-  CommandKResultType, 
-  CommandKIconType,
-  CommandKFilter,
-  KeyboardShortcut,
-} from './commandK';
-
 /**
  * Namespace exports for organized access
  */
@@ -134,20 +113,6 @@ export const forms = {
   frequencies,
 };
 
-export const commandK = {
-  ...commandKData,
-  recent: commandKRecent,
-  recommended: commandKRecommended,
-  quickLinks: commandKQuickLinks,
-  adminSettings: commandKAdminSettings,
-  filters: commandKFilters,
-  keyboardShortcuts,
-  searchPlaceholder,
-  iconMap,
-  typeLabelVariants,
-  allResults,
-};
-
 /**
  * Default export with all mock data
  */
@@ -156,5 +121,4 @@ export default {
   analytics,
   navigation,
   forms,
-  commandK,
 };

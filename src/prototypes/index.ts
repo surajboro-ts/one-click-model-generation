@@ -28,4 +28,5 @@ export {
 } from './_examples';
 
 // Prototypes
-export { CommandKModal } from './CommandKModal';
+// Add your prototype exports here
+// export { YourPrototype } from './YourPrototype';
