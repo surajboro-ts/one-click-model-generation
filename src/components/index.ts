@@ -10,6 +10,10 @@ export * from './SearchInput';
 export * from './TextInput';
 export * from './Modal';
 export * from './Sidebar';
+export * from './Select';
+export * from './Table';
+export * from './Tooltip';
+export * from './Popover';
 export * from './icons';
 
 // New modal-related components

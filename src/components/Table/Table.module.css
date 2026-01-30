@@ -1,0 +1,160 @@
+/* Table Component Styles */
+
+.container {
+  width: 100%;
+  overflow-x: auto;
+  background-color: var(--color-brand-white);
+  border-radius: var(--radius-md);
+}
+
+.bordered {
+  border: 1px solid var(--color-brand-gray-20);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+}
+
+.compact .th,
+.compact .td {
+  padding: var(--spacing-2) var(--spacing-3);
+}
+
+/* Header */
+.thead {
+  background-color: var(--color-brand-gray-10);
+}
+
+.stickyHeader .thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.th {
+  padding: var(--spacing-3) var(--spacing-4);
+  text-align: left;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-brand-gray-60);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--color-brand-gray-20);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.sortable:hover {
+  color: var(--color-brand-gray-90);
+}
+
+.thContent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.sortIcon {
+  display: flex;
+  align-items: center;
+  color: var(--color-brand-gray-90);
+}
+
+.sortIconInactive {
+  opacity: 0.3;
+}
+
+/* Body */
+.tbody {
+  background-color: var(--color-brand-white);
+}
+
+.tr {
+  border-bottom: 1px solid var(--color-brand-gray-20);
+}
+
+.hoverable:hover {
+  background-color: var(--color-brand-gray-10);
+}
+
+.selected {
+  background-color: var(--color-brand-blue-10);
+}
+
+.selected:hover {
+  background-color: var(--color-brand-blue-10);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.striped .tr:nth-child(even) {
+  background-color: var(--color-brand-gray-10);
+}
+
+.td {
+  padding: var(--spacing-3) var(--spacing-4);
+  color: var(--color-brand-gray-90);
+  vertical-align: middle;
+}
+
+/* Checkbox */
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--color-brand-blue-60);
+}
+
+/* Loading State */
+.loadingCell {
+  padding: var(--spacing-8);
+  text-align: center;
+}
+
+.loadingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-3);
+  color: var(--color-brand-gray-50);
+}
+
+.loadingSpinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Empty State */
+.emptyCell {
+  padding: var(--spacing-8);
+  text-align: center;
+}
+
+.emptyContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-3);
+  color: var(--color-brand-gray-50);
+}
+
+.emptyIcon {
+  opacity: 0.5;
+}

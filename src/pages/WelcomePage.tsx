@@ -1,516 +1,591 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '../components/Button';
+import { Icon } from '../components/icons';
+import { brandColors } from '../tokens/colors/brand';
 
 /**
- * WelcomePage - Landing page without sidebar
+ * WelcomePage
  * 
- * This is the entry point for the Radiant Design System.
- * Provides an overview and quick navigation to explore the system.
+ * The landing page for designers starting with the Radiant Prototyping Kit.
+ * Provides quick start instructions and links to examples.
  */
-export const WelcomePage: React.FC = () => {
-  const navigate = useNavigate();
 
-  const features = [
+interface WelcomePageProps {
+  onNavigate: (id: string) => void;
+}
+
+export const WelcomePage: React.FC<WelcomePageProps> = ({ onNavigate }) => {
+  const steps = [
     {
-      icon: '🧩',
-      title: '17+ Components',
-      description: 'Production-ready React components with TypeScript support',
+      number: '01',
+      title: 'Describe your UI',
+      description: 'Tell Cursor AI what you want to build. Paste a screenshot from Figma or describe the layout and interactions.',
+      icon: 'pencil',
     },
     {
-      icon: '🎨',
-      title: 'Design Tokens',
-      description: 'Consistent colors, typography, spacing, and shadows',
+      number: '02',
+      title: 'AI generates code',
+      description: 'The AI uses Radiant components to create your prototype with proper styling and interactions.',
+      icon: 'cog',
     },
     {
-      icon: '🔍',
-      title: 'Token Inspector',
-      description: 'Inspect any component to see its design tokens in real-time',
-    },
-    {
-      icon: '📱',
-      title: 'Responsive',
-      description: 'Components work seamlessly across all screen sizes',
+      number: '03',
+      title: 'Preview and iterate',
+      description: 'See your prototype live in the browser. Refine it by asking for changes or additions.',
+      icon: 'eye',
     },
   ];
 
-  const quickLinks = [
+  const examples = [
     {
-      id: 'playground',
-      icon: '🎮',
-      title: 'Component Playground',
-      description: 'Interact with components in real-world scenarios. Toggle inspect mode to see design tokens.',
-      route: '/playground',
-      color: '#2770EF',
+      id: 'filter-dialog',
+      name: 'Filter Dialog',
+      description: 'Modal with search, checkboxes, and toggle controls',
+      components: ['Modal', 'SearchInput', 'Checkbox', 'Toggle', 'Button'],
     },
     {
-      id: 'components',
-      icon: '🧱',
-      title: 'Browse Components',
-      description: 'Explore all 17+ components with live examples, API documentation, and code snippets.',
-      route: '/home',
-      color: '#06BF7F',
+      id: 'data-dashboard',
+      name: 'Data Dashboard',
+      description: 'Metrics, tabs, and data table for analytics',
+      components: ['Tabs', 'Table', 'Chip', 'SearchInput', 'Button'],
     },
     {
-      id: 'architecture',
-      icon: '🏗️',
-      title: 'Token Architecture',
-      description: 'Understand the design token system - colors, typography, spacing, and more.',
-      route: '/architecture',
-      color: '#F5A623',
-    },
-    {
-      id: 'icons',
-      icon: '⭐',
-      title: 'Icon Library',
-      description: '46 carefully crafted icons with multiple sizes and customizable colors.',
-      route: '/icons',
-      color: '#8B5CF6',
+      id: 'settings-panel',
+      name: 'Settings Panel',
+      description: 'Sidebar navigation with forms and toggles',
+      components: ['Sidebar', 'TextInput', 'Toggle', 'Radio', 'Alert'],
     },
   ];
 
-  const instructions = [
-    {
-      step: '1',
-      title: 'Explore Components',
-      description: 'Browse the sidebar to see all available components. Each component has live examples and API documentation.',
-    },
-    {
-      step: '2',
-      title: 'Use Token Inspector',
-      description: 'Click the "Inspect" button in the sidebar footer to enable inspect mode. Hover over any component to see its design tokens.',
-    },
-    {
-      step: '3',
-      title: 'Check Design Tokens',
-      description: 'Visit Token Architecture to understand how colors, typography, and spacing work together.',
-    },
-    {
-      step: '4',
-      title: 'Try Prototypes',
-      description: 'Explore example prototypes like Spotter Dashboard and Settings Panel to see components in action.',
-    },
+  const components = [
+    { name: 'Button', count: '3 variants' },
+    { name: 'Alert', count: '5 statuses' },
+    { name: 'Modal', count: '3 sizes' },
+    { name: 'Select', count: 'searchable' },
+    { name: 'Table', count: 'sortable' },
+    { name: 'Tabs', count: '2 sizes' },
+    { name: 'Tooltip', count: '4 positions' },
+    { name: 'Popover', count: 'click/hover' },
+    { name: 'TextInput', count: 'with validation' },
+    { name: 'Checkbox', count: 'with label' },
+    { name: 'Radio', count: 'groups' },
+    { name: 'Toggle', count: 'with label' },
+    { name: 'Chip', count: '4 variants' },
+    { name: 'SearchInput', count: 'with clear' },
+    { name: 'Sidebar', count: 'with icons' },
+    { name: 'Icon', count: '46 icons' },
   ];
 
   return (
     <div style={styles.container}>
       {/* Hero Section */}
-      <header style={styles.hero}>
-        <div style={styles.heroBackground} />
+      <section style={styles.hero}>
         <div style={styles.heroContent}>
-          <div style={styles.logoBadge}>
-            <div style={styles.logoIcon}>R</div>
-            <span style={styles.versionBadge}>v1.1</span>
+          <div style={styles.badge}>
+            <Icon name="star" size="s" />
+            <span>Prototyping Kit</span>
           </div>
-          <h1 style={styles.heroTitle}>Radiant Design System</h1>
-          <p style={styles.heroSubtitle}>
-            A comprehensive React component library built with TypeScript. 
-            Designed for consistency, accessibility, and exceptional developer experience.
+          <h1 style={styles.heroTitle}>
+            Build interactive prototypes
+            <br />
+            <span style={styles.heroTitleAccent}>with AI and Radiant</span>
+          </h1>
+          <p style={styles.heroDescription}>
+            Describe your UI or paste a screenshot. Cursor AI will generate
+            production-quality React code using ThoughtSpot's Radiant design system.
           </p>
           <div style={styles.heroActions}>
-            <button 
-              style={styles.primaryButton}
-              onClick={() => navigate('/home')}
+            <Button 
+              variant="primary" 
+              size="large"
+              icon="plus"
+              onClick={() => onNavigate('playground')}
             >
-              Get Started
+              Start prototyping
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="large"
+              onClick={() => onNavigate('home')}
+            >
+              View Radiant System
+            </Button>
+          </div>
+          <div style={styles.heroLinks}>
+            <button 
+              style={styles.textLink}
+              onClick={() => onNavigate('architecture')}
+            >
+              Read the guide
             </button>
+            <span style={styles.linkDivider}>|</span>
             <button 
-              style={styles.secondaryButton}
-              onClick={() => navigate('/playground')}
+              style={styles.textLink}
+              onClick={() => onNavigate('icons')}
             >
-              Open Playground
+              Browse icons
             </button>
           </div>
         </div>
-      </header>
 
-      {/* Features Grid */}
-      <section style={styles.featuresSection}>
-        <div style={styles.featuresGrid}>
-          {features.map((feature, index) => (
-            <div key={index} style={styles.featureCard}>
-              <span style={styles.featureIcon}>{feature.icon}</span>
-              <h3 style={styles.featureTitle}>{feature.title}</h3>
-              <p style={styles.featureDescription}>{feature.description}</p>
+        {/* Prompt Preview */}
+        <div style={styles.promptPreview}>
+          <div style={styles.promptHeader}>
+            <div style={styles.promptDots}>
+              <span style={{ ...styles.promptDot, backgroundColor: '#FF5F56' }} />
+              <span style={{ ...styles.promptDot, backgroundColor: '#FFBD2E' }} />
+              <span style={{ ...styles.promptDot, backgroundColor: '#27C93F' }} />
+            </div>
+            <span style={styles.promptTitle}>Cursor AI</span>
+          </div>
+          <div style={styles.promptBody}>
+            <div style={styles.promptMessage}>
+              <span style={styles.promptUser}>You:</span>
+              <span style={styles.promptText}>
+                Create a filter dialog with a search input, list of country checkboxes, 
+                and a "Show selected" toggle at the bottom
+              </span>
+            </div>
+            <div style={styles.promptResponse}>
+              <span style={styles.promptAI}>AI:</span>
+              <span style={styles.promptText}>
+                I'll create a filter dialog using Modal, SearchInput, Checkbox, 
+                and Toggle components...
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>How it works</h2>
+        <div style={styles.stepsGrid}>
+          {steps.map((step, index) => (
+            <div key={index} style={styles.stepCard}>
+              <div style={styles.stepNumber}>{step.number}</div>
+              <div style={styles.stepIcon}>
+                <Icon name={step.icon as any} size="l" />
+              </div>
+              <h3 style={styles.stepTitle}>{step.title}</h3>
+              <p style={styles.stepDescription}>{step.description}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Quick Links */}
-      <section style={styles.quickLinksSection}>
-        <h2 style={styles.sectionTitle}>Quick Access</h2>
-        <div style={styles.quickLinksGrid}>
-          {quickLinks.map((link) => (
-            <button
-              key={link.id}
-              style={styles.quickLinkCard}
-              onClick={() => navigate(link.route)}
-            >
-              <div style={{ ...styles.quickLinkIcon, backgroundColor: `${link.color}20` }}>
-                <span style={{ fontSize: '28px' }}>{link.icon}</span>
-              </div>
-              <div style={styles.quickLinkContent}>
-                <h3 style={{ ...styles.quickLinkTitle, color: link.color }}>{link.title}</h3>
-                <p style={styles.quickLinkDescription}>{link.description}</p>
-              </div>
-              <div style={styles.quickLinkArrow}>→</div>
-            </button>
-          ))}
+      {/* Examples */}
+      <section style={styles.section}>
+        <div style={styles.sectionHeader}>
+          <h2 style={styles.sectionTitle}>Example prototypes</h2>
+          <p style={styles.sectionDescription}>
+            Explore these examples to see what's possible
+          </p>
         </div>
-      </section>
-
-      {/* How to Use Section */}
-      <section style={styles.instructionsSection}>
-        <h2 style={styles.sectionTitle}>How to Use This Design System</h2>
-        <div style={styles.instructionsGrid}>
-          {instructions.map((instruction) => (
-            <div key={instruction.step} style={styles.instructionCard}>
-              <div style={styles.stepNumber}>{instruction.step}</div>
-              <div style={styles.instructionContent}>
-                <h3 style={styles.instructionTitle}>{instruction.title}</h3>
-                <p style={styles.instructionDescription}>{instruction.description}</p>
+        <div style={styles.examplesGrid}>
+          {examples.map((example) => (
+            <div 
+              key={example.id} 
+              style={styles.exampleCard}
+              onClick={() => onNavigate(`example-${example.id}`)}
+            >
+              <div style={styles.examplePreview}>
+                <Icon name="folder" size="xl" />
+              </div>
+              <div style={styles.exampleContent}>
+                <h3 style={styles.exampleTitle}>{example.name}</h3>
+                <p style={styles.exampleDescription}>{example.description}</p>
+                <div style={styles.exampleComponents}>
+                  {example.components.slice(0, 3).map((comp, i) => (
+                    <span key={i} style={styles.exampleChip}>{comp}</span>
+                  ))}
+                  {example.components.length > 3 && (
+                    <span style={styles.exampleMore}>
+                      +{example.components.length - 3}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div style={styles.exampleArrow}>
+                <Icon name="arrow-right" size="m" />
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Inspector Highlight */}
-      <section style={styles.inspectorSection}>
-        <div style={styles.inspectorContent}>
-          <div style={styles.inspectorIcon}>🔍</div>
-          <div style={styles.inspectorText}>
-            <h3 style={styles.inspectorTitle}>Token Inspector</h3>
-            <p style={styles.inspectorDescription}>
-              Once inside the app, click the <strong>"Inspect"</strong> button in the sidebar footer to enable inspect mode. 
-              Hover over any component to see its design tokens including colors, typography, spacing, and more.
-            </p>
-          </div>
+      {/* Available Components */}
+      <section style={styles.section}>
+        <div style={styles.sectionHeader}>
+          <h2 style={styles.sectionTitle}>Available components</h2>
+          <p style={styles.sectionDescription}>
+            {components.length} components ready for prototyping
+          </p>
+        </div>
+        <div style={styles.componentsGrid}>
+          {components.map((comp, index) => (
+            <div key={index} style={styles.componentChip}>
+              <span style={styles.componentName}>{comp.name}</span>
+              <span style={styles.componentCount}>{comp.count}</span>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={styles.footer}>
-        <p style={styles.footerText}>
-          Built with React + TypeScript • Radiant Design System v1.1
-        </p>
-      </footer>
+      {/* Quick Start */}
+      <section style={styles.quickStart}>
+        <div style={styles.quickStartContent}>
+          <h2 style={styles.quickStartTitle}>Ready to start?</h2>
+          <p style={styles.quickStartDescription}>
+            Create a new file in <code style={styles.code}>src/prototypes/</code> and 
+            describe what you want to build. The AI will handle the rest.
+          </p>
+          <div style={styles.quickStartActions}>
+            <Button 
+              variant="primary" 
+              size="large"
+              icon="plus"
+              onClick={() => onNavigate('playground')}
+            >
+              Open playground
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '32px',
     minHeight: '100vh',
-    backgroundColor: '#0A0E14',
-    color: '#ffffff',
+    backgroundColor: brandColors.gray[10],
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
   },
 
   // Hero
   hero: {
-    position: 'relative',
-    padding: '80px 60px',
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '48px',
     alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '500px',
-    overflow: 'hidden',
-  },
-  heroBackground: {
-    position: 'absolute',
-    inset: 0,
-    background: `
-      radial-gradient(ellipse at 50% 0%, rgba(39, 112, 239, 0.2) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
-      radial-gradient(ellipse at 20% 80%, rgba(6, 191, 127, 0.15) 0%, transparent 40%)
-    `,
+    padding: '48px',
+    background: `linear-gradient(135deg, ${brandColors.gray[90]} 0%, #0F1419 100%)`,
+    borderRadius: '24px',
+    marginBottom: '48px',
   },
   heroContent: {
-    position: 'relative',
-    textAlign: 'center',
-    maxWidth: '800px',
+    color: brandColors.white,
   },
-  logoBadge: {
+  badge: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '12px',
-    marginBottom: '32px',
-  },
-  logoIcon: {
-    width: '56px',
-    height: '56px',
-    borderRadius: '16px',
-    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '28px',
-    fontWeight: 700,
-    color: '#ffffff',
-    boxShadow: '0 8px 32px rgba(39, 112, 239, 0.4)',
-  },
-  versionBadge: {
-    padding: '6px 12px',
-    background: 'rgba(39, 112, 239, 0.2)',
+    gap: '8px',
+    padding: '6px 14px',
+    backgroundColor: 'rgba(39, 112, 239, 0.2)',
     borderRadius: '20px',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
     fontWeight: 500,
     color: '#5B9AFF',
+    marginBottom: '24px',
   },
   heroTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '56px',
+    fontSize: '42px',
     fontWeight: 700,
-    letterSpacing: '-2px',
+    lineHeight: 1.2,
     marginBottom: '20px',
-    background: 'linear-gradient(135deg, #ffffff 0%, #A5ACB9 100%)',
+    letterSpacing: '-1px',
+  },
+  heroTitleAccent: {
+    background: 'linear-gradient(135deg, #5B9AFF 0%, #06BF7F 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
-  heroSubtitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '20px',
-    fontWeight: 400,
-    color: 'rgba(255, 255, 255, 0.6)',
-    lineHeight: '32px',
-    marginBottom: '40px',
-    maxWidth: '600px',
-    margin: '0 auto 40px',
+  heroDescription: {
+    fontSize: '16px',
+    lineHeight: 1.6,
+    color: 'rgba(255, 255, 255, 0.7)',
+    marginBottom: '32px',
+    maxWidth: '440px',
   },
   heroActions: {
     display: 'flex',
     gap: '16px',
-    justifyContent: 'center',
+    marginBottom: '20px',
   },
-  primaryButton: {
-    padding: '16px 32px',
-    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
+  heroLinks: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  textLink: {
+    background: 'none',
     border: 'none',
-    borderRadius: '12px',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '16px',
-    fontWeight: 500,
-    color: '#ffffff',
-    cursor: 'pointer',
-    transition: 'all 150ms ease',
-    boxShadow: '0 4px 20px rgba(39, 112, 239, 0.4)',
-  },
-  secondaryButton: {
-    padding: '16px 32px',
-    background: 'rgba(255, 255, 255, 0.08)',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    borderRadius: '12px',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '16px',
-    fontWeight: 500,
-    color: 'rgba(255, 255, 255, 0.8)',
-    cursor: 'pointer',
-    transition: 'all 150ms ease',
-  },
-
-  // Features
-  featuresSection: {
-    padding: '40px 60px',
-    background: 'rgba(255, 255, 255, 0.02)',
-  },
-  featuresGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '24px',
-    maxWidth: '1200px',
-    margin: '0 auto',
-  },
-  featureCard: {
-    textAlign: 'center',
-    padding: '32px 24px',
-  },
-  featureIcon: {
-    fontSize: '40px',
-    marginBottom: '16px',
-    display: 'block',
-  },
-  featureTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '18px',
-    fontWeight: 600,
-    color: '#ffffff',
-    marginBottom: '8px',
-  },
-  featureDescription: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    padding: 0,
     fontSize: '14px',
-    fontWeight: 400,
-    color: 'rgba(255, 255, 255, 0.5)',
-    lineHeight: '22px',
-    margin: 0,
-  },
-
-  // Quick Links
-  quickLinksSection: {
-    padding: '60px',
-    maxWidth: '1200px',
-    margin: '0 auto',
-  },
-  sectionTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '28px',
-    fontWeight: 600,
-    color: '#ffffff',
-    marginBottom: '32px',
-    textAlign: 'center',
-  },
-  quickLinksGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '20px',
-  },
-  quickLinkCard: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '20px',
-    padding: '24px',
-    background: 'rgba(255, 255, 255, 0.04)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
-    borderRadius: '16px',
+    color: 'rgba(255, 255, 255, 0.6)',
     cursor: 'pointer',
-    transition: 'all 200ms ease',
-    textAlign: 'left',
+    textDecoration: 'underline',
+    textUnderlineOffset: '3px',
+    transition: 'color 150ms ease',
   },
-  quickLinkIcon: {
-    width: '64px',
-    height: '64px',
-    borderRadius: '16px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  quickLinkContent: {
-    flex: 1,
-  },
-  quickLinkTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '18px',
-    fontWeight: 600,
-    marginBottom: '6px',
-  },
-  quickLinkDescription: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '14px',
-    fontWeight: 400,
-    color: 'rgba(255, 255, 255, 0.5)',
-    lineHeight: '22px',
-    margin: 0,
-  },
-  quickLinkArrow: {
-    fontSize: '24px',
+  linkDivider: {
     color: 'rgba(255, 255, 255, 0.3)',
-    transition: 'all 200ms ease',
+    fontSize: '14px',
   },
 
-  // Instructions
-  instructionsSection: {
-    padding: '60px',
-    background: 'rgba(255, 255, 255, 0.02)',
+  // Prompt Preview
+  promptPreview: {
+    backgroundColor: '#1E2433',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
   },
-  instructionsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '24px',
-    maxWidth: '1200px',
-    margin: '0 auto',
+  promptHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '12px 16px',
+    backgroundColor: '#151A24',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
   },
-  instructionCard: {
+  promptDots: {
+    display: 'flex',
+    gap: '6px',
+  },
+  promptDot: {
+    width: '10px',
+    height: '10px',
+    borderRadius: '50%',
+  },
+  promptTitle: {
+    fontSize: '12px',
+    color: 'rgba(255, 255, 255, 0.5)',
+  },
+  promptBody: {
+    padding: '20px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
     gap: '16px',
-    padding: '24px',
-    background: 'rgba(255, 255, 255, 0.04)',
+  },
+  promptMessage: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+  },
+  promptResponse: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+    paddingLeft: '16px',
+    borderLeft: `2px solid ${brandColors.blue[60]}`,
+  },
+  promptUser: {
+    fontSize: '11px',
+    fontWeight: 600,
+    color: brandColors.blue[40],
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+  },
+  promptAI: {
+    fontSize: '11px',
+    fontWeight: 600,
+    color: brandColors.green[50],
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+  },
+  promptText: {
+    fontSize: '13px',
+    lineHeight: 1.5,
+    color: 'rgba(255, 255, 255, 0.8)',
+  },
+
+  // Section
+  section: {
+    marginBottom: '48px',
+  },
+  sectionHeader: {
+    marginBottom: '24px',
+  },
+  sectionTitle: {
+    fontSize: '24px',
+    fontWeight: 600,
+    color: brandColors.gray[90],
+    marginBottom: '8px',
+  },
+  sectionDescription: {
+    fontSize: '15px',
+    color: brandColors.gray[50],
+  },
+
+  // Steps
+  stepsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '24px',
+  },
+  stepCard: {
+    padding: '32px',
+    backgroundColor: brandColors.white,
     borderRadius: '16px',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+    textAlign: 'center',
   },
   stepNumber: {
-    width: '40px',
-    height: '40px',
+    fontSize: '12px',
+    fontWeight: 600,
+    color: brandColors.blue[60],
+    marginBottom: '16px',
+  },
+  stepIcon: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '56px',
+    height: '56px',
+    backgroundColor: brandColors.blue[10],
+    borderRadius: '16px',
+    color: brandColors.blue[60],
+    marginBottom: '20px',
+  },
+  stepTitle: {
+    fontSize: '18px',
+    fontWeight: 600,
+    color: brandColors.gray[90],
+    marginBottom: '12px',
+  },
+  stepDescription: {
+    fontSize: '14px',
+    lineHeight: 1.5,
+    color: brandColors.gray[50],
+    margin: 0,
+  },
+
+  // Examples
+  examplesGrid: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  exampleCard: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
+    padding: '20px 24px',
+    backgroundColor: brandColors.white,
     borderRadius: '12px',
-    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+    cursor: 'pointer',
+    transition: 'all 150ms ease',
+  },
+  examplePreview: {
+    width: '64px',
+    height: '64px',
+    backgroundColor: brandColors.gray[10],
+    borderRadius: '12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '18px',
-    fontWeight: 700,
-    color: '#ffffff',
+    color: brandColors.gray[40],
   },
-  instructionContent: {},
-  instructionTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '16px',
-    fontWeight: 600,
-    color: '#ffffff',
-    marginBottom: '8px',
-  },
-  instructionDescription: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13px',
-    fontWeight: 400,
-    color: 'rgba(255, 255, 255, 0.5)',
-    lineHeight: '20px',
-    margin: 0,
-  },
-
-  // Inspector Highlight
-  inspectorSection: {
-    padding: '60px',
-    maxWidth: '900px',
-    margin: '0 auto',
-  },
-  inspectorContent: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '24px',
-    padding: '32px',
-    background: 'linear-gradient(135deg, rgba(39, 112, 239, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%)',
-    border: '1px solid rgba(39, 112, 239, 0.3)',
-    borderRadius: '20px',
-  },
-  inspectorIcon: {
-    fontSize: '48px',
-    flexShrink: 0,
-  },
-  inspectorText: {
+  exampleContent: {
     flex: 1,
   },
-  inspectorTitle: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '20px',
+  exampleTitle: {
+    fontSize: '16px',
     fontWeight: 600,
-    color: '#ffffff',
-    marginBottom: '8px',
+    color: brandColors.gray[90],
+    marginBottom: '4px',
   },
-  inspectorDescription: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '15px',
-    fontWeight: 400,
-    color: 'rgba(255, 255, 255, 0.7)',
-    lineHeight: '24px',
-    margin: 0,
+  exampleDescription: {
+    fontSize: '14px',
+    color: brandColors.gray[50],
+    marginBottom: '12px',
+  },
+  exampleComponents: {
+    display: 'flex',
+    gap: '8px',
+    flexWrap: 'wrap',
+  },
+  exampleChip: {
+    padding: '4px 10px',
+    backgroundColor: brandColors.gray[10],
+    borderRadius: '6px',
+    fontSize: '12px',
+    fontWeight: 500,
+    color: brandColors.gray[60],
+  },
+  exampleMore: {
+    padding: '4px 10px',
+    fontSize: '12px',
+    fontWeight: 500,
+    color: brandColors.gray[40],
+  },
+  exampleArrow: {
+    color: brandColors.gray[30],
   },
 
-  // Footer
-  footer: {
-    padding: '40px 60px',
-    textAlign: 'center',
-    borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+  // Components
+  componentsGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '12px',
   },
-  footerText: {
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13px',
-    fontWeight: 400,
-    color: 'rgba(255, 255, 255, 0.4)',
-    margin: 0,
+  componentChip: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '10px 16px',
+    backgroundColor: brandColors.white,
+    borderRadius: '8px',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+  },
+  componentName: {
+    fontSize: '14px',
+    fontWeight: 500,
+    color: brandColors.gray[90],
+  },
+  componentCount: {
+    fontSize: '12px',
+    color: brandColors.gray[40],
+  },
+
+  // Quick Start
+  quickStart: {
+    padding: '48px',
+    backgroundColor: brandColors.blue[60],
+    borderRadius: '24px',
+    textAlign: 'center',
+  },
+  quickStartContent: {
+    maxWidth: '500px',
+    margin: '0 auto',
+  },
+  quickStartTitle: {
+    fontSize: '28px',
+    fontWeight: 600,
+    color: brandColors.white,
+    marginBottom: '16px',
+  },
+  quickStartDescription: {
+    fontSize: '16px',
+    lineHeight: 1.6,
+    color: 'rgba(255, 255, 255, 0.8)',
+    marginBottom: '24px',
+  },
+  code: {
+    padding: '2px 8px',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    borderRadius: '4px',
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: '14px',
+  },
+  quickStartActions: {
+    display: 'flex',
+    justifyContent: 'center',
   },
 };
 

@@ -1,25 +1,17 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { forwardRef, useState, useRef, useEffect, useCallback } from 'react';
 import styles from './Popover.module.css';
 
 /**
- * Popover placement options
+ * Popover Placement
  */
-export type PopoverPlacement =
-  | 'top'
-  | 'top-start'
-  | 'top-end'
-  | 'bottom'
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'left'
-  | 'left-start'
-  | 'left-end'
-  | 'right'
-  | 'right-start'
-  | 'right-end';
+export type PopoverPlacement = 
+  | 'top' | 'top-start' | 'top-end'
+  | 'bottom' | 'bottom-start' | 'bottom-end'
+  | 'left' | 'left-start' | 'left-end'
+  | 'right' | 'right-start' | 'right-end';
 
 /**
- * Popover trigger type
+ * Popover Trigger Type
  */
 export type PopoverTrigger = 'click' | 'hover';
 
@@ -27,146 +19,189 @@ export type PopoverTrigger = 'click' | 'hover';
  * Popover Props
  */
 export interface PopoverProps {
+  /** Popover content */
+  content: React.ReactNode;
   /** Element that triggers the popover */
-  trigger: React.ReactNode;
-  /** Content to display in the popover */
-  children: React.ReactNode;
-  /** Popover placement relative to trigger */
+  children: React.ReactElement;
+  /** Placement of the popover */
   placement?: PopoverPlacement;
   /** How to trigger the popover */
-  triggerType?: PopoverTrigger;
-  /** Whether the popover is open (controlled mode) */
+  trigger?: PopoverTrigger;
+  /** Controlled open state */
   isOpen?: boolean;
-  /** Callback when popover opens/closes (controlled mode) */
-  onOpenChange?: (open: boolean) => void;
-  /** Whether to close on clicking outside */
+  /** Callback when open state changes */
+  onOpenChange?: (isOpen: boolean) => void;
+  /** Whether to close on click outside */
   closeOnClickOutside?: boolean;
   /** Whether to close on escape key */
   closeOnEscape?: boolean;
-  /** Offset from the trigger (in pixels) */
+  /** Offset from trigger element (px) */
   offset?: number;
-  /** Additional className for the popover content */
+  /** Whether popover is disabled */
+  disabled?: boolean;
+  /** Custom className for popover */
   className?: string;
-  /** Additional className for the trigger wrapper */
-  triggerClassName?: string;
-  /** Whether the popover has an arrow */
-  hasArrow?: boolean;
-  /** Delay before showing (hover trigger only) */
-  showDelay?: number;
-  /** Delay before hiding (hover trigger only) */
-  hideDelay?: number;
 }
 
 /**
- * Popover Component
+ * Popover
  * 
- * A floating overlay component for contextual content.
+ * An interactive overlay component for displaying content in a floating container.
  * 
  * **Features:**
+ * - Click or hover trigger
  * - Multiple placement options
- * - Click or hover triggers
  * - Controlled and uncontrolled modes
- * - Optional arrow pointer
- * - Keyboard accessible
+ * - Click outside and escape to close
  * 
  * @example
  * ```tsx
  * <Popover
- *   trigger={<Button>Options</Button>}
- *   placement="bottom-start"
+ *   content={
+ *     <div>
+ *       <Button variant="tertiary">Edit</Button>
+ *       <Button variant="tertiary">Delete</Button>
+ *     </div>
+ *   }
+ *   placement="bottom-end"
  * >
- *   <PopoverMenu>
- *     <PopoverMenuItem>Edit</PopoverMenuItem>
- *     <PopoverMenuItem>Delete</PopoverMenuItem>
- *   </PopoverMenu>
+ *   <Button icon="more" />
  * </Popover>
  * ```
  */
-export const Popover: React.FC<PopoverProps> = ({
-  trigger,
+export const Popover = forwardRef<HTMLDivElement, PopoverProps>(({
+  content,
   children,
   placement = 'bottom',
-  triggerType = 'click',
-  isOpen: controlledOpen,
+  trigger = 'click',
+  isOpen: controlledIsOpen,
   onOpenChange,
   closeOnClickOutside = true,
   closeOnEscape = true,
   offset = 8,
+  disabled = false,
   className,
-  triggerClassName,
-  hasArrow = false,
-  showDelay = 0,
-  hideDelay = 100,
-}) => {
-  const [internalOpen, setInternalOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+}, ref) => {
+  const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const showTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverTimeoutRef = useRef<number | null>(null);
 
-  // Use controlled or internal state
-  const isOpen = controlledOpen ?? internalOpen;
-  const setIsOpen = useCallback((open: boolean) => {
-    if (onOpenChange) {
-      onOpenChange(open);
+  const isControlled = controlledIsOpen !== undefined;
+  const isOpen = isControlled ? controlledIsOpen : uncontrolledIsOpen;
+
+  // Update open state
+  const setIsOpen = useCallback((value: boolean) => {
+    if (disabled && value) return;
+    
+    if (isControlled) {
+      onOpenChange?.(value);
     } else {
-      setInternalOpen(open);
+      setUncontrolledIsOpen(value);
+      onOpenChange?.(value);
     }
-  }, [onOpenChange]);
+  }, [disabled, isControlled, onOpenChange]);
 
-  // Clear timeouts
-  const clearTimeouts = useCallback(() => {
-    if (showTimeoutRef.current) {
-      clearTimeout(showTimeoutRef.current);
-      showTimeoutRef.current = null;
+  // Calculate position
+  const updatePosition = useCallback(() => {
+    if (!triggerRef.current || !popoverRef.current) return;
+
+    const triggerRect = triggerRef.current.getBoundingClientRect();
+    const popoverRect = popoverRef.current.getBoundingClientRect();
+    const gap = offset;
+
+    let top = 0;
+    let left = 0;
+
+    // Primary axis (top/bottom/left/right)
+    const primaryPlacement = placement.split('-')[0] as 'top' | 'bottom' | 'left' | 'right';
+    const alignment = placement.split('-')[1] as 'start' | 'end' | undefined;
+
+    switch (primaryPlacement) {
+      case 'top':
+        top = triggerRect.top - popoverRect.height - gap;
+        break;
+      case 'bottom':
+        top = triggerRect.bottom + gap;
+        break;
+      case 'left':
+        left = triggerRect.left - popoverRect.width - gap;
+        break;
+      case 'right':
+        left = triggerRect.right + gap;
+        break;
     }
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
-      hideTimeoutRef.current = null;
+
+    // Alignment
+    if (primaryPlacement === 'top' || primaryPlacement === 'bottom') {
+      switch (alignment) {
+        case 'start':
+          left = triggerRect.left;
+          break;
+        case 'end':
+          left = triggerRect.right - popoverRect.width;
+          break;
+        default:
+          left = triggerRect.left + (triggerRect.width - popoverRect.width) / 2;
+      }
+    } else {
+      switch (alignment) {
+        case 'start':
+          top = triggerRect.top;
+          break;
+        case 'end':
+          top = triggerRect.bottom - popoverRect.height;
+          break;
+        default:
+          top = triggerRect.top + (triggerRect.height - popoverRect.height) / 2;
+      }
     }
-  }, []);
+
+    // Keep within viewport
+    const padding = 8;
+    left = Math.max(padding, Math.min(left, window.innerWidth - popoverRect.width - padding));
+    top = Math.max(padding, Math.min(top, window.innerHeight - popoverRect.height - padding));
+
+    setPosition({ top, left });
+  }, [placement, offset]);
 
   // Handle click trigger
   const handleClick = useCallback(() => {
-    if (triggerType === 'click') {
+    if (trigger === 'click') {
       setIsOpen(!isOpen);
     }
-  }, [triggerType, isOpen, setIsOpen]);
+  }, [trigger, isOpen, setIsOpen]);
 
-  // Handle hover trigger - show
+  // Handle hover trigger
   const handleMouseEnter = useCallback(() => {
-    if (triggerType === 'hover') {
-      clearTimeouts();
-      if (showDelay > 0) {
-        showTimeoutRef.current = setTimeout(() => {
-          setIsOpen(true);
-        }, showDelay);
-      } else {
-        setIsOpen(true);
+    if (trigger === 'hover') {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+        hoverTimeoutRef.current = null;
       }
+      setIsOpen(true);
     }
-  }, [triggerType, showDelay, setIsOpen, clearTimeouts]);
+  }, [trigger, setIsOpen]);
 
-  // Handle hover trigger - hide
   const handleMouseLeave = useCallback(() => {
-    if (triggerType === 'hover') {
-      clearTimeouts();
-      if (hideDelay > 0) {
-        hideTimeoutRef.current = setTimeout(() => {
-          setIsOpen(false);
-        }, hideDelay);
-      } else {
+    if (trigger === 'hover') {
+      hoverTimeoutRef.current = window.setTimeout(() => {
         setIsOpen(false);
-      }
+      }, 150);
     }
-  }, [triggerType, hideDelay, setIsOpen, clearTimeouts]);
+  }, [trigger, setIsOpen]);
 
   // Handle click outside
   useEffect(() => {
     if (!isOpen || !closeOnClickOutside) return;
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        triggerRef.current && !triggerRef.current.contains(target) &&
+        popoverRef.current && !popoverRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
@@ -189,93 +224,42 @@ export const Popover: React.FC<PopoverProps> = ({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, closeOnEscape, setIsOpen]);
 
-  // Cleanup on unmount
+  // Update position when visible
   useEffect(() => {
-    return () => clearTimeouts();
-  }, [clearTimeouts]);
-
-  // Get placement styles
-  const getPlacementStyles = (): React.CSSProperties => {
-    const styles: React.CSSProperties = {};
-    
-    switch (placement) {
-      case 'top':
-        styles.bottom = '100%';
-        styles.left = '50%';
-        styles.transform = 'translateX(-50%)';
-        styles.marginBottom = offset;
-        break;
-      case 'top-start':
-        styles.bottom = '100%';
-        styles.left = 0;
-        styles.marginBottom = offset;
-        break;
-      case 'top-end':
-        styles.bottom = '100%';
-        styles.right = 0;
-        styles.marginBottom = offset;
-        break;
-      case 'bottom':
-        styles.top = '100%';
-        styles.left = '50%';
-        styles.transform = 'translateX(-50%)';
-        styles.marginTop = offset;
-        break;
-      case 'bottom-start':
-        styles.top = '100%';
-        styles.left = 0;
-        styles.marginTop = offset;
-        break;
-      case 'bottom-end':
-        styles.top = '100%';
-        styles.right = 0;
-        styles.marginTop = offset;
-        break;
-      case 'left':
-        styles.right = '100%';
-        styles.top = '50%';
-        styles.transform = 'translateY(-50%)';
-        styles.marginRight = offset;
-        break;
-      case 'left-start':
-        styles.right = '100%';
-        styles.top = 0;
-        styles.marginRight = offset;
-        break;
-      case 'left-end':
-        styles.right = '100%';
-        styles.bottom = 0;
-        styles.marginRight = offset;
-        break;
-      case 'right':
-        styles.left = '100%';
-        styles.top = '50%';
-        styles.transform = 'translateY(-50%)';
-        styles.marginLeft = offset;
-        break;
-      case 'right-start':
-        styles.left = '100%';
-        styles.top = 0;
-        styles.marginLeft = offset;
-        break;
-      case 'right-end':
-        styles.left = '100%';
-        styles.bottom = 0;
-        styles.marginLeft = offset;
-        break;
+    if (isOpen) {
+      updatePosition();
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
     }
 
-    return styles;
-  };
+    return () => {
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, [isOpen, updatePosition]);
 
-  // Get arrow placement class
-  const getArrowClass = (): string => {
-    if (placement.startsWith('top')) return styles.arrowBottom;
-    if (placement.startsWith('bottom')) return styles.arrowTop;
-    if (placement.startsWith('left')) return styles.arrowRight;
-    if (placement.startsWith('right')) return styles.arrowLeft;
-    return '';
-  };
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    };
+  }, []);
+
+  // Clone child with event handlers
+  const child = React.cloneElement(children, {
+    onClick: (e: React.MouseEvent) => {
+      handleClick();
+      children.props.onClick?.(e);
+    },
+    onMouseEnter: (e: React.MouseEvent) => {
+      handleMouseEnter();
+      children.props.onMouseEnter?.(e);
+    },
+    onMouseLeave: (e: React.MouseEvent) => {
+      handleMouseLeave();
+      children.props.onMouseLeave?.(e);
+    },
+  });
 
   const popoverClasses = [
     styles.popover,
@@ -283,86 +267,32 @@ export const Popover: React.FC<PopoverProps> = ({
   ].filter(Boolean).join(' ');
 
   return (
-    <div
-      ref={containerRef}
-      className={styles.container}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Trigger */}
-      <div
-        className={`${styles.trigger} ${triggerClassName || ''}`}
-        onClick={handleClick}
-        role="button"
-        tabIndex={0}
-        aria-expanded={isOpen}
-        aria-haspopup="true"
-      >
-        {trigger}
+    <>
+      <div ref={triggerRef} className={styles.trigger}>
+        {child}
       </div>
 
-      {/* Popover content */}
       {isOpen && (
         <div
-          ref={popoverRef}
+          ref={(node) => {
+            popoverRef.current = node;
+            if (typeof ref === 'function') ref(node);
+            else if (ref) ref.current = node;
+          }}
           className={popoverClasses}
-          style={getPlacementStyles()}
-          role="dialog"
-          aria-modal="false"
+          style={{
+            top: position.top,
+            left: position.left,
+          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          {hasArrow && <div className={`${styles.arrow} ${getArrowClass()}`} />}
-          {children}
+          {content}
         </div>
       )}
-    </div>
+    </>
   );
-};
+});
 
-/**
- * PopoverMenu Component - Convenience wrapper for menu-style popovers
- */
-export const PopoverMenu: React.FC<{ children: React.ReactNode; className?: string }> = ({
-  children,
-  className,
-}) => (
-  <div className={`${styles.menu} ${className || ''}`}>{children}</div>
-);
-
-/**
- * PopoverMenuItem Component
- */
-export interface PopoverMenuItemProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  danger?: boolean;
-  icon?: React.ReactNode;
-}
-
-export const PopoverMenuItem: React.FC<PopoverMenuItemProps> = ({
-  children,
-  onClick,
-  disabled = false,
-  danger = false,
-  icon,
-}) => {
-  const itemClasses = [
-    styles.menuItem,
-    disabled && styles.menuItemDisabled,
-    danger && styles.menuItemDanger,
-  ].filter(Boolean).join(' ');
-
-  return (
-    <button
-      type="button"
-      className={itemClasses}
-      onClick={disabled ? undefined : onClick}
-      disabled={disabled}
-    >
-      {icon && <span className={styles.menuItemIcon}>{icon}</span>}
-      {children}
-    </button>
-  );
-};
-
+Popover.displayName = 'Popover';
 export default Popover;

@@ -14,6 +14,8 @@ export interface SelectOption {
   value?: string;
   /** Whether the option is disabled */
   disabled?: boolean;
+  /** Optional icon name */
+  icon?: string;
 }
 
 /**

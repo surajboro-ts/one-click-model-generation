@@ -1,2 +1,2 @@
-export { Popover, PopoverMenu, PopoverMenuItem } from './Popover';
-export type { PopoverProps, PopoverPlacement, PopoverTrigger, PopoverMenuItemProps } from './Popover';
+export { Popover, default } from './Popover';
+export type { PopoverProps, PopoverPlacement, PopoverTrigger } from './Popover';

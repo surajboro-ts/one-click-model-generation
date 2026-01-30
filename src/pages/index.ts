@@ -2,6 +2,7 @@ export { WelcomePage } from './WelcomePage';
 export { PlaygroundShowcase } from './PlaygroundShowcase';
 export { ArchitectureShowcase } from './ArchitectureShowcase';
 export { HomePage } from './HomePage';
+export { WelcomePage } from './WelcomePage';
 export { ComponentDocPage } from './ComponentDocPage';
 export { IconsShowcase } from './IconsShowcase';
 export { ComponentStatusPage } from './ComponentStatusPage';
