@@ -1,0 +1,202 @@
+/**
+ * Avatar styles
+ * Based on ThoughtSpot Radiant design system
+ */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+}
+
+.nameRight {
+  flex-direction: row;
+}
+
+.nameBottom {
+  flex-direction: column;
+  text-align: center;
+}
+
+.avatarContainer {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full, 50%);
+  overflow: hidden;
+  background-color: var(--color-brand-gray-20, #E9EAEC);
+}
+
+/* Size variants */
+.sizeXs .avatar {
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+}
+
+.sizeS .avatar {
+  width: var(--spacing-6, 24px);
+  height: var(--spacing-6, 24px);
+  font-size: 11px;
+}
+
+.sizeM .avatar {
+  width: var(--spacing-8, 32px);
+  height: var(--spacing-8, 32px);
+  font-size: 13px;
+}
+
+.sizeL .avatar {
+  width: 40px;
+  height: 40px;
+  font-size: 15px;
+}
+
+.sizeXl .avatar {
+  width: var(--spacing-12, 48px);
+  height: var(--spacing-12, 48px);
+  font-size: var(--font-size-lg, 18px);
+}
+
+.sizeXxl .avatar {
+  width: var(--spacing-16, 64px);
+  height: var(--spacing-16, 64px);
+  font-size: var(--font-size-2xl, 24px);
+}
+
+/* Initial letter display */
+.initial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-brand-white, #ffffff);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* Avatar image */
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--duration-normal, 200ms) var(--easing-standard, ease);
+}
+
+.avatarImage.loaded {
+  opacity: 1;
+}
+
+/* Random background colors for initials */
+.bgBlue {
+  background-color: var(--color-brand-blue-60, #2770EF);
+}
+
+.bgGreen {
+  background-color: var(--color-brand-green-60, #06BF7F);
+}
+
+.bgPurple {
+  background-color: var(--color-brand-purple-60, #8B5CF6);
+}
+
+.bgTeal {
+  background-color: var(--color-brand-teal-60, #14B8A6);
+}
+
+.bgOrange {
+  background-color: var(--color-brand-orange-60, #F5A623);
+}
+
+.bgRed {
+  background-color: var(--color-brand-red-60, #E22B3D);
+}
+
+.bgYellow {
+  background-color: var(--color-brand-yellow-60, #F5A623);
+}
+
+/* Name text */
+.name {
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--color-brand-gray-90, #1D1F26);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+}
+
+.nameLink {
+  color: var(--color-brand-blue-60, #2770EF);
+  cursor: pointer;
+}
+
+.nameLink:hover {
+  text-decoration: underline;
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: var(--spacing-4, 16px);
+  height: var(--spacing-4, 16px);
+  padding: 0 var(--spacing-1, 4px);
+  border-radius: var(--radius-lg, 8px);
+  background-color: var(--color-brand-red-60, #E22B3D);
+  color: var(--color-brand-white, #ffffff);
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold, 600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.dotBadge {
+  min-width: var(--spacing-2, 8px);
+  width: var(--spacing-2, 8px);
+  height: var(--spacing-2, 8px);
+  padding: 0;
+  top: 0;
+  right: 0;
+}
+
+/* Disabled state */
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Avatar Group */
+.group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.groupItem {
+  position: relative;
+}
+
+.groupItem .avatar,
+.groupItem .avatarContainer {
+  border: var(--border-width-medium, 2px) solid var(--color-brand-white, #ffffff);
+  border-radius: var(--radius-full, 50%);
+  box-sizing: content-box;
+}
+
+/* Gray background for overflow counter */
+.bgGray {
+  background-color: var(--color-brand-gray-40, #B3B8C1);
+}

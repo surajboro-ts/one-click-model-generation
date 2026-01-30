@@ -9,6 +9,7 @@ import { PlaygroundGallery } from './pages/PlaygroundGallery';
 import { PlaygroundProject } from './pages/PlaygroundProject';
 import { ArchitectureShowcase } from './pages/ArchitectureShowcase';
 import { IconsShowcase } from './pages/IconsShowcase';
+import { VersionHistoryPage } from './pages/VersionHistoryPage';
 import { brandColors } from './tokens/colors/brand';
 
 // Prototype examples
@@ -57,6 +58,13 @@ const TableIcon = () => (
   </svg>
 );
 
+const ChangelogIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M9 5V9L11.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 // Route definitions for cleaner mapping
 const ROUTES = {
   home: '/',
@@ -65,23 +73,47 @@ const ROUTES = {
   radiantArchitecture: '/radiant/architecture',
   radiantIcons: '/radiant/icons',
   radiantRegistry: '/radiant/registry',
+  radiantChangelog: '/radiant/changelog',
   // Example prototypes
   filterDialog: '/radiant/examples/filter-dialog',
-  // Component documentation
+  // Component documentation - Selection Controls
   button: '/radiant/components/button',
   checkbox: '/radiant/components/checkbox',
   radio: '/radiant/components/radio',
   toggle: '/radiant/components/toggle',
+  // Component documentation - Inputs
   textinput: '/radiant/components/textinput',
+  textarea: '/radiant/components/textarea',
   searchinput: '/radiant/components/searchinput',
   select: '/radiant/components/select',
+  datepicker: '/radiant/components/datepicker',
+  segmentedcontrol: '/radiant/components/segmentedcontrol',
+  // Component documentation - Feedback
   alert: '/radiant/components/alert',
+  toast: '/radiant/components/toast',
   modal: '/radiant/components/modal',
   tooltip: '/radiant/components/tooltip',
   popover: '/radiant/components/popover',
+  loadingindicator: '/radiant/components/loadingindicator',
+  progressbar: '/radiant/components/progressbar',
+  // Component documentation - Data Display
   table: '/radiant/components/table',
-  tabs: '/radiant/components/tabs',
   chip: '/radiant/components/chip',
+  avatar: '/radiant/components/avatar',
+  // Component documentation - Navigation
+  tabs: '/radiant/components/tabs',
+  link: '/radiant/components/link',
+  menu: '/radiant/components/menu',
+  pagination: '/radiant/components/pagination',
+  stepper: '/radiant/components/stepper',
+  // Component documentation - Layout
+  card: '/radiant/components/card',
+  accordion: '/radiant/components/accordion',
+  divider: '/radiant/components/divider',
+  // Component documentation - Typography
+  typography: '/radiant/components/typography',
+  // Component documentation - Utilities
+  icongallery: '/radiant/components/icongallery',
   // Playground routes
   playground: '/playground',
 } as const;
@@ -122,22 +154,46 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'architecture': '/radiant/architecture',
       'icons': '/radiant/icons',
       'registry': '/radiant/registry',
+      'changelog': '/radiant/changelog',
       'example-filter-dialog': '/radiant/examples/filter-dialog',
-      // Component pages
+      // Selection Controls
       'button': '/radiant/components/button',
       'checkbox': '/radiant/components/checkbox',
       'radio': '/radiant/components/radio',
       'toggle': '/radiant/components/toggle',
+      // Inputs
       'textinput': '/radiant/components/textinput',
+      'textarea': '/radiant/components/textarea',
       'searchinput': '/radiant/components/searchinput',
       'select': '/radiant/components/select',
+      'datepicker': '/radiant/components/datepicker',
+      'segmentedcontrol': '/radiant/components/segmentedcontrol',
+      // Feedback
       'alert': '/radiant/components/alert',
+      'toast': '/radiant/components/toast',
       'modal': '/radiant/components/modal',
       'tooltip': '/radiant/components/tooltip',
       'popover': '/radiant/components/popover',
+      'loadingindicator': '/radiant/components/loadingindicator',
+      'progressbar': '/radiant/components/progressbar',
+      // Data Display
       'table': '/radiant/components/table',
-      'tabs': '/radiant/components/tabs',
       'chip': '/radiant/components/chip',
+      'avatar': '/radiant/components/avatar',
+      // Navigation
+      'tabs': '/radiant/components/tabs',
+      'link': '/radiant/components/link',
+      'menu': '/radiant/components/menu',
+      'pagination': '/radiant/components/pagination',
+      'stepper': '/radiant/components/stepper',
+      // Layout
+      'card': '/radiant/components/card',
+      'accordion': '/radiant/components/accordion',
+      'divider': '/radiant/components/divider',
+      // Typography
+      'typography': '/radiant/components/typography',
+      // Utilities
+      'icongallery': '/radiant/components/icongallery',
     };
 
     const route = routeMap[id] || '/radiant';
@@ -149,11 +205,12 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'registry', label: 'Component Registry', icon: <TableIcon />, type: 'item' },
     { id: 'architecture', label: 'Token Architecture', icon: <ArchitectureIcon />, type: 'item' },
     { id: 'icons', label: 'Icons', icon: <IconsIcon />, type: 'item', badge: '46' },
+    { id: 'changelog', label: 'Changelog', icon: <ChangelogIcon />, type: 'item' },
     { id: 'divider0', label: '', type: 'divider' },
     { id: 'examples-section', label: 'Example Prototypes', type: 'section' },
     { id: 'example-filter-dialog', label: 'Filter Dialog', icon: <ComponentIcon />, type: 'item' },
     { id: 'divider1', label: '', type: 'divider' },
-    { id: 'components-section', label: 'Components', type: 'section' },
+    { id: 'components-section', label: 'Selection Controls', type: 'section' },
     { id: 'button', label: 'Button', icon: <ComponentIcon />, type: 'item', badge: '3' },
     { id: 'checkbox', label: 'Checkbox', icon: <ComponentIcon />, type: 'item' },
     { id: 'radio', label: 'Radio', icon: <ComponentIcon />, type: 'item' },
@@ -161,21 +218,43 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'divider2', label: '', type: 'divider' },
     { id: 'inputs-section', label: 'Inputs', type: 'section' },
     { id: 'textinput', label: 'TextInput', icon: <ComponentIcon />, type: 'item' },
+    { id: 'textarea', label: 'TextArea', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'searchinput', label: 'SearchInput', icon: <ComponentIcon />, type: 'item' },
-    { id: 'select', label: 'Select', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'select', label: 'Select', icon: <ComponentIcon />, type: 'item' },
+    { id: 'datepicker', label: 'DatePicker', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'segmentedcontrol', label: 'SegmentedControl', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'divider3', label: '', type: 'divider' },
     { id: 'feedback-section', label: 'Feedback', type: 'section' },
     { id: 'alert', label: 'Alert', icon: <ComponentIcon />, type: 'item', badge: '5' },
+    { id: 'toast', label: 'Toast', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'modal', label: 'Modal', icon: <ComponentIcon />, type: 'item' },
-    { id: 'tooltip', label: 'Tooltip', icon: <ComponentIcon />, type: 'item', badge: 'New' },
-    { id: 'popover', label: 'Popover', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'tooltip', label: 'Tooltip', icon: <ComponentIcon />, type: 'item' },
+    { id: 'popover', label: 'Popover', icon: <ComponentIcon />, type: 'item' },
+    { id: 'loadingindicator', label: 'LoadingIndicator', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'progressbar', label: 'ProgressBar', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'divider4', label: '', type: 'divider' },
     { id: 'data-section', label: 'Data Display', type: 'section' },
-    { id: 'table', label: 'Table', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'table', label: 'Table', icon: <ComponentIcon />, type: 'item' },
+    { id: 'chip', label: 'Chip', icon: <ComponentIcon />, type: 'item', badge: '4' },
+    { id: 'avatar', label: 'Avatar', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'divider5', label: '', type: 'divider' },
     { id: 'navigation-section', label: 'Navigation', type: 'section' },
     { id: 'tabs', label: 'Tabs', icon: <ComponentIcon />, type: 'item' },
-    { id: 'chip', label: 'Chip', icon: <ComponentIcon />, type: 'item', badge: '4' },
+    { id: 'link', label: 'Link', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'menu', label: 'Menu', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'pagination', label: 'Pagination', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'stepper', label: 'Stepper', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider6', label: '', type: 'divider' },
+    { id: 'layout-section', label: 'Layout', type: 'section' },
+    { id: 'card', label: 'Card', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'accordion', label: 'Accordion', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider', label: 'Divider', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider7', label: '', type: 'divider' },
+    { id: 'typography-section', label: 'Typography', type: 'section' },
+    { id: 'typography', label: 'Typography', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider8', label: '', type: 'divider' },
+    { id: 'utilities-section', label: 'Utilities', type: 'section' },
+    { id: 'icongallery', label: 'IconGallery', icon: <ComponentIcon />, type: 'item', badge: 'New' },
   ];
 
   const SidebarHeader = () => (
@@ -247,25 +326,56 @@ const App: React.FC = () => {
       <Route path="/radiant/registry" element={<RadiantLayout><ComponentRegistryPage /></RadiantLayout>} />
       <Route path="/radiant/architecture" element={<RadiantLayout><ArchitectureShowcase /></RadiantLayout>} />
       <Route path="/radiant/icons" element={<RadiantLayout><IconsShowcase /></RadiantLayout>} />
+      <Route path="/radiant/changelog" element={<RadiantLayout><VersionHistoryPage /></RadiantLayout>} />
       
       {/* Example prototypes */}
       <Route path="/radiant/examples/filter-dialog" element={<RadiantLayout><FilterDialogExample /></RadiantLayout>} />
       
-      {/* Component documentation pages */}
+      {/* Component documentation pages - Selection Controls */}
       <Route path="/radiant/components/button" element={<RadiantLayout><ComponentDocPage componentId="button" /></RadiantLayout>} />
       <Route path="/radiant/components/checkbox" element={<RadiantLayout><ComponentDocPage componentId="checkbox" /></RadiantLayout>} />
       <Route path="/radiant/components/radio" element={<RadiantLayout><ComponentDocPage componentId="radio" /></RadiantLayout>} />
       <Route path="/radiant/components/toggle" element={<RadiantLayout><ComponentDocPage componentId="toggle" /></RadiantLayout>} />
+      
+      {/* Component documentation pages - Inputs */}
       <Route path="/radiant/components/textinput" element={<RadiantLayout><ComponentDocPage componentId="textinput" /></RadiantLayout>} />
+      <Route path="/radiant/components/textarea" element={<RadiantLayout><ComponentDocPage componentId="textarea" /></RadiantLayout>} />
       <Route path="/radiant/components/searchinput" element={<RadiantLayout><ComponentDocPage componentId="searchinput" /></RadiantLayout>} />
       <Route path="/radiant/components/select" element={<RadiantLayout><ComponentDocPage componentId="select" /></RadiantLayout>} />
-      <Route path="/radiant/components/chip" element={<RadiantLayout><ComponentDocPage componentId="chip" /></RadiantLayout>} />
+      <Route path="/radiant/components/datepicker" element={<RadiantLayout><ComponentDocPage componentId="datepicker" /></RadiantLayout>} />
+      <Route path="/radiant/components/segmentedcontrol" element={<RadiantLayout><ComponentDocPage componentId="segmentedcontrol" /></RadiantLayout>} />
+      
+      {/* Component documentation pages - Feedback */}
       <Route path="/radiant/components/alert" element={<RadiantLayout><ComponentDocPage componentId="alert" /></RadiantLayout>} />
+      <Route path="/radiant/components/toast" element={<RadiantLayout><ComponentDocPage componentId="toast" /></RadiantLayout>} />
       <Route path="/radiant/components/modal" element={<RadiantLayout><ComponentDocPage componentId="modal" /></RadiantLayout>} />
       <Route path="/radiant/components/tooltip" element={<RadiantLayout><ComponentDocPage componentId="tooltip" /></RadiantLayout>} />
       <Route path="/radiant/components/popover" element={<RadiantLayout><ComponentDocPage componentId="popover" /></RadiantLayout>} />
+      <Route path="/radiant/components/loadingindicator" element={<RadiantLayout><ComponentDocPage componentId="loadingindicator" /></RadiantLayout>} />
+      <Route path="/radiant/components/progressbar" element={<RadiantLayout><ComponentDocPage componentId="progressbar" /></RadiantLayout>} />
+      
+      {/* Component documentation pages - Data Display */}
       <Route path="/radiant/components/table" element={<RadiantLayout><ComponentDocPage componentId="table" /></RadiantLayout>} />
+      <Route path="/radiant/components/chip" element={<RadiantLayout><ComponentDocPage componentId="chip" /></RadiantLayout>} />
+      <Route path="/radiant/components/avatar" element={<RadiantLayout><ComponentDocPage componentId="avatar" /></RadiantLayout>} />
+      
+      {/* Component documentation pages - Navigation */}
       <Route path="/radiant/components/tabs" element={<RadiantLayout><ComponentDocPage componentId="tabs" /></RadiantLayout>} />
+      <Route path="/radiant/components/link" element={<RadiantLayout><ComponentDocPage componentId="link" /></RadiantLayout>} />
+      <Route path="/radiant/components/menu" element={<RadiantLayout><ComponentDocPage componentId="menu" /></RadiantLayout>} />
+      <Route path="/radiant/components/pagination" element={<RadiantLayout><ComponentDocPage componentId="pagination" /></RadiantLayout>} />
+      <Route path="/radiant/components/stepper" element={<RadiantLayout><ComponentDocPage componentId="stepper" /></RadiantLayout>} />
+      
+      {/* Component documentation pages - Layout */}
+      <Route path="/radiant/components/card" element={<RadiantLayout><ComponentDocPage componentId="card" /></RadiantLayout>} />
+      <Route path="/radiant/components/accordion" element={<RadiantLayout><ComponentDocPage componentId="accordion" /></RadiantLayout>} />
+      <Route path="/radiant/components/divider" element={<RadiantLayout><ComponentDocPage componentId="divider" /></RadiantLayout>} />
+      
+      {/* Component documentation pages - Typography */}
+      <Route path="/radiant/components/typography" element={<RadiantLayout><ComponentDocPage componentId="typography" /></RadiantLayout>} />
+      
+      {/* Component documentation pages - Utilities */}
+      <Route path="/radiant/components/icongallery" element={<RadiantLayout><ComponentDocPage componentId="icongallery" /></RadiantLayout>} />
       
       {/* Playground Section - No sidebar */}
       <Route path="/playground" element={<PlaygroundGallery />} />

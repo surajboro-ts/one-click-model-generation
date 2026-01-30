@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table } from '../../components/Table';
+import { Typography } from '../../components/Typography';
 import {
   Header,
   FilterBar,
@@ -8,6 +9,7 @@ import {
   StackedBarChart,
   USMapChart,
   StylingPanel,
+  NavigationSidebar,
 } from './components';
 import type { StylingSettings } from './components';
 import { colors, spacing, typography, shadows, borderRadius } from './styles';
@@ -27,12 +29,40 @@ import {
  * Liveboard - TSE Business Overview Dashboard
  * 
  * A comprehensive business analytics dashboard showcasing:
+ * - Navigation sidebar with app-level menu items
  * - KPI metric cards with trend indicators
  * - Area, donut, and bar chart visualizations
  * - US map with regional data
  * - Filter bar with multiple selectors
  * 
  * Built using Radiant design system components.
+ * 
+ * ============================================================
+ * COMPONENT MAPPING (Figma to Radiant)
+ * ============================================================
+ * 
+ * | Figma Element        | Radiant Component        | Location                       |
+ * |----------------------|--------------------------|--------------------------------|
+ * | Navigation sidebar   | NavigationSidebar        | components/NavigationSidebar   |
+ * | Top header bar       | Header                   | components/Header.tsx          |
+ * | Search input         | SearchInput              | Radiant (in Header)            |
+ * | AI highlights button | Button (primary)         | Radiant (in Header)            |
+ * | User profile avatar  | Avatar                   | Radiant (in Header)            |
+ * | Navigation tabs      | Custom Tabs              | Header.tsx                     |
+ * | Filter dropdowns     | Custom FilterDropdown    | FilterBar.tsx                  |
+ * | Filter chips         | Chip (filter type)       | Radiant                        |
+ * | Weekly Update card   | KPICard (highlight)      | components/KPICard.tsx         |
+ * | CFY/Quarter cards    | KPICard (chart)          | components/KPICard.tsx         |
+ * | Pipeline cards       | KPICard (dual-metric)    | components/KPICard.tsx         |
+ * | Donut chart          | DonutChart               | components/DonutChart.tsx      |
+ * | Bar chart            | StackedBarChart          | components/StackedBarChart.tsx |
+ * | US Map               | USMapChart               | components/USMapChart.tsx      |
+ * | Data table           | Table                    | Radiant                        |
+ * | Panel titles         | Typography               | Radiant                        |
+ * | Icon buttons         | Icon + Tooltip           | Radiant                        |
+ * | Styling panel        | StylingPanel             | components/StylingPanel.tsx    |
+ * 
+ * ============================================================
  */
 export const Liveboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('bookings');
@@ -43,6 +73,10 @@ export const Liveboard: React.FC = () => {
     year: '2025',
     quarter: 'Q1',
   });
+
+  // Navigation sidebar state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeNavItem, setActiveNavItem] = useState('liveboards');
 
   // Styling panel state
   const [isStylingPanelOpen, setIsStylingPanelOpen] = useState(false);
@@ -59,6 +93,20 @@ export const Liveboard: React.FC = () => {
 
   const handleFilterChange = (key: keyof typeof filters, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleSidebarToggle = () => {
+    setIsSidebarOpen(prev => !prev);
+  };
+
+  const handleSidebarClose = () => {
+    setIsSidebarOpen(false);
+  };
+
+  const handleNavItemClick = (itemId: string) => {
+    setActiveNavItem(itemId);
+    // In a real app, this would navigate to the selected section
+    console.log('Navigate to:', itemId);
   };
 
   const handleStylingPanelToggle = () => {
@@ -81,16 +129,25 @@ export const Liveboard: React.FC = () => {
     { key: 'Q1', label: 'Q1', align: 'right' as const },
     { key: 'Q2', label: 'Q2', align: 'right' as const },
     { key: 'Q3', label: 'Q3', align: 'right' as const },
-    { key: 'Q4', label: 'Q3', align: 'right' as const },
+    { key: 'Q4', label: 'Q4', align: 'right' as const },
   ];
 
   return (
     <div style={styles.container}>
+      {/* Navigation Sidebar */}
+      <NavigationSidebar
+        isOpen={isSidebarOpen}
+        activeItem={activeNavItem}
+        onItemClick={handleNavItemClick}
+        onClose={handleSidebarClose}
+      />
+
       {/* Header */}
       <Header 
         activeTab={activeTab} 
         onTabChange={setActiveTab}
         onStylingClick={handleStylingPanelToggle}
+        onMenuClick={handleSidebarToggle}
       />
 
       {/* Filter Bar */}
@@ -155,7 +212,9 @@ export const Liveboard: React.FC = () => {
         <div style={styles.chartsRow}>
           {/* Cluster Pricing Type Panel */}
           <div style={styles.clusterPanel}>
-            <h2 style={styles.panelTitle}>Cluster Pricing Type</h2>
+            <Typography variant="content-label" color="base" noMargin>
+              Cluster Pricing Type
+            </Typography>
             
             <div style={styles.clusterContent}>
               {/* Donut Chart */}
@@ -183,8 +242,12 @@ export const Liveboard: React.FC = () => {
 
               {/* Update Section */}
               <div style={styles.updateSection}>
-                <h4 style={styles.updateTitle}>Update</h4>
-                <span style={styles.updateDate}>{updateInfo.date}</span>
+                <Typography variant="content-label-subhead" color="base" noMargin>
+                  Update
+                </Typography>
+                <Typography variant="caption" color="gray-light" style={{ marginBottom: spacing.md }}>
+                  {updateInfo.date}
+                </Typography>
                 <ul style={styles.updateList}>
                   {updateInfo.items.map((item, index) => (
                     <li key={index} style={styles.updateItem}>
@@ -201,13 +264,15 @@ export const Liveboard: React.FC = () => {
 
           {/* North America Opportunities Panel */}
           <div style={styles.opportunitiesPanel}>
-            <h2 style={styles.panelTitle}>{northAmericaOpportunities.title}</h2>
+            <Typography variant="content-label" color="base" noMargin>
+              {northAmericaOpportunities.title}
+            </Typography>
             
             <div style={styles.opportunitiesContent}>
               <div style={styles.projectedGrowth}>
-                <span style={styles.projectedLabel}>
+                <Typography variant="caption" color="gray">
                   {northAmericaOpportunities.projectedGrowth.label}
-                </span>
+                </Typography>
                 <span style={styles.projectedValue}>
                   {northAmericaOpportunities.projectedGrowth.value}
                 </span>
@@ -285,17 +350,11 @@ const styles: Record<string, React.CSSProperties> = {
     padding: spacing.lg,
     boxShadow: shadows.card,
   },
-  panelTitle: {
-    fontSize: 16,
-    fontWeight: 600,
-    color: colors.textPrimary,
-    margin: 0,
-    marginBottom: spacing.lg,
-  },
   clusterContent: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     gap: spacing.xl,
+    marginTop: spacing.lg,
   },
   donutSection: {
     display: 'flex',
@@ -308,18 +367,6 @@ const styles: Record<string, React.CSSProperties> = {
   updateSection: {
     display: 'flex',
     flexDirection: 'column',
-  },
-  updateTitle: {
-    fontSize: 14,
-    fontWeight: 600,
-    color: colors.textPrimary,
-    margin: 0,
-    marginBottom: spacing.xs,
-  },
-  updateDate: {
-    fontSize: 12,
-    color: colors.textMuted,
-    marginBottom: spacing.md,
   },
   updateList: {
     margin: 0,
@@ -347,16 +394,13 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
+    marginTop: spacing.lg,
     marginBottom: spacing.lg,
   },
   projectedGrowth: {
     display: 'flex',
     flexDirection: 'column',
     gap: spacing.xs,
-  },
-  projectedLabel: {
-    fontSize: 13,
-    color: colors.textSecondary,
   },
   projectedValue: {
     fontSize: 24,

@@ -2,6 +2,8 @@ import React from 'react';
 import { Icon } from '../../../components/icons';
 import { SearchInput } from '../../../components/SearchInput';
 import { Button } from '../../../components/Button';
+import { Avatar } from '../../../components/Avatar';
+import { Tooltip } from '../../../components/Tooltip';
 import { colors, spacing, typography } from '../styles';
 import { navigationTabs, userProfile } from '../data/mockData';
 
@@ -9,6 +11,7 @@ interface HeaderProps {
   activeTab: string;
   onTabChange: (tabId: string) => void;
   onStylingClick?: () => void;
+  onMenuClick?: () => void;
 }
 
 /**
@@ -16,15 +19,30 @@ interface HeaderProps {
  * 
  * Top navigation header with logo, title, tabs, search, and user profile.
  * Based on the Figma design for TSE Business Overview.
+ * 
+ * Figma Reference: Top header bar with navigation
+ * Radiant Components Used:
+ * - Icon: For all icons (hamburger, status, actions)
+ * - SearchInput: Search field in header
+ * - Button: AI highlights button
+ * - Avatar: User profile avatar
+ * - Tooltip: Icon button tooltips
  */
-export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onStylingClick }) => {
+export const Header: React.FC<HeaderProps> = ({ 
+  activeTab, 
+  onTabChange, 
+  onStylingClick,
+  onMenuClick,
+}) => {
   return (
     <header style={styles.header}>
       {/* Left section: Logo and title */}
       <div style={styles.leftSection}>
-        <button style={styles.menuButton}>
-          <Icon name="hamburger" size="m" color={colors.textOnDark} />
-        </button>
+        <Tooltip content="Open navigation menu" placement="bottom">
+          <button style={styles.menuButton} onClick={onMenuClick}>
+            <Icon name="hamburger" size="m" color={colors.textOnDark} />
+          </button>
+        </Tooltip>
         
         <div style={styles.logo}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -40,9 +58,21 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onStylin
             <Icon name="checkmark-circle" size="s" color="#06BF7F" />
             <h1 style={styles.title}>TSE Business Overview</h1>
             <div style={styles.statusIcons}>
-              <Icon name="eye" size="xs" color={colors.textMuted} />
-              <Icon name="pin" size="xs" color={colors.textMuted} />
-              <Icon name="clock" size="xs" color={colors.textMuted} />
+              <Tooltip content="Visible to all" placement="bottom">
+                <span style={styles.statusIcon}>
+                  <Icon name="eye" size="xs" color={colors.textMuted} />
+                </span>
+              </Tooltip>
+              <Tooltip content="Pinned" placement="bottom">
+                <span style={styles.statusIcon}>
+                  <Icon name="pin" size="xs" color={colors.textMuted} />
+                </span>
+              </Tooltip>
+              <Tooltip content="Last updated" placement="bottom">
+                <span style={styles.statusIcon}>
+                  <Icon name="clock" size="xs" color={colors.textMuted} />
+                </span>
+              </Tooltip>
               <span style={styles.timestamp}>59m ago</span>
             </div>
           </div>
@@ -86,41 +116,52 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onStylin
           AI highlights
         </Button>
 
-        <button style={styles.iconButton}>
-          <Icon name="question-mark" size="s" color={colors.textOnDark} />
-        </button>
+        <Tooltip content="Help" placement="bottom">
+          <button style={styles.iconButton}>
+            <Icon name="question-mark" size="s" color={colors.textOnDark} />
+          </button>
+        </Tooltip>
 
-        <button style={styles.iconButton}>
-          <div style={styles.notificationBadge}>
-            <Icon name="exclamation-point-circle" size="s" color={colors.textOnDark} />
-            <span style={styles.badge} />
-          </div>
-        </button>
+        <Tooltip content="Notifications" placement="bottom">
+          <button style={styles.iconButton}>
+            <div style={styles.notificationBadge}>
+              <Icon name="exclamation-point-circle" size="s" color={colors.textOnDark} />
+              <span style={styles.badge} />
+            </div>
+          </button>
+        </Tooltip>
 
+        {/* User profile with Avatar component */}
         <button style={styles.profileButton}>
           <span style={styles.profileName}>{userProfile.name}</span>
           <Icon name="chevron-down" size="xs" color={colors.textOnDark} />
-          <div style={styles.avatar}>
-            {userProfile.name.charAt(0)}
-          </div>
+          <Avatar
+            name={userProfile.name}
+            size="s"
+          />
         </button>
 
-        <button style={styles.iconButton}>
-          <Icon name="upload" size="s" color={colors.textOnDark} />
-        </button>
+        <Tooltip content="Share" placement="bottom">
+          <button style={styles.iconButton}>
+            <Icon name="upload" size="s" color={colors.textOnDark} />
+          </button>
+        </Tooltip>
 
         {/* Styling button */}
-        <button 
-          style={styles.iconButton}
-          onClick={onStylingClick}
-          title="Open Styling Panel"
-        >
-          <Icon name="cog" size="s" color={colors.textOnDark} />
-        </button>
+        <Tooltip content="Styling settings" placement="bottom">
+          <button 
+            style={styles.iconButton}
+            onClick={onStylingClick}
+          >
+            <Icon name="cog" size="s" color={colors.textOnDark} />
+          </button>
+        </Tooltip>
 
-        <button style={styles.iconButton}>
-          <Icon name="more" size="s" color={colors.textOnDark} />
-        </button>
+        <Tooltip content="More options" placement="bottom">
+          <button style={styles.iconButton}>
+            <Icon name="more" size="s" color={colors.textOnDark} />
+          </button>
+        </Tooltip>
       </div>
     </header>
   );
@@ -149,6 +190,8 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 4,
+    transition: 'background-color 150ms ease',
   },
   logo: {
     display: 'flex',
@@ -174,6 +217,11 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: spacing.xs,
     marginLeft: spacing.sm,
+  },
+  statusIcon: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   timestamp: {
     fontSize: 12,
@@ -247,19 +295,6 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 13,
     fontWeight: 500,
     color: colors.textOnDark,
-  },
-  avatar: {
-    width: 28,
-    height: 28,
-    borderRadius: '50%',
-    backgroundColor: colors.accent,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 12,
-    fontWeight: 600,
-    color: colors.textOnDark,
-    marginLeft: spacing.xs,
   },
 };
 

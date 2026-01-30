@@ -8,4 +8,6 @@ export { StackedBarChart } from './StackedBarChart';
 export { USMapChart } from './USMapChart';
 export { OptionButtonGroup } from './OptionButtonGroup';
 export { StylingPanel } from './StylingPanel';
+export { NavigationSidebar } from './NavigationSidebar';
 export type { StylingSettings } from './StylingPanel';
+export type { NavMenuItem } from './NavigationSidebar';

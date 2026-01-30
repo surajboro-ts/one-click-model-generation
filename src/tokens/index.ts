@@ -21,6 +21,7 @@ export {
   lineHeight,
   letterSpacing,
   textStyles,
+  v2TextStyles,
 } from './typography';
 
 // Spacing
@@ -95,7 +96,7 @@ export {
 
 // Convenience re-exports
 import { brandColors } from './colors';
-import { textStyles } from './typography';
+import { textStyles, v2TextStyles } from './typography';
 import { spacing, componentSpacing } from './spacing';
 import { radius, componentRadius } from './radius';
 import { shadows, componentShadows } from './shadows';
@@ -114,6 +115,7 @@ export const tokens = {
     brand: brandColors,
   },
   typography: textStyles,
+  typographyV2: v2TextStyles,
   spacing: {
     scale: spacing,
     components: componentSpacing,

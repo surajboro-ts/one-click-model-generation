@@ -1,0 +1,126 @@
+/**
+ * SegmentedControl styles
+ * Based on ThoughtSpot Radiant design system
+ */
+
+.container {
+  display: inline-flex;
+  padding: 2px;
+  background-color: var(--color-gray-10, #F6F8FA);
+  border-radius: 8px;
+  gap: 2px;
+}
+
+.container.fullWidth {
+  display: flex;
+  width: 100%;
+}
+
+.container.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Size variants */
+.container.small .segment {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.container.small .segment.iconOnly {
+  padding: 4px 8px;
+}
+
+.container.small .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.container.default .segment {
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.container.default .segment.iconOnly {
+  padding: 6px 10px;
+}
+
+.container.default .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.container.large .segment {
+  padding: 8px 18px;
+  font-size: 14px;
+}
+
+.container.large .segment.iconOnly {
+  padding: 8px 12px;
+}
+
+.container.large .icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Segment button */
+.segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--color-gray-60, #777E8B);
+  cursor: pointer;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  flex: 0 0 auto;
+}
+
+.container.fullWidth .segment {
+  flex: 1;
+}
+
+.segment:hover:not(.selected):not(.segmentDisabled) {
+  color: var(--color-gray-80, #484D56);
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.segment:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-blue-60, #2770EF);
+}
+
+.segment.selected {
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-gray-90, #1D1F26);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.segment.segmentDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Icon */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Label */
+.label {
+  line-height: 1;
+}

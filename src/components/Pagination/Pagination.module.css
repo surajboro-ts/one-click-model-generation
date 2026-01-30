@@ -1,0 +1,169 @@
+/**
+ * Pagination styles
+ * Based on ThoughtSpot Radiant design system
+ */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1, 4px);
+}
+
+/* Page button */
+.pageButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--spacing-8, 32px);
+  height: var(--spacing-8, 32px);
+  padding: 0 var(--spacing-2, 8px);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md, 6px);
+  background-color: transparent;
+  font-family: inherit;
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-brand-gray-70, #484D56);
+  cursor: pointer;
+  transition: all var(--duration-fast, 150ms) var(--easing-standard, ease);
+}
+
+.pageButton:hover {
+  background-color: var(--color-brand-gray-10, #F6F8FA);
+}
+
+.pageButton:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline-offset: var(--spacing-1, 2px);
+}
+
+.pageButton:active {
+  background-color: var(--color-brand-gray-20, #E9EAEC);
+}
+
+/* Active page */
+.pageButtonActive {
+  background-color: var(--color-brand-blue-60, #2770EF);
+  color: var(--color-brand-white, #ffffff);
+  border-color: var(--color-brand-blue-60, #2770EF);
+}
+
+.pageButtonActive:hover {
+  background-color: var(--color-brand-blue-70, #1E5BBB);
+}
+
+/* Disabled button */
+.pageButtonDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Navigation arrows */
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-8, 32px);
+  height: var(--spacing-8, 32px);
+  border: 1px solid var(--color-brand-gray-30, #DADCE0);
+  border-radius: var(--radius-md, 6px);
+  background-color: var(--color-brand-white, #ffffff);
+  color: var(--color-brand-gray-70, #484D56);
+  cursor: pointer;
+  transition: all var(--duration-fast, 150ms) var(--easing-standard, ease);
+}
+
+.navButton:hover:not(:disabled) {
+  background-color: var(--color-brand-gray-10, #F6F8FA);
+  border-color: var(--color-brand-gray-40, #B3B8C1);
+}
+
+.navButton:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline-offset: var(--spacing-1, 2px);
+}
+
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.navIcon {
+  width: var(--spacing-4, 16px);
+  height: var(--spacing-4, 16px);
+}
+
+/* Ellipsis */
+.ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--spacing-8, 32px);
+  height: var(--spacing-8, 32px);
+  color: var(--color-brand-gray-50, #777E8B);
+  font-size: var(--font-size-sm, 14px);
+  cursor: default;
+}
+
+/* Dots variant */
+.dots {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+}
+
+.dot {
+  width: var(--spacing-2, 8px);
+  height: var(--spacing-2, 8px);
+  border-radius: var(--radius-full, 50%);
+  background-color: var(--color-brand-gray-30, #DADCE0);
+  cursor: pointer;
+  transition: all var(--duration-fast, 150ms) var(--easing-standard, ease);
+  border: none;
+  padding: 0;
+}
+
+.dot:hover {
+  background-color: var(--color-brand-gray-40, #B3B8C1);
+}
+
+.dotActive {
+  background-color: var(--color-brand-blue-60, #2770EF);
+  width: var(--spacing-6, 24px);
+  border-radius: var(--radius-sm, 4px);
+}
+
+.dotActive:hover {
+  background-color: var(--color-brand-blue-60, #2770EF);
+}
+
+/* Compact variant */
+.compact .pageButton {
+  min-width: 28px;
+  height: 28px;
+  font-size: 13px;
+}
+
+.compact .navButton {
+  width: 28px;
+  height: 28px;
+}
+
+/* Range display */
+.range {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-brand-gray-70, #484D56);
+}
+
+.rangeText {
+  white-space: nowrap;
+}
+
+.rangeStrong {
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-brand-gray-90, #1D1F26);
+}

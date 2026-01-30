@@ -1,0 +1,181 @@
+/**
+ * Stepper styles
+ * Based on ThoughtSpot Radiant design system
+ */
+
+.stepper {
+  display: flex;
+  width: 100%;
+}
+
+/* Horizontal orientation */
+.horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.horizontal .stepWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.horizontal .step {
+  flex-direction: column;
+  align-items: center;
+}
+
+.horizontal .connector {
+  position: absolute;
+  top: 14px;
+  left: calc(50% + 18px);
+  right: calc(-50% + 18px);
+  height: var(--border-width-medium, 2px);
+  background-color: var(--color-brand-gray-30, #DADCE0);
+}
+
+.horizontal .connectorActive {
+  background-color: var(--color-brand-blue-60, #2770EF);
+}
+
+.horizontal .stepWrapper:last-child .connector {
+  display: none;
+}
+
+/* Vertical orientation */
+.vertical {
+  flex-direction: column;
+}
+
+.vertical .stepWrapper {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  padding-bottom: var(--spacing-6, 24px);
+}
+
+.vertical .stepWrapper:last-child {
+  padding-bottom: 0;
+}
+
+.vertical .step {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.vertical .connector {
+  position: absolute;
+  top: var(--spacing-8, 32px);
+  left: 13px;
+  bottom: var(--spacing-2, 8px);
+  width: var(--border-width-medium, 2px);
+  background-color: var(--color-brand-gray-30, #DADCE0);
+}
+
+.vertical .connectorActive {
+  background-color: var(--color-brand-blue-60, #2770EF);
+}
+
+.vertical .stepWrapper:last-child .connector {
+  display: none;
+}
+
+/* Step item */
+.step {
+  display: flex;
+  gap: var(--spacing-3, 12px);
+  cursor: default;
+}
+
+.stepClickable {
+  cursor: pointer;
+}
+
+.stepClickable:hover .stepNumber {
+  border-color: var(--color-brand-blue-60, #2770EF);
+}
+
+/* Step number indicator */
+.stepNumber {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: var(--radius-full, 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-semibold, 600);
+  border: var(--border-width-medium, 2px) solid var(--color-brand-gray-30, #DADCE0);
+  background-color: var(--color-brand-white, #ffffff);
+  color: var(--color-brand-gray-60, #777E8B);
+  transition: all var(--duration-normal, 200ms) var(--easing-standard, ease);
+}
+
+.stepActive .stepNumber {
+  border-color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--color-brand-blue-60, #2770EF);
+  color: var(--color-brand-white, #ffffff);
+}
+
+.stepCompleted .stepNumber {
+  border-color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--color-brand-blue-60, #2770EF);
+  color: var(--color-brand-white, #ffffff);
+}
+
+/* Check icon for completed */
+.checkIcon {
+  width: var(--font-size-sm, 14px);
+  height: var(--font-size-sm, 14px);
+}
+
+/* Step content */
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--spacing-1, 4px);
+}
+
+.horizontal .stepContent {
+  text-align: center;
+  padding-top: var(--spacing-2, 8px);
+}
+
+.stepTitle {
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-brand-gray-60, #777E8B);
+  transition: color var(--duration-normal, 200ms) var(--easing-standard, ease);
+}
+
+.stepActive .stepTitle {
+  color: var(--color-brand-gray-90, #1D1F26);
+}
+
+.stepCompleted .stepTitle {
+  color: var(--color-brand-gray-90, #1D1F26);
+}
+
+.stepDescription {
+  font-size: var(--font-size-xs, 12px);
+  color: var(--color-brand-gray-50, #777E8B);
+  margin-top: var(--spacing-1, 2px);
+}
+
+/* Non-sequential - all clickable */
+.nonSequential .step {
+  cursor: pointer;
+}
+
+.nonSequential .step:hover .stepNumber {
+  border-color: var(--color-brand-blue-60, #2770EF);
+}
+
+.nonSequential .step:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline-offset: var(--spacing-1, 2px);
+  border-radius: var(--radius-sm, 4px);
+}
