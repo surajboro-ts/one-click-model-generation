@@ -12,15 +12,17 @@ export const fontFamily = {
 } as const;
 
 // Font Sizes (in pixels)
+// Based on Radiant V2 typography scale
 export const fontSize = {
-  xs: 12,
-  sm: 14,
-  md: 16,
-  lg: 18,
-  xl: 20,
-  '2xl': 24,
-  '3xl': 32,
-  '4xl': 40,
+  xs: 12,    // footnote, caption, overline
+  sm: 14,    // body-normal, content-label-subhead
+  md: 16,    // body-large, content-label
+  lg: 18,    // section-label
+  xl: 20,    // modal-title
+  '2xl': 24, // page-title
+  '3xl': 32, // headline-large
+  '4xl': 40, // h0
+  '5xl': 48, // display
 } as const;
 
 // Font Weights
@@ -32,15 +34,17 @@ export const fontWeight = {
 } as const;
 
 // Line Heights (in pixels)
+// Based on Radiant V2 typography scale (font-size + 4-8px)
 export const lineHeight = {
-  xs: 16,
-  sm: 18,
-  md: 20,
-  lg: 24,
-  xl: 28,
-  '2xl': 32,
-  '3xl': 40,
-  '4xl': 48,
+  xs: 16,    // 12px font
+  sm: 18,    // 12px font (caption, footnote)
+  md: 20,    // 14px font
+  lg: 24,    // 16-18px font
+  xl: 28,    // 20px font
+  '2xl': 32, // 24px font
+  '3xl': 40, // 32px font
+  '4xl': 48, // 40px font
+  '5xl': 56, // 48px font
 } as const;
 
 // Letter Spacing
@@ -260,6 +264,105 @@ export const textStyles = {
     },
   },
 } as const;
+
+/**
+ * Radiant V2 Typography Styles
+ * 
+ * These map directly to ThoughtSpot Radiant's V2 typography system.
+ * Use these for consistent text styling across the application.
+ */
+export const v2TextStyles = {
+  // Display - Large headlines for hero sections
+  headlineLarge: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize['3xl'],  // 32px
+    fontWeight: fontWeight.medium,
+    lineHeight: lineHeight['3xl'],  // 40px
+    letterSpacing: letterSpacing.tight,
+  },
+
+  // Titles - Page and modal headers
+  pageTitle: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize['2xl'],  // 24px
+    fontWeight: fontWeight.medium,
+    lineHeight: lineHeight['2xl'],  // 32px
+    letterSpacing: letterSpacing.normal,
+  },
+  modalTitle: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.xl,  // 20px
+    fontWeight: fontWeight.medium,
+    lineHeight: lineHeight.xl,  // 28px
+    letterSpacing: letterSpacing.normal,
+  },
+
+  // Labels - Section and content headers
+  sectionLabel: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.lg,  // 18px
+    fontWeight: fontWeight.medium,
+    lineHeight: lineHeight.lg,  // 24px
+    letterSpacing: letterSpacing.normal,
+  },
+  contentLabel: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.md,  // 16px
+    fontWeight: fontWeight.medium,
+    lineHeight: lineHeight.lg,  // 24px
+    letterSpacing: letterSpacing.normal,
+  },
+  contentLabelSubhead: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.sm,  // 14px
+    fontWeight: fontWeight.medium,
+    lineHeight: lineHeight.md,  // 20px
+    letterSpacing: letterSpacing.normal,
+  },
+
+  // Body - Main content text
+  bodyLarge: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.md,  // 16px
+    fontWeight: fontWeight.regular,
+    lineHeight: lineHeight.lg,  // 24px
+    letterSpacing: letterSpacing.normal,
+  },
+  bodyNormal: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.sm,  // 14px
+    fontWeight: fontWeight.regular,
+    lineHeight: lineHeight.md,  // 20px
+    letterSpacing: letterSpacing.normal,
+  },
+
+  // Small Text - Footnotes, captions, overlines
+  footnote: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.xs,  // 12px
+    fontWeight: fontWeight.regular,
+    lineHeight: lineHeight.sm,  // 18px
+    letterSpacing: letterSpacing.normal,
+  },
+  caption: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.xs,  // 12px
+    fontWeight: fontWeight.regular,
+    lineHeight: lineHeight.sm,  // 18px
+    letterSpacing: letterSpacing.normal,
+  },
+  overline: {
+    fontFamily: fontFamily.primary,
+    fontSize: fontSize.xs,  // 12px
+    fontWeight: fontWeight.medium,
+    lineHeight: lineHeight.sm,  // 18px
+    letterSpacing: letterSpacing.wider,
+    textTransform: 'uppercase' as const,
+  },
+} as const;
+
+// V2 Text Style type
+export type V2TextStyle = keyof typeof v2TextStyles;
 
 // Type exports
 export type FontFamily = keyof typeof fontFamily;

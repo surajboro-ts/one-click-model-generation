@@ -26,6 +26,47 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '1.5.0',
+    date: '2026-01-30',
+    type: 'minor',
+    changes: [
+      { type: 'added', component: 'Toast', description: 'Temporary notification component with auto-dismiss' },
+      { type: 'added', component: 'TextArea', description: 'Multi-line text input with character counter' },
+      { type: 'added', component: 'SegmentedControl', description: 'Mutually exclusive segment options (text/icon variants)' },
+      { type: 'added', component: 'LoadingIndicator.Skeleton', description: 'Shimmer/skeleton loading placeholder variant' },
+      { type: 'added', component: 'AvatarGroup', description: 'Stacked avatars with +N overflow indicator' },
+      { type: 'added', component: 'TableCellRenderers', description: 'Helper utilities for Avatar, Chip, Status table cells' },
+      { type: 'added', component: 'VersionHistoryPage', description: 'Full changelog page replacing popup panel' },
+      { type: 'modified', component: 'DatePicker', description: 'Added Month and Year picker view modes' },
+      { type: 'modified', component: 'Sidebar', description: 'Changed version footer to link to changelog page' },
+    ],
+  },
+  {
+    version: '1.4.0',
+    date: '2026-01-30',
+    type: 'minor',
+    changes: [
+      // Phase 2: Core Components
+      { type: 'added', component: 'LoadingIndicator', description: 'Contextual and global loading spinners' },
+      { type: 'added', component: 'Avatar', description: 'User avatars with initials fallback and badges' },
+      { type: 'added', component: 'Card', description: 'Content container with header, body, and footer' },
+      { type: 'added', component: 'Typography', description: 'V2 typography system with 20+ variants' },
+      { type: 'added', component: 'Divider', description: 'Horizontal and vertical line separators' },
+      { type: 'added', component: 'Link', description: 'Styled anchor element for navigation' },
+      // Phase 3: Interactive Components
+      { type: 'added', component: 'Accordion', description: 'Collapsible content sections' },
+      { type: 'added', component: 'Menu', description: 'Dropdown menu with items, groups, and dividers' },
+      { type: 'added', component: 'Pagination', description: 'Page navigation with numbers, dots, and range' },
+      { type: 'added', component: 'ProgressBar', description: 'Determinate and indeterminate progress indicator' },
+      { type: 'added', component: 'Stepper', description: 'Multi-step process indicator' },
+      // Phase 4: Advanced Components
+      { type: 'added', component: 'DatePicker', description: 'Date selection input with calendar dropdown' },
+      { type: 'added', component: 'IconGallery', description: 'Searchable gallery of available icons' },
+      // Token Enhancements
+      { type: 'modified', component: 'Tokens', description: 'Added complete color scales and V2 typography tokens' },
+    ],
+  },
+  {
     version: '1.3.0',
     date: '2026-01-30',
     type: 'minor',

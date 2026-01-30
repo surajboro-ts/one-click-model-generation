@@ -19,6 +19,10 @@
 export { Icon, isValidIconName, getIconNames } from './Icon';
 export type { default as IconDefault } from './Icon';
 
+// Pre-computed icon names array for convenience
+import { getIconNames as _getIconNames } from './Icon';
+export const iconNames = _getIconNames();
+
 // Types
 export type {
   IconProps,

@@ -1,0 +1,129 @@
+/**
+ * Card styles
+ * Based on ThoughtSpot Radiant design system
+ */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-brand-white, #ffffff);
+  border: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  border-radius: var(--radius-lg, 8px);
+  overflow: hidden;
+  transition: box-shadow var(--duration-normal, 200ms) var(--easing-standard, ease),
+              border-color var(--duration-normal, 200ms) var(--easing-standard, ease);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline-offset: var(--spacing-1, 2px);
+}
+
+/* Interactive card */
+.interactive {
+  cursor: pointer;
+}
+
+.interactive:hover {
+  border-color: var(--color-brand-gray-30, #DADCE0);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.08));
+}
+
+.interactive:active {
+  border-color: var(--color-brand-blue-60, #2770EF);
+}
+
+/* No border variant */
+.noBorder {
+  border: none;
+}
+
+/* Selected state */
+.selected {
+  border-color: var(--color-brand-blue-60, #2770EF);
+  box-shadow: 0 0 0 1px var(--color-brand-blue-60, #2770EF);
+}
+
+/* Disabled state */
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Header section */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4, 16px);
+  border-bottom: 1px solid var(--color-brand-gray-20, #E9EAEC);
+}
+
+.headerTitle {
+  font-size: var(--font-size-md, 16px);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-brand-gray-90, #1D1F26);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.headerSubtitle {
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--color-brand-gray-60, #777E8B);
+  margin-top: var(--spacing-1, 2px);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+  margin-left: auto;
+}
+
+/* Body section */
+.body {
+  flex: 1;
+  padding: var(--spacing-4, 16px);
+}
+
+.bodyNoPadding {
+  padding: 0;
+}
+
+/* Footer section */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-2, 8px);
+  padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+  border-top: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  background-color: var(--color-brand-gray-10, #F6F8FA);
+}
+
+.footerLeft {
+  justify-content: flex-start;
+}
+
+.footerCenter {
+  justify-content: center;
+}
+
+.footerSpaceBetween {
+  justify-content: space-between;
+}
+
+/* Action button overlay (top-right) */
+.action {
+  position: absolute;
+  top: var(--spacing-2, 8px);
+  right: var(--spacing-2, 8px);
+  z-index: 1;
+}
+
+/* Card wrapper for action positioning */
+.cardWrapper {
+  position: relative;
+}

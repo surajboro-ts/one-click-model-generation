@@ -1,7 +1,32 @@
 /**
  * Mock data for Liveboard dashboard
  * Based on the Figma design: TSE Business Overview
+ * 
+ * Figma Reference: https://www.figma.com/design/TM8rXwXwJOwLr0NVS4p6ub/Making-liveboards-fasters?node-id=26-16932
  */
+
+import type { IconName } from '../../../components/icons';
+
+// Sidebar navigation items
+export interface SidebarNavItem {
+  id: string;
+  label: string;
+  icon: IconName;
+  badge?: string;
+}
+
+export const primaryNavItems: SidebarNavItem[] = [
+  { id: 'home', label: 'Home', icon: 'profile' },
+  { id: 'liveboards', label: 'Liveboards', icon: 'funnel' },
+  { id: 'answers', label: 'Answers', icon: 'magnifying-glass' },
+  { id: 'spotiq', label: 'SpotIQ', icon: 'star' },
+  { id: 'monitor', label: 'Monitor', icon: 'eye' },
+];
+
+export const secondaryNavItems: SidebarNavItem[] = [
+  { id: 'data', label: 'Data', icon: 'folder' },
+  { id: 'admin', label: 'Admin', icon: 'cog' },
+];
 
 // Navigation tabs
 export const navigationTabs = [

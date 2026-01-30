@@ -4,15 +4,32 @@ import { Checkbox } from '../components/Checkbox';
 import { Radio } from '../components/Radio';
 import { Toggle } from '../components/Toggle';
 import { TextInput } from '../components/TextInput';
+import { TextArea } from '../components/TextArea';
 import { SearchInput } from '../components/SearchInput';
 import { Chip } from '../components/Chip';
 import { Alert } from '../components/Alert';
+import { Toast } from '../components/Toast';
 import { Modal } from '../components/Modal';
 import { Tabs } from '../components/Tabs';
 import { Select } from '../components/Select';
 import { Table } from '../components/Table';
 import { Tooltip } from '../components/Tooltip';
 import { Popover } from '../components/Popover';
+// New Phase 2-4 components
+import { LoadingIndicator } from '../components/LoadingIndicator';
+import { Avatar, AvatarGroup } from '../components/Avatar';
+import { Card } from '../components/Card';
+import { Typography } from '../components/Typography';
+import { Divider } from '../components/Divider';
+import { Link } from '../components/Link';
+import { Accordion } from '../components/Accordion';
+import { Menu } from '../components/Menu';
+import { Pagination } from '../components/Pagination';
+import { ProgressBar } from '../components/ProgressBar';
+import { Stepper } from '../components/Stepper';
+import { DatePicker } from '../components/DatePicker';
+import { IconGallery } from '../components/IconGallery';
+import { SegmentedControl } from '../components/SegmentedControl';
 import { brandColors } from '../tokens/colors/brand';
 
 interface PropDefinition {
@@ -98,6 +115,24 @@ const componentDocs: Record<string, {
       { name: 'onChange', type: '(e: ChangeEvent) => void', description: 'Change handler' },
     ],
   },
+  textarea: {
+    name: 'TextArea',
+    description: 'A multi-line text input field with optional label, helper text, character counter, and error states.',
+    props: [
+      { name: 'label', type: 'string', description: 'Label text' },
+      { name: 'showLabel', type: 'boolean', default: 'true', description: 'Whether to show the label' },
+      { name: 'placeholder', type: 'string', description: 'Placeholder text' },
+      { name: 'value', type: 'string', description: 'Current value' },
+      { name: 'rows', type: 'number', default: '4', description: 'Number of visible text rows' },
+      { name: 'resize', type: "'none' | 'vertical' | 'horizontal' | 'both'", default: "'vertical'", description: 'Whether to allow resizing' },
+      { name: 'maxLength', type: 'number', description: 'Maximum character count (shows counter when set)' },
+      { name: 'helperText', type: 'string', description: 'Helper text below the input' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether the textarea is disabled' },
+      { name: 'error', type: 'boolean', default: 'false', description: 'Whether the textarea has an error' },
+      { name: 'errorMessage', type: 'string', description: 'Error message to display' },
+      { name: 'onChange', type: '(e: ChangeEvent) => void', description: 'Change handler' },
+    ],
+  },
   searchinput: {
     name: 'SearchInput',
     description: 'A search input with icon and clear functionality. Perfect for filtering and search features.',
@@ -134,6 +169,20 @@ const componentDocs: Record<string, {
       { name: 'buttonText', type: 'string', description: 'Optional button text (page variant only)' },
       { name: 'dismissible', type: 'boolean', default: 'true', description: 'Whether the alert can be dismissed' },
       { name: 'showIcon', type: 'boolean', default: 'true', description: 'Whether to show the status icon' },
+    ],
+  },
+  toast: {
+    name: 'Toast',
+    description: 'A temporary notification that appears to provide feedback about an action. Auto-dismisses after a configurable duration.',
+    props: [
+      { name: 'message', type: 'string', description: 'Toast message' },
+      { name: 'type', type: "'success' | 'info' | 'warning' | 'error'", default: "'info'", description: 'Toast type' },
+      { name: 'duration', type: 'number', default: '5000', description: 'Auto-dismiss duration in milliseconds (0 to disable)' },
+      { name: 'isVisible', type: 'boolean', default: 'true', description: 'Whether the toast is visible' },
+      { name: 'onDismiss', type: '() => void', description: 'Called when toast is dismissed' },
+      { name: 'actionText', type: 'string', description: 'Action button text' },
+      { name: 'onAction', type: '() => void', description: 'Action button click handler' },
+      { name: 'position', type: "'top' | 'top-left' | 'top-right' | 'bottom' | 'bottom-left' | 'bottom-right'", default: "'bottom'", description: 'Position of the toast' },
     ],
   },
   modal: {
@@ -174,6 +223,18 @@ const componentDocs: Record<string, {
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
       { name: 'searchable', type: 'boolean', default: 'false', description: 'Show search input in dropdown' },
       { name: 'size', type: "'small' | 'basic' | 'large'", default: "'basic'", description: 'Size variant' },
+    ],
+  },
+  segmentedcontrol: {
+    name: 'SegmentedControl',
+    description: 'A group of mutually exclusive options displayed as connected segments. Supports text and icon variants.',
+    props: [
+      { name: 'options', type: 'Array<{ id: string, label?: string, icon?: ReactNode, disabled?: boolean, ariaLabel?: string }>', description: 'Array of segment options' },
+      { name: 'value', type: 'string', description: 'Currently selected segment ID' },
+      { name: 'onChange', type: '(value: string) => void', description: 'Change handler' },
+      { name: 'size', type: "'small' | 'default' | 'large'", default: "'default'", description: 'Size variant' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether the entire control is disabled' },
+      { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Fill available width' },
     ],
   },
   table: {
@@ -221,6 +282,174 @@ const componentDocs: Record<string, {
       { name: 'offset', type: 'number', default: '8', description: 'Offset from trigger element (px)' },
     ],
   },
+  // Phase 2: Core Components
+  loadingindicator: {
+    name: 'LoadingIndicator',
+    description: 'A compound component providing both contextual (inline) and global (fullscreen) loading indicators.',
+    props: [
+      { name: 'Contextual.size', type: "'xs' | 's' | 'm' | 'l' | 'xl'", default: "'m'", description: 'Size of the spinner (12-48px)' },
+      { name: 'Global.dark', type: 'boolean', default: 'false', description: 'Use dark theme overlay' },
+      { name: 'Global.message', type: 'string', description: 'Optional loading message' },
+    ],
+  },
+  avatar: {
+    name: 'Avatar',
+    description: 'Displays a user avatar with automatic initials fallback, image loading, and optional badge support.',
+    props: [
+      { name: 'name', type: 'string', description: 'User name (used for initials and alt text)' },
+      { name: 'src', type: 'string', description: 'Image source URL' },
+      { name: 'size', type: "'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'", default: "'m'", description: 'Avatar size (20-64px)' },
+      { name: 'showName', type: 'boolean', default: 'false', description: 'Display name alongside avatar' },
+      { name: 'namePosition', type: "'right' | 'bottom'", default: "'right'", description: 'Position of name relative to avatar' },
+      { name: 'badgeValue', type: 'number', description: 'Numbered badge value (max 99)' },
+      { name: 'showBadge', type: 'boolean', default: 'false', description: 'Show dot badge' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+    ],
+  },
+  card: {
+    name: 'Card',
+    description: 'A flexible container component for grouping related content with header, body, and footer sections.',
+    props: [
+      { name: 'interactive', type: 'boolean', default: 'false', description: 'Whether the card is clickable' },
+      { name: 'isSelected', type: 'boolean', default: 'false', description: 'Selected state' },
+      { name: 'isDisabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+      { name: 'noBorder', type: 'boolean', default: 'false', description: 'Remove border' },
+      { name: 'onClick', type: '(data: string) => void', description: 'Click handler' },
+      { name: 'Header.title', type: 'string', description: 'Header title text' },
+      { name: 'Header.subtitle', type: 'string', description: 'Header subtitle' },
+      { name: 'Footer.align', type: "'left' | 'center' | 'right' | 'space-between'", default: "'right'", description: 'Footer alignment' },
+    ],
+  },
+  typography: {
+    name: 'Typography',
+    description: 'A flexible text component supporting Radiant V2 typography system with 20+ variants and semantic colors.',
+    props: [
+      { name: 'variant', type: 'TypographyVariant', description: 'Typography variant (headline-large, page-title, body-normal, etc.)' },
+      { name: 'color', type: "'base' | 'gray' | 'accent' | 'success' | 'warning' | 'failure' | 'white'", default: "'base'", description: 'Text color' },
+      { name: 'as', type: 'ElementType', description: 'Override HTML tag' },
+      { name: 'noMargin', type: 'boolean', default: 'false', description: 'Remove bottom margin' },
+      { name: 'ellipsis', type: '{ rows: number }', description: 'Truncate after N lines with ellipsis' },
+      { name: 'wrapContent', type: 'boolean', default: 'false', description: 'Enable word wrapping' },
+    ],
+  },
+  divider: {
+    name: 'Divider',
+    description: 'A simple line separator for dividing content sections, supporting horizontal and vertical orientations.',
+    props: [
+      { name: 'vertical', type: 'boolean', default: 'false', description: 'Vertical orientation' },
+      { name: 'spacing', type: "'none' | 's' | 'm' | 'l'", default: "'none'", description: 'Margin around divider' },
+      { name: 'section', type: 'boolean', default: 'false', description: 'Include section-level spacing' },
+      { name: 'onDarkBg', type: 'boolean', default: 'false', description: 'For use on dark backgrounds' },
+    ],
+  },
+  link: {
+    name: 'Link',
+    description: 'A styled anchor element for navigation with color variants and external link support.',
+    props: [
+      { name: 'color', type: "'blue' | 'black' | 'white' | 'gray'", default: "'blue'", description: 'Link color' },
+      { name: 'size', type: "'small' | 'default' | 'large'", default: "'default'", description: 'Link size' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+      { name: 'noUnderline', type: 'boolean', default: 'false', description: 'Disable underline on hover' },
+      { name: 'external', type: 'boolean', default: 'false', description: 'Show external link icon' },
+      { name: 'href', type: 'string', description: 'Link destination' },
+    ],
+  },
+  // Phase 3: Interactive Components
+  accordion: {
+    name: 'Accordion',
+    description: 'A collapsible content component for showing/hiding sections with smooth animations.',
+    props: [
+      { name: 'allowMultiple', type: 'boolean', default: 'false', description: 'Allow multiple items expanded' },
+      { name: 'defaultExpanded', type: 'number | number[]', description: 'Initially expanded item(s)' },
+      { name: 'expanded', type: 'number | number[]', description: 'Controlled expanded state' },
+      { name: 'onExpandedChange', type: '(expanded: number[]) => void', description: 'Expansion change handler' },
+      { name: 'variant', type: "'default' | 'minimal' | 'bordered'", default: "'default'", description: 'Visual variant' },
+      { name: 'Item.title', type: 'ReactNode', description: 'Item title' },
+      { name: 'Item.subtitle', type: 'string', description: 'Item subtitle' },
+      { name: 'Item.disabled', type: 'boolean', default: 'false', description: 'Disable item' },
+    ],
+  },
+  menu: {
+    name: 'Menu',
+    description: 'A dropdown menu for displaying a list of actions with keyboard navigation support.',
+    props: [
+      { name: 'show', type: 'boolean', default: 'true', description: 'Menu visibility' },
+      { name: 'variant', type: "'default' | 'compact'", default: "'default'", description: 'Visual variant' },
+      { name: 'theme', type: "'light' | 'dark'", default: "'light'", description: 'Color theme' },
+      { name: 'onClose', type: '() => void', description: 'Close handler' },
+      { name: 'Item.active', type: 'boolean', default: 'false', description: 'Selected state' },
+      { name: 'Item.disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+      { name: 'Item.danger', type: 'boolean', default: 'false', description: 'Destructive action style' },
+      { name: 'Item.shortcut', type: 'string', description: 'Keyboard shortcut display' },
+    ],
+  },
+  pagination: {
+    name: 'Pagination',
+    description: 'A compound component for page navigation with three variants: Numbers, Dots, and Range.',
+    props: [
+      { name: 'Numbers.currentPage', type: 'number', description: 'Current page (1-indexed)' },
+      { name: 'Numbers.totalPages', type: 'number', description: 'Total number of pages' },
+      { name: 'Numbers.onPageChange', type: '(page: number) => void', description: 'Page change handler' },
+      { name: 'Numbers.siblingCount', type: 'number', default: '1', description: 'Pages to show on each side' },
+      { name: 'Dots.currentPage', type: 'number', description: 'Current page for dot indicators' },
+      { name: 'Range.itemsPerPage', type: 'number', description: 'Items per page for range display' },
+      { name: 'Range.totalItems', type: 'number', description: 'Total items for range calculation' },
+    ],
+  },
+  progressbar: {
+    name: 'ProgressBar',
+    description: 'A horizontal bar that shows progress toward a goal with color and size variants.',
+    props: [
+      { name: 'value', type: 'number', description: 'Progress value (0-100)' },
+      { name: 'max', type: 'number', default: '100', description: 'Maximum value' },
+      { name: 'color', type: "'green' | 'blue' | 'yellow' | 'red'", default: "'green'", description: 'Bar color' },
+      { name: 'size', type: "'small' | 'default' | 'large'", default: "'default'", description: 'Bar size (4-8px)' },
+      { name: 'indeterminate', type: 'boolean', default: 'false', description: 'Show loading animation' },
+      { name: 'label', type: 'string', description: 'Label text above bar' },
+      { name: 'showValue', type: 'boolean', default: 'false', description: 'Show percentage value' },
+    ],
+  },
+  stepper: {
+    name: 'Stepper',
+    description: 'A progress indicator for multi-step processes with horizontal and vertical orientations.',
+    props: [
+      { name: 'steps', type: 'Array<{ title: string, description?: string }>', description: 'Step items' },
+      { name: 'currentStep', type: 'number', default: '0', description: 'Current active step (0-indexed)' },
+      { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Stepper orientation' },
+      { name: 'sequential', type: 'boolean', default: 'true', description: 'Steps must be completed in order' },
+      { name: 'allCompleted', type: 'boolean', default: 'false', description: 'Mark all steps as completed' },
+      { name: 'onStepClick', type: '(stepIndex: number) => void', description: 'Step click handler' },
+    ],
+  },
+  // Phase 4: Advanced Components
+  datepicker: {
+    name: 'DatePicker',
+    description: 'A date selection input with calendar dropdown, supporting multiple date formats.',
+    props: [
+      { name: 'value', type: 'Date | null', description: 'Selected date' },
+      { name: 'onChange', type: '(date: Date | null) => void', description: 'Date change handler' },
+      { name: 'format', type: "'MM/DD/YYYY' | 'DD/MM/YYYY' | 'YYYY-MM-DD'", default: "'MM/DD/YYYY'", description: 'Date format' },
+      { name: 'label', type: 'string', description: 'Input label' },
+      { name: 'placeholder', type: 'string', default: "'Select date'", description: 'Placeholder text' },
+      { name: 'hasError', type: 'boolean', default: 'false', description: 'Error state' },
+      { name: 'helperText', type: 'string', description: 'Helper or error text' },
+      { name: 'minDate', type: 'Date', description: 'Minimum selectable date' },
+      { name: 'maxDate', type: 'Date', description: 'Maximum selectable date' },
+    ],
+  },
+  icongallery: {
+    name: 'IconGallery',
+    description: 'A searchable, browsable gallery of all available icons in the design system.',
+    props: [
+      { name: 'size', type: "'compact' | 'default' | 'large'", default: "'default'", description: 'Gallery density' },
+      { name: 'iconSize', type: "'xs' | 's' | 'm' | 'l' | 'xl'", default: "'m'", description: 'Icon display size' },
+      { name: 'theme', type: "'light' | 'dark'", default: "'light'", description: 'Color theme' },
+      { name: 'searchable', type: 'boolean', default: 'true', description: 'Enable search filtering' },
+      { name: 'selectable', type: 'boolean', default: 'false', description: 'Enable icon selection' },
+      { name: 'selectedIcon', type: 'IconName', description: 'Currently selected icon' },
+      { name: 'onSelectIcon', type: '(iconName: IconName) => void', description: 'Selection handler' },
+    ],
+  },
 };
 
 export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId }) => {
@@ -236,6 +465,12 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
   const [activeTab, setActiveTab] = useState('tab1');
   const [selectValue, setSelectValue] = useState('');
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  // New component states
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [paginationPage, setPaginationPage] = useState(1);
+  const [stepperStep, setStepperStep] = useState(1);
+  const [progressValue, setProgressValue] = useState(45);
+  const [segmentedValue, setSegmentedValue] = useState('day');
 
   if (!doc) {
     return (
@@ -326,6 +561,36 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
           </div>
         );
       
+      case 'textarea':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '400px' }}>
+              <TextArea 
+                label="Description" 
+                placeholder="Enter a description..." 
+                rows={4}
+              />
+              <TextArea 
+                label="Bio" 
+                placeholder="Tell us about yourself..." 
+                maxLength={200}
+                helperText="Max 200 characters"
+              />
+              <TextArea 
+                label="Comment" 
+                error 
+                errorMessage="This field is required"
+                rows={3}
+              />
+              <TextArea 
+                label="Disabled" 
+                placeholder="This textarea is disabled" 
+                disabled
+              />
+            </div>
+          </div>
+        );
+      
       case 'searchinput':
         return (
           <div style={styles.exampleContent}>
@@ -364,6 +629,25 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
               <Alert status="warning" message="Please review before proceeding." dismissible={false} />
               <Alert status="failure" message="An error occurred. Please try again." dismissible={false} />
               <Alert status="muted" message="This is a muted notification." dismissible={false} />
+            </div>
+          </div>
+        );
+      
+      case 'toast':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <Toast type="success" message="Changes saved successfully" duration={0} />
+              <Toast type="info" message="New updates available" duration={0} />
+              <Toast type="warning" message="Your session will expire soon" duration={0} />
+              <Toast type="error" message="Failed to save changes" duration={0} />
+              <Toast 
+                type="info" 
+                message="Item deleted" 
+                actionText="Undo"
+                onAction={() => console.log('Undo clicked')}
+                duration={0} 
+              />
             </div>
           </div>
         );
@@ -457,6 +741,72 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                 errorMessage="Please select an option"
                 options={[{ id: '1', label: 'Option' }]}
               />
+            </div>
+          </div>
+        );
+
+      case 'segmentedcontrol':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Text Variant</Typography>
+                <SegmentedControl
+                  options={[
+                    { id: 'day', label: 'Day' },
+                    { id: 'week', label: 'Week' },
+                    { id: 'month', label: 'Month' },
+                    { id: 'year', label: 'Year' },
+                  ]}
+                  value={segmentedValue}
+                  onChange={setSegmentedValue}
+                />
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Size Variants</Typography>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'flex-start' }}>
+                  <SegmentedControl
+                    size="small"
+                    options={[
+                      { id: 'a', label: 'Small' },
+                      { id: 'b', label: 'Option' },
+                    ]}
+                    value="a"
+                    onChange={() => {}}
+                  />
+                  <SegmentedControl
+                    size="default"
+                    options={[
+                      { id: 'a', label: 'Default' },
+                      { id: 'b', label: 'Option' },
+                    ]}
+                    value="a"
+                    onChange={() => {}}
+                  />
+                  <SegmentedControl
+                    size="large"
+                    options={[
+                      { id: 'a', label: 'Large' },
+                      { id: 'b', label: 'Option' },
+                    ]}
+                    value="a"
+                    onChange={() => {}}
+                  />
+                </div>
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Full Width</Typography>
+                <SegmentedControl
+                  fullWidth
+                  options={[
+                    { id: 'opt1', label: 'Option 1' },
+                    { id: 'opt2', label: 'Option 2' },
+                    { id: 'opt3', label: 'Option 3' },
+                  ]}
+                  value="opt1"
+                  onChange={() => {}}
+                />
+              </div>
             </div>
           </div>
         );
@@ -566,6 +916,431 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                 </Button>
               </Popover>
             </div>
+          </div>
+        );
+
+      // Phase 2: Core Components
+      case 'loadingindicator':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Contextual Spinner</Typography>
+                <div style={styles.exampleRow}>
+                  <LoadingIndicator.Contextual size="xs" />
+                  <LoadingIndicator.Contextual size="s" />
+                  <LoadingIndicator.Contextual size="m" />
+                  <LoadingIndicator.Contextual size="l" />
+                  <LoadingIndicator.Contextual size="xl" />
+                </div>
+                <div style={{ ...styles.exampleRow, marginTop: '8px' }}>
+                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>xs (12px)</span>
+                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>s (16px)</span>
+                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>m (24px)</span>
+                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>l (32px)</span>
+                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>xl (48px)</span>
+                </div>
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Skeleton / Shimmer</Typography>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '320px' }}>
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    <LoadingIndicator.Skeleton variant="circular" width={40} height={40} />
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+                      <LoadingIndicator.Skeleton variant="text" width="60%" />
+                      <LoadingIndicator.Skeleton variant="text" width="80%" />
+                    </div>
+                  </div>
+                  <LoadingIndicator.Skeleton variant="rounded" width="100%" height={120} />
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <LoadingIndicator.Skeleton variant="rectangular" width={80} height={24} />
+                    <LoadingIndicator.Skeleton variant="rectangular" width={80} height={24} />
+                    <LoadingIndicator.Skeleton variant="rectangular" width={80} height={24} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'avatar':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Size Variants</Typography>
+                <div style={styles.exampleRow}>
+                  <Avatar name="Alice Brown" size="xs" />
+                  <Avatar name="Bob Chen" size="s" />
+                  <Avatar name="Carol Davis" size="m" />
+                  <Avatar name="Dan Evans" size="l" />
+                  <Avatar name="Eve Foster" size="xl" />
+                  <Avatar name="Frank Green" size="xxl" />
+                </div>
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>With Name and Badge</Typography>
+                <div style={styles.exampleRow}>
+                  <Avatar name="Grace Hill" showName />
+                  <Avatar name="Henry Irwin" showName badgeValue={5} />
+                  <Avatar name="Iris James" showName showBadge />
+                </div>
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Avatar Group (Stacked)</Typography>
+                <AvatarGroup
+                  avatars={[
+                    { name: 'John Doe' },
+                    { name: 'Jane Smith' },
+                    { name: 'Bob Wilson' },
+                    { name: 'Alice Brown' },
+                    { name: 'Charlie Davis' },
+                    { name: 'Eve Foster' },
+                  ]}
+                  max={4}
+                  size="m"
+                />
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Avatar Group Sizes</Typography>
+                <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+                  <AvatarGroup
+                    avatars={[
+                      { name: 'User A' },
+                      { name: 'User B' },
+                      { name: 'User C' },
+                    ]}
+                    max={3}
+                    size="s"
+                  />
+                  <AvatarGroup
+                    avatars={[
+                      { name: 'User A' },
+                      { name: 'User B' },
+                      { name: 'User C' },
+                      { name: 'User D' },
+                      { name: 'User E' },
+                    ]}
+                    max={3}
+                    size="m"
+                  />
+                  <AvatarGroup
+                    avatars={[
+                      { name: 'User A' },
+                      { name: 'User B' },
+                      { name: 'User C' },
+                    ]}
+                    max={3}
+                    size="l"
+                  />
+                </div>
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Disabled</Typography>
+                <div style={styles.exampleRow}>
+                  <Avatar name="Kevin Lee" disabled />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'card':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+              <Card>
+                <Card.Header title="Basic Card" subtitle="With header and body" />
+                <Card.Body>
+                  <p style={{ margin: 0, color: brandColors.gray[70] }}>Card content goes here.</p>
+                </Card.Body>
+              </Card>
+              <Card interactive onClick={() => alert('Card clicked!')}>
+                <Card.Header title="Interactive Card" />
+                <Card.Body>
+                  <p style={{ margin: 0, color: brandColors.gray[70] }}>Click me!</p>
+                </Card.Body>
+              </Card>
+              <Card isSelected>
+                <Card.Header title="Selected Card" />
+                <Card.Body>
+                  <p style={{ margin: 0, color: brandColors.gray[70] }}>This card is selected.</p>
+                </Card.Body>
+                <Card.Footer>
+                  <Button variant="secondary" size="small">Cancel</Button>
+                  <Button variant="primary" size="small">Save</Button>
+                </Card.Footer>
+              </Card>
+              <Card isDisabled>
+                <Card.Header title="Disabled Card" />
+                <Card.Body>
+                  <p style={{ margin: 0, color: brandColors.gray[70] }}>This card is disabled.</p>
+                </Card.Body>
+              </Card>
+            </div>
+          </div>
+        );
+
+      case 'typography':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleColumn}>
+              <Typography variant="headline-large">Headline Large (32px)</Typography>
+              <Typography variant="page-title">Page Title (24px)</Typography>
+              <Typography variant="modal-title">Modal Title (20px)</Typography>
+              <Typography variant="section-label">Section Label (18px)</Typography>
+              <Typography variant="content-label">Content Label (16px)</Typography>
+              <Typography variant="body-large">Body Large (16px)</Typography>
+              <Typography variant="body-normal">Body Normal (14px)</Typography>
+              <Typography variant="footnote" color="gray">Footnote (12px)</Typography>
+              <Typography variant="overline" color="gray-light">OVERLINE (12px)</Typography>
+            </div>
+            <div style={styles.exampleRow}>
+              <Typography variant="body-normal" color="accent">Accent color</Typography>
+              <Typography variant="body-normal" color="success">Success color</Typography>
+              <Typography variant="body-normal" color="warning">Warning color</Typography>
+              <Typography variant="body-normal" color="failure">Failure color</Typography>
+            </div>
+          </div>
+        );
+
+      case 'divider':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleColumn}>
+              <p style={{ margin: 0, color: brandColors.gray[70] }}>Content above divider</p>
+              <Divider />
+              <p style={{ margin: 0, color: brandColors.gray[70] }}>Content below divider</p>
+            </div>
+            <div style={styles.exampleColumn}>
+              <p style={{ margin: 0, color: brandColors.gray[70] }}>With spacing="m"</p>
+              <Divider spacing="m" />
+              <p style={{ margin: 0, color: brandColors.gray[70] }}>More space around</p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', height: '40px' }}>
+              <span>Item 1</span>
+              <Divider vertical />
+              <span>Item 2</span>
+              <Divider vertical />
+              <span>Item 3</span>
+            </div>
+          </div>
+        );
+
+      case 'link':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleRow}>
+              <Link href="#">Default Link</Link>
+              <Link href="#" color="black">Black Link</Link>
+              <Link href="#" color="gray">Gray Link</Link>
+            </div>
+            <div style={styles.exampleRow}>
+              <Link href="#" size="small">Small Link</Link>
+              <Link href="#">Default Size</Link>
+              <Link href="#" size="large">Large Link</Link>
+            </div>
+            <div style={styles.exampleRow}>
+              <Link href="https://example.com" target="_blank" external>External Link</Link>
+              <Link href="#" disabled>Disabled Link</Link>
+              <Link href="#" noUnderline>No underline on hover</Link>
+            </div>
+          </div>
+        );
+
+      // Phase 3: Interactive Components
+      case 'accordion':
+        return (
+          <div style={styles.exampleContent}>
+            <Accordion defaultExpanded={0}>
+              <Accordion.Item title="What is Radiant?">
+                Radiant is ThoughtSpot's design system providing reusable components and design tokens.
+              </Accordion.Item>
+              <Accordion.Item title="How do I get started?">
+                Import components from the component library and use design tokens for consistent styling.
+              </Accordion.Item>
+              <Accordion.Item title="Is it customizable?" disabled>
+                This item is disabled.
+              </Accordion.Item>
+            </Accordion>
+            <div style={{ marginTop: '24px' }}>
+              <h4 style={styles.interactiveLabel}>Bordered variant:</h4>
+              <Accordion variant="bordered" allowMultiple>
+                <Accordion.Item title="Section 1">Content for section 1</Accordion.Item>
+                <Accordion.Item title="Section 2">Content for section 2</Accordion.Item>
+              </Accordion>
+            </div>
+          </div>
+        );
+
+      case 'menu':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'flex', gap: '24px' }}>
+              <div>
+                <h4 style={styles.interactiveLabel}>Basic Menu:</h4>
+                <Menu>
+                  <Menu.Item onClick={() => alert('Edit')}>Edit</Menu.Item>
+                  <Menu.Item onClick={() => alert('Duplicate')}>Duplicate</Menu.Item>
+                  <Menu.Item shortcut="Cmd+S">Save</Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item danger onClick={() => alert('Delete')}>Delete</Menu.Item>
+                </Menu>
+              </div>
+              <div>
+                <h4 style={styles.interactiveLabel}>With Groups:</h4>
+                <Menu>
+                  <Menu.Group label="Actions">
+                    <Menu.Item active>Copy</Menu.Item>
+                    <Menu.Item>Paste</Menu.Item>
+                  </Menu.Group>
+                  <Menu.Divider />
+                  <Menu.Group label="Other">
+                    <Menu.Item disabled>Disabled item</Menu.Item>
+                    <Menu.Item>Settings</Menu.Item>
+                  </Menu.Group>
+                </Menu>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'pagination':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleColumn}>
+              <h4 style={styles.interactiveLabel}>Numbers:</h4>
+              <Pagination.Numbers
+                currentPage={paginationPage}
+                totalPages={10}
+                onPageChange={setPaginationPage}
+              />
+            </div>
+            <div style={styles.exampleColumn}>
+              <h4 style={styles.interactiveLabel}>Dots (for carousels):</h4>
+              <Pagination.Dots
+                currentPage={paginationPage}
+                totalPages={5}
+                onPageChange={setPaginationPage}
+              />
+            </div>
+            <div style={styles.exampleColumn}>
+              <h4 style={styles.interactiveLabel}>Range:</h4>
+              <Pagination.Range
+                currentPage={paginationPage}
+                totalPages={10}
+                itemsPerPage={20}
+                totalItems={195}
+                onPageChange={setPaginationPage}
+              />
+            </div>
+          </div>
+        );
+
+      case 'progressbar':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleColumn}>
+              <ProgressBar value={progressValue} label="Upload Progress" showValue />
+              <ProgressBar value={75} color="blue" />
+              <ProgressBar value={40} color="yellow" size="small" />
+              <ProgressBar value={90} color="red" size="large" />
+            </div>
+            <div style={styles.exampleColumn}>
+              <h4 style={styles.interactiveLabel}>Indeterminate:</h4>
+              <ProgressBar value={0} indeterminate color="blue" />
+            </div>
+            <div style={styles.interactiveBox}>
+              <h4 style={styles.interactiveLabel}>Interactive: {progressValue}%</h4>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={progressValue}
+                onChange={(e) => setProgressValue(Number(e.target.value))}
+                style={{ width: '100%' }}
+              />
+            </div>
+          </div>
+        );
+
+      case 'stepper':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleColumn}>
+              <h4 style={styles.interactiveLabel}>Horizontal:</h4>
+              <Stepper
+                steps={[
+                  { title: 'Account' },
+                  { title: 'Profile' },
+                  { title: 'Review' },
+                  { title: 'Complete' },
+                ]}
+                currentStep={stepperStep}
+                onStepClick={setStepperStep}
+              />
+            </div>
+            <div style={{ marginTop: '32px' }}>
+              <h4 style={styles.interactiveLabel}>Vertical with descriptions:</h4>
+              <Stepper
+                orientation="vertical"
+                steps={[
+                  { title: 'Create account', description: 'Enter your email and password' },
+                  { title: 'Setup profile', description: 'Add your personal details' },
+                  { title: 'Complete', description: 'Review and finish' },
+                ]}
+                currentStep={stepperStep}
+                onStepClick={setStepperStep}
+              />
+            </div>
+            <div style={styles.interactiveBox}>
+              <h4 style={styles.interactiveLabel}>Current Step: {stepperStep + 1}</h4>
+              <div style={styles.exampleRow}>
+                <Button size="small" variant="secondary" onClick={() => setStepperStep(Math.max(0, stepperStep - 1))} disabled={stepperStep === 0}>
+                  Previous
+                </Button>
+                <Button size="small" variant="primary" onClick={() => setStepperStep(Math.min(3, stepperStep + 1))} disabled={stepperStep === 3}>
+                  Next
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+
+      // Phase 4: Advanced Components
+      case 'datepicker':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ maxWidth: '280px' }}>
+              <DatePicker
+                value={selectedDate}
+                onChange={setSelectedDate}
+                label="Select a date"
+                placeholder="MM/DD/YYYY"
+              />
+            </div>
+            <div style={{ maxWidth: '280px' }}>
+              <DatePicker
+                value={null}
+                onChange={() => {}}
+                label="With error"
+                hasError
+                helperText="Please select a valid date"
+              />
+            </div>
+            <div style={styles.interactiveBox}>
+              <h4 style={styles.interactiveLabel}>Selected date:</h4>
+              <p style={{ margin: 0, color: brandColors.gray[70] }}>
+                {selectedDate ? selectedDate.toLocaleDateString() : 'No date selected'}
+              </p>
+            </div>
+          </div>
+        );
+
+      case 'icongallery':
+        return (
+          <div style={styles.exampleContent}>
+            <IconGallery size="compact" iconSize="m" />
           </div>
         );
       

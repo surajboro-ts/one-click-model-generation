@@ -1,0 +1,106 @@
+/**
+ * Link styles
+ * Based on ThoughtSpot Radiant design system
+ */
+
+.link {
+  font-family: var(--font-family-primary, "Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-md, 20px);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration-fast, 150ms) var(--easing-standard, ease);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1, 4px);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline-offset: var(--spacing-1, 2px);
+  border-radius: var(--radius-xs, 2px);
+}
+
+/* Color variants */
+.blue {
+  color: var(--color-brand-blue-60, #2770EF);
+}
+
+.blue:hover {
+  color: var(--color-brand-blue-70, #1E5BBB);
+}
+
+.blue:active {
+  color: var(--color-brand-blue-80, #154792);
+}
+
+.black {
+  color: var(--color-brand-gray-90, #1D1F26);
+}
+
+.black:hover {
+  color: var(--color-brand-gray-70, #484D56);
+}
+
+.black:active {
+  color: var(--color-brand-gray-80, #333740);
+}
+
+.white {
+  color: var(--color-brand-white, #ffffff);
+}
+
+.white:hover {
+  color: var(--color-brand-gray-20, #E9EAEC);
+}
+
+.white:active {
+  color: var(--color-brand-gray-30, #DADCE0);
+}
+
+.gray {
+  color: var(--color-brand-gray-60, #777E8B);
+}
+
+.gray:hover {
+  color: var(--color-brand-gray-70, #484D56);
+}
+
+.gray:active {
+  color: var(--color-brand-gray-80, #333740);
+}
+
+/* No underline on hover */
+.noUnderline:hover {
+  text-decoration: none;
+}
+
+/* Disabled state */
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Size variants */
+.small {
+  font-size: var(--font-size-xs, 12px);
+  line-height: var(--line-height-sm, 18px);
+}
+
+.large {
+  font-size: var(--font-size-md, 16px);
+  line-height: var(--line-height-lg, 24px);
+}
+
+/* External link icon */
+.externalIcon {
+  width: var(--font-size-xs, 12px);
+  height: var(--font-size-xs, 12px);
+  flex-shrink: 0;
+}

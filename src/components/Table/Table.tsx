@@ -1,5 +1,7 @@
-import React, { forwardRef, useState, useMemo } from 'react';
+import React, { forwardRef, useState, useMemo, ReactNode } from 'react';
 import { Icon } from '../icons';
+import { Avatar, AvatarSize } from '../Avatar';
+import { Chip, ChipVariant } from '../Chip';
 import styles from './Table.module.css';
 
 /**
@@ -309,4 +311,167 @@ export const Table = forwardRef<HTMLDivElement, TableProps>(({
 });
 
 Table.displayName = 'Table';
+
+/**
+ * Cell Renderer Utilities
+ * 
+ * Helper functions for common cell types in tables.
+ */
+export const TableCellRenderers = {
+  /**
+   * Render a cell with an avatar and optional text
+   */
+  avatar: (options: {
+    nameKey?: string;
+    srcKey?: string;
+    size?: AvatarSize;
+    showName?: boolean;
+  } = {}) => {
+    const { nameKey = 'name', srcKey = 'avatar', size = 's', showName = true } = options;
+    return (value: unknown, row: Record<string, unknown>): ReactNode => {
+      const name = String(row[nameKey] ?? value ?? '');
+      const src = row[srcKey] as string | undefined;
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Avatar name={name} src={src} size={size} />
+          {showName && <span>{name}</span>}
+        </div>
+      );
+    };
+  },
+
+  /**
+   * Render a cell with a single chip/tag
+   */
+  chip: (options: {
+    variantMap?: Record<string, ChipVariant>;
+    defaultVariant?: ChipVariant;
+  } = {}) => {
+    const { variantMap = {}, defaultVariant = 'neutral' } = options;
+    return (value: unknown): ReactNode => {
+      const label = String(value ?? '');
+      const variant = variantMap[label] || defaultVariant;
+      return <Chip label={label} variant={variant} size="small" />;
+    };
+  },
+
+  /**
+   * Render a cell with multiple chips/tags
+   */
+  chips: (options: {
+    variantMap?: Record<string, ChipVariant>;
+    defaultVariant?: ChipVariant;
+    max?: number;
+  } = {}) => {
+    const { variantMap = {}, defaultVariant = 'neutral', max = 3 } = options;
+    return (value: unknown): ReactNode => {
+      if (!Array.isArray(value)) return null;
+      const items = value.slice(0, max);
+      const overflow = value.length - max;
+      return (
+        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+          {items.map((item, i) => {
+            const label = String(item);
+            const variant = variantMap[label] || defaultVariant;
+            return <Chip key={i} label={label} variant={variant} size="small" />;
+          })}
+          {overflow > 0 && <Chip label={`+${overflow}`} variant="neutral" size="small" />}
+        </div>
+      );
+    };
+  },
+
+  /**
+   * Render a cell with a status indicator
+   */
+  status: (statusConfig: Record<string, { label: string; variant: ChipVariant }>) => {
+    return (value: unknown): ReactNode => {
+      const key = String(value ?? '');
+      const config = statusConfig[key];
+      if (!config) return key;
+      return <Chip label={config.label} variant={config.variant} size="small" />;
+    };
+  },
+
+  /**
+   * Render a cell with formatted date
+   */
+  date: (options: {
+    format?: 'short' | 'medium' | 'long';
+    locale?: string;
+  } = {}) => {
+    const { format = 'medium', locale = 'en-US' } = options;
+    const formatOptions: Intl.DateTimeFormatOptions = {
+      short: { month: 'numeric', day: 'numeric', year: '2-digit' },
+      medium: { month: 'short', day: 'numeric', year: 'numeric' },
+      long: { month: 'long', day: 'numeric', year: 'numeric' },
+    }[format];
+    
+    return (value: unknown): ReactNode => {
+      if (!value) return '';
+      const date = value instanceof Date ? value : new Date(String(value));
+      if (isNaN(date.getTime())) return String(value);
+      return date.toLocaleDateString(locale, formatOptions);
+    };
+  },
+
+  /**
+   * Render a cell with formatted number/currency
+   */
+  number: (options: {
+    style?: 'decimal' | 'currency' | 'percent';
+    currency?: string;
+    locale?: string;
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+  } = {}) => {
+    const { 
+      style = 'decimal', 
+      currency = 'USD', 
+      locale = 'en-US',
+      minimumFractionDigits,
+      maximumFractionDigits,
+    } = options;
+    
+    return (value: unknown): ReactNode => {
+      const num = Number(value);
+      if (isNaN(num)) return String(value);
+      return num.toLocaleString(locale, { 
+        style, 
+        currency: style === 'currency' ? currency : undefined,
+        minimumFractionDigits,
+        maximumFractionDigits,
+      });
+    };
+  },
+
+  /**
+   * Render a cell with a boolean indicator
+   */
+  boolean: (options: {
+    trueLabel?: string;
+    falseLabel?: string;
+    trueVariant?: ChipVariant;
+    falseVariant?: ChipVariant;
+  } = {}) => {
+    const { 
+      trueLabel = 'Yes', 
+      falseLabel = 'No',
+      trueVariant = 'success',
+      falseVariant = 'neutral',
+    } = options;
+    
+    return (value: unknown): ReactNode => {
+      const isTrue = Boolean(value);
+      return (
+        <Chip 
+          label={isTrue ? trueLabel : falseLabel} 
+          variant={isTrue ? trueVariant : falseVariant} 
+          size="small" 
+        />
+      );
+    };
+  },
+};
+
 export default Table;

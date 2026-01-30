@@ -1,0 +1,103 @@
+/**
+ * ProgressBar styles
+ * Based on ThoughtSpot Radiant design system
+ */
+
+.progressBar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-gray-20);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressBarInner {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease-out;
+  min-width: 4px;
+}
+
+/* Size variants */
+.small {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.small .progressBarInner {
+  border-radius: 2px;
+  min-width: 2px;
+}
+
+.large {
+  height: 8px;
+  border-radius: 4px;
+}
+
+.large .progressBarInner {
+  border-radius: 4px;
+  min-width: 4px;
+}
+
+/* Color variants */
+.green .progressBarInner {
+  background-color: var(--color-green-60);
+}
+
+.blue .progressBarInner {
+  background-color: var(--color-blue-60);
+}
+
+.yellow .progressBarInner {
+  background-color: var(--color-yellow-60);
+}
+
+.red .progressBarInner {
+  background-color: var(--color-red-60);
+}
+
+/* Hide on initial step */
+.hideOnInitial .progressBarInner[style*="width: 0"] {
+  min-width: 0;
+}
+
+/* Indeterminate animation */
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.indeterminate .progressBarInner {
+  width: 30% !important;
+  animation: indeterminate 1.5s infinite ease-in-out;
+}
+
+/* With label */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gray-70);
+}
+
+.value {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gray-60);
+}

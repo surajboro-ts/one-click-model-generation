@@ -2,13 +2,15 @@
  * Brand/Primitive Color Tokens
  * 
  * These are the raw color values that form the foundation of the color system.
+ * Based on ThoughtSpot Radiant design system.
  * These tokens should NOT be used directly in components - use Alias or Mapped tokens instead.
  */
 
 export const brandColors = {
-  // Blue Scale
+  // Blue Scale (Primary)
   blue: {
     100: '#001740',
+    90: '#082559',
     80: '#163772',
     70: '#2359B6',
     60: '#2770EF',
@@ -16,10 +18,10 @@ export const brandColors = {
     40: '#ABC7F9',
     30: '#CEDCF5',
     20: '#DEE8FA',
-    10: '#EBF2FD',
+    10: '#F2F7FF',
   },
 
-  // Gray Scale
+  // Gray Scale (Neutral)
   gray: {
     100: '#000000',
     90: '#1D232F',
@@ -34,8 +36,11 @@ export const brandColors = {
     0: '#FFFFFF',
   },
 
-  // Green Scale
+  // Green Scale (Success)
   green: {
+    100: '#001F14',
+    90: '#003B26',
+    80: '#025B3C',
     70: '#049160',
     60: '#06BF7F',
     50: '#56D3A8',
@@ -45,8 +50,11 @@ export const brandColors = {
     10: '#EDFFF9',
   },
 
-  // Yellow Scale
+  // Yellow Scale (Warning)
   yellow: {
+    100: '#2E2200',
+    90: '#4F3D09',
+    80: '#785F1A',
     70: '#BF982A',
     60: '#FCC838',
     50: '#FCD977',
@@ -56,8 +64,11 @@ export const brandColors = {
     10: '#FFFBF0',
   },
 
-  // Red Scale
+  // Red Scale (Error/Failure)
   red: {
+    100: '#1F0003',
+    90: '#3D090E',
+    80: '#721F27',
     70: '#B6313E',
     60: '#E22B3D',
     50: '#F47E89',
@@ -67,9 +78,12 @@ export const brandColors = {
     10: '#FFF0F0',
   },
 
-  // Purple Scale
+  // Purple Scale (Date/Time)
   purple: {
-    70: '#6A4ABA',
+    100: '#0D0030',
+    90: '#210F4F',
+    80: '#422E75',
+    70: '#6847BA',
     60: '#8C62F5',
     50: '#B094F8',
     40: '#D1C0FB',
@@ -78,8 +92,11 @@ export const brandColors = {
     10: '#F7F5FF',
   },
 
-  // Orange Scale
+  // Orange Scale (Accent)
   orange: {
+    100: '#331100',
+    90: '#471F0B',
+    80: '#7A3D1F',
     70: '#C26232',
     60: '#FF8142',
     50: '#FFA97E',
@@ -89,20 +106,27 @@ export const brandColors = {
     10: '#FFF5F0',
   },
 
-  // Teal Scale
+  // Teal Scale (Info)
   teal: {
-    70: '#369FAA',
+    100: '#002D33',
+    90: '#0C3F45',
+    80: '#22636B',
+    70: '#359FAA',
     60: '#48D1E0',
     50: '#82DFE9',
     40: '#B5ECF2',
     30: '#C9F0F5',
-    20: '#DFFAFC',
+    20: '#E1F7FA',
     10: '#EDFDFF',
   },
 
   // Base Colors
   white: '#FFFFFF',
   black: '#000000',
+
+  // Toned variants (for subtle backgrounds)
+  whiteToned: '#FAFBFC',
+  blackToned: '#1C2330',
 } as const;
 
 // Type exports for brand colors
@@ -115,4 +139,7 @@ export type RedScale = keyof typeof brandColors.red;
 export type PurpleScale = keyof typeof brandColors.purple;
 export type OrangeScale = keyof typeof brandColors.orange;
 export type TealScale = keyof typeof brandColors.teal;
+
+// Extended color scale type (10-100 range)
+export type ColorScale = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
 
