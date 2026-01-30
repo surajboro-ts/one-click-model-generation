@@ -9,6 +9,10 @@ import { Chip } from '../components/Chip';
 import { Alert } from '../components/Alert';
 import { Modal } from '../components/Modal';
 import { Tabs } from '../components/Tabs';
+import { Select } from '../components/Select';
+import { Table } from '../components/Table';
+import { Tooltip } from '../components/Tooltip';
+import { Popover } from '../components/Popover';
 import { brandColors } from '../tokens/colors/brand';
 
 interface PropDefinition {
@@ -155,6 +159,68 @@ const componentDocs: Record<string, {
       { name: 'onTabChange', type: '(id: string) => void', description: 'Handler when a tab is selected' },
     ],
   },
+  select: {
+    name: 'Select',
+    description: 'A dropdown selection component with search functionality, keyboard navigation, and customizable options.',
+    props: [
+      { name: 'options', type: 'Array<{ id: string, label: string, value?: string }>', description: 'Array of options to display' },
+      { name: 'value', type: 'string', description: 'Currently selected value' },
+      { name: 'onChange', type: '(value: string, option: SelectOption) => void', description: 'Handler when selection changes' },
+      { name: 'placeholder', type: 'string', default: "'Select an option'", description: 'Placeholder text when no selection' },
+      { name: 'label', type: 'string', description: 'Label text above the select' },
+      { name: 'helperText', type: 'string', description: 'Helper text below the select' },
+      { name: 'error', type: 'boolean', default: 'false', description: 'Error state' },
+      { name: 'errorMessage', type: 'string', description: 'Error message to display' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+      { name: 'searchable', type: 'boolean', default: 'false', description: 'Show search input in dropdown' },
+      { name: 'size', type: "'small' | 'basic' | 'large'", default: "'basic'", description: 'Size variant' },
+    ],
+  },
+  table: {
+    name: 'Table',
+    description: 'A flexible data table component for displaying tabular data with sorting, selection, and custom cell rendering.',
+    props: [
+      { name: 'columns', type: 'Array<TableColumn>', description: 'Column definitions with key, label, width, and render function' },
+      { name: 'data', type: 'Array<T>', description: 'Table data rows' },
+      { name: 'rowKey', type: 'string | ((row, index) => string)', default: "'id'", description: 'Key extractor for rows' },
+      { name: 'loading', type: 'boolean', default: 'false', description: 'Loading state' },
+      { name: 'emptyMessage', type: 'string', default: "'No data available'", description: 'Empty state message' },
+      { name: 'selectable', type: 'boolean', default: 'false', description: 'Whether rows are selectable' },
+      { name: 'selectedKeys', type: 'string[]', description: 'Selected row keys' },
+      { name: 'onSelectionChange', type: '(selectedKeys: string[]) => void', description: 'Selection change handler' },
+      { name: 'hoverable', type: 'boolean', default: 'true', description: 'Show hover state on rows' },
+      { name: 'bordered', type: 'boolean', default: 'false', description: 'Show table borders' },
+      { name: 'striped', type: 'boolean', default: 'false', description: 'Striped rows' },
+    ],
+  },
+  tooltip: {
+    name: 'Tooltip',
+    description: 'A lightweight tooltip component for displaying contextual information on hover or focus.',
+    props: [
+      { name: 'content', type: 'ReactNode', description: 'Tooltip content' },
+      { name: 'children', type: 'ReactElement', description: 'Element that triggers the tooltip' },
+      { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'top'", description: 'Placement of the tooltip' },
+      { name: 'showDelay', type: 'number', default: '200', description: 'Delay before showing (ms)' },
+      { name: 'hideDelay', type: 'number', default: '0', description: 'Delay before hiding (ms)' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Whether tooltip is disabled' },
+      { name: 'maxWidth', type: 'number', default: '250', description: 'Maximum width of tooltip' },
+    ],
+  },
+  popover: {
+    name: 'Popover',
+    description: 'An interactive overlay component for displaying content in a floating container with click or hover triggers.',
+    props: [
+      { name: 'content', type: 'ReactNode', description: 'Popover content' },
+      { name: 'children', type: 'ReactElement', description: 'Element that triggers the popover' },
+      { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right' | ...", default: "'bottom'", description: 'Placement of the popover' },
+      { name: 'trigger', type: "'click' | 'hover'", default: "'click'", description: 'How to trigger the popover' },
+      { name: 'isOpen', type: 'boolean', description: 'Controlled open state' },
+      { name: 'onOpenChange', type: '(isOpen: boolean) => void', description: 'Open state change handler' },
+      { name: 'closeOnClickOutside', type: 'boolean', default: 'true', description: 'Close on click outside' },
+      { name: 'closeOnEscape', type: 'boolean', default: 'true', description: 'Close on escape key' },
+      { name: 'offset', type: 'number', default: '8', description: 'Offset from trigger element (px)' },
+    ],
+  },
 };
 
 export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId }) => {
@@ -169,6 +235,8 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
   const [searchValue, setSearchValue] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('tab1');
+  const [selectValue, setSelectValue] = useState('');
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   if (!doc) {
     return (
@@ -340,6 +408,164 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
             />
             <div style={{ marginTop: '16px', padding: '16px', background: brandColors.gray[10], borderRadius: '8px' }}>
               Content for {activeTab}
+            </div>
+          </div>
+        );
+
+      case 'select':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ maxWidth: '320px' }}>
+              <Select
+                label="Country"
+                placeholder="Select a country"
+                options={[
+                  { id: 'us', label: 'United States' },
+                  { id: 'ca', label: 'Canada' },
+                  { id: 'uk', label: 'United Kingdom' },
+                  { id: 'de', label: 'Germany' },
+                  { id: 'fr', label: 'France' },
+                ]}
+                value={selectValue}
+                onChange={(value) => setSelectValue(value)}
+              />
+            </div>
+            <div style={{ maxWidth: '320px' }}>
+              <Select
+                label="Searchable select"
+                placeholder="Search and select..."
+                searchable
+                options={[
+                  { id: 'opt1', label: 'Option 1' },
+                  { id: 'opt2', label: 'Option 2' },
+                  { id: 'opt3', label: 'Option 3' },
+                  { id: 'opt4', label: 'Option 4' },
+                  { id: 'opt5', label: 'Option 5' },
+                ]}
+                value=""
+                onChange={() => {}}
+              />
+            </div>
+            <div style={styles.exampleRow}>
+              <Select
+                placeholder="Disabled"
+                disabled
+                options={[{ id: '1', label: 'Option' }]}
+              />
+              <Select
+                placeholder="Error state"
+                error
+                errorMessage="Please select an option"
+                options={[{ id: '1', label: 'Option' }]}
+              />
+            </div>
+          </div>
+        );
+
+      case 'table':
+        return (
+          <div style={styles.exampleContent}>
+            <Table
+              columns={[
+                { key: 'name', label: 'Name', sortable: true },
+                { key: 'email', label: 'Email' },
+                { key: 'role', label: 'Role' },
+                { key: 'status', label: 'Status', render: (value) => (
+                  <Chip 
+                    label={value as string} 
+                    type="attribute"
+                  />
+                )},
+              ]}
+              data={[
+                { id: '1', name: 'Alex Johnson', email: 'alex@example.com', role: 'Admin', status: 'Active' },
+                { id: '2', name: 'Sarah Chen', email: 'sarah@example.com', role: 'User', status: 'Active' },
+                { id: '3', name: 'Mike Roberts', email: 'mike@example.com', role: 'User', status: 'Pending' },
+              ]}
+              rowKey="id"
+              hoverable
+            />
+          </div>
+        );
+
+      case 'tooltip':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleRow}>
+              <Tooltip content="This is a tooltip" placement="top">
+                <Button variant="secondary">Hover me (top)</Button>
+              </Tooltip>
+              <Tooltip content="Bottom tooltip" placement="bottom">
+                <Button variant="secondary">Hover me (bottom)</Button>
+              </Tooltip>
+              <Tooltip content="Left tooltip" placement="left">
+                <Button variant="secondary">Hover me (left)</Button>
+              </Tooltip>
+              <Tooltip content="Right tooltip" placement="right">
+                <Button variant="secondary">Hover me (right)</Button>
+              </Tooltip>
+            </div>
+            <div style={styles.exampleRow}>
+              <Tooltip 
+                content="This tooltip has a longer content that wraps to multiple lines to show how it handles text."
+                placement="top"
+                maxWidth={200}
+              >
+                <Button variant="tertiary">Long content tooltip</Button>
+              </Tooltip>
+            </div>
+          </div>
+        );
+
+      case 'popover':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={styles.exampleRow}>
+              <Popover
+                content={
+                  <div style={{ padding: '8px', minWidth: '150px' }}>
+                    <Button variant="tertiary" fullWidth style={{ justifyContent: 'flex-start' }}>Edit</Button>
+                    <Button variant="tertiary" fullWidth style={{ justifyContent: 'flex-start' }}>Duplicate</Button>
+                    <Button variant="tertiary" fullWidth style={{ justifyContent: 'flex-start', color: brandColors.red[60] }}>Delete</Button>
+                  </div>
+                }
+                placement="bottom-start"
+              >
+                <Button variant="secondary">Click for menu</Button>
+              </Popover>
+              
+              <Popover
+                content={
+                  <div style={{ padding: '12px' }}>
+                    <p style={{ margin: 0, fontSize: '14px', color: brandColors.gray[70] }}>
+                      This popover appears on hover
+                    </p>
+                  </div>
+                }
+                trigger="hover"
+                placement="bottom"
+              >
+                <Button variant="secondary">Hover for info</Button>
+              </Popover>
+            </div>
+            <div style={styles.interactiveBox}>
+              <h4 style={styles.interactiveLabel}>Controlled popover:</h4>
+              <Popover
+                content={
+                  <div style={{ padding: '12px' }}>
+                    <p style={{ margin: '0 0 12px 0', fontSize: '14px' }}>Controlled popover content</p>
+                    <Button variant="primary" size="small" onClick={() => setIsPopoverOpen(false)}>
+                      Close
+                    </Button>
+                  </div>
+                }
+                isOpen={isPopoverOpen}
+                onOpenChange={setIsPopoverOpen}
+              >
+                <Button variant="primary" onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+                  {isPopoverOpen ? 'Close popover' : 'Open popover'}
+                </Button>
+              </Popover>
             </div>
           </div>
         );

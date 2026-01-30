@@ -1,23 +1,32 @@
 {
-  "name": "figmaradiant",
+  "name": "radiant-prototyping-kit",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "new-prototype": "node scripts/create-prototype.js"
   },
-  "keywords": ["design-system", "react", "components"],
+  "keywords": [
+    "design-system",
+    "react",
+    "components",
+    "prototyping",
+    "thoughtspot",
+    "radiant"
+  ],
   "author": "Faris",
   "license": "ISC",
-  "description": "Radiant Design System - React component library",
+  "description": "Radiant Prototyping Kit - AI-assisted interactive prototype builder using ThoughtSpot's design system",
   "repository": {
     "type": "git",
     "url": "https://github.com/faris-ts/figmaradiant.git"
   },
   "dependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",

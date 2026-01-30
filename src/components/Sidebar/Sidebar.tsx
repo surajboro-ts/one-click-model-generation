@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Sidebar.module.css';
 
 export interface NavItem {
@@ -7,6 +8,8 @@ export interface NavItem {
   icon?: React.ReactNode;
   type?: 'section' | 'item' | 'divider';
   badge?: string;
+  /** Optional route path for Link-based navigation */
+  to?: string;
 }
 
 export interface SidebarProps {
@@ -14,7 +17,7 @@ export interface SidebarProps {
   items: NavItem[];
   /** Currently active item ID */
   activeId: string;
-  /** Handler when an item is selected */
+  /** Handler when an item is selected (used if item.to is not provided) */
   onSelect: (id: string) => void;
   /** Header content */
   header?: React.ReactNode;
@@ -24,6 +27,8 @@ export interface SidebarProps {
  * Sidebar Component
  * 
  * A navigation sidebar for the Storybook-like interface.
+ * Supports both callback-based navigation (onSelect) and 
+ * Link-based navigation (via item.to property).
  */
 export const Sidebar: React.FC<SidebarProps> = ({
   items,
@@ -55,6 +60,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
           
           const isActive = activeId === item.id;
           
+          // If item has a 'to' property, use Link for native navigation
+          if (item.to) {
+            return (
+              <Link
+                key={item.id}
+                to={item.to}
+                className={`${styles.item} ${isActive ? styles.active : ''}`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {item.icon && <span className={styles.icon}>{item.icon}</span>}
+                <span className={styles.label}>{item.label}</span>
+                {item.badge && <span className={styles.badge}>{item.badge}</span>}
+              </Link>
+            );
+          }
+          
+          // Otherwise use button with callback
           return (
             <button
               key={item.id}
