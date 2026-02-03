@@ -25,4 +25,4 @@ export { FilterDialogExample } from './_examples';
 
 // Prototypes
 // Add your prototype exports here
-// export { YourPrototype } from './YourPrototype';
+export { SpotterMemory } from './SpotterMemory';
