@@ -142,4 +142,3 @@ export type TealScale = keyof typeof brandColors.teal;
 
 // Extended color scale type (10-100 range)
 export type ColorScale = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
-

@@ -41,6 +41,7 @@ export interface ProjectMeta {
 const HomepageExample = React.lazy(() => import('./Homepage_example'));
 const Liveboard = React.lazy(() => import('./Liveboard'));
 const Cmdk = React.lazy(() => import('./Cmdk'));
+const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 
 /**
  * All registered projects
@@ -66,6 +67,13 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Command-K interface for quick navigation and actions with keyboard shortcuts.',
     author: 'Design Team',
     component: Cmdk,
+  },
+  {
+    id: 'SpotterMemory',
+    name: 'Spotter Memory',
+    description: 'Memory Sources object table experience with search, filtering, and pagination.',
+    author: 'Design Team',
+    component: SpotterMemory,
   },
   // Add more projects here as they are created
   // {
