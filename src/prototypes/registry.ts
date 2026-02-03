@@ -42,6 +42,7 @@ const HomepageExample = React.lazy(() => import('./Homepage_example'));
 const Liveboard = React.lazy(() => import('./Liveboard'));
 const Cmdk = React.lazy(() => import('./Cmdk'));
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
+const AdminGroups = React.lazy(() => import('./AdminGroups'));
 
 /**
  * All registered projects
@@ -74,6 +75,13 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Memory Sources object table experience with search, filtering, and pagination.',
     author: 'Design Team',
     component: SpotterMemory,
+  },
+  {
+    id: 'AdminGroups',
+    name: 'Admin Groups',
+    description: 'Group creation wizard with bulk org assignment and role management.',
+    author: 'Design Team',
+    component: AdminGroups,
   },
   // Add more projects here as they are created
   // {

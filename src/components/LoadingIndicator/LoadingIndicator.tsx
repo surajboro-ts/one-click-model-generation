@@ -7,6 +7,16 @@ import styles from './LoadingIndicator.module.css';
 export type LoadingIndicatorSize = 'small' | 'medium' | 'large';
 
 /**
+ * Contextual size variants (xs=12px, s=16px, m=24px, l=32px, xl=48px)
+ */
+export type ContextualSize = 'xs' | 's' | 'm' | 'l' | 'xl';
+
+/**
+ * Skeleton variants
+ */
+export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
+
+/**
  * LoadingIndicator Props
  */
 export interface LoadingIndicatorProps {
@@ -16,6 +26,30 @@ export interface LoadingIndicatorProps {
   text?: string;
   /** Whether to center in container */
   centered?: boolean;
+  /** Additional className */
+  className?: string;
+}
+
+/**
+ * Contextual Spinner Props
+ */
+export interface ContextualProps {
+  /** Size of the spinner */
+  size?: ContextualSize;
+  /** Additional className */
+  className?: string;
+}
+
+/**
+ * Skeleton Props
+ */
+export interface SkeletonProps {
+  /** Skeleton variant */
+  variant?: SkeletonVariant;
+  /** Width (number for px, string for %) */
+  width?: number | string;
+  /** Height (number for px, string for %) */
+  height?: number | string;
   /** Additional className */
   className?: string;
 }
@@ -35,6 +69,14 @@ export interface LoadingOverlayProps {
 }
 
 /**
+ * LoadingIndicator Component Interface with compound components
+ */
+interface LoadingIndicatorComponent extends React.FC<LoadingIndicatorProps> {
+  Contextual: React.FC<ContextualProps>;
+  Skeleton: React.FC<SkeletonProps>;
+}
+
+/**
  * LoadingIndicator Component
  * 
  * A spinning loader indicator for async operations.
@@ -43,13 +85,17 @@ export interface LoadingOverlayProps {
  * - Multiple sizes (small, medium, large)
  * - Optional loading text
  * - Can be centered in container
+ * - Contextual spinner sub-component
+ * - Skeleton placeholder sub-component
  * 
  * @example
  * ```tsx
  * <LoadingIndicator size="medium" text="Loading..." />
+ * <LoadingIndicator.Contextual size="m" />
+ * <LoadingIndicator.Skeleton variant="text" width="60%" />
  * ```
  */
-export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
+export const LoadingIndicator: LoadingIndicatorComponent = ({
   size = 'medium',
   text,
   centered = false,
@@ -121,5 +167,100 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
     </div>
   );
 };
+
+/**
+ * Contextual Spinner Component
+ * 
+ * Inline loading spinner with size variants.
+ */
+const contextualSizes: Record<ContextualSize, number> = {
+  xs: 12,
+  s: 16,
+  m: 24,
+  l: 32,
+  xl: 48,
+};
+
+const Contextual: React.FC<ContextualProps> = ({
+  size = 'm',
+  className,
+}) => {
+  const sizeValue = contextualSizes[size];
+  
+  return (
+    <div 
+      className={`${styles.contextual} ${className || ''}`}
+      style={{ width: sizeValue, height: sizeValue }}
+    >
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle 
+          className={styles.track} 
+          cx="12" 
+          cy="12" 
+          r="10" 
+          stroke="currentColor" 
+          strokeWidth="3"
+        />
+        <path 
+          className={styles.arc}
+          d="M12 2C6.47715 2 2 6.47715 2 12"
+          stroke="currentColor" 
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+};
+
+/**
+ * Skeleton Placeholder Component
+ * 
+ * Shimmer loading placeholder with variants.
+ */
+const Skeleton: React.FC<SkeletonProps> = ({
+  variant = 'text',
+  width,
+  height,
+  className,
+}) => {
+  const getWidth = () => {
+    if (width !== undefined) {
+      return typeof width === 'number' ? `${width}px` : width;
+    }
+    return variant === 'text' ? '100%' : variant === 'circular' ? '40px' : '100%';
+  };
+  
+  const getHeight = () => {
+    if (height !== undefined) {
+      return typeof height === 'number' ? `${height}px` : height;
+    }
+    return variant === 'text' ? '1em' : variant === 'circular' ? '40px' : '100px';
+  };
+  
+  const getBorderRadius = () => {
+    switch (variant) {
+      case 'circular': return '50%';
+      case 'rounded': return '8px';
+      case 'text': return '4px';
+      default: return '0';
+    }
+  };
+  
+  return (
+    <div 
+      className={`${styles.skeleton} ${className || ''}`}
+      style={{
+        width: getWidth(),
+        height: getHeight(),
+        borderRadius: getBorderRadius(),
+      }}
+    />
+  );
+};
+
+// Attach compound components
+LoadingIndicator.Contextual = Contextual;
+LoadingIndicator.Skeleton = Skeleton;
 
 export default LoadingIndicator;

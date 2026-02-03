@@ -10,6 +10,8 @@ import { PlaygroundProject } from './pages/PlaygroundProject';
 import { ArchitectureShowcase } from './pages/ArchitectureShowcase';
 import { IconsShowcase } from './pages/IconsShowcase';
 import { VersionHistoryPage } from './pages/VersionHistoryPage';
+import { ColorSystemPage } from './pages/ColorSystemPage';
+import { TypographyPage } from './pages/TypographyPage';
 import { brandColors } from './tokens/colors/brand';
 
 // Prototype examples
@@ -46,6 +48,15 @@ const IconsIcon = () => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M9 5.25L10.545 8.385L14.0325 8.89125L11.5163 11.34L12.09 14.8125L9 13.185L5.91 14.8125L6.48375 11.34L3.9675 8.89125L7.455 8.385L9 5.25Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const ColorIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M9 1.5V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M16.5 9H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M14.3033 3.6967L9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
@@ -151,6 +162,8 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     // Map nav item IDs to routes
     const routeMap: Record<string, string> = {
       'radiant': '/radiant',
+      'colours': '/radiant/colours',
+      'typography-page': '/radiant/typography',
       'architecture': '/radiant/architecture',
       'icons': '/radiant/icons',
       'registry': '/radiant/registry',
@@ -190,10 +203,8 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'card': '/radiant/components/card',
       'accordion': '/radiant/components/accordion',
       'divider': '/radiant/components/divider',
-      // Typography
+      // Typography Component
       'typography': '/radiant/components/typography',
-      // Utilities
-      'icongallery': '/radiant/components/icongallery',
     };
 
     const route = routeMap[id] || '/radiant';
@@ -201,13 +212,14 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   const navItems: NavItem[] = [
-    { id: 'radiant', label: 'Components', icon: <HomeIcon />, type: 'item' },
-    { id: 'registry', label: 'Component Registry', icon: <TableIcon />, type: 'item' },
-    { id: 'architecture', label: 'Token Architecture', icon: <ArchitectureIcon />, type: 'item' },
+    { id: 'radiant', label: 'Home', icon: <HomeIcon />, type: 'item' },
+    { id: 'colours', label: 'Colours', icon: <ColorIcon />, type: 'item' },
+    { id: 'typography-page', label: 'Typography', icon: <ArchitectureIcon />, type: 'item' },
     { id: 'icons', label: 'Icons', icon: <IconsIcon />, type: 'item', badge: '46' },
+    { id: 'registry', label: 'Component Registry', icon: <TableIcon />, type: 'item' },
     { id: 'changelog', label: 'Changelog', icon: <ChangelogIcon />, type: 'item' },
     { id: 'divider0', label: '', type: 'divider' },
-    { id: 'examples-section', label: 'Example Prototypes', type: 'section' },
+    { id: 'widgets-section', label: 'Widgets', type: 'section' },
     { id: 'example-filter-dialog', label: 'Filter Dialog', icon: <ComponentIcon />, type: 'item' },
     { id: 'divider1', label: '', type: 'divider' },
     { id: 'components-section', label: 'Selection Controls', type: 'section' },
@@ -252,9 +264,6 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'divider7', label: '', type: 'divider' },
     { id: 'typography-section', label: 'Typography', type: 'section' },
     { id: 'typography', label: 'Typography', icon: <ComponentIcon />, type: 'item', badge: 'New' },
-    { id: 'divider8', label: '', type: 'divider' },
-    { id: 'utilities-section', label: 'Utilities', type: 'section' },
-    { id: 'icongallery', label: 'IconGallery', icon: <ComponentIcon />, type: 'item', badge: 'New' },
   ];
 
   const SidebarHeader = () => (
@@ -297,18 +306,42 @@ const RadiantHomePageWrapper: React.FC = () => {
   const navigate = useNavigate();
   const handleNavigate = (id: string) => {
     const routeMap: Record<string, string> = {
-      'architecture': '/radiant/architecture',
+      // Top-level pages
+      'colours': '/radiant/colours',
+      'typography': '/radiant/typography',
       'icons': '/radiant/icons',
+      'registry': '/radiant/registry',
+      'architecture': '/radiant/architecture',
+      // Component pages
       'button': '/radiant/components/button',
       'checkbox': '/radiant/components/checkbox',
       'radio': '/radiant/components/radio',
       'toggle': '/radiant/components/toggle',
       'textinput': '/radiant/components/textinput',
+      'textarea': '/radiant/components/textarea',
       'searchinput': '/radiant/components/searchinput',
+      'select': '/radiant/components/select',
+      'datepicker': '/radiant/components/datepicker',
+      'segmentedcontrol': '/radiant/components/segmentedcontrol',
       'chip': '/radiant/components/chip',
       'alert': '/radiant/components/alert',
+      'toast': '/radiant/components/toast',
       'modal': '/radiant/components/modal',
+      'tooltip': '/radiant/components/tooltip',
+      'popover': '/radiant/components/popover',
+      'loadingindicator': '/radiant/components/loadingindicator',
+      'progressbar': '/radiant/components/progressbar',
+      'table': '/radiant/components/table',
+      'avatar': '/radiant/components/avatar',
       'tabs': '/radiant/components/tabs',
+      'link': '/radiant/components/link',
+      'menu': '/radiant/components/menu',
+      'pagination': '/radiant/components/pagination',
+      'stepper': '/radiant/components/stepper',
+      'card': '/radiant/components/card',
+      'accordion': '/radiant/components/accordion',
+      'divider': '/radiant/components/divider',
+      'typography-component': '/radiant/components/typography',
     };
     navigate(routeMap[id] || `/radiant/components/${id}`);
   };
@@ -323,10 +356,14 @@ const App: React.FC = () => {
       
       {/* Radiant Section - With sidebar */}
       <Route path="/radiant" element={<RadiantLayout><RadiantHomePageWrapper /></RadiantLayout>} />
-      <Route path="/radiant/registry" element={<RadiantLayout><ComponentRegistryPage /></RadiantLayout>} />
-      <Route path="/radiant/architecture" element={<RadiantLayout><ArchitectureShowcase /></RadiantLayout>} />
+      <Route path="/radiant/colours" element={<RadiantLayout><ColorSystemPage /></RadiantLayout>} />
+      <Route path="/radiant/typography" element={<RadiantLayout><TypographyPage /></RadiantLayout>} />
       <Route path="/radiant/icons" element={<RadiantLayout><IconsShowcase /></RadiantLayout>} />
+      <Route path="/radiant/registry" element={<RadiantLayout><ComponentRegistryPage /></RadiantLayout>} />
       <Route path="/radiant/changelog" element={<RadiantLayout><VersionHistoryPage /></RadiantLayout>} />
+      <Route path="/radiant/architecture" element={<RadiantLayout><ArchitectureShowcase /></RadiantLayout>} />
+      {/* Legacy redirect for old colors route */}
+      <Route path="/radiant/colors" element={<Navigate to="/radiant/colours" replace />} />
       
       {/* Example prototypes */}
       <Route path="/radiant/examples/filter-dialog" element={<RadiantLayout><FilterDialogExample /></RadiantLayout>} />
@@ -374,8 +411,8 @@ const App: React.FC = () => {
       {/* Component documentation pages - Typography */}
       <Route path="/radiant/components/typography" element={<RadiantLayout><ComponentDocPage componentId="typography" /></RadiantLayout>} />
       
-      {/* Component documentation pages - Utilities */}
-      <Route path="/radiant/components/icongallery" element={<RadiantLayout><ComponentDocPage componentId="icongallery" /></RadiantLayout>} />
+      {/* Redirect icongallery to icons page */}
+      <Route path="/radiant/components/icongallery" element={<Navigate to="/radiant/icons" replace />} />
       
       {/* Playground Section - No sidebar */}
       <Route path="/playground" element={<PlaygroundGallery />} />

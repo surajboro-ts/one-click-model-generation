@@ -1,0 +1,392 @@
+import React from 'react';
+import { brandColors } from '../tokens/colors/brand';
+import { Typography } from '../components/Typography';
+
+interface ColorSwatchProps {
+  colorName: string;
+  colorScale: Record<number | string, string>;
+  description: string;
+  usage: string[];
+}
+
+const ColorSwatch: React.FC<ColorSwatchProps> = ({ colorName, colorScale, description, usage }) => {
+  const scaleEntries = Object.entries(colorScale).sort((a, b) => {
+    const aNum = parseInt(a[0], 10);
+    const bNum = parseInt(b[0], 10);
+    return bNum - aNum; // Sort descending (dark to light)
+  });
+
+  return (
+    <div style={styles.colorSection}>
+      <div style={styles.colorHeader}>
+        <Typography variant="section-label" noMargin>{colorName}</Typography>
+        <Typography variant="body-normal" color="gray" noMargin>{description}</Typography>
+      </div>
+      <div style={styles.usageList}>
+        <Typography variant="overline" color="gray" noMargin>Common Usage</Typography>
+        <ul style={styles.usageItems}>
+          {usage.map((item, index) => (
+            <li key={index} style={styles.usageItem}>{item}</li>
+          ))}
+        </ul>
+      </div>
+      <div style={styles.swatchGrid}>
+        {scaleEntries.map(([key, value]) => {
+          const isLight = parseInt(key, 10) <= 40;
+          return (
+            <div key={key} style={styles.swatchItem}>
+              <div 
+                style={{ 
+                  ...styles.swatchColor, 
+                  backgroundColor: value,
+                  color: isLight ? brandColors.gray[90] : brandColors.white,
+                }}
+              >
+                <span style={styles.swatchLevel}>{key}</span>
+              </div>
+              <div style={styles.swatchInfo}>
+                <span style={styles.swatchValue}>{value}</span>
+                <span style={styles.swatchToken}>{colorName.toLowerCase()}.{key}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export const ColorSystemPage: React.FC = () => {
+  const colorData: ColorSwatchProps[] = [
+    {
+      colorName: 'Blue',
+      colorScale: brandColors.blue,
+      description: 'Primary brand color. Used for interactive elements, links, and primary actions.',
+      usage: [
+        'Primary buttons and CTAs',
+        'Links and interactive text',
+        'Selected states and focus rings',
+        'Primary brand elements',
+      ],
+    },
+    {
+      colorName: 'Gray',
+      colorScale: brandColors.gray,
+      description: 'Neutral scale for text, backgrounds, borders, and UI structure.',
+      usage: [
+        'Text and typography (90, 70, 60, 50)',
+        'Backgrounds (10, 20)',
+        'Borders and dividers (20, 30)',
+        'Disabled states (40, 50)',
+      ],
+    },
+    {
+      colorName: 'Green',
+      colorScale: brandColors.green,
+      description: 'Success and positive states. Used for confirmations and positive feedback.',
+      usage: [
+        'Success alerts and toasts',
+        'Positive status indicators',
+        'Completed states',
+        'Positive metrics and growth',
+      ],
+    },
+    {
+      colorName: 'Yellow',
+      colorScale: brandColors.yellow,
+      description: 'Warning and caution states. Used for alerts requiring attention.',
+      usage: [
+        'Warning alerts and messages',
+        'Pending or in-progress states',
+        'Attention-grabbing highlights',
+        'Measure chips in analytics',
+      ],
+    },
+    {
+      colorName: 'Red',
+      colorScale: brandColors.red,
+      description: 'Error and failure states. Used for destructive actions and errors.',
+      usage: [
+        'Error messages and validation',
+        'Destructive action buttons',
+        'Failed or error states',
+        'Critical alerts',
+      ],
+    },
+    {
+      colorName: 'Purple',
+      colorScale: brandColors.purple,
+      description: 'Date/time and secondary accent. Used for temporal data and highlights.',
+      usage: [
+        'Date and time indicators',
+        'Calendar and scheduling',
+        'Secondary accent elements',
+        'Data visualization accents',
+      ],
+    },
+    {
+      colorName: 'Orange',
+      colorScale: brandColors.orange,
+      description: 'Accent color for highlights and differentiation.',
+      usage: [
+        'Accent highlights',
+        'Data visualization',
+        'Secondary CTAs',
+        'Notification badges',
+      ],
+    },
+    {
+      colorName: 'Teal',
+      colorScale: brandColors.teal,
+      description: 'Info and neutral accent. Used for informational content.',
+      usage: [
+        'Info alerts and messages',
+        'Attribute chips in analytics',
+        'Data visualization',
+        'Secondary brand accent',
+      ],
+    },
+  ];
+
+  return (
+    <div style={styles.container}>
+      {/* Header */}
+      <div style={styles.header}>
+        <Typography variant="headline-large" noMargin>Color System</Typography>
+        <Typography variant="body-large" color="gray" style={{ marginTop: 12, maxWidth: 700 }}>
+          The Radiant color system provides a comprehensive palette for consistent UI design. 
+          Each color scale runs from 10 (lightest) to 100 (darkest), with 60 typically being the primary shade.
+        </Typography>
+      </div>
+
+      {/* Usage Guidelines */}
+      <section style={styles.guidelinesSection}>
+        <Typography variant="modal-title" noMargin>Usage Guidelines</Typography>
+        <div style={styles.guidelinesGrid}>
+          <div style={styles.guidelineCard}>
+            <div style={{ ...styles.guidelineIcon, backgroundColor: brandColors.blue[10] }}>
+              <span style={{ color: brandColors.blue[60], fontSize: 20 }}>60</span>
+            </div>
+            <div>
+              <Typography variant="content-label" noMargin>Primary Shade</Typography>
+              <Typography variant="footnote" color="gray" noMargin>
+                Level 60 is the primary shade for most UI elements
+              </Typography>
+            </div>
+          </div>
+          <div style={styles.guidelineCard}>
+            <div style={{ ...styles.guidelineIcon, backgroundColor: brandColors.gray[10] }}>
+              <span style={{ color: brandColors.gray[60], fontSize: 16 }}>10-30</span>
+            </div>
+            <div>
+              <Typography variant="content-label" noMargin>Light Shades</Typography>
+              <Typography variant="footnote" color="gray" noMargin>
+                Backgrounds, subtle fills, and disabled states
+              </Typography>
+            </div>
+          </div>
+          <div style={styles.guidelineCard}>
+            <div style={{ ...styles.guidelineIcon, backgroundColor: brandColors.gray[90] }}>
+              <span style={{ color: brandColors.white, fontSize: 16 }}>70-100</span>
+            </div>
+            <div>
+              <Typography variant="content-label" noMargin>Dark Shades</Typography>
+              <Typography variant="footnote" color="gray" noMargin>
+                Text, icons, and high-contrast elements
+              </Typography>
+            </div>
+          </div>
+          <div style={styles.guidelineCard}>
+            <div style={{ ...styles.guidelineIcon, backgroundColor: brandColors.green[10] }}>
+              <span style={{ color: brandColors.green[60], fontSize: 14 }}>40-50</span>
+            </div>
+            <div>
+              <Typography variant="content-label" noMargin>Mid Shades</Typography>
+              <Typography variant="footnote" color="gray" noMargin>
+                Borders, dividers, and secondary elements
+              </Typography>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Color Scales */}
+      <section style={styles.scalesSection}>
+        <Typography variant="modal-title" noMargin style={{ marginBottom: 24 }}>Color Scales</Typography>
+        {colorData.map((color) => (
+          <ColorSwatch key={color.colorName} {...color} />
+        ))}
+      </section>
+
+      {/* Base Colors */}
+      <section style={styles.baseSection}>
+        <Typography variant="modal-title" noMargin style={{ marginBottom: 16 }}>Base Colors</Typography>
+        <div style={styles.baseColorsGrid}>
+          <div style={styles.baseColorItem}>
+            <div style={{ ...styles.baseColorSwatch, backgroundColor: brandColors.white, border: `1px solid ${brandColors.gray[20]}` }} />
+            <div>
+              <Typography variant="content-label" noMargin>White</Typography>
+              <Typography variant="footnote" color="gray" noMargin>#FFFFFF</Typography>
+            </div>
+          </div>
+          <div style={styles.baseColorItem}>
+            <div style={{ ...styles.baseColorSwatch, backgroundColor: brandColors.whiteToned }} />
+            <div>
+              <Typography variant="content-label" noMargin>White Toned</Typography>
+              <Typography variant="footnote" color="gray" noMargin>#FAFBFC</Typography>
+            </div>
+          </div>
+          <div style={styles.baseColorItem}>
+            <div style={{ ...styles.baseColorSwatch, backgroundColor: brandColors.black }} />
+            <div>
+              <Typography variant="content-label" noMargin>Black</Typography>
+              <Typography variant="footnote" color="gray" noMargin>#000000</Typography>
+            </div>
+          </div>
+          <div style={styles.baseColorItem}>
+            <div style={{ ...styles.baseColorSwatch, backgroundColor: brandColors.blackToned }} />
+            <div>
+              <Typography variant="content-label" noMargin>Black Toned</Typography>
+              <Typography variant="footnote" color="gray" noMargin>#1C2330</Typography>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    maxWidth: 1000,
+  },
+  header: {
+    marginBottom: 40,
+  },
+  guidelinesSection: {
+    marginBottom: 48,
+    padding: 24,
+    backgroundColor: brandColors.gray[10],
+    borderRadius: 12,
+  },
+  guidelinesGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: 16,
+    marginTop: 20,
+  },
+  guidelineCard: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    padding: 16,
+    backgroundColor: brandColors.white,
+    borderRadius: 8,
+    border: `1px solid ${brandColors.gray[20]}`,
+  },
+  guidelineIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 600,
+    fontFamily: '"SF Mono", Monaco, monospace',
+  },
+  scalesSection: {
+    marginBottom: 48,
+  },
+  colorSection: {
+    marginBottom: 40,
+    padding: 24,
+    backgroundColor: brandColors.white,
+    borderRadius: 12,
+    border: `1px solid ${brandColors.gray[20]}`,
+  },
+  colorHeader: {
+    marginBottom: 16,
+  },
+  usageList: {
+    marginBottom: 20,
+    padding: 16,
+    backgroundColor: brandColors.gray[10],
+    borderRadius: 8,
+  },
+  usageItems: {
+    margin: '8px 0 0 0',
+    paddingLeft: 20,
+  },
+  usageItem: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: 13,
+    color: brandColors.gray[70],
+    lineHeight: '22px',
+  },
+  swatchGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(5, 1fr)',
+    gap: 8,
+  },
+  swatchItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden',
+    borderRadius: 8,
+    border: `1px solid ${brandColors.gray[20]}`,
+  },
+  swatchColor: {
+    height: 64,
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+    padding: 8,
+  },
+  swatchLevel: {
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: 12,
+    fontWeight: 600,
+  },
+  swatchInfo: {
+    padding: 8,
+    backgroundColor: brandColors.white,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+  },
+  swatchValue: {
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: 11,
+    color: brandColors.gray[90],
+    fontWeight: 500,
+  },
+  swatchToken: {
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: 10,
+    color: brandColors.gray[50],
+  },
+  baseSection: {
+    marginBottom: 40,
+  },
+  baseColorsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: 16,
+  },
+  baseColorItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    padding: 16,
+    backgroundColor: brandColors.white,
+    borderRadius: 8,
+    border: `1px solid ${brandColors.gray[20]}`,
+  },
+  baseColorSwatch: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+  },
+};
+
+export default ColorSystemPage;

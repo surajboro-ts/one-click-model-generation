@@ -84,3 +84,38 @@
     transform: rotate(360deg);
   }
 }
+
+/* Contextual Spinner */
+.contextual {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-brand-blue-60);
+}
+
+.contextual svg {
+  width: 100%;
+  height: 100%;
+  animation: spin 1s linear infinite;
+}
+
+/* Skeleton Shimmer */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-gray-15, #e8e8e8) 0%,
+    var(--color-brand-gray-10, #f5f5f5) 50%,
+    var(--color-brand-gray-15, #e8e8e8) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

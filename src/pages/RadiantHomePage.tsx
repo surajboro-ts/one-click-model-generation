@@ -55,92 +55,80 @@ interface RadiantHomePageProps {
 }
 
 export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) => {
-  const components = [
+  // All 30 components organized by category
+  const componentCategories = [
     {
-      id: 'button',
-      name: 'Button',
-      description: 'Primary, secondary, and tertiary buttons for actions',
-      icon: '🔘',
-      variants: 3,
-      status: 'stable' as const,
+      category: 'Selection Controls',
+      components: [
+        { id: 'button', name: 'Button', description: 'Primary, secondary, and tertiary buttons', icon: '🔘', variants: 3, status: 'stable' as const },
+        { id: 'checkbox', name: 'Checkbox', description: 'Selection for multiple choices', icon: '☑️', variants: 3, status: 'stable' as const },
+        { id: 'radio', name: 'Radio', description: 'Single selection from options', icon: '🔘', variants: 2, status: 'stable' as const },
+        { id: 'toggle', name: 'Toggle', description: 'Switch for on/off states', icon: '🔀', variants: 2, status: 'stable' as const },
+      ],
     },
     {
-      id: 'checkbox',
-      name: 'Checkbox',
-      description: 'Selection controls for multiple choices',
-      icon: '☑️',
-      variants: 3,
-      status: 'stable' as const,
+      category: 'Inputs',
+      components: [
+        { id: 'textinput', name: 'TextInput', description: 'Text input with validation', icon: '📝', variants: 3, status: 'stable' as const },
+        { id: 'textarea', name: 'TextArea', description: 'Multi-line text input', icon: '📄', variants: 2, status: 'new' as const },
+        { id: 'searchinput', name: 'SearchInput', description: 'Search with clear button', icon: '🔍', variants: 1, status: 'stable' as const },
+        { id: 'select', name: 'Select', description: 'Dropdown selection', icon: '📋', variants: 3, status: 'stable' as const },
+        { id: 'datepicker', name: 'DatePicker', description: 'Date selection calendar', icon: '📅', variants: 2, status: 'new' as const },
+        { id: 'segmentedcontrol', name: 'SegmentedControl', description: 'Mutually exclusive segments', icon: '🔲', variants: 3, status: 'new' as const },
+      ],
     },
     {
-      id: 'radio',
-      name: 'Radio',
-      description: 'Single selection from a group of options',
-      icon: '🔘',
-      variants: 2,
-      status: 'stable' as const,
+      category: 'Feedback',
+      components: [
+        { id: 'alert', name: 'Alert', description: 'Notification banners', icon: '⚠️', variants: 5, status: 'stable' as const },
+        { id: 'toast', name: 'Toast', description: 'Temporary notifications', icon: '🍞', variants: 4, status: 'new' as const },
+        { id: 'modal', name: 'Modal', description: 'Overlay dialogs', icon: '🪟', variants: 3, status: 'stable' as const },
+        { id: 'tooltip', name: 'Tooltip', description: 'Hover information', icon: '💬', variants: 4, status: 'stable' as const },
+        { id: 'popover', name: 'Popover', description: 'Interactive overlays', icon: '📌', variants: 2, status: 'stable' as const },
+        { id: 'loadingindicator', name: 'LoadingIndicator', description: 'Spinners and skeletons', icon: '⏳', variants: 5, status: 'new' as const },
+        { id: 'progressbar', name: 'ProgressBar', description: 'Progress visualization', icon: '📊', variants: 4, status: 'new' as const },
+      ],
     },
     {
-      id: 'toggle',
-      name: 'Toggle',
-      description: 'Switch control for on/off states',
-      icon: '🔀',
-      variants: 2,
-      status: 'stable' as const,
+      category: 'Data Display',
+      components: [
+        { id: 'table', name: 'Table', description: 'Data tables with sorting', icon: '📊', variants: 3, status: 'stable' as const },
+        { id: 'chip', name: 'Chip', description: 'Attribute and filter pills', icon: '🏷️', variants: 4, status: 'stable' as const },
+        { id: 'avatar', name: 'Avatar', description: 'User avatars and groups', icon: '👤', variants: 6, status: 'new' as const },
+      ],
     },
     {
-      id: 'textinput',
-      name: 'TextInput',
-      description: 'Text input fields with labels and validation',
-      icon: '📝',
-      variants: 3,
-      status: 'stable' as const,
+      category: 'Navigation',
+      components: [
+        { id: 'tabs', name: 'Tabs', description: 'Content organization tabs', icon: '📑', variants: 2, status: 'stable' as const },
+        { id: 'link', name: 'Link', description: 'Navigation links', icon: '🔗', variants: 4, status: 'new' as const },
+        { id: 'menu', name: 'Menu', description: 'Dropdown action menus', icon: '📜', variants: 2, status: 'new' as const },
+        { id: 'pagination', name: 'Pagination', description: 'Page navigation', icon: '📖', variants: 3, status: 'new' as const },
+        { id: 'stepper', name: 'Stepper', description: 'Multi-step progress', icon: '🚶', variants: 2, status: 'new' as const },
+      ],
     },
     {
-      id: 'searchinput',
-      name: 'SearchInput',
-      description: 'Search input with icon and clear functionality',
-      icon: '🔍',
-      variants: 1,
-      status: 'stable' as const,
+      category: 'Layout',
+      components: [
+        { id: 'card', name: 'Card', description: 'Content containers', icon: '🃏', variants: 3, status: 'new' as const },
+        { id: 'accordion', name: 'Accordion', description: 'Collapsible sections', icon: '📂', variants: 3, status: 'new' as const },
+        { id: 'divider', name: 'Divider', description: 'Content separators', icon: '➖', variants: 2, status: 'new' as const },
+      ],
     },
     {
-      id: 'chip',
-      name: 'Chip',
-      description: 'Pills for attributes, measures, and filters',
-      icon: '🏷️',
-      variants: 4,
-      status: 'stable' as const,
-    },
-    {
-      id: 'alert',
-      name: 'Alert',
-      description: 'Notification banners for important messages',
-      icon: '⚠️',
-      variants: 5,
-      status: 'stable' as const,
-    },
-    {
-      id: 'modal',
-      name: 'Modal',
-      description: 'Overlay dialogs for focused interactions',
-      icon: '🪟',
-      variants: 3,
-      status: 'stable' as const,
-    },
-    {
-      id: 'tabs',
-      name: 'Tabs',
-      description: 'Navigation tabs for content organization',
-      icon: '📑',
-      variants: 2,
-      status: 'stable' as const,
+      category: 'Typography',
+      components: [
+        { id: 'typography', name: 'Typography', description: 'Text variants and styles', icon: '🔤', variants: 20, status: 'new' as const },
+      ],
     },
   ];
 
+  // Flatten for backward compatibility
+  const components = componentCategories.flatMap(cat => cat.components);
+
   const stats = [
-    { label: 'Components', value: '10', icon: '🧩' },
-    { label: 'Variants', value: '28', icon: '🎨' },
+    { label: 'Components', value: '30', icon: '🧩' },
+    { label: 'Widgets', value: '5', icon: '🎛️' },
     { label: 'Design Tokens', value: '150+', icon: '🎯' },
     { label: 'TypeScript', value: '100%', icon: '💪' },
   ];
@@ -190,46 +178,113 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
         ))}
       </section>
 
-      {/* Components Grid */}
+      {/* Token Architecture Section */}
+      <section style={styles.tokenSection}>
+        <div style={styles.sectionHeader}>
+          <h2 style={styles.sectionTitle}>Token Architecture</h2>
+          <p style={styles.sectionDescription}>
+            A 3-tier token system that powers consistent visual language across all components
+          </p>
+        </div>
+        <div style={styles.tokenFlow}>
+          <div style={styles.tokenLayer} onClick={() => onNavigate('colours')}>
+            <div style={{ ...styles.tokenLayerIcon, backgroundColor: brandColors.blue[10] }}>
+              <span style={{ color: brandColors.blue[60], fontSize: '20px' }}>1</span>
+            </div>
+            <div style={styles.tokenLayerContent}>
+              <h4 style={styles.tokenLayerTitle}>Brand Tokens</h4>
+              <p style={styles.tokenLayerDesc}>Primitive color values: blue.60, gray.90, green.60</p>
+            </div>
+          </div>
+          <div style={styles.tokenArrow}>→</div>
+          <div style={styles.tokenLayer} onClick={() => onNavigate('architecture')}>
+            <div style={{ ...styles.tokenLayerIcon, backgroundColor: brandColors.green[10] }}>
+              <span style={{ color: brandColors.green[60], fontSize: '20px' }}>2</span>
+            </div>
+            <div style={styles.tokenLayerContent}>
+              <h4 style={styles.tokenLayerTitle}>Semantic Tokens</h4>
+              <p style={styles.tokenLayerDesc}>Meaningful names: --color-primary, --color-success</p>
+            </div>
+          </div>
+          <div style={styles.tokenArrow}>→</div>
+          <div style={styles.tokenLayer} onClick={() => onNavigate('button')}>
+            <div style={{ ...styles.tokenLayerIcon, backgroundColor: brandColors.purple[10] }}>
+              <span style={{ color: brandColors.purple[60], fontSize: '20px' }}>3</span>
+            </div>
+            <div style={styles.tokenLayerContent}>
+              <h4 style={styles.tokenLayerTitle}>Component Tokens</h4>
+              <p style={styles.tokenLayerDesc}>Component-specific: --button-bg, --input-border</p>
+            </div>
+          </div>
+        </div>
+        <button style={styles.tokenCTA} onClick={() => onNavigate('architecture')}>
+          View Full Token Architecture →
+        </button>
+      </section>
+
+      {/* Components Grid - Organized by Category */}
       <section style={styles.componentsSection}>
         <div style={styles.sectionHeader}>
           <h2 style={styles.sectionTitle}>Components</h2>
           <p style={styles.sectionDescription}>
-            Explore all available components with live examples and documentation
+            Explore all {components.length} components with live examples and documentation
           </p>
         </div>
-        <div style={styles.componentsGrid}>
-          {components.map((component) => (
-            <ComponentCard
-              key={component.id}
-              name={component.name}
-              description={component.description}
-              icon={component.icon}
-              variants={component.variants}
-              status={component.status}
-              onClick={() => onNavigate(component.id)}
-            />
-          ))}
-        </div>
+        {componentCategories.map((category) => (
+          <div key={category.category} style={styles.categorySection}>
+            <h3 style={styles.categoryTitle}>{category.category}</h3>
+            <div style={styles.componentsGrid}>
+              {category.components.map((component) => (
+                <ComponentCard
+                  key={component.id}
+                  name={component.name}
+                  description={component.description}
+                  icon={component.icon}
+                  variants={component.variants}
+                  status={component.status}
+                  onClick={() => onNavigate(component.id)}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
       </section>
 
       {/* Quick Links */}
       <section style={styles.quickLinksSection}>
-        <div style={styles.quickLinkCard} onClick={() => onNavigate('icons')}>
-          <div style={styles.quickLinkIcon}>⭐</div>
+        <div style={styles.quickLinkCard} onClick={() => onNavigate('colours')}>
+          <div style={styles.quickLinkIcon}>🎨</div>
           <div style={styles.quickLinkContent}>
-            <h3 style={styles.quickLinkTitle}>Icon Library</h3>
+            <h3 style={styles.quickLinkTitle}>Colour System</h3>
             <p style={styles.quickLinkDescription}>
-              Browse 46 carefully crafted icons designed for the Radiant design system.
+              Explore the complete colour palette with 8 scales and usage guidelines.
             </p>
           </div>
         </div>
-        <div style={styles.quickLinkCard} onClick={() => onNavigate('architecture')}>
-          <div style={styles.quickLinkIcon}>🏗️</div>
+        <div style={styles.quickLinkCard} onClick={() => onNavigate('typography')}>
+          <div style={styles.quickLinkIcon}>🔤</div>
           <div style={styles.quickLinkContent}>
-            <h3 style={styles.quickLinkTitle}>Token Architecture</h3>
+            <h3 style={styles.quickLinkTitle}>Typography</h3>
             <p style={styles.quickLinkDescription}>
-              Understand the design token system that powers our consistent visual language.
+              Typography system with 20+ variants for consistent text styling.
+            </p>
+          </div>
+        </div>
+        <div style={styles.quickLinkCard} onClick={() => onNavigate('icons')}>
+          <div style={styles.quickLinkIcon}>⭐</div>
+          <div style={styles.quickLinkContent}>
+            <h3 style={styles.quickLinkTitle}>Icons</h3>
+            <p style={styles.quickLinkDescription}>
+              Browse 46 carefully crafted icons with searchable gallery.
+            </p>
+          </div>
+        </div>
+        <div style={styles.quickLinkCard} onClick={() => onNavigate('registry')}>
+          <div style={styles.quickLinkIcon}>📋</div>
+          <div style={styles.quickLinkContent}>
+            <h3 style={styles.quickLinkTitle}>Component Registry</h3>
+            <p style={styles.quickLinkDescription}>
+              Full component status, source, and implementation details.
             </p>
           </div>
         </div>
@@ -378,6 +433,76 @@ const styles: Record<string, React.CSSProperties> = {
     letterSpacing: '0.5px',
   },
 
+  // Token Architecture
+  tokenSection: {
+    marginBottom: '48px',
+    padding: '32px',
+    backgroundColor: brandColors.white,
+    borderRadius: '20px',
+    border: `1px solid ${brandColors.gray[20]}`,
+  },
+  tokenFlow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '12px',
+    marginBottom: '24px',
+  },
+  tokenLayer: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    padding: '20px',
+    backgroundColor: brandColors.gray[10],
+    borderRadius: '12px',
+    cursor: 'pointer',
+    transition: 'all 200ms ease',
+  },
+  tokenLayerIcon: {
+    width: '48px',
+    height: '48px',
+    borderRadius: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 700,
+  },
+  tokenLayerContent: {
+    flex: 1,
+  },
+  tokenLayerTitle: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '14px',
+    fontWeight: 600,
+    color: brandColors.gray[90],
+    margin: 0,
+    marginBottom: '4px',
+  },
+  tokenLayerDesc: {
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: '11px',
+    color: brandColors.gray[50],
+    margin: 0,
+  },
+  tokenArrow: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '24px',
+    color: brandColors.gray[30],
+  },
+  tokenCTA: {
+    padding: '10px 20px',
+    backgroundColor: 'transparent',
+    border: `1px solid ${brandColors.gray[30]}`,
+    borderRadius: '8px',
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '13px',
+    fontWeight: 500,
+    color: brandColors.gray[70],
+    cursor: 'pointer',
+    transition: 'all 150ms ease',
+  },
+
   // Components
   componentsSection: {
     marginBottom: '48px',
@@ -397,6 +522,18 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '16px',
     fontWeight: 400,
     color: brandColors.gray[50],
+  },
+  categorySection: {
+    marginBottom: '32px',
+  },
+  categoryTitle: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '16px',
+    fontWeight: 600,
+    color: brandColors.gray[60],
+    marginBottom: '16px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
   },
   componentsGrid: {
     display: 'grid',

@@ -1,0 +1,189 @@
+import React, { useState } from 'react';
+import { Select } from '../../../components/Select';
+import { Chip } from '../../../components/Chip';
+import { Icon } from '../../../components/icons';
+import { usersParentStyles as styles, formStyles } from '../styles';
+import { users, existingGroups, User } from '../data/mockData';
+import { brandColors } from '../../../tokens/colors/brand';
+
+interface UsersParentStepProps {
+  parentGroupId: string;
+  selectedUserIds: string[];
+  onParentGroupChange: (groupId: string) => void;
+  onSelectedUsersChange: (userIds: string[]) => void;
+}
+
+/**
+ * UsersParentStep Component
+ * 
+ * Step 4 of the wizard: Select parent group and add users.
+ */
+export const UsersParentStep: React.FC<UsersParentStepProps> = ({
+  parentGroupId,
+  selectedUserIds,
+  onParentGroupChange,
+  onSelectedUsersChange,
+}) => {
+  const [userSearchValue, setUserSearchValue] = useState('');
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+
+  // Parent group options
+  const parentGroupOptions = [
+    { value: '', label: 'No parent group' },
+    ...existingGroups.map(group => ({
+      value: group.id,
+      label: group.displayName,
+    })),
+  ];
+
+  // Filter users for dropdown
+  const filteredUsers = users.filter(user =>
+    !selectedUserIds.includes(user.id) &&
+    (user.name.toLowerCase().includes(userSearchValue.toLowerCase()) ||
+     user.email.toLowerCase().includes(userSearchValue.toLowerCase()))
+  );
+
+  // Get selected user objects
+  const selectedUsers = users.filter(user => selectedUserIds.includes(user.id));
+
+  const handleAddUser = (userId: string) => {
+    onSelectedUsersChange([...selectedUserIds, userId]);
+    setUserSearchValue('');
+    setShowUserDropdown(false);
+  };
+
+  const handleRemoveUser = (userId: string) => {
+    onSelectedUsersChange(selectedUserIds.filter(id => id !== userId));
+  };
+
+  return (
+    <div>
+      {/* Parent group section */}
+      <div style={styles.section}>
+        <div style={styles.sectionTitle}>Parent group</div>
+        <p style={styles.sectionDescription}>
+          Optionally nest this group under an existing group.
+        </p>
+        <Select
+          options={parentGroupOptions}
+          value={parentGroupId}
+          onChange={onParentGroupChange}
+          placeholder="Select parent group"
+        />
+      </div>
+
+      {/* Users section */}
+      <div style={styles.section}>
+        <div style={styles.sectionTitle}>Add users</div>
+        <p style={styles.sectionDescription}>
+          Search and add users to this group.
+        </p>
+
+        {/* User search input with dropdown */}
+        <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative' }}>
+            <Icon
+              name="magnifying-glass"
+              size="m"
+              style={{
+                position: 'absolute',
+                left: '12px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: brandColors.gray[50],
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Search users"
+              value={userSearchValue}
+              onChange={(e) => {
+                setUserSearchValue(e.target.value);
+                setShowUserDropdown(true);
+              }}
+              onFocus={() => setShowUserDropdown(true)}
+              style={{
+                width: '100%',
+                height: '36px',
+                paddingLeft: '40px',
+                paddingRight: '12px',
+                border: `1px solid ${brandColors.gray[40]}`,
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              }}
+            />
+          </div>
+
+          {/* Dropdown */}
+          {showUserDropdown && userSearchValue && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                right: 0,
+                marginTop: '4px',
+                backgroundColor: brandColors.white,
+                border: `1px solid ${brandColors.gray[20]}`,
+                borderRadius: '6px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                zIndex: 10,
+              }}
+            >
+              {filteredUsers.length > 0 ? (
+                filteredUsers.map(user => (
+                  <div
+                    key={user.id}
+                    onClick={() => handleAddUser(user.id)}
+                    style={{
+                      padding: '10px 12px',
+                      cursor: 'pointer',
+                      borderBottom: `1px solid ${brandColors.gray[10]}`,
+                      transition: 'background-color 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = brandColors.gray[10];
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
+                  >
+                    <div style={{ fontSize: '14px', fontWeight: 500, color: brandColors.gray[90] }}>
+                      {user.name}
+                    </div>
+                    <div style={{ fontSize: '12px', color: brandColors.gray[50] }}>
+                      {user.email}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div style={{ padding: '12px', textAlign: 'center', color: brandColors.gray[50], fontSize: '14px' }}>
+                  No users found
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Selected users as chips */}
+        {selectedUsers.length > 0 && (
+          <div style={styles.selectedUsers}>
+            {selectedUsers.map(user => (
+              <Chip
+                key={user.id}
+                label={user.name}
+                onRemove={() => handleRemoveUser(user.id)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default UsersParentStep;
