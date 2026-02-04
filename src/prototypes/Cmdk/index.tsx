@@ -1,15 +1,61 @@
 /**
- * Cmdk - Command Palette (Command-K)
+ * Command Palette Prototype
  * 
- * A command palette interface for quick navigation and actions.
+ * A command palette (⌘K) interface for quick navigation and actions.
+ * 
  * Features:
- * - Global search across objects
- * - Recent items
- * - Quick create actions
- * - Keyboard navigation
+ * - Type "/" to show filter options
+ * - Context-aware filter ranking based on current page
+ * - Multiple UI variants (Figma Spec, Compact, Spacious, Two-Line)
+ * - Full keyboard navigation
+ * - Liveboard preview background
  * 
- * Built using Radiant design system components.
+ * Based on ThoughtSpot Radiant design system.
  */
 
-export { default } from './CommandPalette';
+// Default export is the demo wrapper
+export { default } from './CmdkDemo';
+
+// Named exports for individual components
+export { CmdkDemo } from './CmdkDemo';
 export { CommandPalette } from './CommandPalette';
+
+// Component exports
+export {
+  CommandSearch,
+  KeyboardShortcuts,
+  ResultCard,
+  ResultCardCompact,
+  ResultCardSpacious,
+  ResultCardTwoLine16,
+  ResultCardTwoLine20,
+  FilterChip,
+  FilterOptions,
+  VariantDropdown,
+  ContextDropdown,
+} from './components';
+
+// Type exports
+export type {
+  CommandItem,
+  FilterOption,
+  PageContext,
+  CardVariant,
+  ResultCardProps,
+  CommandPaletteProps,
+  CommandGroup,
+  KeyboardShortcut,
+  ContextOption,
+} from './types';
+
+// Data exports
+export {
+  FILTER_OPTIONS,
+  CONTEXT_OPTIONS,
+  CONTEXT_RANKINGS,
+  allItems,
+  commandGroups,
+  keyboardShortcuts,
+  getItemsByFilter,
+  getRankedFilterOptions,
+} from './data/mockData';

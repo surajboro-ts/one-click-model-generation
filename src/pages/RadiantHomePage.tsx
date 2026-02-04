@@ -279,6 +279,15 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
             </p>
           </div>
         </div>
+        <div style={styles.quickLinkCard} onClick={() => onNavigate('surfaces')}>
+          <div style={styles.quickLinkIcon}>🪟</div>
+          <div style={styles.quickLinkContent}>
+            <h3 style={styles.quickLinkTitle}>Surfaces</h3>
+            <p style={styles.quickLinkDescription}>
+              Modal patterns (M1-M4) with Simple, Wizard, Sub-navigation, and Splash Screen types.
+            </p>
+          </div>
+        </div>
         <div style={styles.quickLinkCard} onClick={() => onNavigate('registry')}>
           <div style={styles.quickLinkIcon}>📋</div>
           <div style={styles.quickLinkContent}>

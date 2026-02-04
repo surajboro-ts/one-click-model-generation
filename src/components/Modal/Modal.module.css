@@ -1,15 +1,22 @@
-/* Modal Component Styles */
+/* Modal Component Styles
+ * Based on Radiant 3.0 Design System - Figma specifications
+ * Sizes: M1 (394px), M2 (788px), M3 (1182px), M4 (Full Screen)
+ * Types: simple, wizard, subnavigation, splashscreen
+ */
 
+/* ========================================
+   OVERLAY
+   ======================================== */
 .overlay {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-surface-overlay);
-  z-index: var(--z-index-modal);
+  background-color: var(--color-surface-overlay, rgba(29, 35, 47, 0.5));
+  z-index: var(--z-index-modal, 1000);
   padding: var(--spacing-6);
-  animation: fadeIn var(--duration-fast) var(--easing-decelerate);
+  animation: fadeIn var(--duration-fast, 150ms) var(--easing-decelerate, ease-out);
 }
 
 @keyframes fadeIn {
@@ -32,18 +39,71 @@
   }
 }
 
+/* ========================================
+   BASE MODAL
+   ======================================== */
 .modal {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-brand-white);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-2xl);
-  max-height: calc(100vh - var(--spacing-12));
+  background-color: var(--color-brand-white, #ffffff);
+  border-radius: var(--radius-md, 6px);
+  box-shadow: 0px 0px 4px rgba(25, 35, 49, 0.08), 0px 24px 32px rgba(25, 35, 49, 0.16);
+  min-height: 230px;
+  max-height: 690px;
   overflow: hidden;
-  animation: slideUp var(--duration-normal) var(--easing-decelerate);
+  animation: slideUp var(--duration-normal, 200ms) var(--easing-decelerate, ease-out);
 }
 
-/* Modal Sizes */
+/* Main content area wrapper */
+.mainArea {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ========================================
+   SIZE VARIANTS - Figma Naming (M1-M4)
+   ======================================== */
+
+/* M1: 394px - Compact dialogs, confirmations, alerts */
+.M1 {
+  width: 394px;
+  min-width: 394px;
+  max-width: 394px;
+}
+
+/* M2: 788px - Standard forms, settings, content */
+.M2 {
+  width: 788px;
+  min-width: 788px;
+  max-width: 788px;
+}
+
+/* M3: 1182px - Complex layouts, data tables, comparisons */
+.M3 {
+  width: 1182px;
+  min-width: 1182px;
+  max-width: 1182px;
+}
+
+/* M4: Full Screen - Immersive experiences, editors */
+.M4 {
+  width: calc(100vw - 16px);
+  max-width: 1440px;
+  height: calc(100vh - 16px);
+  max-height: none;
+  margin: 8px;
+}
+
+@media (max-width: 1400px) {
+  .M4 {
+    max-width: 1366px;
+  }
+}
+
+/* Legacy size aliases for backward compatibility */
 .small {
   width: 100%;
   max-width: 360px;
@@ -59,25 +119,74 @@
   max-width: 640px;
 }
 
-/* Header */
+/* ========================================
+   TYPE VARIANTS
+   ======================================== */
+
+/* Wizard type - with progress bar at bottom */
+.wizard {
+  min-height: 260px;
+}
+
+.wizard .mainArea {
+  padding-bottom: 0;
+}
+
+/* Sub-navigation type - horizontal layout with left panel */
+.subnavigation {
+  flex-direction: row;
+}
+
+.subnavigation .mainArea {
+  flex: 1;
+}
+
+/* Splash screen type - fixed height with media area */
+.splashscreen {
+  height: 690px;
+  min-height: 690px;
+  max-height: 690px;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: var(--spacing-4);
-  padding: var(--spacing-5) var(--spacing-6);
-  border-bottom: 1px solid var(--color-brand-gray-20);
+  gap: var(--spacing-4, 16px);
+  padding: var(--spacing-5, 20px) var(--spacing-6, 24px);
+  border-bottom: 1px solid var(--color-brand-gray-20, #eaedf2);
+  flex-shrink: 0;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.eyebrow {
+  font-family: var(--font-family-primary, 'Plain', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-light, 375);
+  line-height: var(--line-height-md, 20px);
+  color: var(--color-brand-gray-60, #777e8b);
+  margin: 0;
 }
 
 .title {
   margin: 0;
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-lg);
-  color: var(--color-brand-gray-90);
+  font-family: var(--font-family-primary, 'Plain', sans-serif);
+  font-size: var(--font-size-xl, 20px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-xl, 28px);
+  letter-spacing: -0.4px;
+  color: var(--color-brand-gray-90, #1d232f);
 }
 
+/* Close button - icon version */
 .closeButton {
   display: flex;
   align-items: center;
@@ -87,37 +196,323 @@
   padding: 0;
   border: none;
   background-color: transparent;
-  border-radius: var(--radius-md);
-  color: var(--color-brand-gray-60);
+  border-radius: var(--radius-md, 6px);
+  color: var(--color-brand-gray-60, #777e8b);
   cursor: pointer;
-  transition: background-color var(--duration-fast) var(--easing-standard),
-              color var(--duration-fast) var(--easing-standard);
+  flex-shrink: 0;
+  transition: background-color var(--duration-fast, 150ms) var(--easing-standard, ease),
+              color var(--duration-fast, 150ms) var(--easing-standard, ease);
 }
 
 .closeButton:hover {
-  background-color: var(--color-brand-gray-10);
-  color: var(--color-brand-gray-90);
+  background-color: var(--color-brand-gray-10, #f6f8fa);
+  color: var(--color-brand-gray-90, #1d232f);
 }
 
 .closeButton:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--color-brand-blue-60, #2770ef);
   outline-offset: 2px;
 }
 
-/* Content */
-.content {
-  flex: 1;
-  padding: var(--spacing-6);
-  overflow-y: auto;
+/* Close button - text version (for M4 full screen) */
+.closeButtonText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px var(--spacing-1, 4px);
+  border: none;
+  background-color: transparent;
+  border-radius: var(--radius-md, 6px);
+  font-family: var(--font-family-primary, 'Plain', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-light, 375);
+  line-height: var(--line-height-md, 20px);
+  color: var(--color-brand-blue-60, #2770ef);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color var(--duration-fast, 150ms) var(--easing-standard, ease);
 }
 
-/* Footer */
+.closeButtonText:hover {
+  background-color: var(--color-brand-gray-10, #f6f8fa);
+}
+
+.closeButtonText:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60, #2770ef);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   CONTENT
+   ======================================== */
+.content {
+  flex: 1;
+  padding: var(--spacing-6, 24px);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Splash screen has different content padding */
+.splashscreen .content {
+  padding: 0 var(--spacing-6, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8, 32px);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
 .footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: var(--spacing-3);
-  padding: var(--spacing-4) var(--spacing-6);
-  border-top: 1px solid var(--color-brand-gray-20);
-  background-color: var(--color-brand-gray-10);
+  justify-content: space-between;
+  gap: var(--spacing-4, 16px);
+  padding: var(--spacing-5, 20px) var(--spacing-6, 24px);
+  border-top: 1px solid var(--color-brand-gray-20, #eaedf2);
+  background-color: var(--color-brand-gray-10, #f6f8fa);
+  border-radius: 0 0 var(--radius-md, 6px) var(--radius-md, 6px);
+  flex-shrink: 0;
+}
+
+/* ========================================
+   WIZARD PROGRESS BAR
+   ======================================== */
+.wizardProgress {
+  display: flex;
+  height: 4px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.progressStep {
+  flex: 1;
+  min-height: 4px;
+  min-width: 1px;
+}
+
+/* First step - rounded on left */
+.progressStep:first-child {
+  border-radius: 0 2px 2px 0;
+}
+
+/* Last step - rounded on right */
+.progressStep:last-child {
+  border-radius: 2px 0 0 2px;
+}
+
+/* Single step (both first and last) */
+.progressStep:first-child:last-child {
+  border-radius: 2px;
+}
+
+.progressStepActive {
+  background-color: var(--color-brand-blue-60, #2770ef);
+}
+
+.progressStepInactive {
+  background-color: var(--color-brand-gray-30, #dbdfe7);
+}
+
+/* ========================================
+   SUB-NAVIGATION PANEL
+   ======================================== */
+.navPanel {
+  width: 264px;
+  min-width: 264px;
+  border-right: 1px solid var(--color-brand-gray-20, #eaedf2);
+  background-color: var(--color-brand-white, #ffffff);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   MEDIA AREA (Splash Screen)
+   ======================================== */
+.mediaArea {
+  width: 100%;
+  height: 380px;
+  min-height: 380px;
+  background-color: var(--color-brand-purple-20, #f0ebff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mediaArea img,
+.mediaArea video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========================================
+   FOOTER ACTION SLOTS
+   ======================================== */
+.tertiaryActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+  flex-shrink: 0;
+}
+
+/* Empty tertiary actions slot - hide when no content */
+.tertiaryActions:empty {
+  display: none;
+}
+
+.primaryActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 16px);
+  margin-left: auto; /* Always push to right, even without tertiary */
+  flex-shrink: 0;
+}
+
+/* ========================================
+   NAV ITEM STYLES
+   ======================================== */
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3, 12px);
+  width: 100%;
+  height: 56px;
+  padding: 0 var(--spacing-4, 16px);
+  border: none;
+  background-color: transparent;
+  font-family: var(--font-family-primary, 'Plain', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-light, 375);
+  line-height: var(--line-height-md, 20px);
+  color: var(--color-brand-gray-90, #1d232f);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-fast, 150ms) var(--easing-standard, ease);
+}
+
+.navItem:hover {
+  background-color: var(--color-brand-gray-10, #f6f8fa);
+}
+
+.navItem:focus-visible {
+  outline: 2px solid var(--color-brand-blue-60, #2770ef);
+  outline-offset: -2px;
+}
+
+.navItemSelected {
+  background-color: var(--color-brand-blue-10, #f2f7ff);
+  color: var(--color-brand-blue-60, #2770ef);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.navItemSelected:hover {
+  background-color: var(--color-brand-blue-20, #dee8fa);
+}
+
+.navItemDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.navItemDisabled:hover {
+  background-color: transparent;
+}
+
+.navItemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.navItemLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ========================================
+   SPLASH SCREEN CONTENT
+   ======================================== */
+.splashContent {
+  display: flex;
+  gap: var(--spacing-6, 24px);
+  align-items: flex-start;
+  padding: var(--spacing-6, 24px);
+}
+
+.splashTitle {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-family-primary, 'Plain', sans-serif);
+  font-size: var(--font-size-2xl, 24px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-2xl, 32px);
+  letter-spacing: -0.4px;
+  color: var(--color-brand-gray-90, #1d232f);
+  text-align: right;
+  max-width: 294px;
+}
+
+.splashBullets {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  padding-left: 21px;
+  list-style-type: disc;
+  max-width: 294px;
+}
+
+.splashBulletItem {
+  font-family: var(--font-family-primary, 'Plain', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-light, 375);
+  line-height: var(--line-height-md, 20px);
+  color: var(--color-brand-gray-90, #1d232f);
+  margin-bottom: var(--spacing-2, 8px);
+}
+
+.splashBulletItem:last-child {
+  margin-bottom: 0;
+}
+
+.splashDescription {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-family-primary, 'Plain', sans-serif);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-light, 375);
+  line-height: var(--line-height-md, 20px);
+  color: var(--color-brand-gray-90, #1d232f);
+  max-width: 294px;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+@media (max-width: 1200px) {
+  .M3 {
+    width: calc(100vw - 48px);
+    min-width: auto;
+  }
+}
+
+@media (max-width: 820px) {
+  .M2 {
+    width: calc(100vw - 48px);
+    min-width: auto;
+  }
+}
+
+@media (max-width: 440px) {
+  .M1 {
+    width: calc(100vw - 48px);
+    min-width: auto;
+  }
 }

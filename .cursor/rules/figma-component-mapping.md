@@ -1,0 +1,330 @@
+---
+description: Rules for mapping Figma designs to Radiant components
+globs: ["src/prototypes/**/*.tsx"]
+---
+
+# Figma-to-Radiant Component Mapping
+
+When recreating a Figma design, use this guide to map Figma elements to Radiant components.
+
+## Figma Layer Naming → Radiant Component
+
+### Common Figma Names
+
+| Figma Layer Name | Radiant Component | Notes |
+|------------------|-------------------|-------|
+| `Button`, `CTA`, `Primary button` | `<Button variant="primary">` | |
+| `Secondary button`, `Ghost button` | `<Button variant="secondary">` | |
+| `Tertiary button`, `Text button` | `<Button variant="tertiary">` | |
+| `Checkbox`, `Check box` | `<Checkbox>` | |
+| `Radio`, `Radio button` | `<Radio>` | |
+| `Toggle`, `Switch`, `Toggle switch` | `<Toggle>` | |
+| `Input`, `Text field`, `Text input` | `<TextInput>` | |
+| `Text area`, `Multiline` | `<TextArea>` | |
+| `Search`, `Search bar`, `Search input` | `<SearchInput>` | |
+| `Dropdown`, `Select`, `Picker` | `<Select>` | |
+| `Modal`, `Dialog`, `Popup` | `<Modal>` | |
+| `Alert`, `Banner`, `Notification` | `<Alert>` | |
+| `Toast`, `Snackbar` | `<Toast>` | |
+| `Chip`, `Tag`, `Badge`, `Label` | `<Chip>` | |
+| `Avatar`, `Profile pic` | `<Avatar>` | |
+| `Tabs`, `Tab bar`, `Tab group` | `<Tabs>` | |
+| `Sidebar`, `Nav`, `Navigation` | `<Sidebar>` | |
+| `Table`, `Data table`, `Grid` | `<Table>` | |
+| `Tooltip`, `Hint` | `<Tooltip>` | |
+| `Card`, `Container`, `Panel` | `<Card>` or custom div | |
+| `Divider`, `Separator`, `Line` | `<Divider>` | |
+| `Icon`, icon names | `<Icon name="...">` | Map to available icons |
+| `Stepper`, `Progress steps` | `<Stepper>` | |
+| `Progress`, `Progress bar` | `<ProgressBar>` | |
+| `Loader`, `Spinner` | `<LoadingIndicator>` | |
+| `Pagination` | `<Pagination>` | |
+| `Menu`, `Dropdown menu` | `<Menu>` | |
+| `Popover`, `Floating panel` | `<Popover>` | |
+
+---
+
+## Figma Variants → Radiant Props
+
+### Button Variants
+
+| Figma Variant | Radiant Props |
+|---------------|---------------|
+| Type: Primary | `variant="primary"` |
+| Type: Secondary | `variant="secondary"` |
+| Type: Tertiary / Ghost | `variant="tertiary"` |
+| Size: Small / S | `size="small"` |
+| Size: Medium / M / Default | `size="basic"` |
+| Size: Large / L | `size="large"` |
+| State: Disabled | `disabled={true}` |
+| State: Loading | `loading={true}` |
+| Icon: Left / Leading | `icon="icon-name"` |
+
+### Alert/Status Variants
+
+| Figma Status | Radiant Props |
+|--------------|---------------|
+| Info / Information / Blue | `status="info"` |
+| Success / Green / Positive | `status="success"` |
+| Warning / Yellow / Caution | `status="warning"` |
+| Error / Red / Failure / Negative | `status="failure"` |
+| Neutral / Muted / Gray | `status="muted"` |
+
+### Size Variants
+
+| Figma Size | Radiant Props |
+|------------|---------------|
+| XS / Extra small / Tiny | `size="xs"` |
+| S / Small | `size="s"` or `size="small"` |
+| M / Medium / Default | `size="m"` or `size="basic"` |
+| L / Large | `size="l"` or `size="large"` |
+| XL / Extra large | `size="xl"` |
+
+---
+
+## Figma Auto-Layout → CSS
+
+### Flex Direction
+
+| Figma Auto-Layout | CSS |
+|-------------------|-----|
+| Horizontal | `display: 'flex', flexDirection: 'row'` |
+| Vertical | `display: 'flex', flexDirection: 'column'` |
+
+### Alignment
+
+| Figma Alignment | CSS |
+|-----------------|-----|
+| Top Left | `alignItems: 'flex-start', justifyContent: 'flex-start'` |
+| Top Center | `alignItems: 'flex-start', justifyContent: 'center'` |
+| Center Left | `alignItems: 'center', justifyContent: 'flex-start'` |
+| Center Center | `alignItems: 'center', justifyContent: 'center'` |
+| Space Between | `justifyContent: 'space-between'` |
+
+### Gap
+
+| Figma Gap | Radiant Token |
+|-----------|---------------|
+| 4px | `spacing.A` |
+| 8px | `spacing.B` |
+| 12px | `spacing.C` |
+| 16px | `spacing.D` |
+| 20px | `spacing.E` |
+| 24px | `spacing.F` |
+| 32px | `spacing.H` |
+
+### Padding
+
+| Figma Padding | Radiant Token |
+|---------------|---------------|
+| 4px | `spacing.A` |
+| 8px | `spacing.B` |
+| 12px | `spacing.C` |
+| 16px | `spacing.D` |
+| 20px | `spacing.E` |
+| 24px | `spacing.F` |
+
+---
+
+## Figma Colors → Radiant Tokens
+
+### Text Colors
+
+| Figma Color | Radiant Token |
+|-------------|---------------|
+| #1D232F | `brandColors.gray[90]` (default text) |
+| #777E8B | `brandColors.gray[60]` (secondary text) |
+| #A5ACB9 | `brandColors.gray[50]` (disabled/placeholder) |
+| #2770EF | `brandColors.blue[60]` (link/primary) |
+
+### Background Colors
+
+| Figma Color | Radiant Token |
+|-------------|---------------|
+| #FFFFFF | `brandColors.white` (surface) |
+| #F6F8FA | `brandColors.gray[10]` (page background) |
+| #EAEDF2 | `brandColors.gray[20]` (subtle background) |
+
+### Border Colors
+
+| Figma Color | Radiant Token |
+|-------------|---------------|
+| #EAEDF2 | `brandColors.gray[20]` (default border) |
+| #C0C6CF | `brandColors.gray[40]` (input border) |
+| #2770EF | `brandColors.blue[60]` (focus/active border) |
+
+### Status Colors
+
+| Figma Color | Radiant Token |
+|-------------|---------------|
+| #06BF7F (green) | `brandColors.green[60]` (success) |
+| #E22B3D (red) | `brandColors.red[60]` (error) |
+| #FCC838 (yellow) | `brandColors.yellow[60]` (warning) |
+| #2770EF (blue) | `brandColors.blue[60]` (info) |
+
+---
+
+## Figma Typography → Radiant Tokens
+
+### Font Sizes
+
+| Figma Size | Radiant Token |
+|------------|---------------|
+| 12px | `fontSize.xs` |
+| 14px | `fontSize.sm` |
+| 16px | `fontSize.md` |
+| 18px | `fontSize.lg` |
+| 20px | `fontSize.xl` |
+| 24px | `fontSize['2xl']` |
+| 32px | `fontSize['3xl']` |
+
+### Font Weights
+
+| Figma Weight | Radiant Token |
+|--------------|---------------|
+| Light / 300-400 | `fontWeight.light` (375) |
+| Regular / 400 | `fontWeight.regular` (400) |
+| Medium / 500 | `fontWeight.medium` (500) |
+| Semibold / 600 | `fontWeight.semibold` (600) |
+
+### Text Style Mapping
+
+| Figma Text Style | Radiant V2 Style |
+|------------------|------------------|
+| Page Title | `v2TextStyles.pageTitle` |
+| Modal Title | `v2TextStyles.modalTitle` |
+| Section Label | `v2TextStyles.sectionLabel` |
+| Body Normal | `v2TextStyles.bodyNormal` |
+| Caption | `v2TextStyles.caption` |
+| Footnote | `v2TextStyles.footnote` |
+| Overline | `v2TextStyles.overline` |
+
+---
+
+## What to Ignore from Figma
+
+### Always Ignore
+
+1. **Decorative shadows** that don't match Radiant tokens
+2. **Custom colors** not in the Radiant palette (use closest token)
+3. **Pixel-perfect spacing** that doesn't match 4px grid (round to nearest token)
+4. **Non-standard fonts** (use `fontFamily.primary`)
+5. **Frame names** that are organizational only
+
+### Simplify When Mapping
+
+1. **Complex gradients** → Use solid colors from tokens
+2. **Elaborate animations** → Use simple transitions
+3. **Custom icons** → Use available Icon names or placeholder
+4. **Non-standard hover states** → Use Radiant component defaults
+
+---
+
+## Icon Mapping
+
+### Common Figma Icon Names → Radiant Icon Names
+
+| Figma Icon | Radiant `<Icon name="...">` |
+|------------|----------------------------|
+| Close, X | `cross` |
+| Check, Tick | `checkmark` |
+| Add, Plus | `plus` |
+| Remove, Minus | `minus` |
+| Search, Magnifier | `magnifying-glass` |
+| Settings, Gear | `cog` |
+| Edit, Pencil | `pencil` |
+| Delete, Trash | `trash-can` |
+| Download | `download` |
+| Upload | `upload` |
+| Share | `share` |
+| Filter, Funnel | `filter` or `funnel` |
+| Sort | `sort` |
+| Info, Information | `info-circle` or `information` |
+| Warning, Alert | `exclamation-point-circle` |
+| Error | `cross-circle` |
+| Success | `checkmark-circle` |
+| Help, Question | `question-mark` |
+| User, Profile | `profile` |
+| Menu, Hamburger | `hamburger` |
+| More, Dots, Ellipsis | `more` |
+| Arrow Left/Right/Up/Down | `arrow-left`, `arrow-right`, etc. |
+| Chevron Left/Right/Up/Down | `chevron-left`, `chevron-right`, etc. |
+| Eye, View | `eye` |
+| Eye Off, Hide | `eye-undo` |
+| Pin | `pin` |
+| Star, Favorite | `star` |
+| Copy | `copy` |
+| Refresh, Reload | `refresh` |
+| Lock | `lock` |
+| Folder | `folder` |
+| Clock, Time | `clock` |
+| Play | `play` |
+| Pause | `pause` |
+| Expand | `expand` |
+| Fullscreen | `fullscreen` |
+| Tag | `tag` |
+| Save | `save` |
+
+---
+
+## Pattern Recognition: Figma → Radiant
+
+### When you see a list with checkboxes
+```tsx
+// Figma: List of items with checkbox indicators
+// Radiant:
+{items.map(item => (
+  <Checkbox 
+    key={item.id}
+    label={item.name}
+    checked={selected.includes(item.id)}
+    onChange={() => toggle(item.id)}
+  />
+))}
+```
+
+### When you see a modal with form fields
+```tsx
+// Figma: Popup/Dialog with input fields and buttons
+// Radiant:
+<Modal isOpen={isOpen} onClose={onClose} title="Form Title">
+  <TextInput label="Field 1" value={value} onChange={setValue} />
+  <Select label="Field 2" options={options} value={selected} onChange={setSelected} />
+  <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-end' }}>
+    <Button variant="secondary" onClick={onClose}>Cancel</Button>
+    <Button variant="primary" onClick={handleSubmit}>Save</Button>
+  </div>
+</Modal>
+```
+
+### When you see a data table with actions
+```tsx
+// Figma: Grid/Table with rows and action buttons/icons
+// Radiant:
+<Table
+  columns={[
+    { key: 'name', label: 'Name' },
+    { key: 'status', label: 'Status', render: (v) => <Chip label={v} /> },
+    { key: 'actions', label: '', render: () => (
+      <Button variant="tertiary" icon="more" />
+    )},
+  ]}
+  data={data}
+/>
+```
+
+### When you see tabs with content panels
+```tsx
+// Figma: Tab bar with different content areas
+// Radiant:
+<Tabs
+  tabs={[
+    { id: 'tab1', label: 'First Tab' },
+    { id: 'tab2', label: 'Second Tab' },
+  ]}
+  activeTab={active}
+  onTabChange={setActive}
+/>
+{active === 'tab1' && <FirstTabContent />}
+{active === 'tab2' && <SecondTabContent />}
+```

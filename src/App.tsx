@@ -9,6 +9,7 @@ import { PlaygroundGallery } from './pages/PlaygroundGallery';
 import { PlaygroundProject } from './pages/PlaygroundProject';
 import { ArchitectureShowcase } from './pages/ArchitectureShowcase';
 import { IconsShowcase } from './pages/IconsShowcase';
+import { SurfacesShowcase } from './pages/SurfacesShowcase';
 import { VersionHistoryPage } from './pages/VersionHistoryPage';
 import { ColorSystemPage } from './pages/ColorSystemPage';
 import { TypographyPage } from './pages/TypographyPage';
@@ -76,6 +77,15 @@ const ChangelogIcon = () => (
   </svg>
 );
 
+const SurfacesIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2.25 3.75H15.75V5.25H2.25V3.75Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M2.25 7.5H15.75V9H2.25V7.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M2.25 11.25H15.75V12.75H2.25V11.25Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M2.25 14.25H15.75V15.75H2.25V14.25Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 // Route definitions for cleaner mapping
 const ROUTES = {
   home: '/',
@@ -83,6 +93,7 @@ const ROUTES = {
   radiant: '/radiant',
   radiantArchitecture: '/radiant/architecture',
   radiantIcons: '/radiant/icons',
+  radiantSurfaces: '/radiant/surfaces',
   radiantRegistry: '/radiant/registry',
   radiantChangelog: '/radiant/changelog',
   // Example prototypes
@@ -166,6 +177,7 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'typography-page': '/radiant/typography',
       'architecture': '/radiant/architecture',
       'icons': '/radiant/icons',
+      'surfaces': '/radiant/surfaces',
       'registry': '/radiant/registry',
       'changelog': '/radiant/changelog',
       'example-filter-dialog': '/radiant/examples/filter-dialog',
@@ -216,6 +228,7 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'colours', label: 'Colours', icon: <ColorIcon />, type: 'item' },
     { id: 'typography-page', label: 'Typography', icon: <ArchitectureIcon />, type: 'item' },
     { id: 'icons', label: 'Icons', icon: <IconsIcon />, type: 'item', badge: '46' },
+    { id: 'surfaces', label: 'Surfaces', icon: <SurfacesIcon />, type: 'item' },
     { id: 'registry', label: 'Component Registry', icon: <TableIcon />, type: 'item' },
     { id: 'changelog', label: 'Changelog', icon: <ChangelogIcon />, type: 'item' },
     { id: 'divider0', label: '', type: 'divider' },
@@ -310,6 +323,7 @@ const RadiantHomePageWrapper: React.FC = () => {
       'colours': '/radiant/colours',
       'typography': '/radiant/typography',
       'icons': '/radiant/icons',
+      'surfaces': '/radiant/surfaces',
       'registry': '/radiant/registry',
       'architecture': '/radiant/architecture',
       // Component pages
@@ -359,6 +373,7 @@ const App: React.FC = () => {
       <Route path="/radiant/colours" element={<RadiantLayout><ColorSystemPage /></RadiantLayout>} />
       <Route path="/radiant/typography" element={<RadiantLayout><TypographyPage /></RadiantLayout>} />
       <Route path="/radiant/icons" element={<RadiantLayout><IconsShowcase /></RadiantLayout>} />
+      <Route path="/radiant/surfaces" element={<RadiantLayout><SurfacesShowcase /></RadiantLayout>} />
       <Route path="/radiant/registry" element={<RadiantLayout><ComponentRegistryPage /></RadiantLayout>} />
       <Route path="/radiant/changelog" element={<RadiantLayout><VersionHistoryPage /></RadiantLayout>} />
       <Route path="/radiant/architecture" element={<RadiantLayout><ArchitectureShowcase /></RadiantLayout>} />

@@ -1,6 +1,12 @@
 import React, { useEffect, useCallback } from 'react';
 import styles from './Modal.module.css';
 
+/** Modal size variants matching Figma specifications */
+export type ModalSize = 'M1' | 'M2' | 'M3' | 'M4' | 'small' | 'medium' | 'large';
+
+/** Modal type variants */
+export type ModalType = 'simple' | 'wizard' | 'subnavigation' | 'splashscreen';
+
 export interface ModalProps {
   /** Whether the modal is open */
   isOpen: boolean;
@@ -8,6 +14,8 @@ export interface ModalProps {
   onClose: () => void;
   /** Modal title */
   title?: string;
+  /** Eyebrow text above title (for wizard type) */
+  eyebrow?: string;
   /** Modal content */
   children: React.ReactNode;
   /** Footer content (typically buttons) */
@@ -16,8 +24,33 @@ export interface ModalProps {
   closeOnOverlayClick?: boolean;
   /** Whether to close on Escape key */
   closeOnEscape?: boolean;
-  /** Modal size */
-  size?: 'small' | 'medium' | 'large';
+  /** 
+   * Modal size - Figma naming convention
+   * - M1: 394px (compact dialogs, confirmations)
+   * - M2: 788px (standard forms, settings)
+   * - M3: 1182px (complex layouts, data tables)
+   * - M4: Full screen (immersive experiences)
+   * - small/medium/large: Legacy sizes for backward compatibility
+   */
+  size?: ModalSize;
+  /** 
+   * Modal type variant
+   * - simple: Header + Content + Footer (default)
+   * - wizard: With progress bar and step indicator
+   * - subnavigation: With left navigation panel
+   * - splashscreen: Feature announcement/onboarding
+   */
+  type?: ModalType;
+  /** Current step (for wizard type, 1-indexed) */
+  currentStep?: number;
+  /** Total number of steps (for wizard type, 2-4) */
+  totalSteps?: number;
+  /** Navigation panel content (for subnavigation type) */
+  navigation?: React.ReactNode;
+  /** Media content (for splashscreen type) */
+  mediaContent?: React.ReactNode;
+  /** Whether to show close button in header */
+  showCloseButton?: boolean;
   /** Additional CSS class name for the modal content */
   className?: string;
 }
@@ -26,12 +59,15 @@ export interface ModalProps {
  * Modal Component
  * 
  * An overlay modal dialog for displaying content on top of the page.
+ * Supports multiple sizes (M1-M4) and types (simple, wizard, subnavigation, splashscreen)
+ * based on the Radiant 3.0 Design System specifications.
  * 
- * @example
+ * @example Simple Modal
  * ```tsx
  * <Modal
  *   isOpen={isOpen}
  *   onClose={() => setIsOpen(false)}
+ *   size="M2"
  *   title="Form Title"
  *   footer={
  *     <>
@@ -43,16 +79,46 @@ export interface ModalProps {
  *   <TextInput label="Name" />
  * </Modal>
  * ```
+ * 
+ * @example Wizard Modal
+ * ```tsx
+ * <Modal
+ *   isOpen={isOpen}
+ *   onClose={() => setIsOpen(false)}
+ *   size="M2"
+ *   type="wizard"
+ *   title="Create New Group"
+ *   eyebrow="Step 1 of 3"
+ *   currentStep={1}
+ *   totalSteps={3}
+ *   footer={
+ *     <>
+ *       <Button variant="tertiary">Cancel</Button>
+ *       <Button variant="secondary">Back</Button>
+ *       <Button variant="primary">Next</Button>
+ *     </>
+ *   }
+ * >
+ *   <StepContent />
+ * </Modal>
+ * ```
  */
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
+  eyebrow,
   children,
   footer,
   closeOnOverlayClick = true,
   closeOnEscape = true,
-  size = 'medium',
+  size = 'M2',
+  type = 'simple',
+  currentStep,
+  totalSteps,
+  navigation,
+  mediaContent,
+  showCloseButton = true,
   className,
 }) => {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -81,38 +147,108 @@ export const Modal: React.FC<ModalProps> = ({
 
   if (!isOpen) return null;
 
+  // Build modal classes
   const modalClasses = [
     styles.modal,
     styles[size],
+    styles[type],
     className,
   ].filter(Boolean).join(' ');
 
+  // Determine if we should show wizard progress bar
+  const showWizardProgress = type === 'wizard' && totalSteps && totalSteps >= 2;
+
+  // For M4 full screen, use text close button
+  const isFullScreen = size === 'M4';
+
   return (
-    <div className={styles.overlay} onClick={handleOverlayClick} role="dialog" aria-modal="true" aria-labelledby={title ? 'modal-title' : undefined}>
+    <div 
+      className={styles.overlay} 
+      onClick={handleOverlayClick} 
+      role="dialog" 
+      aria-modal="true" 
+      aria-labelledby={title ? 'modal-title' : undefined}
+    >
       <div className={modalClasses}>
-        {title && (
-          <div className={styles.header}>
-            <h2 id="modal-title" className={styles.title}>{title}</h2>
-            <button 
-              type="button" 
-              className={styles.closeButton} 
-              onClick={onClose}
-              aria-label="Close modal"
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+        {/* Sub-navigation panel (left side) */}
+        {type === 'subnavigation' && navigation && (
+          <div className={styles.navPanel}>
+            {navigation}
           </div>
         )}
-        <div className={styles.content}>
-          {children}
+
+        {/* Main content area */}
+        <div className={styles.mainArea}>
+          {/* Splash screen media area */}
+          {type === 'splashscreen' && mediaContent && (
+            <div className={styles.mediaArea}>
+              {mediaContent}
+            </div>
+          )}
+
+          {/* Header */}
+          {(title || eyebrow) && (
+            <div className={styles.header}>
+              <div className={styles.headerContent}>
+                {eyebrow && type === 'wizard' && (
+                  <span className={styles.eyebrow}>{eyebrow}</span>
+                )}
+                {title && (
+                  <h2 id="modal-title" className={styles.title}>{title}</h2>
+                )}
+              </div>
+              {showCloseButton && (
+                isFullScreen ? (
+                  <button 
+                    type="button" 
+                    className={styles.closeButtonText} 
+                    onClick={onClose}
+                    aria-label="Close modal"
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <button 
+                    type="button" 
+                    className={styles.closeButton} 
+                    onClick={onClose}
+                    aria-label="Close modal"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+                )
+              )}
+            </div>
+          )}
+
+          {/* Content */}
+          <div className={styles.content}>
+            {children}
+          </div>
+
+          {/* Footer */}
+          {footer && !isFullScreen && (
+            <div className={styles.footer}>
+              {footer}
+            </div>
+          )}
+
+          {/* Wizard Progress Bar */}
+          {showWizardProgress && (
+            <div className={styles.wizardProgress}>
+              {Array.from({ length: totalSteps! }, (_, index) => (
+                <div
+                  key={index}
+                  className={`${styles.progressStep} ${
+                    index < (currentStep || 1) ? styles.progressStepActive : styles.progressStepInactive
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
-        {footer && (
-          <div className={styles.footer}>
-            {footer}
-          </div>
-        )}
       </div>
     </div>
   );

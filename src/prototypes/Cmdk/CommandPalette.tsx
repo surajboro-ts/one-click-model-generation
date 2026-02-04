@@ -1,197 +1,314 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  CommandSearch,
-  CommandGroup,
-  KeyboardShortcuts,
-} from './components';
-import { colors, spacing, typography, shadows, borderRadius } from './styles';
-import { commandGroups, keyboardShortcuts } from './data/mockData';
-import type { CommandItemData } from './data/mockData';
-
-interface CommandPaletteProps {
-  isOpen?: boolean;
-  onClose?: () => void;
-}
-
 /**
- * CommandPalette - Command-K Interface
+ * CommandPalette - Main Component
  * 
- * A command palette for quick navigation and actions.
+ * Command palette with context-aware filtering and multiple UI variants.
+ * 
  * Features:
- * - Global search
- * - Recent items
- * - Quick create actions
+ * - Type "/" to show filter options
+ * - Context-aware filter ranking
  * - Keyboard navigation
+ * - Multiple ResultCard variants
+ * 
+ * Fixed dimensions: 624px x 540px (matches Figma spec)
  */
+
+import React, { useState, useEffect, useCallback, useRef, useMemo, ComponentType } from 'react';
+import { brandColors } from '../../tokens/colors/brand';
+import { spacing } from '../../tokens/spacing';
+import { CommandSearch } from './components/CommandSearch';
+import { KeyboardShortcuts } from './components/KeyboardShortcuts';
+import { FilterOptions } from './components/FilterOptions';
+import { ResultCard } from './components/ResultCard';
+import {
+  allItems,
+  commandGroups,
+  keyboardShortcuts,
+  getItemsByFilter,
+  getRankedFilterOptions,
+} from './data/mockData';
+import type {
+  CommandItem,
+  FilterOption,
+  CommandPaletteProps,
+  ResultCardProps,
+  PageContext,
+} from './types';
+
+// Modal dimensions (fixed)
+const MODAL_WIDTH = 624;
+const MODAL_HEIGHT = 540;
+
 export const CommandPalette: React.FC<CommandPaletteProps> = ({
-  isOpen: controlledIsOpen,
+  isOpen,
   onClose,
+  onSelect,
+  onFilterSelect,
+  ResultCardComponent = ResultCard,
+  context = 'default',
 }) => {
-  const [isOpen, setIsOpen] = useState(controlledIsOpen ?? true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGroupIndex, setSelectedGroupIndex] = useState(0);
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+  const [activeFilter, setActiveFilter] = useState<FilterOption | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [showFilterOptions, setShowFilterOptions] = useState(false);
+  
+  const inputRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Sync with controlled prop
+  // Get ranked filter options based on context
+  const rankedFilterOptions = useMemo(
+    () => getRankedFilterOptions(context),
+    [context]
+  );
+
+  // Determine if showing filter mode (when "/" is typed)
+  const isFilterMode = searchQuery.startsWith('/') && !activeFilter;
+  const filterQuery = isFilterMode ? searchQuery.slice(1) : '';
+
+  // Get filtered items based on search and active filter
+  const filteredItems = useMemo(() => {
+    let items: CommandItem[];
+
+    if (activeFilter) {
+      // Filter by active filter type
+      items = getItemsByFilter(activeFilter.filterType);
+    } else if (isFilterMode) {
+      // Don't show items in filter mode
+      return [];
+    } else {
+      // Show default groups
+      items = commandGroups.flatMap(g => g.items);
+    }
+
+    // Apply text search
+    if (searchQuery && !isFilterMode) {
+      const query = searchQuery.toLowerCase();
+      items = items.filter(
+        item =>
+          item.label.toLowerCase().includes(query) ||
+          item.description?.toLowerCase().includes(query) ||
+          item.context?.toLowerCase().includes(query)
+      );
+    }
+
+    return items;
+  }, [searchQuery, activeFilter, isFilterMode]);
+
+  // Group items by their group property
+  const groupedItems = useMemo(() => {
+    if (isFilterMode) return [];
+    
+    const groups: { title: string; items: CommandItem[] }[] = [];
+    const groupMap = new Map<string, CommandItem[]>();
+
+    filteredItems.forEach(item => {
+      const existing = groupMap.get(item.group);
+      if (existing) {
+        existing.push(item);
+      } else {
+        groupMap.set(item.group, [item]);
+      }
+    });
+
+    groupMap.forEach((items, title) => {
+      groups.push({ title, items });
+    });
+
+    return groups;
+  }, [filteredItems, isFilterMode]);
+
+  // Flatten items for navigation
+  const flatItems = useMemo(() => {
+    if (isFilterMode) {
+      return rankedFilterOptions.filter(opt =>
+        opt.label.toLowerCase().includes(filterQuery.toLowerCase())
+      );
+    }
+    return filteredItems;
+  }, [isFilterMode, rankedFilterOptions, filterQuery, filteredItems]);
+
+  // Reset selection when items change
   useEffect(() => {
-    if (controlledIsOpen !== undefined) {
-      setIsOpen(controlledIsOpen);
-    }
-  }, [controlledIsOpen]);
+    setSelectedIndex(0);
+  }, [flatItems.length, activeFilter, isFilterMode]);
 
-  // Handle keyboard shortcuts
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    // Cmd/Ctrl + K to toggle
-    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
-      event.preventDefault();
-      setIsOpen((prev) => !prev);
-      return;
+  // Scroll selected item into view
+  useEffect(() => {
+    if (contentRef.current && selectedIndex >= 0) {
+      const selected = contentRef.current.querySelector('[aria-selected="true"]');
+      if (selected) {
+        selected.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
     }
+  }, [selectedIndex]);
 
-    if (!isOpen) return;
-
-    switch (event.key) {
-      case 'Escape':
-        setIsOpen(false);
-        onClose?.();
-        break;
-      case 'ArrowDown':
-        event.preventDefault();
-        navigateDown();
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        navigateUp();
-        break;
-      case 'Enter':
-        event.preventDefault();
-        handleSelect();
-        break;
+  // Focus input when opened
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
     }
-  }, [isOpen, selectedGroupIndex, selectedItemIndex, onClose]);
+  }, [isOpen]);
+
+  // Reset state when closed
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchQuery('');
+      setActiveFilter(null);
+      setSelectedIndex(0);
+      setShowFilterOptions(false);
+    }
+  }, [isOpen]);
+
+  // Handle keyboard navigation
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!isOpen) return;
+
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          setSelectedIndex(prev => Math.min(prev + 1, flatItems.length - 1));
+          break;
+
+        case 'ArrowUp':
+          e.preventDefault();
+          setSelectedIndex(prev => Math.max(prev - 1, 0));
+          break;
+
+        case 'Enter':
+          e.preventDefault();
+          if (isFilterMode && flatItems[selectedIndex]) {
+            // Select filter
+            const filter = flatItems[selectedIndex] as FilterOption;
+            setActiveFilter(filter);
+            setSearchQuery('');
+            onFilterSelect?.(filter);
+          } else if (flatItems[selectedIndex]) {
+            // Select item
+            onSelect?.(flatItems[selectedIndex] as CommandItem);
+          }
+          break;
+
+        case 'Escape':
+          e.preventDefault();
+          if (activeFilter) {
+            setActiveFilter(null);
+          } else if (searchQuery) {
+            setSearchQuery('');
+          } else {
+            onClose();
+          }
+          break;
+
+        case 'Backspace':
+          // Clear filter when backspace on empty input
+          if (searchQuery === '' && activeFilter) {
+            setActiveFilter(null);
+          }
+          break;
+      }
+    },
+    [isOpen, flatItems, selectedIndex, isFilterMode, activeFilter, searchQuery, onClose, onSelect, onFilterSelect]
+  );
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  // Filter items based on search query
-  const filteredGroups = commandGroups.map((group) => ({
-    ...group,
-    items: group.items.filter((item) =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.context?.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-  })).filter((group) => group.items.length > 0);
+  // Handle filter selection
+  const handleFilterSelect = (filter: FilterOption) => {
+    setActiveFilter(filter);
+    setSearchQuery('');
+    onFilterSelect?.(filter);
+  };
 
-  // Navigation helpers
-  const navigateDown = () => {
-    const currentGroup = filteredGroups[selectedGroupIndex];
-    if (!currentGroup) return;
+  // Handle clear filter
+  const handleClearFilter = () => {
+    setActiveFilter(null);
+    inputRef.current?.focus();
+  };
 
-    if (selectedItemIndex < currentGroup.items.length - 1) {
-      setSelectedItemIndex((prev) => prev + 1);
-    } else if (selectedGroupIndex < filteredGroups.length - 1) {
-      setSelectedGroupIndex((prev) => prev + 1);
-      setSelectedItemIndex(0);
+  // Handle clear search
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    inputRef.current?.focus();
+  };
+
+  // Handle item click
+  const handleItemClick = (item: CommandItem) => {
+    onSelect?.(item);
+  };
+
+  // Handle overlay click
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
     }
   };
 
-  const navigateUp = () => {
-    if (selectedItemIndex > 0) {
-      setSelectedItemIndex((prev) => prev - 1);
-    } else if (selectedGroupIndex > 0) {
-      const prevGroupIndex = selectedGroupIndex - 1;
-      setSelectedGroupIndex(prevGroupIndex);
-      setSelectedItemIndex(filteredGroups[prevGroupIndex].items.length - 1);
-    }
-  };
+  if (!isOpen) return null;
 
-  const handleSelect = () => {
-    const currentGroup = filteredGroups[selectedGroupIndex];
-    if (!currentGroup) return;
-    const selectedItem = currentGroup.items[selectedItemIndex];
-    if (selectedItem) {
-      console.log('Selected:', selectedItem);
-      // Handle selection action here
-    }
-  };
-
-  const handleItemClick = (item: CommandItemData) => {
-    console.log('Clicked:', item);
-    // Handle click action here
-  };
-
-  const handleOverlayClick = () => {
-    setIsOpen(false);
-    onClose?.();
-  };
-
-  // Calculate global selected index for highlighting
-  const getGlobalIndex = (groupIdx: number, itemIdx: number) => {
-    let idx = 0;
-    for (let g = 0; g < groupIdx; g++) {
-      idx += filteredGroups[g]?.items.length || 0;
-    }
-    return idx + itemIdx;
-  };
-
-  // Store for potential future use
-  const _currentGlobalIndex = getGlobalIndex(selectedGroupIndex, selectedItemIndex);
-  void _currentGlobalIndex; // Suppress unused variable warning
-
-  if (!isOpen) {
-    return (
-      <div style={styles.demoContainer}>
-        <div style={styles.demoContent}>
-          <h2 style={styles.demoTitle}>Command Palette Demo</h2>
-          <p style={styles.demoText}>
-            Press <kbd style={styles.demoKbd}>⌘</kbd> + <kbd style={styles.demoKbd}>K</kbd> to open the command palette
-          </p>
-          <button
-            style={styles.demoButton}
-            onClick={() => setIsOpen(true)}
-          >
-            Open Command Palette
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // Render current index tracker for items
+  let currentItemIndex = 0;
 
   return (
     <div style={styles.overlay} onClick={handleOverlayClick}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
-        {/* Search */}
+      <div style={styles.modal} onClick={e => e.stopPropagation()}>
+        {/* Search Header */}
         <CommandSearch
           value={searchQuery}
           onChange={setSearchQuery}
+          activeFilter={activeFilter}
+          onClearFilter={handleClearFilter}
+          onClear={handleClearSearch}
+          inputRef={inputRef}
+          autoFocus
         />
 
-        {/* Results */}
-        <div style={styles.results}>
-          {filteredGroups.map((group, groupIdx) => {
-            return (
-              <CommandGroup
-                key={group.id}
-                title={group.title}
-                items={group.items}
-                selectedIndex={
-                  groupIdx === selectedGroupIndex ? selectedItemIndex : undefined
-                }
-                onItemClick={handleItemClick}
-              />
-            );
-          })}
+        {/* Content Area */}
+        <div ref={contentRef} style={styles.content}>
+          {/* Filter Options Mode */}
+          {isFilterMode && (
+            <FilterOptions
+              options={rankedFilterOptions}
+              selectedIndex={selectedIndex}
+              onSelect={handleFilterSelect}
+              query={filterQuery}
+            />
+          )}
 
-          {filteredGroups.length === 0 && (
-            <div style={styles.noResults}>
-              <p style={styles.noResultsText}>No results found</p>
+          {/* Results Mode */}
+          {!isFilterMode && groupedItems.length > 0 && (
+            <>
+              {groupedItems.map(group => (
+                <div key={group.title} style={styles.group}>
+                  <div style={styles.groupHeader}>{group.title}</div>
+                  {group.items.map(item => {
+                    const itemIndex = currentItemIndex++;
+                    return (
+                      <ResultCardComponent
+                        key={item.id}
+                        item={item}
+                        isSelected={itemIndex === selectedIndex}
+                        onClick={() => handleItemClick(item)}
+                        query={searchQuery}
+                      />
+                    );
+                  })}
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Empty State */}
+          {!isFilterMode && groupedItems.length === 0 && searchQuery && (
+            <div style={styles.emptyState}>
+              <p style={styles.emptyText}>No results found for "{searchQuery}"</p>
             </div>
           )}
         </div>
 
-        {/* Keyboard shortcuts */}
+        {/* Footer */}
         <KeyboardShortcuts shortcuts={keyboardShortcuts} />
       </div>
     </div>
@@ -205,88 +322,52 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: colors.overlay,
+    backgroundColor: 'rgba(29, 35, 47, 0.5)',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    paddingTop: 100,
+    paddingTop: 80,
     zIndex: 1000,
-    fontFamily: typography.fontFamily,
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
   modal: {
-    width: '100%',
-    maxWidth: 560,
-    backgroundColor: colors.modalBg,
-    borderRadius: borderRadius.lg,
-    boxShadow: shadows.modal,
-    overflow: 'hidden',
+    width: MODAL_WIDTH,
+    height: MODAL_HEIGHT,
+    backgroundColor: brandColors.white,
+    borderRadius: 12,
+    boxShadow: '0 24px 48px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05)',
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: 'calc(100vh - 200px)',
+    overflow: 'hidden',
   },
-  results: {
+  content: {
     flex: 1,
     overflowY: 'auto',
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.sm,
+    overflowX: 'hidden',
   },
-  noResults: {
-    padding: `${spacing.xl}px`,
-    textAlign: 'center',
+  group: {
+    paddingTop: `${spacing.A}px`, // 4px
   },
-  noResultsText: {
-    fontSize: 14,
-    color: colors.textMuted,
+  groupHeader: {
+    padding: `${spacing.D}px ${spacing.D}px ${spacing.B}px`, // 16px 16px 8px
+    fontSize: 12,
+    fontWeight: 400,
+    lineHeight: '18px',
+    letterSpacing: '-0.072px',
+    color: brandColors.gray[60], // #777E8B
   },
-  
-  // Demo page styles
-  demoContainer: {
-    minHeight: '100vh',
-    backgroundColor: '#f0f2f5',
+  emptyState: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: typography.fontFamily,
+    height: '100%',
+    minHeight: 200,
+    padding: `${spacing.H}px`,
   },
-  demoContent: {
+  emptyText: {
+    fontSize: 14,
+    color: brandColors.gray[50],
     textAlign: 'center',
-    padding: spacing.xl,
-  },
-  demoTitle: {
-    fontSize: 24,
-    fontWeight: 600,
-    color: colors.textPrimary,
-    marginBottom: spacing.md,
-  },
-  demoText: {
-    fontSize: 14,
-    color: colors.textSecondary,
-    marginBottom: spacing.xl,
-  },
-  demoKbd: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 24,
-    height: 24,
-    padding: `0 ${spacing.sm}px`,
-    backgroundColor: colors.kbdBg,
-    border: `1px solid ${colors.kbdBorder}`,
-    borderRadius: borderRadius.sm,
-    fontSize: 12,
-    fontFamily: typography.fontFamily,
-    color: colors.kbdText,
-    margin: `0 4px`,
-  },
-  demoButton: {
-    padding: `${spacing.md}px ${spacing.xl}px`,
-    backgroundColor: colors.iconBlue,
-    color: colors.modalBg,
-    border: 'none',
-    borderRadius: borderRadius.md,
-    fontSize: 14,
-    fontWeight: 500,
-    cursor: 'pointer',
   },
 };
 

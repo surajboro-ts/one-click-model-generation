@@ -5,6 +5,45 @@ All notable changes to the Radiant Prototyping Kit will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-02-03
+
+### Added
+
+- **Surfaces Showcase** (`/radiant/surfaces`): New dedicated section for Modal patterns with interactive examples
+  - Displays all 4 modal sizes (M1: 394px, M2: 788px, M3: 1182px, M4: Full Screen)
+  - Shows all 4 modal types (Simple, Wizard, Sub-navigation, Splash Screen)
+  - Includes usage code examples with copy functionality
+  - Spacing reference and footer button alignment documentation
+- **Modal Sub-components**: Reusable modal building blocks
+  - `ModalFooter`: Footer with tertiary (left), secondary and primary (right) action slots
+  - `ModalHeader`: Header with title, eyebrow, and close button
+  - `ModalWizardProgress`: Progress bar for wizard modals (2-4 steps)
+  - `ModalNavPanel` & `ModalNavItem`: Left navigation panel for sub-navigation modals
+  - `ModalSplashContent`: Content component for splash screen modals
+
+### Changed
+
+- **Modal Spacing**: Updated to match exact Figma specifications
+  - Header padding: 20px vertical, 24px horizontal
+  - Content padding: 24px
+  - Footer padding: 20px vertical, 24px horizontal
+- **Modal Footer Alignment**: Fixed CTA buttons to be right-aligned
+  - Primary actions now use `margin-left: auto` for proper right alignment
+  - Tertiary actions remain on the left
+  - Footer layout follows Figma spec: `[Tertiary] ... [Secondary] [Primary]`
+
+### Removed
+
+- **ModalPatterns from Playground**: Removed from prototype gallery (now accessible via Surfaces showcase)
+
+### Migration Notes
+
+- Modal patterns are now part of the Radiant design system (Surfaces section) rather than playground prototypes
+- Access modals at `/radiant/surfaces` instead of `/playground/ModalPatterns`
+- Modal sub-components are exported from `@/components/Modal` for custom compositions
+
+---
+
 ## [1.1.0] - 2026-01-30
 
 ### Added

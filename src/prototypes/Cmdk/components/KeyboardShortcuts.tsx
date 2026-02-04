@@ -1,20 +1,25 @@
-import React from 'react';
-import { colors, spacing, typography, borderRadius } from '../styles';
-
-interface ShortcutItem {
-  keys: string[];
-  label: string;
-}
-
-interface KeyboardShortcutsProps {
-  shortcuts: ShortcutItem[];
-}
-
 /**
  * KeyboardShortcuts Component
  * 
- * Bottom bar showing keyboard shortcuts for navigation.
+ * Footer bar showing keyboard shortcuts.
+ * 
+ * Matches Figma specs:
+ * - Height: 34px
+ * - Background: #f6f8fa
+ * - Border top: 1px solid #eaedf2
+ * - Padding: px-12 py-8
  */
+
+import React from 'react';
+import { brandColors } from '../../../tokens/colors/brand';
+import { spacing } from '../../../tokens/spacing';
+import type { KeyboardShortcut } from '../types';
+
+interface KeyboardShortcutsProps {
+  /** Array of keyboard shortcuts to display */
+  shortcuts: KeyboardShortcut[];
+}
+
 export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
   shortcuts,
 }) => {
@@ -24,12 +29,7 @@ export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
         <div key={index} style={styles.shortcut}>
           <div style={styles.keys}>
             {shortcut.keys.map((key, keyIndex) => (
-              <React.Fragment key={keyIndex}>
-                <kbd style={styles.kbd}>{key}</kbd>
-                {keyIndex < shortcut.keys.length - 1 && (
-                  <span style={styles.plus}>+</span>
-                )}
-              </React.Fragment>
+              <kbd key={keyIndex} style={styles.kbd}>{key}</kbd>
             ))}
           </div>
           <span style={styles.label}>{shortcut.label}</span>
@@ -43,16 +43,17 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     display: 'flex',
     alignItems: 'center',
-    gap: spacing.lg,
-    padding: `${spacing.sm}px ${spacing.lg}px`,
-    borderTop: `1px solid ${colors.border}`,
-    backgroundColor: colors.modalBg,
-    fontFamily: typography.fontFamily,
+    gap: `${spacing.D}px`, // 16px
+    height: 34,
+    padding: `${spacing.B}px ${spacing.C}px`, // 8px 12px
+    borderTop: `1px solid ${brandColors.gray[20]}`, // #EAEDF2
+    backgroundColor: brandColors.gray[10], // #F6F8FA
+    flexShrink: 0,
   },
   shortcut: {
     display: 'flex',
     alignItems: 'center',
-    gap: spacing.sm,
+    gap: 6,
   },
   keys: {
     display: 'flex',
@@ -63,24 +64,21 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: 20,
-    height: 20,
-    padding: `0 ${spacing.xs}px`,
-    backgroundColor: colors.kbdBg,
-    border: `1px solid ${colors.kbdBorder}`,
-    borderRadius: borderRadius.sm,
+    minWidth: 18,
+    height: 18,
+    padding: '0 4px',
+    backgroundColor: brandColors.white,
+    border: `1px solid ${brandColors.gray[30]}`, // #DBDFE7
+    borderRadius: 3,
     fontSize: 11,
-    fontFamily: typography.fontFamily,
-    color: colors.kbdText,
-  },
-  plus: {
-    fontSize: 10,
-    color: colors.textMuted,
-    margin: `0 2px`,
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
+    color: brandColors.gray[60], // #777E8B
+    boxShadow: '0 1px 0 rgba(0,0,0,0.05)',
   },
   label: {
     fontSize: 12,
-    color: colors.textSecondary,
+    color: brandColors.gray[60], // #777E8B
+    letterSpacing: '-0.072px',
   },
 };
 

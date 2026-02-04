@@ -16,3 +16,4 @@ export { AlertsShowcase } from './AlertsShowcase';
 export { SelectionControlsShowcase } from './SelectionControlsShowcase';
 export { ButtonsShowcase } from './ButtonsShowcase';
 export { FormShowcase } from './FormShowcase';
+export { SurfacesShowcase } from './SurfacesShowcase';

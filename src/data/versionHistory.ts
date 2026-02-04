@@ -26,6 +26,22 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '1.6.0',
+    date: '2026-02-03',
+    type: 'minor',
+    changes: [
+      { type: 'added', component: 'Surfaces Showcase', description: 'New Surfaces section showcasing Modal patterns (M1-M4) with interactive examples' },
+      { type: 'added', component: 'ModalFooter', description: 'Reusable footer component with tertiary, secondary, and primary action slots' },
+      { type: 'added', component: 'ModalHeader', description: 'Reusable header component with title, eyebrow, and close button' },
+      { type: 'added', component: 'ModalWizardProgress', description: 'Progress bar component for wizard-type modals (2-4 steps)' },
+      { type: 'added', component: 'ModalNavPanel', description: 'Left navigation panel for sub-navigation type modals' },
+      { type: 'added', component: 'ModalSplashContent', description: 'Content component for splash screen modals' },
+      { type: 'modified', component: 'Modal', description: 'Fixed spacing to match Figma specs (20px/24px padding), right-aligned CTAs in footer' },
+      { type: 'modified', component: 'Modal.module.css', description: 'Added margin-left: auto to primaryActions for proper right alignment' },
+      { type: 'removed', component: 'ModalPatterns', description: 'Removed from playground gallery (now available in Surfaces showcase)' },
+    ],
+  },
+  {
     version: '1.5.0',
     date: '2026-01-30',
     type: 'minor',

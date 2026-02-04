@@ -7,6 +7,13 @@
 
 import React from 'react';
 
+// Import thumbnail images
+import CmdkThumbnail from './thumbnails/Cmdk.svg';
+import AdminGroupsThumbnail from './thumbnails/AdminGroups.svg';
+import SpotterMemoryThumbnail from './thumbnails/SpotterMemory.svg';
+import LiveboardThumbnail from './thumbnails/Liveboard.svg';
+import HomepageExampleThumbnail from './thumbnails/Homepage_example.svg';
+
 /**
  * Metadata for a playground project
  */
@@ -33,7 +40,8 @@ export interface ProjectMeta {
  * To add a new project:
  * 1. Create a folder in src/prototypes/
  * 2. Create an index.tsx with a default export
- * 3. Add an entry to this registry
+ * 3. Create a thumbnail SVG in src/prototypes/thumbnails/
+ * 4. Add an entry to this registry with the thumbnail
  */
 
 // Import project components
@@ -53,6 +61,7 @@ export const projectRegistry: ProjectMeta[] = [
     name: 'Homepage Example',
     description: 'A sample homepage prototype demonstrating the template structure.',
     author: 'Template',
+    thumbnail: HomepageExampleThumbnail,
     component: HomepageExample,
   },
   {
@@ -60,13 +69,15 @@ export const projectRegistry: ProjectMeta[] = [
     name: 'Liveboard',
     description: 'TSE Business Overview dashboard with KPIs, charts, and regional data visualization.',
     author: 'Design Team',
+    thumbnail: LiveboardThumbnail,
     component: Liveboard,
   },
   {
     id: 'Cmdk',
     name: 'Command Palette',
-    description: 'Command-K interface for quick navigation and actions with keyboard shortcuts.',
+    description: 'Command-K interface for quick navigation and actions with keyboard shortcuts and context-aware filtering.',
     author: 'Design Team',
+    thumbnail: CmdkThumbnail,
     component: Cmdk,
   },
   {
@@ -74,6 +85,7 @@ export const projectRegistry: ProjectMeta[] = [
     name: 'Spotter Memory',
     description: 'Memory Sources object table experience with search, filtering, and pagination.',
     author: 'Design Team',
+    thumbnail: SpotterMemoryThumbnail,
     component: SpotterMemory,
   },
   {
@@ -81,6 +93,7 @@ export const projectRegistry: ProjectMeta[] = [
     name: 'Admin Groups',
     description: 'Group creation wizard with bulk org assignment and role management.',
     author: 'Design Team',
+    thumbnail: AdminGroupsThumbnail,
     component: AdminGroups,
   },
   // Add more projects here as they are created
@@ -89,6 +102,7 @@ export const projectRegistry: ProjectMeta[] = [
   //   name: 'My Project',
   //   description: 'Description of my project',
   //   author: 'Designer Name',
+  //   thumbnail: MyProjectThumbnail,
   //   component: React.lazy(() => import('./my-project')),
   // },
 ];
