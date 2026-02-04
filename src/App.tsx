@@ -133,7 +133,7 @@ const ROUTES = {
   accordion: '/radiant/components/accordion',
   divider: '/radiant/components/divider',
   // Component documentation - Typography
-  typography: '/radiant/components/typography',
+  typography: '/radiant/typography',
   // Component documentation - Utilities
   icongallery: '/radiant/components/icongallery',
   // Playground routes
@@ -215,8 +215,8 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'card': '/radiant/components/card',
       'accordion': '/radiant/components/accordion',
       'divider': '/radiant/components/divider',
-      // Typography Component
-      'typography': '/radiant/components/typography',
+      // Typography Component (redirects to typography page)
+      'typography': '/radiant/typography',
     };
 
     const route = routeMap[id] || '/radiant';
@@ -275,8 +275,6 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'accordion', label: 'Accordion', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'divider', label: 'Divider', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'divider7', label: '', type: 'divider' },
-    { id: 'typography-section', label: 'Typography', type: 'section' },
-    { id: 'typography', label: 'Typography', icon: <ComponentIcon />, type: 'item', badge: 'New' },
   ];
 
   const SidebarHeader = () => (
@@ -355,7 +353,7 @@ const RadiantHomePageWrapper: React.FC = () => {
       'card': '/radiant/components/card',
       'accordion': '/radiant/components/accordion',
       'divider': '/radiant/components/divider',
-      'typography-component': '/radiant/components/typography',
+      'typography-component': '/radiant/typography',
     };
     navigate(routeMap[id] || `/radiant/components/${id}`);
   };
@@ -423,8 +421,8 @@ const App: React.FC = () => {
       <Route path="/radiant/components/accordion" element={<RadiantLayout><ComponentDocPage componentId="accordion" /></RadiantLayout>} />
       <Route path="/radiant/components/divider" element={<RadiantLayout><ComponentDocPage componentId="divider" /></RadiantLayout>} />
       
-      {/* Component documentation pages - Typography */}
-      <Route path="/radiant/components/typography" element={<RadiantLayout><ComponentDocPage componentId="typography" /></RadiantLayout>} />
+      {/* Redirect typography component to typography page */}
+      <Route path="/radiant/components/typography" element={<Navigate to="/radiant/typography" replace />} />
       
       {/* Redirect icongallery to icons page */}
       <Route path="/radiant/components/icongallery" element={<Navigate to="/radiant/icons" replace />} />

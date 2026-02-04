@@ -308,7 +308,7 @@ export const componentRegistry: ComponentMeta[] = [
     name: 'Typography',
     description: 'Text component with V2 typography variants',
     states: ['default'],
-    path: '/radiant/components/typography',
+    path: '/radiant/typography',
     lastModified: '2026-01-30',
     source: 'scaligent',
     status: 'new',

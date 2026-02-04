@@ -26,6 +26,16 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '1.6.1',
+    date: '2026-02-03',
+    type: 'patch',
+    changes: [
+      { type: 'modified', component: 'Typography Page', description: 'Fixed page crash by removing invalid body-small variant' },
+      { type: 'modified', component: 'Typography Page', description: 'Consolidated Typography documentation to /radiant/typography path' },
+      { type: 'modified', component: 'App Routes', description: 'Added redirect from /radiant/components/typography to /radiant/typography' },
+    ],
+  },
+  {
     version: '1.6.0',
     date: '2026-02-03',
     type: 'minor',
