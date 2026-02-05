@@ -23,7 +23,7 @@ todos:
 isProject: false
 ---
 
-# Color Token System Migration Plan
+# Color Token System Migration Plan with TS changes
 
 ## Migration Scope
 
