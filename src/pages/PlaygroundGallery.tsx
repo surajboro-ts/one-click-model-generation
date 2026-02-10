@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { brandColors } from '../tokens/colors/brand';
 import { getAllProjects, ProjectMeta } from '../prototypes/registry';
-import { Button } from '../components/Button';
 import { Icon } from '../components/icons';
 
 /**
@@ -35,16 +34,7 @@ export const PlaygroundGallery: React.FC = () => {
           <h1 style={styles.title}>Playground</h1>
           <p style={styles.subtitle}>Your prototypes and experiments</p>
         </div>
-        <div style={styles.headerActions}>
-          <Button 
-            variant="primary" 
-            size="basic"
-            icon="plus"
-            onClick={() => navigate('/radiant/examples/filter-dialog')}
-          >
-            New project
-          </Button>
-        </div>
+        <div style={styles.headerActions} />
       </header>
 
       {/* Main Content */}
