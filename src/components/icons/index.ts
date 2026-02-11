@@ -90,6 +90,14 @@ export {
   HamburgerIcon,
   PlayIcon,
   PauseIcon,
+  // ThoughtSpot Product Icons
+  AnswerIcon,
+  LiveboardIcon,
+  NavigateIcon,
+  PaperPlaneIcon,
+  CollectionIcon,
+  SaveWorksheetIcon,
+  SpotterIcon,
 } from './icons';
 
 // Legacy exports - keeping backward compatibility with existing icons

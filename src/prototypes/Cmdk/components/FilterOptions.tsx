@@ -46,7 +46,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <span style={styles.headerText}>Filter by type</span>
+        <span style={styles.headerText}>Filter by</span>
       </div>
       <div style={styles.list} role="listbox">
         {filteredOptions.map((option, index) => (
@@ -74,10 +74,11 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    padding: `${spacing.B}px 0`, // 8px vertical
+    display: 'flex',
+    flexDirection: 'column',
   },
   header: {
-    padding: `${spacing.D}px ${spacing.D}px ${spacing.B}px`, // 16px 16px 8px
+    padding: `${spacing.B}px ${spacing.C}px`, // 8px 12px
   },
   headerText: {
     fontSize: 12,
@@ -96,9 +97,9 @@ const styles: Record<string, React.CSSProperties> = {
     gap: `${spacing.C}px`, // 12px
     padding: `${spacing.B}px ${spacing.D}px`, // 8px 16px
     cursor: 'pointer',
-    margin: `0 ${spacing.D}px`, // 16px horizontal margin
     borderRadius: 4,
     transition: 'background-color 0.1s ease',
+    position: 'relative' as const,
   },
   itemSelected: {
     backgroundColor: brandColors.gray[10], // #F6F8FA

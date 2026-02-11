@@ -55,6 +55,13 @@ import {
   HamburgerIcon,
   PlayIcon,
   PauseIcon,
+  AnswerIcon,
+  LiveboardIcon,
+  NavigateIcon,
+  PaperPlaneIcon,
+  CollectionIcon,
+  SaveWorksheetIcon,
+  SpotterIcon,
 } from './icons';
 
 /**
@@ -116,6 +123,15 @@ export const iconRegistry: Record<string, IconComponent> = {
   'hamburger': HamburgerIcon,
   'play': PlayIcon,
   'pause': PauseIcon,
+  
+  // ThoughtSpot Product Icons
+  'answer': AnswerIcon,
+  'liveboard': LiveboardIcon,
+  'navigate': NavigateIcon,
+  'paper-plane': PaperPlaneIcon,
+  'collection': CollectionIcon,
+  'save-worksheet': SaveWorksheetIcon,
+  'spotter': SpotterIcon,
 } as const;
 
 /**

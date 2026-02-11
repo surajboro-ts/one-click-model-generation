@@ -16,15 +16,18 @@ import type {
 
 /**
  * Filter options shown when "/" is typed
+ * Order matches Figma spec: Admin Settings, Answers, Liveboard, Navigate, Create, Help, Collections, Models, Spotter
  */
 export const FILTER_OPTIONS: FilterOption[] = [
-  { id: 'answers', label: 'Answers', icon: 'answer', rightLabel: 'Search answers', filterType: 'Answers' },
-  { id: 'liveboards', label: 'Liveboards', icon: 'liveboard', rightLabel: 'Search liveboards', filterType: 'Liveboards' },
-  { id: 'create', label: 'Create', icon: 'plus', rightLabel: 'Create new...', filterType: 'Create' },
-  { id: 'help', label: 'Help', icon: 'info-circle', rightLabel: 'Get help', filterType: 'Help' },
-  { id: 'spotter', label: 'Spotter', icon: 'star', rightLabel: 'Ask Spotter', filterType: 'Spotter' },
-  { id: 'navigate', label: 'Navigate', icon: 'navigate', rightLabel: 'Go to...', filterType: 'Navigate' },
-  { id: 'admin', label: 'Admin Settings', icon: 'cog', rightLabel: 'Settings', filterType: 'Admin Settings' },
+  { id: 'admin', label: 'Admin settings', icon: 'cog', rightLabel: 'Filter', filterType: 'Admin Settings' },
+  { id: 'answers', label: 'Answers', icon: 'answer', rightLabel: 'Filter', filterType: 'Answers' },
+  { id: 'liveboards', label: 'Liveboard', icon: 'liveboard', rightLabel: 'Filter', filterType: 'Liveboards' },
+  { id: 'navigate', label: 'Navigate', icon: 'navigate', rightLabel: 'Filter', filterType: 'Navigate' },
+  { id: 'create', label: 'Create', icon: 'plus', rightLabel: 'Filter', filterType: 'Create' },
+  { id: 'help', label: 'Help', icon: 'info-circle', rightLabel: 'Filter', filterType: 'Help' },
+  { id: 'collections', label: 'Collections', icon: 'collection', rightLabel: 'Filter', filterType: 'Collections' },
+  { id: 'models', label: 'Models', icon: 'save-worksheet', rightLabel: 'Filter', filterType: 'Models' },
+  { id: 'spotter', label: 'Spotter', icon: 'spotter', rightLabel: 'Chat', filterType: 'Spotter' },
 ];
 
 /**
@@ -32,14 +35,14 @@ export const FILTER_OPTIONS: FilterOption[] = [
  * Maps page context to ordered filter types
  */
 export const CONTEXT_RANKINGS: ContextRankingMap = {
-  default: ['Answers', 'Liveboards', 'Create', 'Help', 'Spotter', 'Navigate', 'Admin Settings'],
-  answer: ['Answers', 'Create', 'Liveboards', 'Help', 'Spotter', 'Navigate', 'Admin Settings'],
-  liveboard: ['Liveboards', 'Answers', 'Create', 'Help', 'Spotter', 'Navigate', 'Admin Settings'],
-  admin: ['Admin Settings', 'Navigate', 'Help', 'Answers', 'Liveboards', 'Create', 'Spotter'],
-  spotter: ['Spotter', 'Answers', 'Liveboards', 'Help', 'Create', 'Navigate', 'Admin Settings'],
-  create: ['Create', 'Answers', 'Liveboards', 'Help', 'Spotter', 'Navigate', 'Admin Settings'],
-  navigate: ['Navigate', 'Answers', 'Liveboards', 'Help', 'Create', 'Spotter', 'Admin Settings'],
-  help: ['Help', 'Navigate', 'Answers', 'Liveboards', 'Create', 'Spotter', 'Admin Settings'],
+  default: ['Admin Settings', 'Answers', 'Liveboards', 'Navigate', 'Create', 'Help', 'Collections', 'Models', 'Spotter'],
+  answer: ['Answers', 'Create', 'Liveboards', 'Help', 'Spotter', 'Navigate', 'Collections', 'Models', 'Admin Settings'],
+  liveboard: ['Liveboards', 'Answers', 'Create', 'Help', 'Spotter', 'Navigate', 'Collections', 'Models', 'Admin Settings'],
+  admin: ['Admin Settings', 'Navigate', 'Help', 'Answers', 'Liveboards', 'Create', 'Collections', 'Models', 'Spotter'],
+  spotter: ['Spotter', 'Answers', 'Liveboards', 'Help', 'Create', 'Navigate', 'Collections', 'Models', 'Admin Settings'],
+  create: ['Create', 'Answers', 'Liveboards', 'Help', 'Spotter', 'Navigate', 'Collections', 'Models', 'Admin Settings'],
+  navigate: ['Navigate', 'Answers', 'Liveboards', 'Help', 'Create', 'Spotter', 'Collections', 'Models', 'Admin Settings'],
+  help: ['Help', 'Navigate', 'Answers', 'Liveboards', 'Create', 'Spotter', 'Collections', 'Models', 'Admin Settings'],
 };
 
 /**
@@ -177,6 +180,28 @@ export const createItems: CommandItem[] = [
 ];
 
 /**
+ * Collection items
+ */
+export const collectionItems: CommandItem[] = [
+  { id: 'col-1', label: 'Sales Collection', description: 'Curated sales dashboards and answers', context: 'Sales', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'Sales Ops' },
+  { id: 'col-2', label: 'Executive Briefing', description: 'Key metrics for leadership', context: 'Executive', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'Admin' },
+  { id: 'col-3', label: 'Onboarding Resources', description: 'Getting started content', context: 'HR', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'HR Team' },
+  { id: 'col-4', label: 'Marketing Analytics', description: 'Campaign performance collection', context: 'Marketing', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'Marketing Team' },
+  { id: 'col-5', label: 'Product Health Metrics', description: 'Product usage and health', context: 'Product', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'Product Team' },
+];
+
+/**
+ * Model items
+ */
+export const modelItems: CommandItem[] = [
+  { id: 'model-1', label: 'Sales Data Model', description: 'Revenue and pipeline data', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'Data Team' },
+  { id: 'model-2', label: 'Customer 360', description: 'Unified customer data model', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'Data Team' },
+  { id: 'model-3', label: 'Product Usage Model', description: 'Feature usage and engagement', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'Analytics Team' },
+  { id: 'model-4', label: 'HR People Model', description: 'Employee and org data', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'HR Analytics' },
+  { id: 'model-5', label: 'Financial Reporting', description: 'Financial metrics and reports', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'Finance Team' },
+];
+
+/**
  * All command items combined
  */
 export const allItems: CommandItem[] = [
@@ -190,6 +215,8 @@ export const allItems: CommandItem[] = [
   ...helpItems,
   ...spotterItems,
   ...createItems,
+  ...collectionItems,
+  ...modelItems,
 ];
 
 /**
@@ -220,6 +247,10 @@ export function getItemsByFilter(filterType: string): CommandItem[] {
       return spotterItems;
     case 'Create':
       return createItems;
+    case 'Collections':
+      return collectionItems;
+    case 'Models':
+      return modelItems;
     default:
       return allItems;
   }
@@ -241,11 +272,10 @@ export function getRankedFilterOptions(context: PageContext): FilterOption[] {
  * Keyboard shortcuts for footer
  */
 export const keyboardShortcuts: KeyboardShortcut[] = [
-  { keys: ['↑', '↓'], label: 'Navigate' },
+  { keys: ['↑ ↓'], label: 'Navigate' },
   { keys: ['↵'], label: 'Select' },
-  { keys: ['⇧', '↵'], label: 'New tab' },
-  { keys: ['⌘', '↵'], label: 'Spotter' },
-  { keys: ['esc'], label: 'Close' },
+  { keys: ['Shift + ↵'], label: 'Open in new tab' },
+  { keys: ['⌘ + ↵'], label: 'Open in Spotter' },
 ];
 
 export default {

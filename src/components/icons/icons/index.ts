@@ -57,3 +57,12 @@ export { MoreIcon } from './More';
 export { HamburgerIcon } from './Hamburger';
 export { PlayIcon } from './Play';
 export { PauseIcon } from './Pause';
+
+// ThoughtSpot Product Icons
+export { AnswerIcon } from './Answer';
+export { LiveboardIcon } from './Liveboard';
+export { NavigateIcon } from './Navigate';
+export { PaperPlaneIcon } from './PaperPlane';
+export { CollectionIcon } from './Collection';
+export { SaveWorksheetIcon } from './SaveWorksheet';
+export { SpotterIcon } from './Spotter';

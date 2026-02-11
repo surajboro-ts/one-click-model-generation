@@ -184,6 +184,7 @@ export type IconName =
   | 'liveboard'
   | 'controls'
   | 'collection'
+  | 'spotter'
   | 'folder';
 
 /**
