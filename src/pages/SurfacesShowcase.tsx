@@ -372,19 +372,19 @@ import { Button } from '@/components/Button';
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    maxWidth: 1200,
+    maxWidth: 1000,
   },
 
   // Header
   headerSection: {
-    marginBottom: spacing.H,
+    marginBottom: 40,
   },
   pageTitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 36,
     fontWeight: 700,
     color: brandColors.gray[90],
-    marginBottom: spacing.C,
+    marginBottom: 12,
   },
   pageDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',

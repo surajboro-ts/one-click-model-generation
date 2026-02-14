@@ -40,7 +40,7 @@ const CHANGELOG: ChangelogEntry[] = [
         category: 'changed',
         items: [
           'Navigation structure updated with new sections',
-          'Component count updated to 17 components',
+          'Component count now derived dynamically from registry',
           'Sidebar reorganized with Modal Patterns and Overlay sections',
         ],
       },
@@ -180,7 +180,7 @@ export const ChangelogPage: React.FC = () => {
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    maxWidth: '800px',
+    maxWidth: '1000px',
   },
   header: {
     marginBottom: '40px',
@@ -198,6 +198,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     color: brandColors.gray[60],
     lineHeight: '26px',
+    maxWidth: '700px',
   },
   timeline: {
     display: 'flex',

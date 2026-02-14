@@ -44,7 +44,7 @@ export const componentRegistry: ComponentMeta[] = [
     status: 'stable',
     variants: 3,
     author: 'Design Team',
-    category: 'Actions',
+    category: 'Selection Controls',
   },
   {
     id: 'checkbox',
@@ -425,6 +425,112 @@ export const componentRegistry: ComponentMeta[] = [
     category: 'Inputs',
   },
   {
+    id: 'segmentedcontrol',
+    name: 'SegmentedControl',
+    description: 'Mutually exclusive option segments',
+    states: ['default', 'selected', 'disabled'],
+    path: '/radiant/components/segmentedcontrol',
+    lastModified: '2026-02-01',
+    source: 'scaligent',
+    status: 'new',
+    variants: 3,
+    author: 'Engineering Team',
+    category: 'Inputs',
+  },
+  {
+    id: 'textarea',
+    name: 'TextArea',
+    description: 'Multi-line text input with character counter',
+    states: ['default', 'focus', 'error', 'disabled'],
+    path: '/radiant/components/textarea',
+    lastModified: '2026-02-01',
+    source: 'scaligent',
+    status: 'new',
+    variants: 2,
+    author: 'Engineering Team',
+    category: 'Inputs',
+  },
+  {
+    id: 'toast',
+    name: 'Toast',
+    description: 'Temporary notification messages',
+    states: ['info', 'success', 'warning', 'error'],
+    path: '/radiant/components/toast',
+    lastModified: '2026-02-01',
+    source: 'scaligent',
+    status: 'new',
+    variants: 4,
+    author: 'Engineering Team',
+    category: 'Feedback',
+  },
+  {
+    id: 'sidebar',
+    name: 'Sidebar',
+    description: 'Vertical navigation sidebar with sections',
+    states: ['expanded', 'collapsed'],
+    path: '/radiant/components/sidebar',
+    lastModified: '2026-01-30',
+    source: 'figma',
+    status: 'stable',
+    variants: 2,
+    author: 'Design Team',
+    category: 'Navigation',
+  },
+
+  // Composite / Pattern Components
+  {
+    id: 'confirmdialog',
+    name: 'ConfirmDialog',
+    description: 'Pre-built confirmation dialog modal',
+    states: ['open', 'closed'],
+    path: '/radiant/components/confirmdialog',
+    lastModified: '2026-02-01',
+    source: 'custom',
+    status: 'new',
+    variants: 2,
+    author: 'Engineering Team',
+    category: 'Feedback',
+  },
+  {
+    id: 'wizardmodal',
+    name: 'WizardModal',
+    description: 'Multi-step wizard dialog with progress',
+    states: ['open', 'closed'],
+    path: '/radiant/components/wizardmodal',
+    lastModified: '2026-02-01',
+    source: 'custom',
+    status: 'new',
+    variants: 2,
+    author: 'Engineering Team',
+    category: 'Feedback',
+  },
+  {
+    id: 'filterdialog',
+    name: 'FilterDialog',
+    description: 'Modal dialog for filtering with search and multi-select',
+    states: ['open', 'closed'],
+    path: '/radiant/components/filterdialog',
+    lastModified: '2026-02-01',
+    source: 'custom',
+    status: 'new',
+    variants: 1,
+    author: 'Engineering Team',
+    category: 'Feedback',
+  },
+  {
+    id: 'formmodal',
+    name: 'FormModal',
+    description: 'Modal with built-in form layout and validation',
+    states: ['open', 'closed'],
+    path: '/radiant/components/formmodal',
+    lastModified: '2026-02-01',
+    source: 'custom',
+    status: 'new',
+    variants: 1,
+    author: 'Engineering Team',
+    category: 'Feedback',
+  },
+  {
     id: 'icongallery',
     name: 'IconGallery',
     description: 'Browsable gallery of available icons',
@@ -507,6 +613,27 @@ export const getSourceLabel = (source: ComponentSource): string => {
     default:
       return source;
   }
+};
+
+/**
+ * Get total component count (single source of truth for all UI displays)
+ */
+export const getComponentCount = (): number => {
+  return componentRegistry.length;
+};
+
+/**
+ * Get icon count
+ */
+export const getIconCount = (): number => {
+  return 46;
+};
+
+/**
+ * Get token count label
+ */
+export const getTokenCountLabel = (): string => {
+  return '150+';
 };
 
 /**

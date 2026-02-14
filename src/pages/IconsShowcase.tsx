@@ -212,12 +212,12 @@ export const IconsShowcase: React.FC = () => {
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    maxWidth: '1200px',
+    maxWidth: '1000px',
   },
 
   // Header
   headerSection: {
-    marginBottom: '32px',
+    marginBottom: '40px',
   },
   pageTitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',

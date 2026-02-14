@@ -152,11 +152,11 @@ export const ColorSystemPage: React.FC = () => {
     <div style={styles.container}>
       {/* Header */}
       <div style={styles.header}>
-        <Typography variant="headline-large" noMargin>Color System</Typography>
-        <Typography variant="body-large" color="gray" style={{ marginTop: 12, maxWidth: 700 }}>
+        <h1 style={styles.title}>Color System</h1>
+        <p style={styles.description}>
           The Radiant color system provides a comprehensive palette for consistent UI design. 
           Each color scale runs from 10 (lightest) to 100 (darkest), with 60 typically being the primary shade.
-        </Typography>
+        </p>
       </div>
 
       {/* Usage Guidelines */}
@@ -262,6 +262,21 @@ const styles: Record<string, React.CSSProperties> = {
   },
   header: {
     marginBottom: 40,
+  },
+  title: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: 36,
+    fontWeight: 700,
+    color: brandColors.gray[90],
+    marginBottom: 12,
+  },
+  description: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: 16,
+    fontWeight: 400,
+    color: brandColors.gray[60],
+    lineHeight: '26px',
+    maxWidth: 700,
   },
   guidelinesSection: {
     marginBottom: 48,

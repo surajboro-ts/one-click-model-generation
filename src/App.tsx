@@ -13,6 +13,7 @@ import { SurfacesShowcase } from './pages/SurfacesShowcase';
 import { VersionHistoryPage } from './pages/VersionHistoryPage';
 import { ColorSystemPage } from './pages/ColorSystemPage';
 import { TypographyPage } from './pages/TypographyPage';
+import { RoadmapPage } from './pages/RoadmapPage';
 import { brandColors } from './tokens/colors/brand';
 
 // Prototype examples
@@ -77,6 +78,16 @@ const ChangelogIcon = () => (
   </svg>
 );
 
+const RoadmapIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 3H15V5H3V3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M3 8H11V10H3V8Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M3 13H7V15H3V13Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M14 10L14 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M11 13L14 16L17 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 const SurfacesIcon = () => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2.25 3.75H15.75V5.25H2.25V3.75Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -96,6 +107,7 @@ const ROUTES = {
   radiantSurfaces: '/radiant/surfaces',
   radiantRegistry: '/radiant/registry',
   radiantChangelog: '/radiant/changelog',
+  radiantRoadmap: '/radiant/roadmap',
   // Example prototypes
   filterDialog: '/radiant/examples/filter-dialog',
   // Component documentation - Selection Controls
@@ -180,6 +192,7 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'surfaces': '/radiant/surfaces',
       'registry': '/radiant/registry',
       'changelog': '/radiant/changelog',
+      'roadmap': '/radiant/roadmap',
       'example-filter-dialog': '/radiant/examples/filter-dialog',
       // Selection Controls
       'button': '/radiant/components/button',
@@ -231,6 +244,7 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'surfaces', label: 'Surfaces', icon: <SurfacesIcon />, type: 'item' },
     { id: 'registry', label: 'Component Registry', icon: <TableIcon />, type: 'item' },
     { id: 'changelog', label: 'Changelog', icon: <ChangelogIcon />, type: 'item' },
+    { id: 'roadmap', label: 'Roadmap', icon: <RoadmapIcon />, type: 'item', badge: 'New' },
     { id: 'divider0', label: '', type: 'divider' },
     { id: 'widgets-section', label: 'Widgets', type: 'section' },
     { id: 'example-filter-dialog', label: 'Filter Dialog', icon: <ComponentIcon />, type: 'item' },
@@ -374,6 +388,7 @@ const App: React.FC = () => {
       <Route path="/radiant/surfaces" element={<RadiantLayout><SurfacesShowcase /></RadiantLayout>} />
       <Route path="/radiant/registry" element={<RadiantLayout><ComponentRegistryPage /></RadiantLayout>} />
       <Route path="/radiant/changelog" element={<RadiantLayout><VersionHistoryPage /></RadiantLayout>} />
+      <Route path="/radiant/roadmap" element={<RadiantLayout><RoadmapPage /></RadiantLayout>} />
       <Route path="/radiant/architecture" element={<RadiantLayout><ArchitectureShowcase /></RadiantLayout>} />
       {/* Legacy redirect for old colors route */}
       <Route path="/radiant/colors" element={<Navigate to="/radiant/colours" replace />} />

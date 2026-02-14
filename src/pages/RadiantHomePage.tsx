@@ -1,5 +1,6 @@
 import React from 'react';
 import { brandColors } from '../tokens/colors/brand';
+import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
 
 interface ComponentCardProps {
   name: string;
@@ -55,7 +56,7 @@ interface RadiantHomePageProps {
 }
 
 export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) => {
-  // All 30 components organized by category
+  // Components organized by category (display grid)
   const componentCategories = [
     {
       category: 'Selection Controls',
@@ -127,9 +128,9 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
   const components = componentCategories.flatMap(cat => cat.components);
 
   const stats = [
-    { label: 'Components', value: '30', icon: '🧩' },
-    { label: 'Widgets', value: '5', icon: '🎛️' },
-    { label: 'Design Tokens', value: '150+', icon: '🎯' },
+    { label: 'Components', value: String(getComponentCount()), icon: '🧩' },
+    { label: 'Icons', value: String(getIconCount()), icon: '🎛️' },
+    { label: 'Design Tokens', value: getTokenCountLabel(), icon: '🎯' },
     { label: 'TypeScript', value: '100%', icon: '💪' },
   ];
 

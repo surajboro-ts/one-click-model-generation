@@ -10,10 +10,9 @@ export { ComponentDocPage } from './ComponentDocPage';
 export { ArchitectureShowcase } from './ArchitectureShowcase';
 export { IconsShowcase } from './IconsShowcase';
 
-// Component showcase pages
-export { ChipsShowcase } from './ChipsShowcase';
-export { AlertsShowcase } from './AlertsShowcase';
-export { SelectionControlsShowcase } from './SelectionControlsShowcase';
-export { ButtonsShowcase } from './ButtonsShowcase';
-export { FormShowcase } from './FormShowcase';
+// Showcase pages
 export { SurfacesShowcase } from './SurfacesShowcase';
+export { ColorSystemPage } from './ColorSystemPage';
+export { TypographyPage } from './TypographyPage';
+export { VersionHistoryPage } from './VersionHistoryPage';
+export { ChangelogPage } from './ChangelogPage';

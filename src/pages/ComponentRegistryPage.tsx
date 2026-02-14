@@ -306,25 +306,29 @@ export const ComponentRegistryPage: React.FC = () => {
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    padding: '32px 40px',
-    maxWidth: '1400px',
+    maxWidth: '1000px',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: '32px',
+    marginBottom: '40px',
   },
   headerContent: {},
   title: {
-    fontSize: '28px',
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '36px',
     fontWeight: 700,
     color: brandColors.gray[90],
-    marginBottom: '8px',
+    marginBottom: '12px',
   },
   subtitle: {
-    fontSize: '14px',
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '16px',
+    fontWeight: 400,
     color: brandColors.gray[60],
+    lineHeight: '26px',
+    maxWidth: '700px',
   },
   stats: {
     display: 'flex',

@@ -125,13 +125,6 @@ const ChevronIcon: React.FC = () => (
   </svg>
 );
 
-const ClockIcon: React.FC = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M10 5V10L13 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
 /**
  * VersionHistoryPage
  * 
@@ -201,17 +194,10 @@ export const VersionHistoryPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <div className={styles.titleSection}>
-          <div className={styles.titleIcon}>
-            <ClockIcon />
-          </div>
-          <div>
-            <h1 className={styles.title}>Changelog</h1>
-            <p className={styles.subtitle}>
-              Version history and component updates for Radiant Design System
-            </p>
-          </div>
-        </div>
+        <h1 className={styles.title}>Changelog</h1>
+        <p className={styles.subtitle}>
+          Version history and component updates for Radiant Design System
+        </p>
       </header>
 
       {/* Statistics */}

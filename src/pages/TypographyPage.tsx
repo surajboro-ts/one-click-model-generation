@@ -65,6 +65,21 @@ const styles: Record<string, React.CSSProperties> = {
   header: {
     marginBottom: 40,
   },
+  pageTitle: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: 36,
+    fontWeight: 700,
+    color: brandColors.gray[90],
+    marginBottom: 12,
+  },
+  pageDescription: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: 16,
+    fontWeight: 400,
+    color: brandColors.gray[60],
+    lineHeight: '26px',
+    maxWidth: 700,
+  },
   section: {
     marginBottom: 48,
   },
@@ -312,11 +327,11 @@ const TypographyPageContent: React.FC = () => {
     <div style={styles.container}>
       {/* Header */}
       <div style={styles.header}>
-        <Typography variant="headline-large" noMargin>Typography</Typography>
-        <Typography variant="body-large" color="gray" style={{ marginTop: 12, maxWidth: 700 }}>
+        <h1 style={styles.pageTitle}>Typography</h1>
+        <p style={styles.pageDescription}>
           The Radiant typography system provides consistent text styling across all components.
           Built on the "Plain" font family with a comprehensive scale from headlines to footnotes.
-        </Typography>
+        </p>
       </div>
 
       {/* Font Family Section */}
