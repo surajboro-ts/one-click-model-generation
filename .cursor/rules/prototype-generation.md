@@ -98,6 +98,44 @@ Follow **`prototype-structure.md`** for file organization:
 
 ---
 
+## 9. Visual Verification Loop (MANDATORY for Figma-based prototypes)
+
+After generating the prototype code, you MUST:
+
+1. **Build and run** — Verify the prototype compiles (`npm run build`) and loads in the browser
+2. **Screenshot and compare** — Open the prototype in the browser, take a mental inventory of every section, and compare against the Figma screenshot region by region:
+   - Header / navigation bar
+   - Each panel or sidebar
+   - Main content area (chart, table, form, etc.)
+   - Action buttons and their states
+   - Icons — verify each icon matches the Figma (don't use the same icon for different elements)
+   - Colors — verify backgrounds, text colors, borders match the token mapping
+   - Spacing — verify gaps, padding, margins look proportionally correct
+3. **Iterate** — Fix any mismatches before declaring done. Expect 2-3 iterations for complex prototypes.
+
+### Common Mistakes to Check For
+
+| Mistake | How to Catch |
+|---------|-------------|
+| Using same icon for all items in a list | Compare each list item's icon against Figma individually |
+| Wrong layout order (e.g., toolbar before panel) | Check left-to-right / top-to-bottom order matches Figma |
+| `height: 100vh` clipping content inside a wrapper | Check if the prototype renders inside PlaygroundProject (which adds its own container) |
+| Approximate colors instead of exact tokens | Cross-reference with `figma-component-mapping.md` color table |
+| Missing sections (header, footer, sidebar) | Count the number of distinct sections in Figma vs your code |
+
+---
+
+## 10. Figma Sub-Node Drill-Down (MANDATORY when design is too large)
+
+When `get_design_context` returns "design was too large," you MUST:
+
+1. Identify 4-6 key sub-sections from the metadata (header, main content, sidebar, panel, footer)
+2. Call `get_design_context` on each sub-section's node ID separately
+3. Extract exact values: icon names, colors, spacing, font sizes, border-radius
+4. Do NOT approximate — if you can't get the exact value, call `get_screenshot` on the sub-node for visual reference
+
+---
+
 ## Code Structure Template
 
 Every prototype MUST follow this structure:

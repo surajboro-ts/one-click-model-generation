@@ -48,6 +48,7 @@ const Liveboard = React.lazy(() => import('./Liveboard'));
 const Cmdk = React.lazy(() => import('./Cmdk'));
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
+const ChartEditorAI = React.lazy(() => import('./ChartEditorAI'));
 
 /**
  * All registered projects
@@ -92,6 +93,13 @@ export const projectRegistry: ProjectMeta[] = [
     author: 'Design Team',
     thumbnail: AdminGroupsThumbnail,
     component: AdminGroups,
+  },
+  {
+    id: 'ChartEditorAI',
+    name: 'Chart Editor AI',
+    description: 'Chart editor with Spotter AI assistant for intelligent chart suggestions, conditional formatting, and data insights.',
+    author: 'Design Team',
+    component: ChartEditorAI,
   },
   // Add more projects here as they are created
   // {

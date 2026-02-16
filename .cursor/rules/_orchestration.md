@@ -33,7 +33,9 @@ What is the input?
 ├── "Create a new prototype" (via chat or screenshot)
 │   → Create folder in src/prototypes/, auto-register in registry.ts, then follow prototype-generation.md
 ├── Figma screenshot or URL
-│   → Start with figma-component-mapping.md, then prototype-generation.md
+│   → Start with figma-component-mapping.md to map layers/colors/icons, then prototype-generation.md
+│   → MUST drill into Figma sub-nodes when design is too large (see prototype-generation.md §10)
+│   → MUST visually verify output against Figma before declaring done (see prototype-generation.md §9)
 ├── Text description of a UI
 │   → Start with prototype-generation.md + component-inventory.md
 ├── "Build a dashboard / admin panel / settings page"
