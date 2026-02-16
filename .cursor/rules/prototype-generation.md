@@ -1,5 +1,5 @@
 ---
-description: Rules for AI-assisted prototype generation from screenshots or descriptions
+description: Core workflow for AI-assisted prototype generation from screenshots or descriptions
 globs: ["src/prototypes/**/*.tsx", "src/prototypes/**/*.ts"]
 ---
 
@@ -7,203 +7,108 @@ globs: ["src/prototypes/**/*.tsx", "src/prototypes/**/*.ts"]
 
 You are helping designers create interactive prototypes using the **Radiant Design System**. When a designer provides a screenshot, description, or Figma reference, generate production-quality React code using the available components.
 
-## Workflow
+> **See `_orchestration.md`** for the full priority order of guideline files.
 
-1. **Analyze the input** (screenshot/description)
-2. **Identify UI patterns** and map to Radiant components
-3. **Generate structured code** with proper imports and styling
-4. **Use mock data** for realistic content
+---
 
-## Available Components
+## Generation Workflow
 
-### Buttons & Actions
+### 1. Determine the input type
 
-```tsx
-import { Button } from '../../components';
+| Input | Action |
+|-------|--------|
+| Figma screenshot or URL | Consult **`figma-component-mapping.md`** to translate Figma layers to Radiant components |
+| Text description | Identify UI patterns below, then pick components from **`component-inventory.md`** |
+| Existing prototype to modify | Read the current file, apply changes using the same patterns |
 
-<Button variant="primary" size="basic">Save</Button>
-<Button variant="secondary" size="basic">Cancel</Button>
-<Button variant="tertiary" size="small" icon="plus">Add filter</Button>
-```
+### 2. Pick a layout template
 
-| Variant | Use Case |
-|---------|----------|
-| `primary` | Main action (1 per screen) |
-| `secondary` | Secondary actions |
-| `tertiary` | Inline/text actions |
+Choose a starting point from **`layout-patterns.md`**:
 
-### Feedback & Alerts
+| Need | Layout Template |
+|------|----------------|
+| Admin panel with sidebar | Full Page Layout |
+| Dashboard with metrics and charts | Dashboard Layout |
+| Settings page with form sections | Form Page Layout |
+| Multi-step wizard in a modal | Modal/Wizard Layout |
+| Table with search, filters, pagination | Data Table Page Layout |
 
-```tsx
-import { Alert, Modal } from '../../components';
+### 3. Select components
 
-<Alert status="success" message="Changes saved" />
-<Modal isOpen={isOpen} onClose={() => {}} title="Confirm">Content</Modal>
-```
+Use the **Component Selection Decision Tree** in **`component-inventory.md`** to find the right component for each UI element. Always prefer existing components over custom HTML.
 
-| Status | Use Case |
-|--------|----------|
-| `info` | General information |
-| `success` | Completed actions |
-| `warning` | Caution needed |
-| `failure` | Errors |
-| `muted` | Low-priority info |
+### 3b. Component reuse vs creation
 
-### Form Controls
+**ALWAYS prefer existing Radiant components.** Check `component-inventory.md` first.
 
-```tsx
-import { TextInput, SearchInput, Checkbox, Radio, Toggle } from '../../components';
+| Situation | Action |
+|-----------|--------|
+| Existing component matches | Import from `../../components` |
+| Close match needs minor tweaks | Use the existing component with props/styling overrides |
+| No suitable component exists | Create a LOCAL component in the prototype's own `components/` subfolder |
 
-<TextInput label="Email" value={email} onChange={setEmail} />
-<SearchInput placeholder="Search..." value={query} onChange={setQuery} />
-<Checkbox label="Remember me" checked={checked} onChange={setChecked} />
-<Radio label="Option A" checked={selected === 'a'} onChange={() => setSelected('a')} />
-<Toggle label="Enable" checked={enabled} onChange={setEnabled} />
-```
+When creating a local component:
+- Place it in `src/prototypes/MyPrototype/components/ComponentName.tsx`
+- Follow the rules in `design-system.md` (forwardRef, TypeScript, CSS tokens)
+- Do NOT add it to `src/components/` — that directory is for shared design system components only
+- Import it with a relative path: `import { MyWidget } from './components/MyWidget'`
 
-### Navigation & Layout
+### 4. Apply interaction patterns
 
-```tsx
-import { Tabs, Sidebar, Chip } from '../../components';
+Consult **`widget-patterns.md`** for correct behavior:
 
-<Tabs tabs={[{id: 'a', label: 'Tab A'}]} activeTab={active} onTabChange={setActive} />
-<Sidebar items={[{id: 'home', label: 'Home', icon: 'folder'}]} activeItem={active} />
-<Chip label="Active" variant="success" />
-```
+| Building this? | Consult this section |
+|----------------|---------------------|
+| Alerts or notifications | Alert Taxonomy Decision Tree — banner vs toast vs section alert |
+| Action menus (three-dot) | Three Dot Menu — category ordering (Create > View > Edit > Manage > Share > Export > Delete) |
+| Delete confirmations | Delete Object Pattern — confirmation message, cascading warnings |
+| Empty states | Muted Alerts / Empty States — big vs small, content templates |
+| Tooltips or help text | Tooltips (1s delay) and Explainer Cards (340px, click-activated) |
+| Object tables | Object Table — row specs, batch actions, sort/filter, column widths |
+| Date/time pickers | Date Picker, Rolling Date Picker, Frequency Picker patterns |
+| Filter selection dialogs | Multi-Object List Picker — search, select all, bulk add, show selected |
 
-### Icons
+### 5. Apply modal rules
 
-```tsx
-import { Icon } from '../../components';
+When building modals or dialogs, consult **`modal-patterns.md`** for:
+- Size selection (M1: 394px, M2: 788px, M3: 1182px, M4: Full screen)
+- Type selection (simple, wizard, subnavigation, splashscreen)
+- Footer button placement (Tertiary left, Secondary + Primary right)
+- Wizard progress bar (2-4 steps, 4px height)
 
-<Icon name="plus" size="m" />
-<Icon name="checkmark-circle" size="l" color="#06BF7F" />
-```
+### 6. Style with tokens
 
-**Available icons:** arrow-up, arrow-down, arrow-left, arrow-right, chevron-up, chevron-down, chevron-left, chevron-right, plus, minus, cross, checkmark, checkmark-circle, cross-circle, exclamation-point-circle, info-circle, copy, download, upload, save, refresh, pencil, trash-can, share, pin, filter, play, pause, eye, eye-undo, clock, cog, folder, funnel, lock, magnifying-glass, profile, question-mark, sort, star, tag, expand, fullscreen, hamburger, more, information
+Use design tokens from **`token-usage.md`** — never hard-code colors, spacing, or typography.
 
-## Pattern Recognition
+### 7. Write UI text
 
-### When you see a filter/selection UI:
-```tsx
-// Use: Modal + SearchInput + Checkbox + Button
-<Modal title="Add filter">
-  <SearchInput placeholder="Search..." />
-  {items.map(item => <Checkbox label={item} />)}
-  <Button variant="primary">Apply</Button>
-</Modal>
-```
+Follow **`content-guidelines.md`** for all user-facing text:
+- Buttons: 1-2 words, imperative verbs (Save, Delete, Export)
+- Titles: 4 words max, sentence case
+- Labels: 3 words max, no articles
+- Errors: remedy-focused
+- ThoughtSpot terms: capitalize product features (see **`product-knowledge.md`**)
 
-### When you see a data table:
-```tsx
-// Use: SearchInput + custom table with Chip for status
-<SearchInput placeholder="Search..." />
-<div className={styles.table}>
-  {rows.map(row => (
-    <div className={styles.row}>
-      <span>{row.name}</span>
-      <Chip label={row.status} variant={getVariant(row.status)} />
-    </div>
-  ))}
-</div>
-```
+### 8. Organize files
 
-### When you see a settings/form page:
-```tsx
-// Use: Sidebar + TextInput + Toggle + Radio + Button
-<div style={{ display: 'flex' }}>
-  <Sidebar items={sections} />
-  <form>
-    <TextInput label="Name" />
-    <Toggle label="Enable feature" />
-    <Button variant="primary">Save</Button>
-  </form>
-</div>
-```
+Follow **`prototype-structure.md`** for file organization:
+- Simple (1 view): single `.tsx` file
+- Medium (2-3 views): folder with `index.tsx`
+- Complex (4+ views): full folder with `components/` and `data/`
 
-### When you see a dashboard/metrics:
-```tsx
-// Use: Tabs + metric cards + data table
-<Tabs tabs={[...]} />
-<div className={styles.metricsGrid}>
-  {metrics.map(m => <MetricCard {...m} />)}
-</div>
-<DataTable data={tableData} />
-```
+---
 
-## Mock Data Usage
+## Code Structure Template
 
-Always import realistic mock data:
-
-```tsx
-import { users, analytics, navigation, forms } from '../../mocks';
-
-// Access mock data
-const userList = users.profiles;
-const chartData = analytics.revenue;
-const menuItems = navigation.sidebar;
-const countries = forms.countries;
-```
-
-## Styling Guidelines
-
-### Use Design Tokens
-
-```tsx
-import { brandColors, spacing } from '../../tokens';
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    backgroundColor: brandColors.white,
-    padding: spacing.scale.lg, // 24px
-    borderRadius: '12px',
-  },
-};
-```
-
-### Common Patterns
-
-```tsx
-// Card container
-container: {
-  backgroundColor: brandColors.white,
-  borderRadius: '12px',
-  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
-  padding: '24px',
-}
-
-// Section with border
-section: {
-  borderBottom: `1px solid ${brandColors.gray[20]}`,
-  paddingBottom: '24px',
-  marginBottom: '24px',
-}
-
-// Flex row with gap
-row: {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-}
-
-// Grid layout
-grid: {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-  gap: '16px',
-}
-```
-
-## Code Structure
-
-Always follow this structure:
+Every prototype MUST follow this structure:
 
 ```tsx
 import React, { useState } from 'react';
-// 1. Import components
+// 1. Import components (see component-inventory.md for full list)
 import { Button, Modal, TextInput } from '../../components';
-// 2. Import tokens
+// 2. Import tokens (see token-usage.md for all available tokens)
 import { brandColors } from '../../tokens/colors/brand';
+import { spacing } from '../../tokens/spacing';
 // 3. Import mock data
 import { users } from '../../mocks';
 
@@ -229,48 +134,96 @@ export const PrototypeName: React.FC = () => {
   );
 };
 
-// 7. Styles object
+// 7. Styles object — always use tokens
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    // styles
+    backgroundColor: brandColors.gray[10],
+    padding: `${spacing.F}px`,
+    minHeight: '100vh',
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
   },
 };
 
 export default PrototypeName;
 ```
 
-## Content Guidelines
+---
 
-Follow ThoughtSpot's content rules for all text:
+## Mock Data
 
-| Element | Rule | Example |
-|---------|------|---------|
-| Buttons | 1-2 words, imperative | Save, Delete, Add filter |
-| Titles | 4 words max, sentence case | Delete this Answer? |
-| Labels | 3 words max, no articles | Pin to Liveboard |
-| Errors | Remedy-focused | Enter email address |
+Always import realistic mock data rather than using placeholders:
 
-## Interaction Patterns
+```tsx
+import { users, analytics, navigation, forms } from '../../mocks';
 
-### Modal dialogs
-- Open with primary/secondary button
-- Close with X, Cancel, or overlay click
-- Primary action on right in footer
+const userList = users.profiles;      // Array of user objects
+const chartData = analytics.revenue;  // Chart data
+const menuItems = navigation.sidebar; // Navigation items
+const countries = forms.countries;    // Dropdown options
+```
 
-### Form validation
-- Show errors inline below fields
-- Use Alert for global errors
-- Disable submit until valid
+---
 
-### Lists/Tables
-- Add search for >5 items
-- Use Checkbox for multi-select
-- Use Radio for single-select
-- Show empty state when no results
+## Common Styling Patterns
+
+Use these token-based patterns for consistent styling:
+
+```tsx
+// Card container
+container: {
+  backgroundColor: brandColors.white,
+  border: `1px solid ${brandColors.gray[20]}`,
+  borderRadius: '8px',
+  padding: `${spacing.F}px`,  // 24px
+}
+
+// Section with border
+section: {
+  borderBottom: `1px solid ${brandColors.gray[20]}`,
+  paddingBottom: `${spacing.F}px`,
+  marginBottom: `${spacing.F}px`,
+}
+
+// Flex row with gap
+row: {
+  display: 'flex',
+  alignItems: 'center',
+  gap: `${spacing.C}px`,  // 12px
+}
+
+// Grid layout
+grid: {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gap: `${spacing.D}px`,  // 16px
+}
+```
+
+> For the full token reference including color scales, spacing values, and typography, see **`token-usage.md`**.
+
+---
+
+## Quick Pattern Recognition
+
+When you see these patterns in a screenshot or description, use these component combinations:
+
+| UI Pattern | Components to Use | Details in |
+|------------|-------------------|------------|
+| Filter/selection dialog | Modal + SearchInput + Checkbox + Toggle + Button | `widget-patterns.md` Multi-Object List Picker |
+| Data table with actions | SearchInput + Table + Chip + Menu + Pagination | `widget-patterns.md` Object Table |
+| Settings/form page | Sidebar + TextInput + Toggle + Radio + Button | `layout-patterns.md` Form Page Layout |
+| Dashboard with metrics | Tabs + metric cards + Table | `layout-patterns.md` Dashboard Layout |
+| Confirmation prompt | ConfirmDialog or Modal with warning text | `widget-patterns.md` Delete Object Pattern |
+| Multi-step wizard | Modal (wizard type) + Stepper + form fields | `modal-patterns.md` Wizard Modal |
+| Action menu | Menu with categorized items | `widget-patterns.md` Three Dot Menu |
+| Empty/no-data state | Illustration + Typography + Button | `widget-patterns.md` Muted Alerts |
+
+---
 
 ## Examples Reference
 
-Study these examples in `src/prototypes/_examples/`:
-- **FilterDialog.tsx** - Modal with search and selection
-- **DataDashboard.tsx** - Metrics, tabs, and data table
-- **SettingsPanel.tsx** - Sidebar navigation with forms
+Study these existing prototypes for patterns:
+- `src/prototypes/_examples/FilterDialog.tsx` — Modal with search and selection
+- `src/prototypes/AdminGroups/` — Complex prototype with wizard modal and table
+- `src/prototypes/Liveboard/` — Dashboard with charts and KPIs
+- `src/prototypes/Cmdk/` — Command palette with search

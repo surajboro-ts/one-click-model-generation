@@ -145,6 +145,23 @@ src/prototypes/
         └── mockData.ts           # Mock data for prototype
 ```
 
+### Local components vs shared components
+
+The `components/` subfolder inside a prototype is for **prototype-specific** elements only — things that don't exist in the shared Radiant library.
+
+| Need | Where to look | Where to create |
+|------|--------------|----------------|
+| Button, Modal, Table, TextInput, etc. | `../../components` (shared library) | Never recreate these |
+| A custom wizard step, a prototype-specific sidebar, a specialized chart card | N/A — doesn't exist in shared library | `./components/` inside the prototype folder |
+
+**Rules for local components:**
+- Always check `component-inventory.md` first — if a shared component can do the job (even with prop/style tweaks), use it
+- Only create a local component when no shared component is suitable
+- Local components still follow `design-system.md` rules: forwardRef, TypeScript types, design tokens
+- Import shared components normally: `import { Button } from '../../components'`
+- Import local components with relative paths: `import { MyWidget } from './components/MyWidget'`
+- Do NOT add local components to `src/components/` — that directory is for the shared design system
+
 ### index.tsx (Entry Point)
 ```tsx
 /**

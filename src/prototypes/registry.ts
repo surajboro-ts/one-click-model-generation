@@ -35,13 +35,10 @@ export interface ProjectMeta {
 }
 
 /**
- * Project registry - manually registered projects
+ * Project registry
  * 
- * To add a new project:
- * 1. Create a folder in src/prototypes/
- * 2. Create an index.tsx with a default export
- * 3. Create a thumbnail SVG in src/prototypes/thumbnails/
- * 4. Add an entry to this registry with the thumbnail
+ * Projects are auto-registered by `npm run new-prototype`.
+ * To add a thumbnail later, import an SVG and add it to the entry.
  */
 
 // Import project components

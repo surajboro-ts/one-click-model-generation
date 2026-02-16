@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { brandColors } from '../tokens/colors/brand';
 import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
+import { Icon } from '../components/icons';
 
 /**
  * HomePage - Simple split landing page
@@ -325,11 +326,9 @@ npm run dev`}
                 </div>
               </div>
               <div style={styles.contextTip}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, marginTop: '2px' }}>
-                  <circle cx="12" cy="12" r="10" stroke={brandColors.blue[60]} strokeWidth="2"/>
-                  <path d="M12 16V12" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round"/>
-                  <path d="M12 8H12.01" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round"/>
-                </svg>
+                <div style={{ flexShrink: 0, marginTop: '1px', color: brandColors.blue[60] }}>
+                  <Icon name="info-circle" size="s" />
+                </div>
                 <span style={styles.contextTipText}>
                   The <code style={styles.inlineCode}>.cursor/rules/</code> directory already contains Radiant design system rules that Cursor loads automatically — no setup needed.
                 </span>
@@ -410,7 +409,7 @@ const styles: Record<string, React.CSSProperties> = {
   subtitle: {
     fontSize: '18px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: brandColors.gray[60],
     lineHeight: 1.6,
     maxWidth: '560px',
     margin: '0 auto',
@@ -461,7 +460,7 @@ const styles: Record<string, React.CSSProperties> = {
   cardDescription: {
     fontSize: '15px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: brandColors.gray[60],
     lineHeight: 1.6,
     marginBottom: '20px',
     maxWidth: '280px',
@@ -517,7 +516,7 @@ const styles: Record<string, React.CSSProperties> = {
   guideSubtitle: {
     fontSize: '16px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: brandColors.gray[60],
     lineHeight: 1.6,
     maxWidth: '480px',
     margin: '0 auto',
@@ -566,7 +565,7 @@ const styles: Record<string, React.CSSProperties> = {
   stepDescription: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: brandColors.gray[60],
     lineHeight: 1.5,
     margin: 0,
   },
@@ -585,7 +584,7 @@ const styles: Record<string, React.CSSProperties> = {
   prereqLabel: {
     fontSize: '12px',
     fontWeight: 600,
-    color: brandColors.gray[40],
+    color: brandColors.gray[50],
     textTransform: 'uppercase' as const,
     letterSpacing: '0.5px',
     marginRight: '4px',
@@ -619,14 +618,14 @@ const styles: Record<string, React.CSSProperties> = {
   instructionMarker: {
     fontSize: '13px',
     fontWeight: 600,
-    color: brandColors.gray[40],
+    color: brandColors.gray[50],
     minWidth: '20px',
     lineHeight: '22px',
   },
   instructionText: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[70],
+    color: brandColors.gray[80],
     lineHeight: '22px',
   },
 
@@ -689,7 +688,7 @@ const styles: Record<string, React.CSSProperties> = {
   promptLabel: {
     fontSize: '11px',
     fontWeight: 600,
-    color: brandColors.gray[40],
+    color: brandColors.gray[50],
     textTransform: 'uppercase' as const,
     letterSpacing: '0.5px',
     marginBottom: '12px',
@@ -697,7 +696,7 @@ const styles: Record<string, React.CSSProperties> = {
   promptItem: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: brandColors.gray[70],
     lineHeight: 1.6,
     fontStyle: 'italic',
     marginBottom: '8px',
@@ -710,7 +709,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   promptHint: {
     fontStyle: 'normal',
-    color: brandColors.gray[40],
+    color: brandColors.gray[50],
     fontSize: '12px',
   },
 
@@ -748,7 +747,7 @@ const styles: Record<string, React.CSSProperties> = {
   contextDescription: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: brandColors.gray[60],
     lineHeight: 1.5,
     margin: 0,
   },
@@ -778,13 +777,14 @@ const styles: Record<string, React.CSSProperties> = {
   footerLink: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: brandColors.gray[60],
     textDecoration: 'none',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     padding: 0,
     transition: 'color 150ms ease',
+    fontFamily: 'inherit',
   },
   footerDivider: {
     color: brandColors.gray[30],
@@ -793,7 +793,7 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: '24px',
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[40],
+    color: brandColors.gray[50],
     textAlign: 'center',
     fontStyle: 'italic',
   },

@@ -23,8 +23,8 @@
 
 ### Core Cursor Guidelines
 
-- [ ] **Orchestrating between guidelines**  
-  Define how AI should prioritize and combine multiple guideline files
+- [x] **Orchestrating between guidelines**  
+  Created `_orchestration.md` with priority routing, rewrote `prototype-generation.md` as a cross-referencing hub, fixed `modal-patterns.md` frontmatter
 
 ### Design System Guidelines
 

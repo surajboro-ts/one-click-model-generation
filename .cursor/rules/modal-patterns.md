@@ -1,3 +1,8 @@
+---
+description: Modal patterns M1-M4 for Radiant prototypes
+globs: ["src/prototypes/**/*.tsx", "src/components/Modal/**/*"]
+---
+
 # Modal Patterns (M1-M4)
 
 > Guidelines for using Modal components from the Radiant 3.0 Design System

@@ -204,12 +204,46 @@ Add any notes about the prototype here.
 fs.writeFileSync(path.join(prototypeDir, 'index.tsx'), componentTemplate);
 fs.writeFileSync(path.join(prototypeDir, 'README.md'), readmeTemplate);
 
+// Auto-register in registry.ts
+const registryPath = path.join(prototypesDir, 'registry.ts');
+let registryContent = fs.readFileSync(registryPath, 'utf-8');
+
+// Add the lazy import before the registry array
+const importLine = `const ${prototypeName} = React.lazy(() => import('./${prototypeName}'));`;
+const importMarker = '/**\n * All registered projects\n */';
+if (!registryContent.includes(importLine)) {
+  registryContent = registryContent.replace(
+    importMarker,
+    `${importLine}\n\n${importMarker}`
+  );
+}
+
+// Add the registry entry before the comment placeholder
+const registryEntry = `  {
+    id: '${prototypeName}',
+    name: '${prototypeName.replace(/([A-Z])/g, ' $1').trim()}',
+    description: 'New prototype — describe your UI to Cursor to generate it.',
+    author: 'Designer',
+    component: ${prototypeName},
+  },`;
+
+const entryMarker = "  // Add more projects here as they are created";
+if (registryContent.includes(entryMarker) && !registryContent.includes(`id: '${prototypeName}'`)) {
+  registryContent = registryContent.replace(
+    entryMarker,
+    `${registryEntry}\n${entryMarker}`
+  );
+}
+
+fs.writeFileSync(registryPath, registryContent);
+
 // Success message
 console.log('\n\x1b[32m✓ Created prototype: ' + prototypeName + '\x1b[0m\n');
 console.log('Files created:');
 console.log(`  src/prototypes/${prototypeName}/index.tsx`);
 console.log(`  src/prototypes/${prototypeName}/README.md`);
+console.log(`  src/prototypes/registry.ts (auto-registered)`);
 console.log('\nNext steps:');
 console.log(`  1. Open src/prototypes/${prototypeName}/index.tsx`);
 console.log('  2. Describe your UI to Cursor AI');
-console.log('  3. The AI will generate your prototype\n');
+console.log('  3. Preview at localhost:5173/playground\n');
