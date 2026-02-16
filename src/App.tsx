@@ -13,7 +13,7 @@ import { SurfacesShowcase } from './pages/SurfacesShowcase';
 import { VersionHistoryPage } from './pages/VersionHistoryPage';
 import { ColorSystemPage } from './pages/ColorSystemPage';
 import { TypographyPage } from './pages/TypographyPage';
-import { RoadmapPage } from './pages/RoadmapPage';
+// import { RoadmapPage } from './pages/RoadmapPage';
 import { brandColors } from './tokens/colors/brand';
 
 // Prototype examples
@@ -107,7 +107,7 @@ const ROUTES = {
   radiantSurfaces: '/radiant/surfaces',
   radiantRegistry: '/radiant/registry',
   radiantChangelog: '/radiant/changelog',
-  radiantRoadmap: '/radiant/roadmap',
+  // radiantRoadmap: '/radiant/roadmap',
   // Example prototypes
   filterDialog: '/radiant/examples/filter-dialog',
   // Component documentation - Selection Controls
@@ -192,7 +192,7 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'surfaces': '/radiant/surfaces',
       'registry': '/radiant/registry',
       'changelog': '/radiant/changelog',
-      'roadmap': '/radiant/roadmap',
+      // 'roadmap': '/radiant/roadmap',
       'example-filter-dialog': '/radiant/examples/filter-dialog',
       // Selection Controls
       'button': '/radiant/components/button',
@@ -244,7 +244,7 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'surfaces', label: 'Surfaces', icon: <SurfacesIcon />, type: 'item' },
     { id: 'registry', label: 'Component Registry', icon: <TableIcon />, type: 'item' },
     { id: 'changelog', label: 'Changelog', icon: <ChangelogIcon />, type: 'item' },
-    { id: 'roadmap', label: 'Roadmap', icon: <RoadmapIcon />, type: 'item', badge: 'New' },
+    // { id: 'roadmap', label: 'Roadmap', icon: <RoadmapIcon />, type: 'item', badge: 'New' },
     { id: 'divider0', label: '', type: 'divider' },
     { id: 'widgets-section', label: 'Widgets', type: 'section' },
     { id: 'example-filter-dialog', label: 'Filter Dialog', icon: <ComponentIcon />, type: 'item' },
@@ -388,7 +388,7 @@ const App: React.FC = () => {
       <Route path="/radiant/surfaces" element={<RadiantLayout><SurfacesShowcase /></RadiantLayout>} />
       <Route path="/radiant/registry" element={<RadiantLayout><ComponentRegistryPage /></RadiantLayout>} />
       <Route path="/radiant/changelog" element={<RadiantLayout><VersionHistoryPage /></RadiantLayout>} />
-      <Route path="/radiant/roadmap" element={<RadiantLayout><RoadmapPage /></RadiantLayout>} />
+      {/* <Route path="/radiant/roadmap" element={<RadiantLayout><RoadmapPage /></RadiantLayout>} /> */}
       <Route path="/radiant/architecture" element={<RadiantLayout><ArchitectureShowcase /></RadiantLayout>} />
       {/* Legacy redirect for old colors route */}
       <Route path="/radiant/colors" element={<Navigate to="/radiant/colours" replace />} />
