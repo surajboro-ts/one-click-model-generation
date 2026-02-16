@@ -13,6 +13,21 @@ import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/com
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
+  // Random footer messages that cycle on each page load
+  const footerMessages = [
+    'Made with coffee and tokens by Faris',
+    'Scrapped together by Faris',
+    'Built between meetings by Faris',
+    'Fueled by design tokens and caffeine',
+    'Assembled with love (and AI) by Faris',
+    'Crafted pixel by pixel by Faris',
+    'Made with borderRadius and box-shadow',
+  ];
+
+  const [footerMessage] = React.useState(() => 
+    footerMessages[Math.floor(Math.random() * footerMessages.length)]
+  );
+
   return (
     <div style={styles.container}>
       {/* Main Content */}
@@ -348,6 +363,11 @@ npm run dev`}
             Icons
           </button>
         </div>
+
+        {/* Fun Footer Message */}
+        <div style={styles.funFooter}>
+          {footerMessage}
+        </div>
       </main>
     </div>
   );
@@ -368,7 +388,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '40px 32px 64px',
+    padding: '80px 32px 64px',
     maxWidth: '960px',
     margin: '0 auto',
     width: '100%',
@@ -768,6 +788,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   footerDivider: {
     color: brandColors.gray[30],
+  },
+  funFooter: {
+    marginTop: '24px',
+    fontSize: '13px',
+    fontWeight: 400,
+    color: brandColors.gray[40],
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 };
 
