@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { brandColors } from '../tokens/colors/brand';
+import { spacing } from '../tokens/spacing';
 import { getAllProjects, ProjectMeta } from '../prototypes/registry';
 import { Icon } from '../components/icons';
 import { Button } from '../components/Button';
@@ -44,7 +45,7 @@ export const PlaygroundGallery: React.FC = () => {
         </div>
         <div style={styles.headerActions}>
           <Button
-            variant={guideOpen ? 'primary' : 'secondary'}
+            variant="secondary"
             size="small"
             icon="info-circle"
             iconPosition="leading"
@@ -273,13 +274,13 @@ const guideStyles: Record<string, React.CSSProperties> = {
   container: {
     maxWidth: '1200px',
     margin: '0 auto',
-    padding: '28px 32px 24px',
+    padding: `${spacing.G}px ${spacing.H}px ${spacing.F}px`, // 28px 32px 24px
   },
   intro: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '14px',
-    marginBottom: '24px',
+    gap: `${spacing.D}px`, // 16px
+    marginBottom: `${spacing.F}px`, // 24px
   },
   introIcon: {
     fontSize: '20px',
@@ -291,7 +292,7 @@ const guideStyles: Record<string, React.CSSProperties> = {
     fontSize: '18px',
     fontWeight: 600,
     color: brandColors.gray[90],
-    marginBottom: '6px',
+    marginBottom: `${spacing.A}px`, // 4px
   },
   introDesc: {
     fontSize: '14px',
@@ -304,25 +305,25 @@ const guideStyles: Record<string, React.CSSProperties> = {
   columns: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '16px',
-    marginBottom: '20px',
+    gap: `${spacing.D}px`, // 16px
+    marginBottom: `${spacing.E}px`, // 20px
   },
   column: {
     backgroundColor: brandColors.gray[10],
-    borderRadius: '12px',
-    padding: '20px',
+    borderRadius: `${spacing.C}px`, // 12px
+    padding: `${spacing.E}px`, // 20px
     border: `1px solid ${brandColors.gray[20]}`,
   },
   columnHeader: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
-    marginBottom: '10px',
+    gap: `${spacing.B}px`, // 8px
+    marginBottom: `${spacing.B}px`, // 8px
   },
   columnNumber: {
     width: '22px',
     height: '22px',
-    borderRadius: '6px',
+    borderRadius: `${spacing.A}px`, // 4px
     backgroundColor: brandColors.blue[60],
     color: brandColors.white,
     display: 'flex',
@@ -343,22 +344,22 @@ const guideStyles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     color: brandColors.gray[60],
     lineHeight: '20px',
-    margin: '0 0 14px 0',
+    margin: `0 0 ${spacing.D}px 0`, // 0 0 16px 0
   },
 
   // Flow diagram
   flowDiagram: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '4px',
+    gap: `${spacing.A}px`, // 4px
   },
   flowStep: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
-    padding: '8px 10px',
+    gap: `${spacing.B}px`, // 8px
+    padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
     backgroundColor: brandColors.white,
-    borderRadius: '8px',
+    borderRadius: `${spacing.B}px`, // 8px
     border: `1px solid ${brandColors.gray[20]}`,
   },
   flowDot: {
@@ -383,15 +384,15 @@ const guideStyles: Record<string, React.CSSProperties> = {
   branchList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: `${spacing.B}px`, // 8px
   },
   branchItem: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '10px',
-    padding: '8px 10px',
+    gap: `${spacing.B}px`, // 8px
+    padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
     backgroundColor: brandColors.white,
-    borderRadius: '8px',
+    borderRadius: `${spacing.B}px`, // 8px
     border: `1px solid ${brandColors.gray[20]}`,
   },
   branchDot: {
@@ -399,7 +400,7 @@ const guideStyles: Record<string, React.CSSProperties> = {
     height: '8px',
     borderRadius: '50%',
     flexShrink: 0,
-    marginTop: '4px',
+    marginTop: `${spacing.A}px`, // 4px
   },
   branchInput: {
     fontSize: '12px',
@@ -418,23 +419,23 @@ const guideStyles: Record<string, React.CSSProperties> = {
   priorityList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '4px',
+    gap: `${spacing.A}px`, // 4px
     maxHeight: '280px',
     overflowY: 'auto',
   },
   priorityItem: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '8px',
-    padding: '5px 8px',
-    borderRadius: '6px',
+    gap: `${spacing.B}px`, // 8px
+    padding: `${spacing.A}px ${spacing.B}px`, // 4px 8px
+    borderRadius: `${spacing.A}px`, // 4px
     backgroundColor: brandColors.white,
     border: `1px solid ${brandColors.gray[20]}`,
   },
   priorityBadge: {
     width: '18px',
     height: '18px',
-    borderRadius: '4px',
+    borderRadius: `${spacing.A}px`, // 4px
     backgroundColor: brandColors.gray[20],
     color: brandColors.gray[70],
     display: 'flex',
@@ -467,16 +468,16 @@ const guideStyles: Record<string, React.CSSProperties> = {
   reuseList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
-    marginBottom: '12px',
+    gap: `${spacing.B}px`, // 8px
+    marginBottom: `${spacing.C}px`, // 12px
   },
   reuseItem: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '10px',
-    padding: '8px 10px',
+    gap: `${spacing.B}px`, // 8px
+    padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
     backgroundColor: brandColors.white,
-    borderRadius: '8px',
+    borderRadius: `${spacing.B}px`, // 8px
     border: `1px solid ${brandColors.gray[20]}`,
   },
   reuseDot: {
@@ -484,7 +485,7 @@ const guideStyles: Record<string, React.CSSProperties> = {
     height: '8px',
     borderRadius: '50%',
     flexShrink: 0,
-    marginTop: '4px',
+    marginTop: `${spacing.A}px`, // 4px
   },
   reuseLabel: {
     fontSize: '12px',
@@ -502,9 +503,9 @@ const guideStyles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     color: brandColors.gray[60],
     lineHeight: '17px',
-    padding: '8px 10px',
+    padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
     backgroundColor: brandColors.white,
-    borderRadius: '8px',
+    borderRadius: `${spacing.B}px`, // 8px
     border: `1px solid ${brandColors.gray[20]}`,
   },
 
@@ -512,10 +513,10 @@ const guideStyles: Record<string, React.CSSProperties> = {
   tip: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-    padding: '10px 14px',
+    gap: `${spacing.B}px`, // 8px
+    padding: `${spacing.B}px ${spacing.D}px`, // 8px 16px
     backgroundColor: brandColors.blue[10],
-    borderRadius: '8px',
+    borderRadius: `${spacing.B}px`, // 8px
     border: `1px solid ${brandColors.blue[20]}`,
     fontSize: '12px',
     fontWeight: 400,
@@ -671,8 +672,8 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '20px',
-    padding: '4px 0',
+    gap: `${spacing.E}px`, // 20px
+    padding: `${spacing.A}px 0`, // 4px 0
   },
   introText: {
     fontSize: '14px',
@@ -684,24 +685,24 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
   optionsGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '16px',
+    gap: `${spacing.D}px`, // 16px
   },
   optionCard: {
     background: brandColors.gray[10],
     border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '12px',
-    padding: '20px',
+    borderRadius: `${spacing.C}px`, // 12px
+    padding: `${spacing.E}px`, // 20px
   },
   optionHeader: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
-    marginBottom: '10px',
+    gap: `${spacing.B}px`, // 8px
+    marginBottom: `${spacing.B}px`, // 8px
   },
   optionBadge: {
     width: '24px',
     height: '24px',
-    borderRadius: '6px',
+    borderRadius: `${spacing.A}px`, // 4px
     color: brandColors.white,
     display: 'flex',
     alignItems: 'center',
@@ -721,7 +722,7 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     color: brandColors.gray[70],
     lineHeight: '20px',
-    margin: '0 0 12px 0',
+    margin: `0 0 ${spacing.C}px 0`, // 0 0 12px 0
   },
   optionHint: {
     fontSize: '12px',
@@ -733,9 +734,9 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
   },
   codeBlock: {
     background: '#1E1E2E',
-    borderRadius: '8px',
-    padding: '12px 16px',
-    marginBottom: '12px',
+    borderRadius: `${spacing.B}px`, // 8px
+    padding: `${spacing.C}px ${spacing.D}px`, // 12px 16px
+    marginBottom: `${spacing.C}px`, // 12px
     overflowX: 'auto',
   },
   codeText: {
@@ -751,41 +752,41 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     fontWeight: 500,
     color: brandColors.blue[60],
     background: brandColors.blue[10],
-    padding: '2px 6px',
-    borderRadius: '4px',
+    padding: `2px ${spacing.A}px`, // 2px 4px
+    borderRadius: `${spacing.A}px`, // 4px
     border: `1px solid ${brandColors.blue[20]}`,
   },
   promptList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
-    marginBottom: '12px',
+    gap: `${spacing.B}px`, // 8px
+    marginBottom: `${spacing.C}px`, // 12px
   },
   promptItem: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '8px',
+    gap: `${spacing.B}px`, // 8px
     fontSize: '12px',
     fontWeight: 400,
     color: brandColors.gray[70],
     lineHeight: '18px',
-    padding: '8px 10px',
+    padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
     background: brandColors.white,
-    borderRadius: '8px',
+    borderRadius: `${spacing.B}px`, // 8px
     border: `1px solid ${brandColors.gray[20]}`,
     fontStyle: 'italic',
   },
   componentSection: {
     background: brandColors.gray[10],
     border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '12px',
-    padding: '16px 20px',
+    borderRadius: `${spacing.C}px`, // 12px
+    padding: `${spacing.D}px ${spacing.E}px`, // 16px 20px
   },
   componentHeader: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-    marginBottom: '8px',
+    gap: `${spacing.B}px`, // 8px
+    marginBottom: `${spacing.B}px`, // 8px
     color: brandColors.gray[80],
   },
   componentTitle: {
@@ -799,34 +800,34 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     color: brandColors.gray[70],
     lineHeight: '20px',
-    margin: '0 0 12px 0',
+    margin: `0 0 ${spacing.C}px 0`, // 0 0 12px 0
   },
   componentRules: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '6px',
+    gap: `${spacing.A}px`, // 4px
   },
   ruleItem: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
+    gap: `${spacing.B}px`, // 8px
     fontSize: '13px',
     fontWeight: 400,
     color: brandColors.gray[70],
     lineHeight: '20px',
-    padding: '6px 10px',
+    padding: `${spacing.A}px ${spacing.B}px`, // 4px 8px
     background: brandColors.white,
-    borderRadius: '6px',
+    borderRadius: `${spacing.A}px`, // 4px
     border: `1px solid ${brandColors.gray[20]}`,
   },
   tip: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '10px',
+    gap: `${spacing.B}px`, // 8px
     background: brandColors.blue[10],
     border: `1px solid ${brandColors.blue[20]}`,
-    borderRadius: '8px',
-    padding: '12px 16px',
+    borderRadius: `${spacing.B}px`, // 8px
+    padding: `${spacing.C}px ${spacing.D}px`, // 12px 16px
     color: brandColors.blue[60],
   },
   tipText: {
@@ -908,7 +909,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '16px 32px',
+    padding: `${spacing.D}px ${spacing.H}px`, // 16px 32px
     backgroundColor: brandColors.white,
     borderBottom: `1px solid ${brandColors.gray[20]}`,
   },
@@ -920,7 +921,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '24px',
     fontWeight: 600,
     color: brandColors.gray[90],
-    marginBottom: '4px',
+    marginBottom: `${spacing.A}px`, // 4px
   },
   subtitle: {
     fontSize: '14px',
@@ -930,14 +931,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   headerActions: {
     display: 'flex',
-    gap: '12px',
+    gap: `${spacing.C}px`, // 12px
     justifyContent: 'flex-end',
     minWidth: '220px',
   },
 
   // Main
   main: {
-    padding: '32px',
+    padding: `${spacing.H}px`, // 32px
     maxWidth: '1200px',
     margin: '0 auto',
   },
@@ -946,7 +947,7 @@ const styles: Record<string, React.CSSProperties> = {
   grid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-    gap: '24px',
+    gap: `${spacing.F}px`, // 24px
   },
 
   // Project Card
@@ -955,7 +956,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     backgroundColor: brandColors.white,
     border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '16px',
+    borderRadius: `${spacing.D}px`, // 16px
     overflow: 'hidden',
     cursor: 'pointer',
     transition: 'all 200ms ease',
@@ -979,21 +980,21 @@ const styles: Record<string, React.CSSProperties> = {
     color: brandColors.gray[40],
   },
   cardContent: {
-    padding: '20px',
+    padding: `${spacing.E}px`, // 20px
     flex: 1,
   },
   cardTitle: {
     fontSize: '18px',
     fontWeight: 600,
     color: brandColors.gray[90],
-    marginBottom: '8px',
+    marginBottom: `${spacing.B}px`, // 8px
   },
   cardDescription: {
     fontSize: '14px',
     fontWeight: 400,
     color: brandColors.gray[60],
     lineHeight: '22px',
-    marginBottom: '16px',
+    marginBottom: `${spacing.D}px`, // 16px
     display: '-webkit-box',
     WebkitLineClamp: 2,
     WebkitBoxOrient: 'vertical',
@@ -1002,12 +1003,12 @@ const styles: Record<string, React.CSSProperties> = {
   cardMeta: {
     display: 'flex',
     alignItems: 'center',
-    gap: '16px',
+    gap: `${spacing.D}px`, // 16px
   },
   cardAuthor: {
     display: 'flex',
     alignItems: 'center',
-    gap: '6px',
+    gap: `${spacing.A}px`, // 4px
     fontSize: '13px',
     fontWeight: 400,
     color: brandColors.gray[50],
@@ -1016,7 +1017,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: '12px 20px',
+    padding: `${spacing.C}px ${spacing.E}px`, // 12px 20px
     borderTop: `1px solid ${brandColors.gray[20]}`,
     color: brandColors.gray[40],
   },
@@ -1029,30 +1030,30 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     backgroundColor: brandColors.white,
     border: `2px dashed ${brandColors.gray[20]}`,
-    borderRadius: '16px',
+    borderRadius: `${spacing.D}px`, // 16px
     cursor: 'pointer',
     transition: 'all 200ms ease',
     textAlign: 'center',
-    padding: '48px 32px',
+    padding: `${spacing.J}px ${spacing.H}px`, // 48px 32px
     minHeight: '280px',
   },
   newProjectIconWrapper: {
     width: '56px',
     height: '56px',
-    borderRadius: '16px',
+    borderRadius: `${spacing.D}px`, // 16px
     backgroundColor: brandColors.blue[10],
     border: `1px solid ${brandColors.blue[20]}`,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     color: brandColors.blue[60],
-    marginBottom: '16px',
+    marginBottom: `${spacing.D}px`, // 16px
   },
   newProjectTitle: {
     fontSize: '16px',
     fontWeight: 600,
     color: brandColors.gray[90],
-    marginBottom: '8px',
+    marginBottom: `${spacing.B}px`, // 8px
   },
   newProjectDescription: {
     fontSize: '13px',
@@ -1065,9 +1066,9 @@ const styles: Record<string, React.CSSProperties> = {
 
   // Code inline (used by guide)
   code: {
-    padding: '2px 6px',
+    padding: `2px ${spacing.A}px`, // 2px 4px
     backgroundColor: 'rgba(39, 112, 239, 0.1)',
-    borderRadius: '4px',
+    borderRadius: `${spacing.A}px`, // 4px
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: '13px',
   },

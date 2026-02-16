@@ -1,8 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { brandColors } from '../tokens/colors/brand';
+import { spacing } from '../tokens/spacing';
 import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
 import { Icon } from '../components/icons';
+import { Button } from '../components/Button';
+import { Link } from '../components/Link';
 
 /**
  * HomePage - Simple split landing page
@@ -339,28 +342,31 @@ npm run dev`}
 
         {/* Footer Links */}
         <div style={styles.footer}>
-          <a 
-            href="https://github.com/faris-ts/figmaradiant" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={styles.footerLink}
+          <Link
+            href="https://github.com/faris-ts/figmaradiant"
+            target="_blank"
+            color="gray"
+            size="small"
+            external
           >
             GitHub
-          </a>
+          </Link>
           <span style={styles.footerDivider}>&middot;</span>
-          <button 
+          <Button
+            variant="tertiary"
+            size="small"
             onClick={() => navigate('/radiant/architecture')}
-            style={styles.footerLink}
           >
             Documentation
-          </button>
+          </Button>
           <span style={styles.footerDivider}>&middot;</span>
-          <button 
+          <Button
+            variant="tertiary"
+            size="small"
             onClick={() => navigate('/radiant/icons')}
-            style={styles.footerLink}
           >
             Icons
-          </button>
+          </Button>
         </div>
 
         {/* Fun Footer Message */}
@@ -387,7 +393,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '80px 32px 64px',
+    padding: `${spacing.M}px ${spacing.H}px ${spacing.L}px`, // 80px 32px 64px
     maxWidth: '960px',
     margin: '0 auto',
     width: '100%',
@@ -396,13 +402,13 @@ const styles: Record<string, React.CSSProperties> = {
   // Hero Text
   heroText: {
     textAlign: 'center',
-    marginBottom: '48px',
+    marginBottom: `${spacing.J}px`, // 48px
   },
   title: {
     fontSize: '42px',
     fontWeight: 700,
     color: brandColors.gray[90],
-    marginBottom: '16px',
+    marginBottom: `${spacing.D}px`, // 16px
     letterSpacing: '-1px',
     lineHeight: 1.2,
   },
@@ -419,9 +425,9 @@ const styles: Record<string, React.CSSProperties> = {
   cardsContainer: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '24px',
+    gap: `${spacing.F}px`, // 24px
     width: '100%',
-    marginBottom: '48px',
+    marginBottom: `${spacing.J}px`, // 48px
   },
 
   // Card
@@ -430,21 +436,21 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
-    padding: '40px 32px',
+    padding: `${spacing.I}px ${spacing.H}px`, // 40px 32px
     background: brandColors.white,
     border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '20px',
+    borderRadius: `${spacing.E}px`, // 20px
     cursor: 'pointer',
     transition: 'all 200ms ease',
     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
   },
   cardIconWrapper: {
-    marginBottom: '24px',
+    marginBottom: `${spacing.F}px`, // 24px
   },
   cardIcon: {
     width: '72px',
     height: '72px',
-    borderRadius: '20px',
+    borderRadius: `${spacing.E}px`, // 20px
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -454,7 +460,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '24px',
     fontWeight: 600,
     color: brandColors.gray[90],
-    marginBottom: '12px',
+    marginBottom: `${spacing.C}px`, // 12px
     letterSpacing: '-0.5px',
   },
   cardDescription: {
@@ -462,15 +468,15 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     color: brandColors.gray[60],
     lineHeight: 1.6,
-    marginBottom: '20px',
+    marginBottom: `${spacing.E}px`, // 20px
     maxWidth: '280px',
   },
   cardStats: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '8px',
-    marginBottom: '24px',
+    gap: `${spacing.B}px`, // 8px
+    marginBottom: `${spacing.F}px`, // 24px
     flexWrap: 'wrap',
   },
   cardStatPill: {
@@ -478,20 +484,20 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 500,
     color: brandColors.gray[60],
     background: brandColors.gray[10],
-    padding: '4px 12px',
-    borderRadius: '6px',
+    padding: `${spacing.A}px ${spacing.C}px`, // 4px 12px
+    borderRadius: `${spacing.A}px`, // 4px (using 6px originally but rounding to token)
     border: `1px solid ${brandColors.gray[20]}`,
   },
   cardCtaButton: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '8px',
+    gap: `${spacing.B}px`, // 8px
     fontSize: '14px',
     fontWeight: 600,
     color: brandColors.blue[60],
     background: brandColors.blue[10],
-    padding: '10px 20px',
-    borderRadius: '10px',
+    padding: `${spacing.B}px ${spacing.E}px`, // 8px 20px (using 10px → 8px)
+    borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
     border: `1px solid ${brandColors.blue[20]}`,
     transition: 'all 150ms ease',
   },
@@ -499,17 +505,17 @@ const styles: Record<string, React.CSSProperties> = {
   // Guide Section
   guideSection: {
     width: '100%',
-    marginBottom: '48px',
+    marginBottom: `${spacing.J}px`, // 48px
   },
   guideSectionHeader: {
     textAlign: 'center',
-    marginBottom: '32px',
+    marginBottom: `${spacing.H}px`, // 32px
   },
   guideTitle: {
     fontSize: '32px',
     fontWeight: 700,
     color: brandColors.gray[90],
-    marginBottom: '12px',
+    marginBottom: `${spacing.C}px`, // 12px
     letterSpacing: '-0.5px',
     lineHeight: 1.2,
   },
@@ -526,22 +532,22 @@ const styles: Record<string, React.CSSProperties> = {
   stepCard: {
     background: brandColors.white,
     border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '16px',
-    padding: '32px',
-    marginBottom: '20px',
+    borderRadius: `${spacing.D}px`, // 16px
+    padding: `${spacing.H}px`, // 32px
+    marginBottom: `${spacing.E}px`, // 20px
     boxShadow: '0 2px 12px rgba(0, 0, 0, 0.04)',
   },
   stepHeader: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '16px',
-    marginBottom: '24px',
+    gap: `${spacing.D}px`, // 16px
+    marginBottom: `${spacing.F}px`, // 24px
   },
   stepBadge: {
     width: '40px',
     height: '40px',
     minWidth: '40px',
-    borderRadius: '12px',
+    borderRadius: `${spacing.C}px`, // 12px
     background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
     display: 'flex',
     alignItems: 'center',
@@ -558,7 +564,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '20px',
     fontWeight: 600,
     color: brandColors.gray[90],
-    marginBottom: '6px',
+    marginBottom: `${spacing.A}px`, // 4px (snapped from 6px)
     letterSpacing: '-0.3px',
     lineHeight: 1.3,
   },
@@ -570,15 +576,15 @@ const styles: Record<string, React.CSSProperties> = {
     margin: 0,
   },
   stepBody: {
-    paddingLeft: '56px',
+    paddingLeft: `${spacing.K}px`, // 56px
   },
 
   // Prerequisites
   stepPrereqs: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-    marginBottom: '20px',
+    gap: `${spacing.B}px`, // 8px
+    marginBottom: `${spacing.E}px`, // 20px
     flexWrap: 'wrap' as const,
   },
   prereqLabel: {
@@ -587,15 +593,15 @@ const styles: Record<string, React.CSSProperties> = {
     color: brandColors.gray[50],
     textTransform: 'uppercase' as const,
     letterSpacing: '0.5px',
-    marginRight: '4px',
+    marginRight: `${spacing.A}px`, // 4px
   },
   prereqItem: {
     fontSize: '13px',
     fontWeight: 500,
     color: brandColors.gray[60],
     background: brandColors.gray[10],
-    padding: '3px 10px',
-    borderRadius: '6px',
+    padding: `${spacing.A-1}px ${spacing.B}px`, // 3px 8px (using B for horizontal)
+    borderRadius: `${spacing.A}px`, // 4px (using 6px → 4px)
     border: `1px solid ${brandColors.gray[20]}`,
   },
   prereqDot: {
@@ -607,13 +613,13 @@ const styles: Record<string, React.CSSProperties> = {
   stepInstructions: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '12px',
-    marginBottom: '16px',
+    gap: `${spacing.C}px`, // 12px
+    marginBottom: `${spacing.D}px`, // 16px
   },
   instructionItem: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '10px',
+    gap: `${spacing.B}px`, // 8px (using 10px → 8px)
   },
   instructionMarker: {
     fontSize: '13px',
@@ -632,21 +638,21 @@ const styles: Record<string, React.CSSProperties> = {
   // Code Block
   codeBlock: {
     background: '#1E1E2E',
-    borderRadius: '12px',
+    borderRadius: `${spacing.C}px`, // 12px
     overflow: 'hidden',
-    marginBottom: '16px',
+    marginBottom: `${spacing.D}px`, // 16px
   },
   codeBlockHeader: {
     fontSize: '11px',
     fontWeight: 600,
     color: 'rgba(255, 255, 255, 0.4)',
-    padding: '10px 16px 0',
+    padding: `${spacing.B}px ${spacing.D}px 0`, // 8px 16px 0 (using 10px → 8px)
     textTransform: 'uppercase' as const,
     letterSpacing: '0.5px',
   },
   codePre: {
     margin: 0,
-    padding: '12px 16px 14px',
+    padding: `${spacing.C}px ${spacing.D}px ${spacing.C}px`, // 12px 16px 12px (using 14px → 12px)
     overflow: 'auto',
   },
   code: {
@@ -664,8 +670,8 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 500,
     color: brandColors.blue[60],
     background: `${brandColors.blue[10]}`,
-    padding: '2px 6px',
-    borderRadius: '4px',
+    padding: `2px ${spacing.A}px`, // 2px 4px (using 6px → 4px)
+    borderRadius: `${spacing.A}px`, // 4px
     border: `1px solid ${brandColors.blue[20]}`,
   },
 
@@ -681,9 +687,9 @@ const styles: Record<string, React.CSSProperties> = {
   promptExamples: {
     background: brandColors.gray[10],
     border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '12px',
-    padding: '16px 20px',
-    marginBottom: '16px',
+    borderRadius: `${spacing.C}px`, // 12px
+    padding: `${spacing.D}px ${spacing.E}px`, // 16px 20px
+    marginBottom: `${spacing.D}px`, // 16px
   },
   promptLabel: {
     fontSize: '11px',
@@ -691,7 +697,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: brandColors.gray[50],
     textTransform: 'uppercase' as const,
     letterSpacing: '0.5px',
-    marginBottom: '12px',
+    marginBottom: `${spacing.C}px`, // 12px
   },
   promptItem: {
     fontSize: '13px',
@@ -699,8 +705,8 @@ const styles: Record<string, React.CSSProperties> = {
     color: brandColors.gray[70],
     lineHeight: 1.6,
     fontStyle: 'italic',
-    marginBottom: '8px',
-    paddingLeft: '8px',
+    marginBottom: `${spacing.B}px`, // 8px
+    paddingLeft: `${spacing.B}px`, // 8px
     borderLeft: `2px solid ${brandColors.gray[20]}`,
   },
   promptQuote: {
@@ -717,31 +723,31 @@ const styles: Record<string, React.CSSProperties> = {
   contextGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '16px',
-    marginBottom: '16px',
+    gap: `${spacing.D}px`, // 16px
+    marginBottom: `${spacing.D}px`, // 16px
   },
   contextCard: {
     background: brandColors.gray[10],
     border: `1px solid ${brandColors.gray[20]}`,
-    borderRadius: '12px',
-    padding: '20px',
+    borderRadius: `${spacing.C}px`, // 12px
+    padding: `${spacing.E}px`, // 20px
   },
   contextIconWrapper: {
     width: '36px',
     height: '36px',
-    borderRadius: '10px',
+    borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
     background: brandColors.blue[10],
     border: `1px solid ${brandColors.blue[20]}`,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '12px',
+    marginBottom: `${spacing.C}px`, // 12px
   },
   contextTitle: {
     fontSize: '14px',
     fontWeight: 600,
     color: brandColors.gray[90],
-    marginBottom: '6px',
+    marginBottom: `${spacing.A}px`, // 4px (using 6px → 4px)
     letterSpacing: '-0.2px',
   },
   contextDescription: {
@@ -754,11 +760,11 @@ const styles: Record<string, React.CSSProperties> = {
   contextTip: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '10px',
+    gap: `${spacing.B}px`, // 8px (using 10px → 8px)
     background: brandColors.blue[10],
     border: `1px solid ${brandColors.blue[20]}`,
-    borderRadius: '10px',
-    padding: '14px 16px',
+    borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
+    padding: `${spacing.C}px ${spacing.D}px`, // 12px 16px (using 14px → 12px)
   },
   contextTipText: {
     fontSize: '13px',
@@ -772,7 +778,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '12px',
+    gap: `${spacing.C}px`, // 12px
   },
   footerLink: {
     fontSize: '14px',
@@ -790,7 +796,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: brandColors.gray[30],
   },
   funFooter: {
-    marginTop: '24px',
+    marginTop: `${spacing.F}px`, // 24px
     fontSize: '13px',
     fontWeight: 400,
     color: brandColors.gray[50],
