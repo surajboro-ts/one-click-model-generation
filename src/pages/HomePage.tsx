@@ -15,18 +15,10 @@ export const HomePage: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      {/* Header */}
-      <header style={styles.header}>
-        <div style={styles.logo}>
-          <div style={styles.logoIcon}>R</div>
-          <span style={styles.logoText}>Radiant</span>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main style={styles.main}>
         <div style={styles.heroText}>
-          <h1 style={styles.title}>Design and prototype with Radiant</h1>
+          <h1 style={styles.title}>Radiant Design System and Playground</h1>
           <p style={styles.subtitle}>
             Explore the design system or build your own prototypes using ThoughtSpot's component library.
           </p>
@@ -368,38 +360,6 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     background: `linear-gradient(180deg, ${brandColors.gray[10]} 0%, ${brandColors.white} 100%)`,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-  },
-
-  // Header
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '24px 32px',
-  },
-  logo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-  },
-  logoIcon: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '12px',
-    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '20px',
-    fontWeight: 700,
-    color: '#ffffff',
-    boxShadow: '0 4px 12px rgba(39, 112, 239, 0.3)',
-  },
-  logoText: {
-    fontSize: '20px',
-    fontWeight: 600,
-    color: brandColors.gray[90],
-    letterSpacing: '-0.5px',
   },
 
   // Main
