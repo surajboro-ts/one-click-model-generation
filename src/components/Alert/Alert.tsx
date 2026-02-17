@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Icon } from '../icons';
 import type { IconName } from '../icons';
-import { statusColors, backgroundColors, textColors } from '../../tokens/colors';
+import { systemColors } from '../../tokens/colors';
 import styles from './Alert.module.css';
 
 export type AlertStatus = 'info' | 'success' | 'warning' | 'failure' | 'muted';
@@ -39,28 +39,28 @@ const statusConfig: Record<AlertStatus, {
   iconName: IconName;
 }> = {
   info: {
-    background: statusColors.info.background,
-    iconColor: statusColors.info.default,
+    background: systemColors.light['background-information'],
+    iconColor: systemColors.light['content-information'],
     iconName: 'information',
   },
   success: {
-    background: statusColors.success.background,
-    iconColor: statusColors.success.default,
+    background: systemColors.light['background-success'],
+    iconColor: systemColors.light['content-success'],
     iconName: 'checkmark-circle',
   },
   warning: {
-    background: statusColors.warning.background,
-    iconColor: statusColors.warning.default,
+    background: systemColors.light['background-warning'],
+    iconColor: systemColors.light['content-warning'],
     iconName: 'exclamation-point-circle',
   },
   failure: {
-    background: statusColors.error.background,
-    iconColor: statusColors.error.default,
+    background: systemColors.light['background-failure'],
+    iconColor: systemColors.light['content-failure'],
     iconName: 'cross-circle',
   },
   muted: {
-    background: backgroundColors.secondary,
-    iconColor: textColors.secondary,
+    background: systemColors.light['background-sunken'],
+    iconColor: systemColors.light['content-secondary'],
     iconName: 'information',
   },
 };
@@ -185,7 +185,7 @@ export const Alert: React.FC<AlertProps> = ({
             aria-label="Dismiss alert"
             type="button"
           >
-            <Icon name="cross" size="s" color={textColors.default} />
+            <Icon name="cross" size="s" color={systemColors.light['content-primary']} />
           </button>
         )}
       </div>
@@ -229,7 +229,7 @@ export const Alert: React.FC<AlertProps> = ({
             aria-label="Dismiss alert"
             type="button"
           >
-            <Icon name="cross" size="s" color={textColors.default} />
+            <Icon name="cross" size="s" color={systemColors.light['content-primary']} />
           </button>
         )}
       </div>
@@ -272,7 +272,7 @@ export const Alert: React.FC<AlertProps> = ({
           aria-label="Dismiss alert"
           type="button"
         >
-          <Icon name="cross" size="s" color={textColors.default} />
+          <Icon name="cross" size="s" color={systemColors.light['content-primary']} />
         </button>
       )}
     </div>

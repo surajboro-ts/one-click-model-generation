@@ -1,5 +1,5 @@
 import React, { useCallback, useId } from 'react';
-import { componentColors, statusColors } from '../../tokens/colors';
+import { systemColors } from '../../tokens/colors';
 import styles from './Radio.module.css';
 
 export interface RadioProps {
@@ -63,15 +63,14 @@ export const Radio: React.FC<RadioProps> = ({
 
   // Determine border color - using semantic tokens
   const getBorderColor = () => {
-    if (error) return statusColors.error.default;
-    if (checked) return componentColors.selection.selected;
-    return componentColors.selection.default;
+    if (error) return systemColors.light['content-failure'];
+    if (checked) return systemColors.light['content-brand'];
+    return systemColors.light['border-default'];
   };
 
-  // Determine dot color - using semantic tokens
   const getDotColor = () => {
-    if (error) return statusColors.error.default;
-    return componentColors.selection.selected;
+    if (error) return systemColors.light['content-failure'];
+    return systemColors.light['content-brand'];
   };
 
   const containerClasses = [

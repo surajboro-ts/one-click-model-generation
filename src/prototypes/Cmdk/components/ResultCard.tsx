@@ -9,7 +9,7 @@
 
 import React from 'react';
 import { Icon } from '../../../components/icons';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 import type { ResultCardProps } from '../types';
 
@@ -28,7 +28,7 @@ function highlightMatch(text: string, query?: string): React.ReactNode {
   return (
     <>
       {text.slice(0, index)}
-      <span style={{ backgroundColor: brandColors.yellow[20], borderRadius: 2 }}>
+      <span style={{ backgroundColor: systemColors.light['background-warning'], borderRadius: 2 }}>
         {text.slice(index, index + query.length)}
       </span>
       {text.slice(index + query.length)}
@@ -103,7 +103,7 @@ const styles: Record<string, React.CSSProperties> = {
     transition: 'background-color 0.1s ease',
   },
   selected: {
-    backgroundColor: brandColors.gray[10], // #F6F8FA
+    backgroundColor: systemColors.light['background-sunken'], // #F6F8FA
   },
   iconContainer: {
     display: 'flex',
@@ -111,7 +111,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     width: 20,
     height: 20,
-    color: brandColors.gray[50], // #A5ACB9
+    color: systemColors.light['content-tertiary'], // #A5ACB9
     flexShrink: 0,
   },
   textContent: {
@@ -130,7 +130,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 14,
     fontWeight: 375, // Plain Light
     lineHeight: '20px',
-    color: brandColors.gray[90], // #1D232F
+    color: systemColors.light['content-primary'], // #1D232F
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -140,7 +140,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60], // #777E8B
+    color: systemColors.light['content-secondary'], // #777E8B
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -155,7 +155,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[50], // #A5ACB9
+    color: systemColors.light['content-tertiary'], // #A5ACB9
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -165,7 +165,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[50], // #A5ACB9
+    color: systemColors.light['content-tertiary'], // #A5ACB9
     whiteSpace: 'nowrap',
   },
   rightLabel: {
@@ -173,7 +173,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60], // #777E8B
+    color: systemColors.light['content-secondary'], // #777E8B
     whiteSpace: 'nowrap',
     flexShrink: 0,
   },

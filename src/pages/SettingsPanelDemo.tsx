@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors } from '../tokens/colors';
 import { Select } from '../components/Select';
 import { Toggle } from '../components/Toggle';
 import { TextInput } from '../components/TextInput';
@@ -258,14 +258,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '36px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '12px',
   },
   description: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '26px',
   },
   alertWrapper: {
@@ -277,22 +277,22 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '24px',
   },
   section: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     padding: '24px',
   },
   sectionTitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '18px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '8px',
   },
   sectionDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     marginBottom: '16px',
   },
   sectionContent: {
@@ -314,12 +314,12 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '16px',
     padding: '12px 0',
-    borderBottom: `1px solid ${brandColors.gray[10]}`,
+    borderBottom: `1px solid ${systemColors.light['background-sunken']}`,
   },
   toggleDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   footer: {
     display: 'flex',
@@ -327,7 +327,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '12px',
     marginTop: '32px',
     paddingTop: '24px',
-    borderTop: `1px solid ${brandColors.gray[20]}`,
+    borderTop: `1px solid ${systemColors.light['background-subtle']}`,
   },
 };
 

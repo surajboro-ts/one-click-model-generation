@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { Icon } from '../../../components/icons';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 import type { ResultCardProps } from '../types';
 
@@ -27,7 +27,7 @@ function highlightMatch(text: string, query?: string): React.ReactNode {
   return (
     <>
       {text.slice(0, index)}
-      <span style={{ backgroundColor: brandColors.yellow[20], borderRadius: 2 }}>
+      <span style={{ backgroundColor: systemColors.light['background-warning'], borderRadius: 2 }}>
         {text.slice(index, index + query.length)}
       </span>
       {text.slice(index + query.length)}
@@ -150,7 +150,7 @@ const styles16: Record<string, React.CSSProperties> = {
     transition: 'background-color 0.1s ease',
   },
   selected: {
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   },
   iconContainer: {
     display: 'flex',
@@ -158,9 +158,9 @@ const styles16: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     width: 28,
     height: 28,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: 6,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     flexShrink: 0,
     marginTop: 2,
   },
@@ -180,7 +180,7 @@ const styles16: Record<string, React.CSSProperties> = {
     fontSize: 14,
     fontWeight: 375,
     lineHeight: '20px',
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -190,7 +190,7 @@ const styles16: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -200,7 +200,7 @@ const styles16: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -210,7 +210,7 @@ const styles16: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     whiteSpace: 'nowrap',
     flexShrink: 0,
     marginTop: 2,
@@ -230,7 +230,7 @@ const styles20: Record<string, React.CSSProperties> = {
     transition: 'background-color 0.1s ease',
   },
   selected: {
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   },
   iconContainer: {
     display: 'flex',
@@ -238,9 +238,9 @@ const styles20: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     width: 36,
     height: 36,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: 8,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     flexShrink: 0,
   },
   textContent: {
@@ -259,7 +259,7 @@ const styles20: Record<string, React.CSSProperties> = {
     fontSize: 14,
     fontWeight: 400,
     lineHeight: '20px',
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -269,7 +269,7 @@ const styles20: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -279,7 +279,7 @@ const styles20: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -289,7 +289,7 @@ const styles20: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     whiteSpace: 'nowrap',
     flexShrink: 0,
     marginTop: 6,

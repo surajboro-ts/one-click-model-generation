@@ -8,7 +8,7 @@
  */
 
 import React, { useState, useEffect, ComponentType } from 'react';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 import { CommandPalette } from './CommandPalette';
 import { VariantDropdown } from './components/VariantDropdown';
@@ -96,7 +96,7 @@ export const CmdkDemo: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
-    backgroundColor: brandColors.gray[90], // Dark background
+    backgroundColor: systemColors.light['content-primary'], // Dark background
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     display: 'flex',
     flexDirection: 'column',
@@ -121,7 +121,7 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: 16,
     fontWeight: 500,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
   },
   controlsRight: {
     display: 'flex',
@@ -151,7 +151,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
     border: '1px solid rgba(255, 255, 255, 0.25)',
     borderRadius: 8,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     fontSize: 16,
     fontWeight: 500,
     cursor: 'pointer',

@@ -38,23 +38,23 @@
   position: relative;
   width: 28px;
   height: 16px;
-  background-color: var(--color-brand-gray-40);
+  background-color: var(--rd-sys-color-background-inset);
   border-radius: var(--radius-full);
   flex-shrink: 0;
   transition: background-color var(--duration-fast) var(--easing-standard);
 }
 
 .track.checked {
-  background-color: var(--color-brand-blue-60);
+  background-color: var(--rd-sys-color-background-brand);
 }
 
 .toggle:hover:not(.disabled) .track:not(.checked) {
-  background-color: var(--color-brand-gray-50);
+  background-color: var(--rd-sys-color-content-tertiary);
 }
 
 .input:focus-visible + .label + .track,
 .input:focus-visible + .track {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
 }
 
@@ -64,7 +64,7 @@
   left: 2px;
   width: 12px;
   height: 12px;
-  background-color: var(--color-brand-white);
+  background-color: var(--rd-sys-color-background-base);
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-xs);
   transition: transform var(--duration-fast) var(--easing-standard);
@@ -75,7 +75,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   white-space: nowrap;
 }
 
@@ -88,5 +88,5 @@
 }
 
 .toggle.disabled .label {
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
 }

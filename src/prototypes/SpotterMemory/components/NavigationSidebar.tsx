@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Icon } from '../../../components/icons';
 import { sidebarStyles as styles } from '../styles';
 import { navigationGroups, sectionNavigation } from '../data/mockData';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 
 // External link icon
@@ -48,7 +48,7 @@ export const NavigationSidebar: React.FC = () => {
   const sectionTitleStyle: React.CSSProperties = {
     fontSize: '13px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     letterSpacing: '-0.1px',
   };
 
@@ -59,10 +59,10 @@ export const NavigationSidebar: React.FC = () => {
     gap: `${spacing.B}px`,
     padding: `${spacing.B}px ${spacing.D}px`,
     fontSize: '13px',
-    color: isActive ? brandColors.blue[60] : brandColors.gray[70],
-    backgroundColor: isActive ? `${brandColors.blue[60]}08` : 'transparent',
+    color: isActive ? systemColors.light['content-brand'] : referenceColors.gray['70'],
+    backgroundColor: isActive ? `${systemColors.light['content-brand']}08` : 'transparent',
     cursor: 'pointer',
-    borderLeft: isActive ? `3px solid ${brandColors.blue[60]}` : '3px solid transparent',
+    borderLeft: isActive ? `3px solid ${systemColors.light['content-brand']}` : '3px solid transparent',
     transition: 'all 0.15s ease',
     lineHeight: 1.4,
     fontWeight: isActive ? 500 : 400,
@@ -71,7 +71,7 @@ export const NavigationSidebar: React.FC = () => {
   const sectionLabelStyle: React.CSSProperties = {
     fontSize: '10px',
     fontWeight: 600,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase',
     letterSpacing: '0.8px',
     padding: `${spacing.D}px ${spacing.D}px ${spacing.B}px`,
@@ -93,13 +93,13 @@ export const NavigationSidebar: React.FC = () => {
               <Icon 
                 name="plus" 
                 size="xs" 
-                style={{ color: brandColors.gray[50] }}
+                style={{ color: systemColors.light['content-tertiary'] }}
               />
             </div>
             <Icon 
               name={expandedGroups.includes(group.id) ? 'chevron-down' : 'chevron-right'} 
               size="xs" 
-              style={{ color: brandColors.gray[50] }}
+              style={{ color: systemColors.light['content-tertiary'] }}
             />
           </div>
 
@@ -114,7 +114,7 @@ export const NavigationSidebar: React.FC = () => {
                 >
                   <span>{item.label}</span>
                   {item.external && (
-                    <span style={{ color: brandColors.gray[50], display: 'flex' }}>
+                    <span style={{ color: systemColors.light['content-tertiary'], display: 'flex' }}>
                       <ExternalLinkIcon />
                     </span>
                   )}

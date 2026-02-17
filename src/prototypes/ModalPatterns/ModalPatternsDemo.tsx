@@ -11,7 +11,7 @@ import {
   ModalType,
 } from '../../components/Modal';
 import { Button } from '../../components/Button';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 
 const styles = {
@@ -21,7 +21,7 @@ const styles = {
     gap: spacing.H,
     padding: spacing.F,
     minHeight: '100vh',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   },
   header: {
     marginBottom: spacing.D,
@@ -29,12 +29,12 @@ const styles = {
   title: {
     fontSize: 24,
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: spacing.B,
   },
   subtitle: {
     fontSize: 14,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
   controls: {
     display: 'flex',
@@ -50,17 +50,17 @@ const styles = {
   controlLabel: {
     fontSize: 12,
     fontWeight: 600,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     textTransform: 'uppercase' as const,
     letterSpacing: '0.5px',
   },
   select: {
     padding: `${spacing.B}px ${spacing.C}px`,
     borderRadius: 6,
-    border: `1px solid ${brandColors.gray[30]}`,
-    backgroundColor: brandColors.white,
+    border: `1px solid ${referenceColors.gray['30']}`,
+    backgroundColor: systemColors.light['background-base'],
     fontSize: 14,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     minWidth: 160,
     cursor: 'pointer',
   },
@@ -72,8 +72,8 @@ const styles = {
   demoButton: {
     padding: `${spacing.D}px`,
     borderRadius: 8,
-    border: `1px solid ${brandColors.gray[20]}`,
-    backgroundColor: brandColors.white,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
+    backgroundColor: systemColors.light['background-base'],
     cursor: 'pointer',
     transition: 'all 150ms ease',
     textAlign: 'left' as const,
@@ -81,19 +81,19 @@ const styles = {
   demoButtonTitle: {
     fontSize: 14,
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: spacing.A,
   },
   demoButtonDesc: {
     fontSize: 12,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
   sampleContent: {
     padding: spacing.D,
-    backgroundColor: brandColors.purple[20],
+    backgroundColor: referenceColors.purple['20'],
     borderRadius: 6,
     textAlign: 'center' as const,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     minHeight: 120,
     display: 'flex',
     alignItems: 'center',
@@ -102,11 +102,11 @@ const styles = {
   sampleMediaArea: {
     width: '100%',
     height: '100%',
-    backgroundColor: brandColors.purple[20],
+    backgroundColor: referenceColors.purple['20'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     fontSize: 14,
   },
 };
@@ -264,11 +264,11 @@ export const ModalPatternsDemo: React.FC = () => {
             style={styles.demoButton}
             onClick={() => setActiveModal(demo)}
             onMouseOver={(e) => {
-              e.currentTarget.style.borderColor = brandColors.blue[60];
-              e.currentTarget.style.boxShadow = `0 2px 8px ${brandColors.blue[20]}`;
+              e.currentTarget.style.borderColor = systemColors.light['content-brand'];
+              e.currentTarget.style.boxShadow = `0 2px 8px ${systemColors.light['background-information']}`;
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.borderColor = brandColors.gray[20];
+              e.currentTarget.style.borderColor = systemColors.light['background-subtle'];
               e.currentTarget.style.boxShadow = 'none';
             }}
           >

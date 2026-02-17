@@ -13,7 +13,7 @@
  */
 
 import React, { useState, useEffect, useCallback, useRef, useMemo, ComponentType } from 'react';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 import { CommandSearch } from './components/CommandSearch';
 import { KeyboardShortcuts } from './components/KeyboardShortcuts';
@@ -333,7 +333,7 @@ const styles: Record<string, React.CSSProperties> = {
   modal: {
     width: MODAL_WIDTH,
     height: MODAL_HEIGHT,
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: 12,
     boxShadow: '0 24px 48px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05)',
     display: 'flex',
@@ -354,7 +354,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60], // #777E8B
+    color: systemColors.light['content-secondary'], // #777E8B
   },
   emptyState: {
     display: 'flex',
@@ -366,7 +366,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   emptyText: {
     fontSize: 14,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textAlign: 'center',
   },
 };

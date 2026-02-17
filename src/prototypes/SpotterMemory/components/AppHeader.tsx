@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar } from '../../../components/Avatar';
 import { Icon } from '../../../components/icons';
 import { headerStyles as styles } from '../styles';
-import { brandColors } from '../../../tokens/colors/brand';
+
 
 // Custom icons for header
 const ChartIcon: React.FC = () => (

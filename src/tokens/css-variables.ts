@@ -5,9 +5,9 @@
  * This enables runtime theming and easy token consumption in CSS.
  */
 
-import { brandColors } from './colors/brand';
-import { aliasColors } from './colors/alias';
-import { lightThemeColors, darkThemeColors } from './colors/mapped';
+import { referenceColors } from './colors/reference';
+import { systemColors } from './colors/system';
+import { rdComponentColors } from './colors/component';
 import { fontSize, fontWeight, lineHeight, fontFamily } from './typography';
 import { spacing } from './spacing';
 import { radius } from './radius';
@@ -48,13 +48,9 @@ const flattenObject = (
 export const generateCSSVariables = () => {
   const variables: Record<string, string> = {};
 
-  // Brand Colors
-  const brandColorVars = flattenObject(brandColors, 'color-brand');
-  Object.assign(variables, brandColorVars);
-
-  // Alias Colors
-  const aliasColorVars = flattenObject(aliasColors, 'color');
-  Object.assign(variables, aliasColorVars);
+  // Reference Colors (3-layer architecture)
+  const refColorVars = flattenObject(referenceColors, 'rd-ref-color');
+  Object.assign(variables, refColorVars);
 
   // Font
   variables['font-family-primary'] = fontFamily.primary;
@@ -124,8 +120,22 @@ export const generateCSSVariables = () => {
  * Generate theme-specific CSS variables
  */
 export const generateThemeVariables = (theme: 'light' | 'dark') => {
-  const themeColors = theme === 'light' ? lightThemeColors : darkThemeColors;
-  return flattenObject(themeColors, 'theme');
+  const sysColors = systemColors[theme];
+  const compColors = rdComponentColors[theme];
+
+  const vars: Record<string, string> = {};
+
+  // System tokens
+  Object.entries(sysColors).forEach(([key, value]) => {
+    vars[`rd-sys-color-${key}`] = value;
+  });
+
+  // Component tokens
+  Object.entries(compColors).forEach(([key, value]) => {
+    vars[`rd-comp-color-${key}`] = value;
+  });
+
+  return vars;
 };
 
 /**

@@ -9,7 +9,7 @@ import {
   ModalType,
 } from '../components/Modal';
 import { Button } from '../components/Button';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 import { spacing } from '../tokens/spacing';
 
 type ModalDemo = {
@@ -136,11 +136,11 @@ export const SurfacesShowcase: React.FC = () => {
               style={styles.card}
               onClick={() => setActiveModal(modal)}
               onMouseOver={(e) => {
-                e.currentTarget.style.borderColor = brandColors.blue[60];
-                e.currentTarget.style.boxShadow = `0 4px 12px ${brandColors.blue[20]}`;
+                e.currentTarget.style.borderColor = systemColors.light['content-brand'];
+                e.currentTarget.style.boxShadow = `0 4px 12px ${systemColors.light['background-information']}`;
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.borderColor = brandColors.gray[20];
+                e.currentTarget.style.borderColor = systemColors.light['background-subtle'];
                 e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
               }}
             >
@@ -173,11 +173,11 @@ export const SurfacesShowcase: React.FC = () => {
               style={styles.card}
               onClick={() => setActiveModal(modal)}
               onMouseOver={(e) => {
-                e.currentTarget.style.borderColor = brandColors.blue[60];
-                e.currentTarget.style.boxShadow = `0 4px 12px ${brandColors.blue[20]}`;
+                e.currentTarget.style.borderColor = systemColors.light['content-brand'];
+                e.currentTarget.style.boxShadow = `0 4px 12px ${systemColors.light['background-information']}`;
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.borderColor = brandColors.gray[20];
+                e.currentTarget.style.borderColor = systemColors.light['background-subtle'];
                 e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
               }}
             >
@@ -383,21 +383,21 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 36,
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: 12,
   },
   pageDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 16,
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '26px',
     maxWidth: 700,
   },
 
   // Sections
   section: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: 12,
     padding: spacing.F,
     marginBottom: spacing.F,
@@ -407,13 +407,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 20,
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: spacing.B,
   },
   sectionDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 14,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     marginBottom: spacing.D,
   },
 
@@ -428,8 +428,8 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'stretch',
     padding: spacing.D,
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: 8,
     cursor: 'pointer',
     textAlign: 'left',
@@ -446,14 +446,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 16,
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   cardBadge: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 11,
     fontWeight: 500,
-    color: brandColors.blue[60],
-    backgroundColor: brandColors.blue[10],
+    color: systemColors.light['content-brand'],
+    backgroundColor: referenceColors.blue['10'],
     padding: '2px 8px',
     borderRadius: 4,
   },
@@ -461,15 +461,15 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 11,
     fontWeight: 500,
-    color: brandColors.purple[60],
-    backgroundColor: brandColors.purple[10],
+    color: referenceColors.purple['60'],
+    backgroundColor: referenceColors.purple['10'],
     padding: '2px 8px',
     borderRadius: 4,
   },
   cardDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 13,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     margin: 0,
   },
   cardPreview: {
@@ -481,14 +481,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   miniModal: {
     height: 30,
-    backgroundColor: brandColors.gray[20],
+    backgroundColor: systemColors.light['background-subtle'],
     borderRadius: 3,
-    border: `1px solid ${brandColors.gray[30]}`,
+    border: `1px solid ${referenceColors.gray['30']}`,
   },
 
   // Code Block
   codeBlock: {
-    backgroundColor: brandColors.gray[90],
+    backgroundColor: systemColors.light['content-primary'],
     borderRadius: 8,
     overflow: 'hidden',
   },
@@ -501,13 +501,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 12,
     fontWeight: 500,
-    color: brandColors.gray[40],
+    color: systemColors.light['border-default'],
   },
   copyButton: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 11,
     fontWeight: 500,
-    color: brandColors.blue[40],
+    color: referenceColors.brand['40'],
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
@@ -532,14 +532,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   specCard: {
     padding: spacing.D,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: 8,
   },
   specTitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 14,
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: spacing.C,
     marginTop: 0,
   },
@@ -552,12 +552,12 @@ const styles: Record<string, React.CSSProperties> = {
   specLabel: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 12,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
   specValue: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 12,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
 
   // Footer Demo
@@ -575,7 +575,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 13,
     fontWeight: 500,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     width: 120,
     flexShrink: 0,
   },
@@ -585,7 +585,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: `${spacing.C}px ${spacing.D}px`,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: 6,
   },
   primaryGroup: {
@@ -596,22 +596,22 @@ const styles: Record<string, React.CSSProperties> = {
   tertiaryDemo: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 12,
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
   },
   secondaryDemo: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 12,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     padding: '4px 12px',
-    backgroundColor: brandColors.gray[20],
+    backgroundColor: systemColors.light['background-subtle'],
     borderRadius: 16,
   },
   primaryDemo: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 12,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     padding: '4px 12px',
-    backgroundColor: brandColors.blue[60],
+    backgroundColor: systemColors.light['content-brand'],
     borderRadius: 16,
   },
 
@@ -622,7 +622,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.F,
-    backgroundColor: brandColors.purple[20],
+    backgroundColor: referenceColors.purple['20'],
     borderRadius: 6,
     minHeight: 120,
   },
@@ -630,24 +630,24 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 14,
     fontWeight: 500,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
   },
   sampleContentSubtext: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 12,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     margin: 0,
     marginTop: 4,
   },
   splashMediaArea: {
     width: '100%',
     height: '100%',
-    backgroundColor: brandColors.purple[20],
+    backgroundColor: referenceColors.purple['20'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     fontSize: 14,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },

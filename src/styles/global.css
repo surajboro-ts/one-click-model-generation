@@ -15,8 +15,8 @@ html {
 
 body {
   font-family: var(--font-family-primary, 'Plain', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
-  background-color: var(--color-background-primary, #ffffff);
-  color: var(--color-text-default, #1D232F);
+  background-color: var(--rd-sys-color-background-base, #ffffff);
+  color: var(--rd-sys-color-content-primary, #1D232F);
   line-height: 1.5;
 }
 

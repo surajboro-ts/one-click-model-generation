@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../tokens/colors';
 import { spacing, componentSpacing } from '../../tokens/spacing';
 
 /**
@@ -14,7 +14,7 @@ export const styles = {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   } as CSSProperties,
 
@@ -35,8 +35,8 @@ export const styles = {
   sidebar: {
     width: '220px',
     flexShrink: 0,
-    backgroundColor: brandColors.white,
-    borderRight: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    borderRight: `1px solid ${systemColors.light['background-subtle']}`,
     overflowY: 'auto',
   } as CSSProperties,
 
@@ -45,7 +45,7 @@ export const styles = {
     flex: 1,
     overflowY: 'auto',
     padding: `${spacing.F}px ${spacing.H}px`,
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
   } as CSSProperties,
 
   // Content container
@@ -62,8 +62,8 @@ export const headerStyles = {
     justifyContent: 'space-between',
     height: '56px',
     padding: `0 ${spacing.F}px`,
-    backgroundColor: brandColors.gray[90],
-    color: brandColors.white,
+    backgroundColor: systemColors.light['content-primary'],
+    color: systemColors.light['background-base'],
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   } as CSSProperties,
 
@@ -77,7 +77,7 @@ export const headerStyles = {
     display: 'flex',
     alignItems: 'center',
     gap: `${spacing.B}px`,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     fontWeight: 600,
     fontSize: '16px',
   } as CSSProperties,
@@ -106,7 +106,7 @@ export const headerStyles = {
 
   iconTabActive: {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
   } as CSSProperties,
 
   center: {
@@ -130,7 +130,7 @@ export const headerStyles = {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     border: '1px solid rgba(255, 255, 255, 0.1)',
     borderRadius: '6px',
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     fontSize: '14px',
     outline: 'none',
     transition: 'all 0.15s ease',
@@ -161,9 +161,9 @@ export const headerStyles = {
     right: '6px',
     width: '8px',
     height: '8px',
-    backgroundColor: brandColors.red[60],
+    backgroundColor: systemColors.light['content-failure'],
     borderRadius: '50%',
-    border: `2px solid ${brandColors.gray[90]}`,
+    border: `2px solid ${systemColors.light['content-primary']}`,
   } as CSSProperties,
 };
 
@@ -191,14 +191,14 @@ export const sidebarStyles = {
   sectionTitle: {
     fontSize: '13px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     letterSpacing: '-0.1px',
   } as CSSProperties,
 
   sectionLabel: {
     fontSize: '11px',
     fontWeight: 600,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase',
     letterSpacing: '0.6px',
     padding: `${spacing.D}px ${spacing.D}px ${spacing.B}px`,
@@ -211,7 +211,7 @@ export const sidebarStyles = {
     gap: `${spacing.B}px`,
     padding: `${spacing.B}px ${spacing.D}px ${spacing.B}px ${spacing.F}px`,
     fontSize: '13px',
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     cursor: 'pointer',
     borderLeft: '3px solid transparent',
     transition: 'all 0.15s ease',
@@ -219,21 +219,21 @@ export const sidebarStyles = {
   } as CSSProperties,
 
   navItemActive: {
-    color: brandColors.blue[60],
-    backgroundColor: `${brandColors.blue[60]}08`,
-    borderLeftColor: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
+    backgroundColor: `${systemColors.light['content-brand']}08`,
+    borderLeftColor: systemColors.light['content-brand'],
     fontWeight: 500,
   } as CSSProperties,
 
   navItemHover: {
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   } as CSSProperties,
 
   externalLink: {
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   } as CSSProperties,
 };
 
@@ -246,7 +246,7 @@ export const pageHeaderStyles = {
   title: {
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
     marginBottom: `${spacing.B}px`,
     letterSpacing: '-0.2px',
@@ -254,7 +254,7 @@ export const pageHeaderStyles = {
 
   description: {
     fontSize: '14px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     margin: 0,
     marginBottom: `${spacing.D}px`,
     lineHeight: 1.5,
@@ -262,7 +262,7 @@ export const pageHeaderStyles = {
   } as CSSProperties,
 
   tabs: {
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   } as CSSProperties,
 };
 
@@ -285,14 +285,14 @@ export const toolbarStyles = {
 // Table styles
 export const tableStyles = {
   container: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '8px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     overflow: 'hidden',
   } as CSSProperties,
 
   linkCell: {
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     textDecoration: 'none',
     cursor: 'pointer',
     fontWeight: 500,
@@ -313,7 +313,7 @@ export const tableStyles = {
   } as CSSProperties,
 
   moreLink: {
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     cursor: 'pointer',
     fontSize: '13px',
     fontWeight: 500,
@@ -334,7 +334,7 @@ export const tableStyles = {
     border: 'none',
     backgroundColor: 'transparent',
     cursor: 'pointer',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     transition: 'background-color 0.15s ease',
   } as CSSProperties,
 
@@ -343,18 +343,18 @@ export const tableStyles = {
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: `${spacing.C}px ${spacing.D}px`,
-    borderTop: `1px solid ${brandColors.gray[20]}`,
+    borderTop: `1px solid ${systemColors.light['background-subtle']}`,
     gap: `${spacing.C}px`,
   } as CSSProperties,
 
   paginationText: {
     fontSize: '13px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   } as CSSProperties,
 
   paginationLink: {
     fontSize: '13px',
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',

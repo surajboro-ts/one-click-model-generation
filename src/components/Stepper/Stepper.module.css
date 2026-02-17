@@ -33,11 +33,11 @@
   left: calc(50% + 18px);
   right: calc(-50% + 18px);
   height: var(--border-width-medium, 2px);
-  background-color: var(--color-brand-gray-30, #DADCE0);
+  background-color: var(--rd-sys-color-background-subtle);
 }
 
 .horizontal .connectorActive {
-  background-color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--rd-sys-color-background-brand);
 }
 
 .horizontal .stepWrapper:last-child .connector {
@@ -71,11 +71,11 @@
   left: 13px;
   bottom: var(--spacing-2, 8px);
   width: var(--border-width-medium, 2px);
-  background-color: var(--color-brand-gray-30, #DADCE0);
+  background-color: var(--rd-sys-color-background-subtle);
 }
 
 .vertical .connectorActive {
-  background-color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--rd-sys-color-background-brand);
 }
 
 .vertical .stepWrapper:last-child .connector {
@@ -94,7 +94,7 @@
 }
 
 .stepClickable:hover .stepNumber {
-  border-color: var(--color-brand-blue-60, #2770EF);
+  border-color: var(--rd-sys-color-border-brand);
 }
 
 /* Step number indicator */
@@ -108,22 +108,22 @@
   justify-content: center;
   font-size: var(--font-size-xs, 12px);
   font-weight: var(--font-weight-semibold, 600);
-  border: var(--border-width-medium, 2px) solid var(--color-brand-gray-30, #DADCE0);
-  background-color: var(--color-brand-white, #ffffff);
-  color: var(--color-brand-gray-60, #777E8B);
+  border: var(--border-width-medium, 2px) solid var(--rd-sys-color-border-default);
+  background-color: var(--rd-sys-color-background-base);
+  color: var(--rd-sys-color-content-secondary);
   transition: all var(--duration-normal, 200ms) var(--easing-standard, ease);
 }
 
 .stepActive .stepNumber {
-  border-color: var(--color-brand-blue-60, #2770EF);
-  background-color: var(--color-brand-blue-60, #2770EF);
-  color: var(--color-brand-white, #ffffff);
+  border-color: var(--rd-sys-color-border-brand);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 .stepCompleted .stepNumber {
-  border-color: var(--color-brand-blue-60, #2770EF);
-  background-color: var(--color-brand-blue-60, #2770EF);
-  color: var(--color-brand-white, #ffffff);
+  border-color: var(--rd-sys-color-border-brand);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 /* Check icon for completed */
@@ -147,21 +147,21 @@
 .stepTitle {
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
   transition: color var(--duration-normal, 200ms) var(--easing-standard, ease);
 }
 
 .stepActive .stepTitle {
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .stepCompleted .stepTitle {
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .stepDescription {
   font-size: var(--font-size-xs, 12px);
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
   margin-top: var(--spacing-1, 2px);
 }
 
@@ -171,11 +171,11 @@
 }
 
 .nonSequential .step:hover .stepNumber {
-  border-color: var(--color-brand-blue-60, #2770EF);
+  border-color: var(--rd-sys-color-border-brand);
 }
 
 .nonSequential .step:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: var(--spacing-1, 2px);
   border-radius: var(--radius-sm, 4px);
 }

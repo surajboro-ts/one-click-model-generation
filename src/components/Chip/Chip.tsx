@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Icon, isValidIconName } from '../icons';
 import type { IconName } from '../icons';
-import { componentColors, textColors } from '../../tokens/colors';
+import { rdComponentColors, systemColors } from '../../tokens/colors';
 import styles from './Chip.module.css';
 
 export type ChipType = 'attribute' | 'measure' | 'filter' | 'skeleton';
@@ -34,9 +34,27 @@ export interface ChipProps {
 
 /** Color configuration for each chip type - using semantic tokens */
 const chipColors = {
-  attribute: componentColors.chip.attribute,
-  measure: componentColors.chip.measure,
-  filter: componentColors.chip.filter,
+  attribute: {
+    default: rdComponentColors.light['chip-attribute-default'],
+    hover: rdComponentColors.light['chip-attribute-hover'],
+    pressed: rdComponentColors.light['chip-attribute-pressed'],
+    icon: rdComponentColors.light['chip-attribute-icon'],
+    activeBorder: rdComponentColors.light['chip-attribute-active-border'],
+  },
+  measure: {
+    default: rdComponentColors.light['chip-measure-default'],
+    hover: rdComponentColors.light['chip-measure-hover'],
+    pressed: rdComponentColors.light['chip-measure-pressed'],
+    icon: rdComponentColors.light['chip-measure-icon'],
+    activeBorder: rdComponentColors.light['chip-measure-active-border'],
+  },
+  filter: {
+    default: rdComponentColors.light['chip-filter-default'],
+    hover: rdComponentColors.light['chip-filter-hover'],
+    pressed: rdComponentColors.light['chip-filter-pressed'],
+    icon: rdComponentColors.light['chip-filter-icon'],
+    activeBorder: rdComponentColors.light['chip-filter-active-border'],
+  },
   skeleton: {
     default: 'transparent',
     hover: 'transparent',
@@ -182,7 +200,7 @@ export const Chip: React.FC<ChipProps> = ({
           <Icon 
             name="chevron-right"
             size="s"
-            color={textColors.default}
+            color={systemColors.light['content-primary']}
             className={styles.chevron}
           />
         )}

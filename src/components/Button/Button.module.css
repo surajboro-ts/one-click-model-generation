@@ -19,7 +19,7 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
 }
 
@@ -64,16 +64,16 @@
    ============================================ */
 
 .primary.standard {
-  background-color: var(--color-brand-blue-60);
-  color: var(--color-brand-white);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 .primary.standard:hover:not(.disabled) {
-  background-color: var(--color-brand-blue-70);
+  background-color: var(--rd-comp-color-button-primary-hover);
 }
 
 .primary.standard.active:not(.disabled) {
-  background-color: var(--color-brand-blue-80);
+  background-color: var(--rd-comp-color-button-primary-pressed);
 }
 
 .primary.standard.disabled {
@@ -86,21 +86,21 @@
    ============================================ */
 
 .primary.white {
-  background-color: var(--color-brand-gray-10);
-  color: var(--color-brand-gray-90);
+  background-color: var(--rd-sys-color-background-sunken);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .primary.white:hover:not(.disabled) {
-  background-color: var(--color-brand-blue-20);
+  background-color: var(--rd-sys-color-background-ghost-highlight);
 }
 
 .primary.white.active:not(.disabled) {
-  background-color: var(--color-brand-gray-10);
-  color: var(--color-brand-blue-60);
+  background-color: var(--rd-sys-color-background-sunken);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .primary.white.disabled {
-  background-color: var(--color-brand-blue-30);
+  background-color: var(--rd-sys-color-background-information);
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -115,17 +115,17 @@
    ============================================ */
 
 .secondary.standard {
-  background-color: var(--color-brand-gray-20);
-  color: var(--color-brand-gray-90);
+  background-color: var(--rd-sys-color-background-subtle);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .secondary.standard:hover:not(.disabled) {
-  background-color: var(--color-brand-gray-30);
+  background-color: var(--rd-sys-color-background-subtle);
 }
 
 .secondary.standard.active:not(.disabled) {
-  background-color: var(--color-brand-blue-20);
-  color: var(--color-brand-blue-60);
+  background-color: var(--rd-sys-color-background-ghost-highlight);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .secondary.standard.disabled {
@@ -144,7 +144,7 @@
 
 .tertiary.standard {
   background-color: transparent;
-  color: var(--color-brand-blue-60);
+  color: var(--rd-sys-color-content-brand);
   padding-left: var(--spacing-1);
   padding-right: var(--spacing-1);
   border-radius: var(--radius-md);
@@ -155,7 +155,7 @@
 }
 
 .tertiary.standard.active:not(.disabled) {
-  background-color: var(--color-brand-blue-20);
+  background-color: var(--rd-sys-color-background-ghost-highlight);
 }
 
 .tertiary.standard.disabled {
@@ -169,7 +169,7 @@
 
 .tertiary.white {
   background-color: transparent;
-  color: var(--color-brand-white);
+  color: var(--rd-sys-color-content-alternate);
   padding-left: var(--spacing-1);
   padding-right: var(--spacing-1);
   border-radius: var(--radius-md);
@@ -223,31 +223,31 @@
 
 /* Icon colors for different variants */
 .primary.standard .icon {
-  color: var(--color-brand-white);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 .primary.white .icon {
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .primary.white.active .icon {
-  color: var(--color-brand-blue-60);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .secondary.standard .icon {
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .secondary.standard.active .icon {
-  color: var(--color-brand-blue-60);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .tertiary.standard .icon {
-  color: var(--color-brand-blue-60);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .tertiary.white .icon {
-  color: var(--color-brand-white);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 /* ============================================

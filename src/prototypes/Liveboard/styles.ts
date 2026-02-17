@@ -3,40 +3,40 @@
  * Uses Radiant brandColors for consistent theming
  */
 
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../tokens/colors';
 
 export const colors = {
   // Background colors
-  pageBg: brandColors.gray[10],
-  cardBg: brandColors.white,
-  headerBg: brandColors.gray[90],
+  pageBg: systemColors.light['background-sunken'],
+  cardBg: systemColors.light['background-base'],
+  headerBg: systemColors.light['content-primary'],
   
   // Text colors
-  textPrimary: brandColors.gray[90],
-  textSecondary: brandColors.gray[60],
-  textMuted: brandColors.gray[50],
-  textOnDark: brandColors.white,
+  textPrimary: systemColors.light['content-primary'],
+  textSecondary: systemColors.light['content-secondary'],
+  textMuted: systemColors.light['content-tertiary'],
+  textOnDark: systemColors.light['background-base'],
   
   // Accent colors
-  positive: brandColors.green[60],
-  negative: brandColors.red[60],
-  accent: brandColors.blue[60],
-  purple: brandColors.purple[60],
+  positive: systemColors.light['content-success'],
+  negative: systemColors.light['content-failure'],
+  accent: systemColors.light['content-brand'],
+  purple: referenceColors.purple['60'],
   
   // Chart colors
-  chartBlue: brandColors.blue[60],
-  chartBlueLight: brandColors.blue[30],
-  chartGreen: brandColors.green[60],
-  chartYellow: brandColors.yellow[60],
-  chartOrange: brandColors.orange[60],
-  chartPurple: brandColors.purple[60],
+  chartBlue: systemColors.light['content-brand'],
+  chartBlueLight: referenceColors.brand['30'],
+  chartGreen: systemColors.light['content-success'],
+  chartYellow: systemColors.light['content-warning'],
+  chartOrange: referenceColors.orange['60'],
+  chartPurple: referenceColors.purple['60'],
   
   // Border colors
-  border: brandColors.gray[20],
-  borderLight: brandColors.gray[30],
+  border: systemColors.light['background-subtle'],
+  borderLight: referenceColors.gray['30'],
   
   // Highlight card
-  highlightBg: brandColors.blue[100],
+  highlightBg: referenceColors.brand['100'],
 } as const;
 
 export const spacing = {

@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { Icon } from '../../../components/icons';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 import type { FilterOption } from '../types';
 
@@ -85,7 +85,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60], // #777E8B
+    color: systemColors.light['content-secondary'], // #777E8B
   },
   list: {
     display: 'flex',
@@ -102,7 +102,7 @@ const styles: Record<string, React.CSSProperties> = {
     position: 'relative' as const,
   },
   itemSelected: {
-    backgroundColor: brandColors.gray[10], // #F6F8FA
+    backgroundColor: systemColors.light['background-sunken'], // #F6F8FA
   },
   iconContainer: {
     display: 'flex',
@@ -110,7 +110,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     width: 20,
     height: 20,
-    color: brandColors.gray[50], // #A5ACB9
+    color: systemColors.light['content-tertiary'], // #A5ACB9
     flexShrink: 0,
   },
   label: {
@@ -118,14 +118,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 14,
     fontWeight: 375,
     lineHeight: '20px',
-    color: brandColors.gray[90], // #1D232F
+    color: systemColors.light['content-primary'], // #1D232F
   },
   rightLabel: {
     fontSize: 12,
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: brandColors.gray[60], // #777E8B
+    color: systemColors.light['content-secondary'], // #777E8B
     flexShrink: 0,
   },
   emptyState: {
@@ -134,7 +134,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   emptyText: {
     fontSize: 14,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
 };
 

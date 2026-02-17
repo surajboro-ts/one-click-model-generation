@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 
 // Token data structure
 interface TokenData {
@@ -342,7 +342,7 @@ export const Inspectable: React.FC<{
       style={{
         ...style,
         position: 'relative',
-        outline: inspectMode && hoveredComponent === id ? `2px solid ${brandColors.blue[60]}` : 'none',
+        outline: inspectMode && hoveredComponent === id ? `2px solid ${systemColors.light['content-brand']}` : 'none',
         outlineOffset: '2px',
         borderRadius: '4px',
         transition: 'outline 150ms ease',
@@ -359,9 +359,9 @@ export const Inspectable: React.FC<{
             left: '-6px',
             width: '12px',
             height: '12px',
-            backgroundColor: brandColors.blue[60],
+            backgroundColor: systemColors.light['content-brand'],
             borderRadius: '50%',
-            border: `2px solid ${brandColors.white}`,
+            border: `2px solid ${systemColors.light['background-base']}`,
             boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
             opacity: hoveredComponent === id ? 1 : 0.5,
             transition: 'opacity 150ms ease',
@@ -379,7 +379,7 @@ const tooltipStyles: Record<string, React.CSSProperties> = {
     position: 'fixed',
     zIndex: 10000,
     width: '320px',
-    backgroundColor: brandColors.gray[90],
+    backgroundColor: systemColors.light['content-primary'],
     borderRadius: '8px',
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
     overflow: 'hidden',
@@ -390,26 +390,26 @@ const tooltipStyles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: brandColors.gray[80],
+    backgroundColor: systemColors.light['background-raised-inverse'],
   },
   component: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 600,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
   },
   variant: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '12px',
     fontWeight: 500,
-    color: brandColors.blue[40],
+    color: referenceColors.brand['40'],
     backgroundColor: 'rgba(39, 112, 239, 0.2)',
     padding: '2px 8px',
     borderRadius: '4px',
   },
   divider: {
     height: '1px',
-    backgroundColor: brandColors.gray[70],
+    backgroundColor: referenceColors.gray['70'],
   },
   body: {
     padding: '12px 16px',
@@ -428,7 +428,7 @@ const tooltipStyles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '11px',
     fontWeight: 500,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -441,7 +441,7 @@ const tooltipStyles: Record<string, React.CSSProperties> = {
   tokenCode: {
     fontFamily: '"SF Mono", "Monaco", "Inconsolata", monospace',
     fontSize: '12px',
-    color: brandColors.green[50],
+    color: referenceColors.green['50'],
     backgroundColor: 'rgba(6, 191, 127, 0.15)',
     padding: '2px 6px',
     borderRadius: '3px',
@@ -449,7 +449,7 @@ const tooltipStyles: Record<string, React.CSSProperties> = {
   tokenValue: {
     fontFamily: '"SF Mono", "Monaco", "Inconsolata", monospace',
     fontSize: '12px',
-    color: brandColors.gray[40],
+    color: systemColors.light['border-default'],
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
@@ -474,12 +474,12 @@ const bannerStyles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '8px',
     padding: '10px 20px',
-    backgroundColor: brandColors.gray[90],
+    backgroundColor: systemColors.light['content-primary'],
     borderRadius: '8px',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
   },
   icon: {
     fontSize: '16px',
@@ -490,7 +490,7 @@ const bannerStyles: Record<string, React.CSSProperties> = {
     background: 'rgba(255, 255, 255, 0.1)',
     border: 'none',
     borderRadius: '4px',
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     cursor: 'pointer',
     fontSize: '12px',
   },

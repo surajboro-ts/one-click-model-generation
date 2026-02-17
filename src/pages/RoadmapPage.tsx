@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 import {
   roadmapCategories,
   getTotalItems,
@@ -15,8 +15,8 @@ import {
  * Status badge colors and labels
  */
 const statusConfig: Record<RoadmapStatus, { bg: string; text: string; label: string }> = {
-  'not-started': { bg: brandColors.gray[20], text: brandColors.gray[60], label: 'Not started' },
-  'in-progress': { bg: '#2770EF1A', text: brandColors.blue[60], label: 'In progress' },
+  'not-started': { bg: systemColors.light['background-subtle'], text: systemColors.light['content-secondary'], label: 'Not started' },
+  'in-progress': { bg: '#2770EF1A', text: systemColors.light['content-brand'], label: 'In progress' },
   'done': { bg: '#06BF7F1A', text: '#06BF7F', label: 'Done' },
 };
 
@@ -31,7 +31,7 @@ const RoadmapItemRow: React.FC<{ item: RoadmapItem }> = ({ item }) => {
         <div
           style={{
             ...styles.statusDot,
-            backgroundColor: item.status === 'done' ? '#06BF7F' : item.status === 'in-progress' ? brandColors.blue[60] : brandColors.gray[40],
+            backgroundColor: item.status === 'done' ? '#06BF7F' : item.status === 'in-progress' ? systemColors.light['content-brand'] : systemColors.light['border-default'],
           }}
         />
         <div style={styles.itemContent}>
@@ -39,7 +39,7 @@ const RoadmapItemRow: React.FC<{ item: RoadmapItem }> = ({ item }) => {
             style={{
               ...styles.itemLabel,
               textDecoration: item.status === 'done' ? 'line-through' : 'none',
-              color: item.status === 'done' ? brandColors.gray[40] : brandColors.gray[90],
+              color: item.status === 'done' ? systemColors.light['border-default'] : systemColors.light['content-primary'],
             }}
           >
             {item.label}
@@ -160,11 +160,11 @@ export const RoadmapPage: React.FC = () => {
           <span style={styles.statLabel}>Completed</span>
         </div>
         <div style={styles.statCard}>
-          <span style={{ ...styles.statValue, color: brandColors.blue[60] }}>{inProgress}</span>
+          <span style={{ ...styles.statValue, color: systemColors.light['content-brand'] }}>{inProgress}</span>
           <span style={styles.statLabel}>In progress</span>
         </div>
         <div style={styles.statCard}>
-          <span style={{ ...styles.statValue, color: brandColors.gray[50] }}>{notStarted}</span>
+          <span style={{ ...styles.statValue, color: systemColors.light['content-tertiary'] }}>{notStarted}</span>
           <span style={styles.statLabel}>Not started</span>
         </div>
       </div>
@@ -195,9 +195,9 @@ export const RoadmapPage: React.FC = () => {
             onClick={() => setFilterStatus(status)}
             style={{
               ...styles.filterButton,
-              backgroundColor: filterStatus === status ? brandColors.blue[60] : brandColors.white,
-              color: filterStatus === status ? brandColors.white : brandColors.gray[70],
-              borderColor: filterStatus === status ? brandColors.blue[60] : brandColors.gray[20],
+              backgroundColor: filterStatus === status ? systemColors.light['content-brand'] : systemColors.light['background-base'],
+              color: filterStatus === status ? systemColors.light['background-base'] : referenceColors.gray['70'],
+              borderColor: filterStatus === status ? systemColors.light['content-brand'] : systemColors.light['background-subtle'],
             }}
           >
             {status === 'all' ? 'All' : statusConfig[status].label}
@@ -232,14 +232,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '36px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '12px',
   },
   subtitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '26px',
     maxWidth: '700px',
   },
@@ -256,30 +256,30 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'center',
     padding: '20px 16px',
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   statValue: {
     fontSize: '28px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     lineHeight: 1,
     marginBottom: '6px',
   },
   statLabel: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
 
   // Overall progress
   overallProgress: {
     marginBottom: '24px',
     padding: '20px 24px',
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   overallProgressHeader: {
     display: 'flex',
@@ -290,16 +290,16 @@ const styles: Record<string, React.CSSProperties> = {
   overallProgressLabel: {
     fontSize: '14px',
     fontWeight: 500,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
   },
   overallProgressPercent: {
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   overallProgressBarBg: {
     height: '8px',
-    backgroundColor: brandColors.gray[20],
+    backgroundColor: systemColors.light['background-subtle'],
     borderRadius: '4px',
     overflow: 'hidden',
   },
@@ -334,9 +334,9 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '24px',
   },
   categoryCard: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '16px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     padding: '28px',
   },
   categoryHeader: {
@@ -351,7 +351,7 @@ const styles: Record<string, React.CSSProperties> = {
   categoryTitle: {
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     letterSpacing: '-0.3px',
   },
 
@@ -359,7 +359,7 @@ const styles: Record<string, React.CSSProperties> = {
   section: {
     marginBottom: '24px',
     paddingBottom: '24px',
-    borderBottom: `1px solid ${brandColors.gray[15] || brandColors.gray[20]}`,
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   sectionHeader: {
     display: 'flex',
@@ -370,23 +370,23 @@ const styles: Record<string, React.CSSProperties> = {
   sectionTitle: {
     fontSize: '15px',
     fontWeight: 600,
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
   },
   sectionCount: {
     fontSize: '13px',
     fontWeight: 500,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   sectionDescription: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     marginBottom: '12px',
     lineHeight: 1.5,
   },
   progressBarBg: {
     height: '4px',
-    backgroundColor: brandColors.gray[20],
+    backgroundColor: systemColors.light['background-subtle'],
     borderRadius: '2px',
     overflow: 'hidden',
     marginBottom: '16px',
@@ -438,7 +438,7 @@ const styles: Record<string, React.CSSProperties> = {
   itemDescription: {
     fontSize: '12px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     lineHeight: 1.4,
   },
   statusBadge: {
@@ -454,7 +454,7 @@ const styles: Record<string, React.CSSProperties> = {
     textAlign: 'center',
     padding: '48px',
     fontSize: '15px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
 };
 

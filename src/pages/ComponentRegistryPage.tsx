@@ -10,7 +10,7 @@ import {
   getStatusColor,
   getCategories,
 } from '../data/componentRegistry';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 
 // Type alias for column render function parameters
 type ColumnData = Record<string, unknown>;
@@ -319,14 +319,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '36px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '12px',
   },
   subtitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '26px',
     maxWidth: '700px',
   },
@@ -339,18 +339,18 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'center',
     padding: '12px 20px',
-    background: brandColors.gray[10],
+    background: systemColors.light['background-sunken'],
     borderRadius: '12px',
     minWidth: '80px',
   },
   statValue: {
     fontSize: '24px',
     fontWeight: 700,
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
   },
   statLabel: {
     fontSize: '11px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -360,7 +360,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '20px',
     marginBottom: '24px',
     padding: '16px 20px',
-    background: brandColors.gray[10],
+    background: systemColors.light['background-sunken'],
     borderRadius: '12px',
   },
   filterGroup: {
@@ -370,21 +370,21 @@ const styles: Record<string, React.CSSProperties> = {
   },
   filterLabel: {
     fontSize: '13px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
   select: {
     padding: '8px 12px',
     fontSize: '13px',
-    border: `1px solid ${brandColors.gray[30]}`,
+    border: `1px solid ${referenceColors.gray['30']}`,
     borderRadius: '6px',
     background: 'white',
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
     cursor: 'pointer',
   },
   tableContainer: {
     background: 'white',
     borderRadius: '12px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     overflow: 'hidden',
   },
   componentCell: {
@@ -394,11 +394,11 @@ const styles: Record<string, React.CSSProperties> = {
   },
   componentName: {
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   componentCategory: {
     fontSize: '11px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   statesCell: {
     display: 'flex',
@@ -408,15 +408,15 @@ const styles: Record<string, React.CSSProperties> = {
   stateTag: {
     fontSize: '10px',
     padding: '2px 6px',
-    background: brandColors.gray[10],
-    color: brandColors.gray[70],
+    background: systemColors.light['background-sunken'],
+    color: referenceColors.gray['70'],
     borderRadius: '4px',
     textTransform: 'lowercase',
   },
   moreStates: {
     fontSize: '10px',
     padding: '2px 6px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     fontStyle: 'italic',
   },
   statusBadge: {
@@ -434,17 +434,17 @@ const styles: Record<string, React.CSSProperties> = {
   },
   dateText: {
     fontSize: '12px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
   variantCount: {
     fontSize: '13px',
     fontWeight: 600,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
   },
   linkButton: {
     padding: '6px 10px',
-    background: brandColors.blue[10],
-    color: brandColors.blue[60],
+    background: referenceColors.blue['10'],
+    color: systemColors.light['content-brand'],
     border: 'none',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -454,13 +454,13 @@ const styles: Record<string, React.CSSProperties> = {
   legend: {
     marginTop: '24px',
     padding: '16px 20px',
-    background: brandColors.gray[10],
+    background: systemColors.light['background-sunken'],
     borderRadius: '12px',
   },
   legendTitle: {
     fontSize: '12px',
     fontWeight: 600,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     marginBottom: '12px',
     display: 'block',
   },
@@ -473,7 +473,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '8px',
     fontSize: '12px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
   legendDot: {
     width: '8px',

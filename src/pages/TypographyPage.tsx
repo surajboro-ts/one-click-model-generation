@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 
 // Error Boundary to catch React rendering errors
 class TypographyPageErrorBoundary extends Component<
@@ -53,11 +53,6 @@ try {
 } catch(e) {}
 // #endregion
 
-// #region agent log
-try {
-  fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:15',message:'Styles definition start',data:{brandColorsType:typeof brandColors},sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-} catch(e) {}
-// #endregion
 const styles: Record<string, React.CSSProperties> = {
   container: {
     maxWidth: 1000,
@@ -69,14 +64,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 36,
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: 12,
   },
   pageDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 16,
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '26px',
     maxWidth: 700,
   },
@@ -88,15 +83,15 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: 24,
     padding: 24,
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: 12,
     marginBottom: 12,
   },
   fontPreview: {
     width: 80,
     height: 80,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: 12,
     display: 'flex',
     alignItems: 'center',
@@ -106,7 +101,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 36,
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   fontInfo: {
     flex: 1,
@@ -117,17 +112,17 @@ const styles: Record<string, React.CSSProperties> = {
   fontStack: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 11,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     marginTop: 8,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     padding: '6px 10px',
     borderRadius: 6,
   },
   typographyList: {
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: 12,
     overflow: 'hidden',
   },
@@ -135,7 +130,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     padding: '16px 24px',
-    borderBottom: `1px solid ${brandColors.gray[10]}`,
+    borderBottom: `1px solid ${systemColors.light['background-sunken']}`,
   },
   typographyMeta: {
     width: 240,
@@ -147,12 +142,12 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 12,
     fontWeight: 500,
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
   },
   specsLabel: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 11,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   typographySample: {
     flex: 1,
@@ -164,8 +159,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   colorCard: {
     padding: 20,
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: 12,
     display: 'flex',
     flexDirection: 'column',
@@ -174,7 +169,7 @@ const styles: Record<string, React.CSSProperties> = {
   colorCode: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 11,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   guidelinesGrid: {
     display: 'grid',
@@ -183,14 +178,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   guidelineCard: {
     padding: 20,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: 12,
     display: 'flex',
     flexDirection: 'column',
     gap: 6,
   },
   codeBlock: {
-    backgroundColor: brandColors.gray[90],
+    backgroundColor: systemColors.light['content-primary'],
     borderRadius: 12,
     padding: 24,
     overflow: 'auto',
@@ -199,13 +194,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 13,
     lineHeight: '22px',
-    color: brandColors.gray[30],
+    color: referenceColors.gray['30'],
     margin: 0,
   },
   // Props Table
   propsTable: {
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: 12,
     overflow: 'hidden',
   },
@@ -214,14 +209,14 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: '150px 1fr 120px 2fr',
     gap: 16,
     padding: '12px 16px',
-    backgroundColor: brandColors.gray[10],
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-sunken'],
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   propsHeaderCell: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 12,
     fontWeight: 600,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -230,17 +225,17 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: '150px 1fr 120px 2fr',
     gap: 16,
     padding: '12px 16px',
-    borderBottom: `1px solid ${brandColors.gray[10]}`,
+    borderBottom: `1px solid ${systemColors.light['background-sunken']}`,
   },
   propsCell: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 12,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
   },
   // Examples
   exampleCard: {
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: 12,
     padding: 24,
     display: 'flex',
@@ -283,13 +278,6 @@ const TypographyExample: React.FC<TypographyExampleProps> = ({ variant, label, s
 };
 
 const TypographyPageContent: React.FC = () => {
-  // #region agent log
-  try {
-    fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:28',message:'Component render start',data:{brandColorsType:typeof brandColors,hasBrandColors:!!brandColors,typographyType:typeof Typography,hasTypography:!!Typography},sessionId:'debug-session',runId:'run1',hypothesisId:'A,B'})}).catch(()=>{});
-  } catch(e) {
-    fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:28',message:'Component render error',data:{error:String(e),errorName:e?.name,errorMessage:e?.message},sessionId:'debug-session',runId:'run1',hypothesisId:'A,B'})}).catch(()=>{});
-  }
-  // #endregion
   const typographyVariants = [
     { variant: 'headline-large', label: 'Headline Large', specs: '32px / 700 / -0.5px' },
     { variant: 'page-title', label: 'Page Title', specs: '24px / 600 / -0.25px' },
@@ -305,13 +293,13 @@ const TypographyPageContent: React.FC = () => {
   ];
 
   const colorVariants = [
-    { color: 'base', label: 'Base', hex: brandColors.gray[90] },
-    { color: 'gray', label: 'Gray', hex: brandColors.gray[60] },
-    { color: 'gray-light', label: 'Gray Light', hex: brandColors.gray[50] },
-    { color: 'accent', label: 'Accent', hex: brandColors.blue[60] },
-    { color: 'success', label: 'Success', hex: brandColors.green[60] },
-    { color: 'warning', label: 'Warning', hex: brandColors.yellow[70] },
-    { color: 'failure', label: 'Failure', hex: brandColors.red[60] },
+    { color: 'base', label: 'Base', hex: systemColors.light['content-primary'] },
+    { color: 'gray', label: 'Gray', hex: systemColors.light['content-secondary'] },
+    { color: 'gray-light', label: 'Gray Light', hex: systemColors.light['content-tertiary'] },
+    { color: 'accent', label: 'Accent', hex: systemColors.light['content-brand'] },
+    { color: 'success', label: 'Success', hex: systemColors.light['content-success'] },
+    { color: 'warning', label: 'Warning', hex: referenceColors.yellow['70'] },
+    { color: 'failure', label: 'Failure', hex: systemColors.light['content-failure'] },
   ];
 
   // #region agent log

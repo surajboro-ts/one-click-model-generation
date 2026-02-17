@@ -119,79 +119,6 @@
   --z-index-toast: 70;
   --z-index-max: 9999;
 
-  /* Brand Colors */
-  --color-brand-blue-100: #001740;
-  --color-brand-blue-80: #163772;
-  --color-brand-blue-70: #2359B6;
-  --color-brand-blue-60: #2770EF;
-  --color-brand-blue-50: #71A1F4;
-  --color-brand-blue-40: #ABC7F9;
-  --color-brand-blue-30: #CEDCF5;
-  --color-brand-blue-20: #DEE8FA;
-  --color-brand-blue-10: #EBF2FD;
-
-  --color-brand-gray-100: #000000;
-  --color-brand-gray-90: #1D232F;
-  --color-brand-gray-80: #323946;
-  --color-brand-gray-70: #4A515E;
-  --color-brand-gray-60: #777E8B;
-  --color-brand-gray-50: #A5ACB9;
-  --color-brand-gray-40: #C0C6CF;
-  --color-brand-gray-30: #DBDFE7;
-  --color-brand-gray-20: #EAEDF2;
-  --color-brand-gray-10: #F6F8FA;
-  --color-brand-gray-0: #FFFFFF;
-
-  --color-brand-green-70: #049160;
-  --color-brand-green-60: #06BF7F;
-  --color-brand-green-50: #56D3A8;
-  --color-brand-green-40: #9BE5CB;
-  --color-brand-green-30: #C7F2E3;
-  --color-brand-green-20: #E0F8EF;
-  --color-brand-green-10: #EDFFF9;
-
-  --color-brand-yellow-70: #BF982A;
-  --color-brand-yellow-60: #FCC838;
-  --color-brand-yellow-50: #FCD977;
-  --color-brand-yellow-40: #FDE9AF;
-  --color-brand-yellow-30: #FCF1D1;
-  --color-brand-yellow-20: #FFF8E5;
-  --color-brand-yellow-10: #FFFBF0;
-
-  --color-brand-red-70: #B6313E;
-  --color-brand-red-60: #E22B3D;
-  --color-brand-red-50: #F47E89;
-  --color-brand-red-40: #F9B3B9;
-  --color-brand-red-30: #FCD4D7;
-  --color-brand-red-20: #FFEBEC;
-  --color-brand-red-10: #FFF0F0;
-
-  --color-brand-purple-70: #6A4ABA;
-  --color-brand-purple-60: #8C62F5;
-  --color-brand-purple-50: #B094F8;
-  --color-brand-purple-40: #D1C0FB;
-  --color-brand-purple-30: #E3D9FC;
-  --color-brand-purple-20: #F0EBFF;
-  --color-brand-purple-10: #F7F5FF;
-
-  --color-brand-orange-70: #C26232;
-  --color-brand-orange-60: #FF8142;
-  --color-brand-orange-50: #FFA97E;
-  --color-brand-orange-40: #FFCCB3;
-  --color-brand-orange-30: #FFDDCC;
-  --color-brand-orange-20: #FFEEE5;
-  --color-brand-orange-10: #FFF5F0;
-
-  --color-brand-teal-70: #369FAA;
-  --color-brand-teal-60: #48D1E0;
-  --color-brand-teal-50: #82DFE9;
-  --color-brand-teal-40: #B5ECF2;
-  --color-brand-teal-30: #C9F0F5;
-  --color-brand-teal-20: #DFFAFC;
-  --color-brand-teal-10: #EDFDFF;
-
-  --color-brand-white: #FFFFFF;
-  --color-brand-black: #000000;
 }
 
 /* ============================================
@@ -200,52 +127,74 @@
 
 :root,
 [data-theme="light"] {
-  /* Semantic Colors */
-  --color-primary: var(--color-brand-blue-60);
-  --color-primary-hover: var(--color-brand-blue-70);
-  --color-primary-active: var(--color-brand-blue-80);
+  /* ---- New System Tokens: Background ---- */
+  --rd-sys-color-background-base: #FFFFFF;
+  --rd-sys-color-background-raised: #FFFFFF;
+  --rd-sys-color-background-sunken: #F6F8FA;
+  --rd-sys-color-background-subtle: #EAEDF2;
+  --rd-sys-color-background-inset: #C0C6CF;
+  --rd-sys-color-background-brand: #2770EF;
+  --rd-sys-color-background-overlay: rgba(29, 35, 47, 0.5);
+  --rd-sys-color-background-base-inverse: #1D232F;
+  --rd-sys-color-background-raised-inverse: #323946;
+  --rd-sys-color-background-success: #E0F8EF;
+  --rd-sys-color-background-warning: #FFF8E5;
+  --rd-sys-color-background-failure: #FFEBEC;
+  --rd-sys-color-background-information: #DEE8FA;
+  --rd-sys-color-background-ghost-hover: rgba(192, 198, 207, 0.12);
+  --rd-sys-color-background-ghost-highlight: #DEE8FA;
 
-  --color-success: var(--color-brand-green-60);
-  --color-success-bg: var(--color-brand-green-20);
-  --color-warning: var(--color-brand-yellow-60);
-  --color-warning-bg: var(--color-brand-yellow-20);
-  --color-error: var(--color-brand-red-60);
-  --color-error-bg: var(--color-brand-red-20);
-  --color-info: var(--color-brand-blue-60);
-  --color-info-bg: var(--color-brand-blue-20);
+  /* ---- New System Tokens: Content ---- */
+  --rd-sys-color-content-primary: #1D232F;
+  --rd-sys-color-content-secondary: #777E8B;
+  --rd-sys-color-content-tertiary: #A5ACB9;
+  --rd-sys-color-content-alternate: #FFFFFF;
+  --rd-sys-color-content-brand: #2770EF;
+  --rd-sys-color-content-primary-inverse: #FFFFFF;
+  --rd-sys-color-content-alternate-inverse: #1D232F;
+  --rd-sys-color-content-brand-inverse: #71A1F4;
+  --rd-sys-color-content-success: #06BF7F;
+  --rd-sys-color-content-warning: #FCC838;
+  --rd-sys-color-content-failure: #E22B3D;
+  --rd-sys-color-content-information: #2770EF;
+  --rd-sys-color-content-link: #2770EF;
+  --rd-sys-color-content-link-inverse: #FFFFFF;
+  --rd-sys-color-content-link-inverse-hover: #EAEDF2;
 
-  /* Text Colors */
-  --color-text-default: var(--color-brand-gray-90);
-  --color-text-secondary: var(--color-brand-gray-60);
-  --color-text-tertiary: var(--color-brand-gray-50);
-  --color-text-disabled: var(--color-brand-gray-40);
-  --color-text-inverse: var(--color-brand-white);
-  --color-text-accent: var(--color-brand-blue-60);
+  /* ---- New System Tokens: Border ---- */
+  --rd-sys-color-border-default: #C0C6CF;
+  --rd-sys-color-border-hover: #777E8B;
+  --rd-sys-color-border-divider: #EAEDF2;
+  --rd-sys-color-border-brand: #2770EF;
+  --rd-sys-color-border-warning: #FCC838;
+  --rd-sys-color-border-failure: #E22B3D;
+  --rd-sys-color-border-default-inverse: #4A515E;
+  --rd-sys-color-border-hover-inverse: #777E8B;
+  --rd-sys-color-border-divider-inverse: #4A515E;
+  --rd-sys-color-border-brand-inverse: #71A1F4;
+  --rd-sys-color-border-focus: #2770EF;
+  --rd-sys-color-border-gap: #FFFFFF;
 
-  /* Background Colors */
-  --color-bg-primary: var(--color-brand-white);
-  --color-bg-secondary: var(--color-brand-gray-10);
-  --color-bg-tertiary: var(--color-brand-gray-20);
-  --color-bg-inverse: var(--color-brand-gray-90);
+  /* ---- New Component Tokens: Button ---- */
+  --rd-comp-color-button-primary-default: #2770EF;
+  --rd-comp-color-button-primary-hover: #2359B6;
+  --rd-comp-color-button-primary-pressed: #163772;
+  --rd-comp-color-button-primary-on-color-default: #FFFFFF;
+  --rd-comp-color-button-primary-on-color-hover: #DEE8FA;
+  --rd-comp-color-button-primary-on-color-pressed: #CEDCF5;
+  --rd-comp-color-button-secondary-default: #EAEDF2;
+  --rd-comp-color-button-secondary-hover: #DBDFE7;
+  --rd-comp-color-button-secondary-pressed: #DEE8FA;
+  --rd-comp-color-button-tertiary-hover: rgba(192, 198, 207, 0.12);
+  --rd-comp-color-button-tertiary-pressed: rgba(192, 198, 207, 0.24);
 
-  /* Border Colors */
-  --color-border-default: var(--color-brand-gray-40);
-  --color-border-subtle: var(--color-brand-gray-20);
-  --color-border-strong: var(--color-brand-gray-60);
-  --color-border-focus: var(--color-brand-blue-60);
+  /* ---- New Component Tokens: Toggle ---- */
+  --rd-comp-color-toggle-track-off: #C0C6CF;
+  --rd-comp-color-toggle-track-on: #2770EF;
+  --rd-comp-color-toggle-thumb-off: #FFFFFF;
+  --rd-comp-color-toggle-thumb-on: #FFFFFF;
+  --rd-comp-color-toggle-thumb-outline-off: #DBDFE7;
 
-  /* Divider */
-  --color-divider: var(--color-brand-gray-20);
-
-  /* Interactive States */
-  --color-hover: rgba(192, 198, 207, 0.12);
-  --color-active: rgba(192, 198, 207, 0.24);
-  --color-selected: var(--color-brand-blue-20);
-
-  /* Surface Colors */
-  --color-surface: var(--color-brand-white);
-  --color-surface-raised: var(--color-brand-white);
-  --color-surface-overlay: rgba(29, 35, 47, 0.5);
 }
 
 /* ============================================
@@ -253,52 +202,73 @@
    ============================================ */
 
 [data-theme="dark"] {
-  /* Semantic Colors */
-  --color-primary: var(--color-brand-blue-60);
-  --color-primary-hover: var(--color-brand-blue-50);
-  --color-primary-active: var(--color-brand-blue-40);
+  /* ---- New System Tokens: Background ---- */
+  --rd-sys-color-background-base: #1D232F;
+  --rd-sys-color-background-raised: #323946;
+  --rd-sys-color-background-sunken: #323946;
+  --rd-sys-color-background-subtle: #4A515E;
+  --rd-sys-color-background-inset: #777E8B;
+  --rd-sys-color-background-brand: #2770EF;
+  --rd-sys-color-background-overlay: rgba(0, 0, 0, 0.6);
+  --rd-sys-color-background-base-inverse: #FFFFFF;
+  --rd-sys-color-background-raised-inverse: #F6F8FA;
+  --rd-sys-color-background-success: rgba(6, 191, 127, 0.2);
+  --rd-sys-color-background-warning: rgba(252, 200, 56, 0.2);
+  --rd-sys-color-background-failure: rgba(226, 43, 61, 0.2);
+  --rd-sys-color-background-information: rgba(39, 112, 239, 0.2);
+  --rd-sys-color-background-ghost-hover: rgba(119, 126, 139, 0.24);
+  --rd-sys-color-background-ghost-highlight: rgba(39, 112, 239, 0.3);
 
-  --color-success: var(--color-brand-green-60);
-  --color-success-bg: rgba(6, 191, 127, 0.2);
-  --color-warning: var(--color-brand-yellow-60);
-  --color-warning-bg: rgba(252, 200, 56, 0.2);
-  --color-error: var(--color-brand-red-50);
-  --color-error-bg: rgba(226, 43, 61, 0.2);
-  --color-info: var(--color-brand-blue-50);
-  --color-info-bg: rgba(39, 112, 239, 0.2);
+  /* ---- New System Tokens: Content ---- */
+  --rd-sys-color-content-primary: #FFFFFF;
+  --rd-sys-color-content-secondary: #A5ACB9;
+  --rd-sys-color-content-tertiary: #777E8B;
+  --rd-sys-color-content-alternate: #1D232F;
+  --rd-sys-color-content-brand: #71A1F4;
+  --rd-sys-color-content-primary-inverse: #1D232F;
+  --rd-sys-color-content-alternate-inverse: #FFFFFF;
+  --rd-sys-color-content-brand-inverse: #2770EF;
+  --rd-sys-color-content-success: #06BF7F;
+  --rd-sys-color-content-warning: #FCC838;
+  --rd-sys-color-content-failure: #F47E89;
+  --rd-sys-color-content-information: #71A1F4;
+  --rd-sys-color-content-link: #71A1F4;
+  --rd-sys-color-content-link-inverse: #1D232F;
+  --rd-sys-color-content-link-inverse-hover: #4A515E;
 
-  /* Text Colors */
-  --color-text-default: var(--color-brand-white);
-  --color-text-secondary: var(--color-brand-gray-50);
-  --color-text-tertiary: var(--color-brand-gray-60);
-  --color-text-disabled: var(--color-brand-gray-60);
-  --color-text-inverse: var(--color-brand-gray-90);
-  --color-text-accent: var(--color-brand-blue-50);
+  /* ---- New System Tokens: Border ---- */
+  --rd-sys-color-border-default: #777E8B;
+  --rd-sys-color-border-hover: #A5ACB9;
+  --rd-sys-color-border-divider: #4A515E;
+  --rd-sys-color-border-brand: #71A1F4;
+  --rd-sys-color-border-warning: #FCC838;
+  --rd-sys-color-border-failure: #F47E89;
+  --rd-sys-color-border-default-inverse: #C0C6CF;
+  --rd-sys-color-border-hover-inverse: #A5ACB9;
+  --rd-sys-color-border-divider-inverse: #DBDFE7;
+  --rd-sys-color-border-brand-inverse: #2770EF;
+  --rd-sys-color-border-focus: #71A1F4;
+  --rd-sys-color-border-gap: #1D232F;
 
-  /* Background Colors */
-  --color-bg-primary: var(--color-brand-gray-90);
-  --color-bg-secondary: var(--color-brand-gray-80);
-  --color-bg-tertiary: var(--color-brand-gray-70);
-  --color-bg-inverse: var(--color-brand-white);
+  /* ---- New Component Tokens: Button ---- */
+  --rd-comp-color-button-primary-default: #2770EF;
+  --rd-comp-color-button-primary-hover: #71A1F4;
+  --rd-comp-color-button-primary-pressed: #ABC7F9;
+  --rd-comp-color-button-primary-on-color-default: #1D232F;
+  --rd-comp-color-button-primary-on-color-hover: rgba(39, 112, 239, 0.3);
+  --rd-comp-color-button-primary-on-color-pressed: rgba(39, 112, 239, 0.4);
+  --rd-comp-color-button-secondary-default: #4A515E;
+  --rd-comp-color-button-secondary-hover: #323946;
+  --rd-comp-color-button-secondary-pressed: rgba(39, 112, 239, 0.3);
+  --rd-comp-color-button-tertiary-hover: rgba(119, 126, 139, 0.24);
+  --rd-comp-color-button-tertiary-pressed: rgba(119, 126, 139, 0.36);
 
-  /* Border Colors */
-  --color-border-default: var(--color-brand-gray-60);
-  --color-border-subtle: var(--color-brand-gray-70);
-  --color-border-strong: var(--color-brand-gray-50);
-  --color-border-focus: var(--color-brand-blue-50);
-
-  /* Divider */
-  --color-divider: var(--color-brand-gray-70);
-
-  /* Interactive States */
-  --color-hover: rgba(119, 126, 139, 0.24);
-  --color-active: rgba(119, 126, 139, 0.36);
-  --color-selected: rgba(39, 112, 239, 0.3);
-
-  /* Surface Colors */
-  --color-surface: var(--color-brand-gray-80);
-  --color-surface-raised: var(--color-brand-gray-70);
-  --color-surface-overlay: rgba(0, 0, 0, 0.6);
+  /* ---- New Component Tokens: Toggle ---- */
+  --rd-comp-color-toggle-track-off: #777E8B;
+  --rd-comp-color-toggle-track-on: #2770EF;
+  --rd-comp-color-toggle-thumb-off: #A5ACB9;
+  --rd-comp-color-toggle-thumb-on: #FFFFFF;
+  --rd-comp-color-toggle-thumb-outline-off: #4A515E;
 }
 
 /* ============================================
@@ -307,37 +277,73 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    /* Inherits dark theme variables */
-    --color-primary: var(--color-brand-blue-60);
-    --color-primary-hover: var(--color-brand-blue-50);
-    --color-primary-active: var(--color-brand-blue-40);
+    /* ---- New System Tokens: Background ---- */
+    --rd-sys-color-background-base: #1D232F;
+    --rd-sys-color-background-raised: #323946;
+    --rd-sys-color-background-sunken: #323946;
+    --rd-sys-color-background-subtle: #4A515E;
+    --rd-sys-color-background-inset: #777E8B;
+    --rd-sys-color-background-brand: #2770EF;
+    --rd-sys-color-background-overlay: rgba(0, 0, 0, 0.6);
+    --rd-sys-color-background-base-inverse: #FFFFFF;
+    --rd-sys-color-background-raised-inverse: #F6F8FA;
+    --rd-sys-color-background-success: rgba(6, 191, 127, 0.2);
+    --rd-sys-color-background-warning: rgba(252, 200, 56, 0.2);
+    --rd-sys-color-background-failure: rgba(226, 43, 61, 0.2);
+    --rd-sys-color-background-information: rgba(39, 112, 239, 0.2);
+    --rd-sys-color-background-ghost-hover: rgba(119, 126, 139, 0.24);
+    --rd-sys-color-background-ghost-highlight: rgba(39, 112, 239, 0.3);
 
-    --color-text-default: var(--color-brand-white);
-    --color-text-secondary: var(--color-brand-gray-50);
-    --color-text-tertiary: var(--color-brand-gray-60);
-    --color-text-disabled: var(--color-brand-gray-60);
-    --color-text-inverse: var(--color-brand-gray-90);
-    --color-text-accent: var(--color-brand-blue-50);
+    /* ---- New System Tokens: Content ---- */
+    --rd-sys-color-content-primary: #FFFFFF;
+    --rd-sys-color-content-secondary: #A5ACB9;
+    --rd-sys-color-content-tertiary: #777E8B;
+    --rd-sys-color-content-alternate: #1D232F;
+    --rd-sys-color-content-brand: #71A1F4;
+    --rd-sys-color-content-primary-inverse: #1D232F;
+    --rd-sys-color-content-alternate-inverse: #FFFFFF;
+    --rd-sys-color-content-brand-inverse: #2770EF;
+    --rd-sys-color-content-success: #06BF7F;
+    --rd-sys-color-content-warning: #FCC838;
+    --rd-sys-color-content-failure: #F47E89;
+    --rd-sys-color-content-information: #71A1F4;
+    --rd-sys-color-content-link: #71A1F4;
+    --rd-sys-color-content-link-inverse: #1D232F;
+    --rd-sys-color-content-link-inverse-hover: #4A515E;
 
-    --color-bg-primary: var(--color-brand-gray-90);
-    --color-bg-secondary: var(--color-brand-gray-80);
-    --color-bg-tertiary: var(--color-brand-gray-70);
-    --color-bg-inverse: var(--color-brand-white);
+    /* ---- New System Tokens: Border ---- */
+    --rd-sys-color-border-default: #777E8B;
+    --rd-sys-color-border-hover: #A5ACB9;
+    --rd-sys-color-border-divider: #4A515E;
+    --rd-sys-color-border-brand: #71A1F4;
+    --rd-sys-color-border-warning: #FCC838;
+    --rd-sys-color-border-failure: #F47E89;
+    --rd-sys-color-border-default-inverse: #C0C6CF;
+    --rd-sys-color-border-hover-inverse: #A5ACB9;
+    --rd-sys-color-border-divider-inverse: #DBDFE7;
+    --rd-sys-color-border-brand-inverse: #2770EF;
+    --rd-sys-color-border-focus: #71A1F4;
+    --rd-sys-color-border-gap: #1D232F;
 
-    --color-border-default: var(--color-brand-gray-60);
-    --color-border-subtle: var(--color-brand-gray-70);
-    --color-border-strong: var(--color-brand-gray-50);
-    --color-border-focus: var(--color-brand-blue-50);
+    /* ---- New Component Tokens: Button ---- */
+    --rd-comp-color-button-primary-default: #2770EF;
+    --rd-comp-color-button-primary-hover: #71A1F4;
+    --rd-comp-color-button-primary-pressed: #ABC7F9;
+    --rd-comp-color-button-primary-on-color-default: #1D232F;
+    --rd-comp-color-button-primary-on-color-hover: rgba(39, 112, 239, 0.3);
+    --rd-comp-color-button-primary-on-color-pressed: rgba(39, 112, 239, 0.4);
+    --rd-comp-color-button-secondary-default: #4A515E;
+    --rd-comp-color-button-secondary-hover: #323946;
+    --rd-comp-color-button-secondary-pressed: rgba(39, 112, 239, 0.3);
+    --rd-comp-color-button-tertiary-hover: rgba(119, 126, 139, 0.24);
+    --rd-comp-color-button-tertiary-pressed: rgba(119, 126, 139, 0.36);
 
-    --color-divider: var(--color-brand-gray-70);
-
-    --color-hover: rgba(119, 126, 139, 0.24);
-    --color-active: rgba(119, 126, 139, 0.36);
-    --color-selected: rgba(39, 112, 239, 0.3);
-
-    --color-surface: var(--color-brand-gray-80);
-    --color-surface-raised: var(--color-brand-gray-70);
-    --color-surface-overlay: rgba(0, 0, 0, 0.6);
+    /* ---- New Component Tokens: Toggle ---- */
+    --rd-comp-color-toggle-track-off: #777E8B;
+    --rd-comp-color-toggle-track-on: #2770EF;
+    --rd-comp-color-toggle-thumb-off: #A5ACB9;
+    --rd-comp-color-toggle-thumb-on: #FFFFFF;
+    --rd-comp-color-toggle-thumb-outline-off: #4A515E;
   }
 }
 

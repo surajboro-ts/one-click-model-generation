@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 import { spacing } from '../tokens/spacing';
 import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
 import { Icon } from '../components/icons';
@@ -291,8 +291,8 @@ npm run dev`}
                 <div style={styles.contextCard}>
                   <div style={styles.contextIconWrapper}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 17H4C3.46957 17 2.96086 16.7893 2.58579 16.4142C2.21071 16.0391 2 15.5304 2 15V5C2 4.46957 2.21071 3.96086 2.58579 3.58579C2.96086 3.21071 3.46957 3 4 3H20C20.5304 3 21.0391 3.21071 21.4142 3.58579C21.7893 3.96086 22 4.46957 22 5V15C22 15.5304 21.7893 16.0391 21.4142 16.4142C21.0391 16.7893 20.5304 17 20 17H19" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 15L17 21H7L12 15Z" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M5 17H4C3.46957 17 2.96086 16.7893 2.58579 16.4142C2.21071 16.0391 2 15.5304 2 15V5C2 4.46957 2.21071 3.96086 2.58579 3.58579C2.96086 3.21071 3.46957 3 4 3H20C20.5304 3 21.0391 3.21071 21.4142 3.58579C21.7893 3.96086 22 4.46957 22 5V15C22 15.5304 21.7893 16.0391 21.4142 16.4142C21.0391 16.7893 20.5304 17 20 17H19" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 15L17 21H7L12 15Z" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <h4 style={styles.contextTitle}>Figma MCP</h4>
@@ -303,9 +303,9 @@ npm run dev`}
                 <div style={styles.contextCard}>
                   <div style={styles.contextIconWrapper}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <circle cx="8.5" cy="8.5" r="1.5" stroke={brandColors.blue[60]} strokeWidth="2"/>
-                      <path d="M21 15L16 10L5 21" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <circle cx="8.5" cy="8.5" r="1.5" stroke={systemColors.light['content-brand']} strokeWidth="2"/>
+                      <path d="M21 15L16 10L5 21" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <h4 style={styles.contextTitle}>Screenshots</h4>
@@ -316,10 +316,10 @@ npm run dev`}
                 <div style={styles.contextCard}>
                   <div style={styles.contextIconWrapper}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M14 2V8H20" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M16 13H8" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M16 17H8" stroke={brandColors.blue[60]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M14 2V8H20" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M16 13H8" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M16 17H8" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <h4 style={styles.contextTitle}>Product knowledge</h4>
@@ -329,7 +329,7 @@ npm run dev`}
                 </div>
               </div>
               <div style={styles.contextTip}>
-                <div style={{ flexShrink: 0, marginTop: '1px', color: brandColors.blue[60] }}>
+                <div style={{ flexShrink: 0, marginTop: '1px', color: systemColors.light['content-brand'] }}>
                   <Icon name="info-circle" size="s" />
                 </div>
                 <span style={styles.contextTipText}>
@@ -383,7 +383,7 @@ const styles: Record<string, React.CSSProperties> = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    background: `linear-gradient(180deg, ${brandColors.gray[10]} 0%, ${brandColors.white} 100%)`,
+    background: `linear-gradient(180deg, ${systemColors.light['background-sunken']} 0%, ${systemColors.light['background-base']} 100%)`,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
 
@@ -407,7 +407,7 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: '42px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.D}px`, // 16px
     letterSpacing: '-1px',
     lineHeight: 1.2,
@@ -415,7 +415,7 @@ const styles: Record<string, React.CSSProperties> = {
   subtitle: {
     fontSize: '18px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: 1.6,
     maxWidth: '560px',
     margin: '0 auto',
@@ -437,8 +437,8 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     textAlign: 'center',
     padding: `${spacing.I}px ${spacing.H}px`, // 40px 32px
-    background: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: `${spacing.E}px`, // 20px
     cursor: 'pointer',
     transition: 'all 200ms ease',
@@ -459,14 +459,14 @@ const styles: Record<string, React.CSSProperties> = {
   cardTitle: {
     fontSize: '24px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.C}px`, // 12px
     letterSpacing: '-0.5px',
   },
   cardDescription: {
     fontSize: '15px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: 1.6,
     marginBottom: `${spacing.E}px`, // 20px
     maxWidth: '280px',
@@ -482,11 +482,11 @@ const styles: Record<string, React.CSSProperties> = {
   cardStatPill: {
     fontSize: '13px',
     fontWeight: 500,
-    color: brandColors.gray[60],
-    background: brandColors.gray[10],
+    color: systemColors.light['content-secondary'],
+    background: systemColors.light['background-sunken'],
     padding: `${spacing.A}px ${spacing.C}px`, // 4px 12px
     borderRadius: `${spacing.A}px`, // 4px (using 6px originally but rounding to token)
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   cardCtaButton: {
     display: 'inline-flex',
@@ -494,11 +494,11 @@ const styles: Record<string, React.CSSProperties> = {
     gap: `${spacing.B}px`, // 8px
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.blue[60],
-    background: brandColors.blue[10],
+    color: systemColors.light['content-brand'],
+    background: referenceColors.blue['10'],
     padding: `${spacing.B}px ${spacing.E}px`, // 8px 20px (using 10px → 8px)
     borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
-    border: `1px solid ${brandColors.blue[20]}`,
+    border: `1px solid ${systemColors.light['background-information']}`,
     transition: 'all 150ms ease',
   },
 
@@ -514,7 +514,7 @@ const styles: Record<string, React.CSSProperties> = {
   guideTitle: {
     fontSize: '32px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.C}px`, // 12px
     letterSpacing: '-0.5px',
     lineHeight: 1.2,
@@ -522,7 +522,7 @@ const styles: Record<string, React.CSSProperties> = {
   guideSubtitle: {
     fontSize: '16px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: 1.6,
     maxWidth: '480px',
     margin: '0 auto',
@@ -530,8 +530,8 @@ const styles: Record<string, React.CSSProperties> = {
 
   // Step Card
   stepCard: {
-    background: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: `${spacing.D}px`, // 16px
     padding: `${spacing.H}px`, // 32px
     marginBottom: `${spacing.E}px`, // 20px
@@ -563,7 +563,7 @@ const styles: Record<string, React.CSSProperties> = {
   stepTitle: {
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.A}px`, // 4px (snapped from 6px)
     letterSpacing: '-0.3px',
     lineHeight: 1.3,
@@ -571,7 +571,7 @@ const styles: Record<string, React.CSSProperties> = {
   stepDescription: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: 1.5,
     margin: 0,
   },
@@ -590,7 +590,7 @@ const styles: Record<string, React.CSSProperties> = {
   prereqLabel: {
     fontSize: '12px',
     fontWeight: 600,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase' as const,
     letterSpacing: '0.5px',
     marginRight: `${spacing.A}px`, // 4px
@@ -598,14 +598,14 @@ const styles: Record<string, React.CSSProperties> = {
   prereqItem: {
     fontSize: '13px',
     fontWeight: 500,
-    color: brandColors.gray[60],
-    background: brandColors.gray[10],
+    color: systemColors.light['content-secondary'],
+    background: systemColors.light['background-sunken'],
     padding: `${spacing.A-1}px ${spacing.B}px`, // 3px 8px (using B for horizontal)
     borderRadius: `${spacing.A}px`, // 4px (using 6px → 4px)
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   prereqDot: {
-    color: brandColors.gray[30],
+    color: referenceColors.gray['30'],
     fontSize: '12px',
   },
 
@@ -624,14 +624,14 @@ const styles: Record<string, React.CSSProperties> = {
   instructionMarker: {
     fontSize: '13px',
     fontWeight: 600,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     minWidth: '20px',
     lineHeight: '22px',
   },
   instructionText: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
     lineHeight: '22px',
   },
 
@@ -668,25 +668,25 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"SF Mono", "Fira Code", Consolas, monospace',
     fontSize: '12.5px',
     fontWeight: 500,
-    color: brandColors.blue[60],
-    background: `${brandColors.blue[10]}`,
+    color: systemColors.light['content-brand'],
+    background: `${referenceColors.blue['10']}`,
     padding: `2px ${spacing.A}px`, // 2px 4px (using 6px → 4px)
     borderRadius: `${spacing.A}px`, // 4px
-    border: `1px solid ${brandColors.blue[20]}`,
+    border: `1px solid ${systemColors.light['background-information']}`,
   },
 
   // Inline Link
   inlineLink: {
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     textDecoration: 'none',
     fontWeight: 500,
-    borderBottom: `1px solid ${brandColors.blue[30]}`,
+    borderBottom: `1px solid ${referenceColors.brand['30']}`,
   },
 
   // Prompt Examples
   promptExamples: {
-    background: brandColors.gray[10],
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-sunken'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: `${spacing.C}px`, // 12px
     padding: `${spacing.D}px ${spacing.E}px`, // 16px 20px
     marginBottom: `${spacing.D}px`, // 16px
@@ -694,7 +694,7 @@ const styles: Record<string, React.CSSProperties> = {
   promptLabel: {
     fontSize: '11px',
     fontWeight: 600,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase' as const,
     letterSpacing: '0.5px',
     marginBottom: `${spacing.C}px`, // 12px
@@ -702,20 +702,20 @@ const styles: Record<string, React.CSSProperties> = {
   promptItem: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: 1.6,
     fontStyle: 'italic',
     marginBottom: `${spacing.B}px`, // 8px
     paddingLeft: `${spacing.B}px`, // 8px
-    borderLeft: `2px solid ${brandColors.gray[20]}`,
+    borderLeft: `2px solid ${systemColors.light['background-subtle']}`,
   },
   promptQuote: {
-    color: brandColors.gray[30],
+    color: referenceColors.gray['30'],
     fontStyle: 'normal',
   },
   promptHint: {
     fontStyle: 'normal',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     fontSize: '12px',
   },
 
@@ -727,8 +727,8 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: `${spacing.D}px`, // 16px
   },
   contextCard: {
-    background: brandColors.gray[10],
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-sunken'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: `${spacing.C}px`, // 12px
     padding: `${spacing.E}px`, // 20px
   },
@@ -736,8 +736,8 @@ const styles: Record<string, React.CSSProperties> = {
     width: '36px',
     height: '36px',
     borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
-    background: brandColors.blue[10],
-    border: `1px solid ${brandColors.blue[20]}`,
+    background: referenceColors.blue['10'],
+    border: `1px solid ${systemColors.light['background-information']}`,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -746,14 +746,14 @@ const styles: Record<string, React.CSSProperties> = {
   contextTitle: {
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.A}px`, // 4px (using 6px → 4px)
     letterSpacing: '-0.2px',
   },
   contextDescription: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: 1.5,
     margin: 0,
   },
@@ -761,15 +761,15 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'flex-start',
     gap: `${spacing.B}px`, // 8px (using 10px → 8px)
-    background: brandColors.blue[10],
-    border: `1px solid ${brandColors.blue[20]}`,
+    background: referenceColors.blue['10'],
+    border: `1px solid ${systemColors.light['background-information']}`,
     borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
     padding: `${spacing.C}px ${spacing.D}px`, // 12px 16px (using 14px → 12px)
   },
   contextTipText: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: 1.5,
   },
 
@@ -783,7 +783,7 @@ const styles: Record<string, React.CSSProperties> = {
   footerLink: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     textDecoration: 'none',
     background: 'none',
     border: 'none',
@@ -793,13 +793,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: 'inherit',
   },
   footerDivider: {
-    color: brandColors.gray[30],
+    color: referenceColors.gray['30'],
   },
   funFooter: {
     marginTop: `${spacing.F}px`, // 24px
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textAlign: 'center',
     fontStyle: 'italic',
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 
 interface ChangelogEntry {
   version: string;
@@ -109,9 +109,9 @@ const categoryColors = {
 };
 
 const typeColors = {
-  major: brandColors.red[60],
-  minor: brandColors.blue[60],
-  patch: brandColors.gray[50],
+  major: systemColors.light['content-failure'],
+  minor: systemColors.light['content-brand'],
+  patch: systemColors.light['content-tertiary'],
 };
 
 export const ChangelogPage: React.FC = () => {
@@ -189,14 +189,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '36px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '12px',
   },
   description: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '26px',
     maxWidth: '700px',
   },
@@ -207,9 +207,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
   entry: {
     position: 'relative',
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     padding: '24px',
   },
   entryHeader: {
@@ -231,18 +231,18 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: '13px',
     fontWeight: 600,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
   },
   entryTitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '18px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   entryDate: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   changesContainer: {
     display: 'flex',
@@ -274,7 +274,7 @@ const styles: Record<string, React.CSSProperties> = {
   changeItem: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '22px',
   },
   connector: {
@@ -284,7 +284,7 @@ const styles: Record<string, React.CSSProperties> = {
     transform: 'translateX(-50%)',
     width: '2px',
     height: '32px',
-    backgroundColor: brandColors.gray[20],
+    backgroundColor: systemColors.light['background-subtle'],
   },
 };
 

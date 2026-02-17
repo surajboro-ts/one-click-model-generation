@@ -11,7 +11,7 @@
 
 /* Accordion item */
 .item {
-  border-bottom: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  border-bottom: 1px solid var(--rd-sys-color-border-divider);
 }
 
 .item:last-child {
@@ -32,16 +32,16 @@
   font-family: inherit;
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
   transition: background-color var(--duration-fast, 150ms) var(--easing-standard, ease);
 }
 
 .header:hover {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .header:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: -2px;
 }
 
@@ -66,20 +66,20 @@
 .headerTitle {
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .headerSubtitle {
   font-size: var(--font-size-xs, 12px);
   font-weight: var(--font-weight-regular, 400);
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
 }
 
 /* Chevron icon */
 .chevron {
   width: var(--spacing-4, 16px);
   height: var(--spacing-4, 16px);
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
   transition: transform var(--duration-normal, 200ms) var(--easing-standard, ease);
   flex-shrink: 0;
 }
@@ -98,7 +98,7 @@
   padding: 0 var(--spacing-4, 16px) var(--spacing-4, 16px) var(--spacing-4, 16px);
   font-size: var(--font-size-sm, 14px);
   line-height: 1.5;
-  color: var(--color-brand-gray-70, #484D56);
+  color: var(--rd-sys-color-content-primary);
 }
 
 /* Variant: Minimal */
@@ -116,14 +116,14 @@
 
 /* Variant: Bordered */
 .bordered .item {
-  border: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  border: 1px solid var(--rd-sys-color-border-divider);
   border-radius: var(--radius-lg, 8px);
   margin-bottom: var(--spacing-2, 8px);
 }
 
 .bordered .item:last-child {
   margin-bottom: 0;
-  border-bottom: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  border-bottom: 1px solid var(--rd-sys-color-border-divider);
 }
 
 /* No padding */

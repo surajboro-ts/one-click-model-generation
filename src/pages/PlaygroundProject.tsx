@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 import { getProject } from '../prototypes/registry';
 import { Icon } from '../components/icons';
 
@@ -101,13 +101,13 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   },
   loadingSpinner: {
     width: '40px',
     height: '40px',
-    border: `3px solid ${brandColors.gray[20]}`,
-    borderTopColor: brandColors.blue[60],
+    border: `3px solid ${systemColors.light['background-subtle']}`,
+    borderTopColor: systemColors.light['content-brand'],
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
     marginBottom: '16px',
@@ -115,7 +115,7 @@ const styles: Record<string, React.CSSProperties> = {
   loadingText: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
 
   // Not Found
@@ -124,7 +124,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     padding: '32px',
   },
   notFoundContent: {
@@ -135,23 +135,23 @@ const styles: Record<string, React.CSSProperties> = {
     width: '80px',
     height: '80px',
     borderRadius: '20px',
-    backgroundColor: brandColors.red[10],
+    backgroundColor: referenceColors.red['10'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: brandColors.red[60],
+    color: systemColors.light['content-failure'],
     margin: '0 auto 24px',
   },
   notFoundTitle: {
     fontSize: '24px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '12px',
   },
   notFoundDescription: {
     fontSize: '15px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     lineHeight: '24px',
     marginBottom: '24px',
   },
@@ -160,13 +160,13 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '8px',
     padding: '12px 20px',
-    backgroundColor: brandColors.blue[60],
+    backgroundColor: systemColors.light['content-brand'],
     border: 'none',
     borderRadius: '10px',
     cursor: 'pointer',
     fontSize: '14px',
     fontWeight: 500,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     transition: 'all 150ms ease',
   },
 };

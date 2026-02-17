@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-brand-blue-60);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .spinner svg {
@@ -57,7 +57,7 @@
   font-family: var(--font-family-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-regular);
-  color: var(--color-brand-gray-60);
+  color: var(--rd-sys-color-content-secondary);
 }
 
 /* Overlay styles */
@@ -90,7 +90,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-brand-blue-60);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .contextual svg {
@@ -103,9 +103,9 @@
 .skeleton {
   background: linear-gradient(
     90deg,
-    var(--color-brand-gray-15, #e8e8e8) 0%,
-    var(--color-brand-gray-10, #f5f5f5) 50%,
-    var(--color-brand-gray-15, #e8e8e8) 100%
+    var(--rd-sys-color-background-subtle) 0%,
+    var(--rd-sys-color-background-sunken) 50%,
+    var(--rd-sys-color-background-subtle) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite ease-in-out;

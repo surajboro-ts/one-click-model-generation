@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 import { spacing } from '../tokens/spacing';
 import { getAllProjects, ProjectMeta } from '../prototypes/registry';
 import { Icon } from '../components/icons';
@@ -103,11 +103,11 @@ const PRIORITY_FILES = [
 ];
 
 const DECISION_BRANCHES = [
-  { input: 'Figma screenshot or URL', route: 'figma-component-mapping.md → prototype-generation.md', color: brandColors.blue[60] },
-  { input: 'Text description of a UI', route: 'prototype-generation.md + component-inventory.md', color: brandColors.green[60] },
+  { input: 'Figma screenshot or URL', route: 'figma-component-mapping.md → prototype-generation.md', color: systemColors.light['content-brand'] },
+  { input: 'Text description of a UI', route: 'prototype-generation.md + component-inventory.md', color: systemColors.light['content-success'] },
   { input: 'Dashboard / admin / settings', route: 'layout-patterns.md → prototype-generation.md', color: '#8B5CF6' },
-  { input: 'Modal / wizard / dialog', route: 'modal-patterns.md → prototype-generation.md', color: brandColors.yellow[70] },
-  { input: 'Table / menu / alert / toast', route: 'widget-patterns.md → prototype-generation.md', color: brandColors.red[60] },
+  { input: 'Modal / wizard / dialog', route: 'modal-patterns.md → prototype-generation.md', color: referenceColors.yellow['70'] },
+  { input: 'Table / menu / alert / toast', route: 'widget-patterns.md → prototype-generation.md', color: systemColors.light['content-failure'] },
 ];
 
 const HowItWorksGuide: React.FC = () => {
@@ -141,12 +141,12 @@ const HowItWorksGuide: React.FC = () => {
             </p>
             <div style={guideStyles.flowDiagram}>
               <div style={guideStyles.flowStep}>
-                <div style={{ ...guideStyles.flowDot, backgroundColor: brandColors.blue[60] }} />
+                <div style={{ ...guideStyles.flowDot, backgroundColor: systemColors.light['content-brand'] }} />
                 <span style={guideStyles.flowLabel}>Your prompt</span>
               </div>
               <div style={guideStyles.flowArrow}>↓</div>
               <div style={guideStyles.flowStep}>
-                <div style={{ ...guideStyles.flowDot, backgroundColor: brandColors.green[60] }} />
+                <div style={{ ...guideStyles.flowDot, backgroundColor: systemColors.light['content-success'] }} />
                 <span style={guideStyles.flowLabel}>Orchestrator classifies task</span>
               </div>
               <div style={guideStyles.flowArrow}>↓</div>
@@ -156,12 +156,12 @@ const HowItWorksGuide: React.FC = () => {
               </div>
               <div style={guideStyles.flowArrow}>↓</div>
               <div style={guideStyles.flowStep}>
-                <div style={{ ...guideStyles.flowDot, backgroundColor: brandColors.yellow[70] }} />
+                <div style={{ ...guideStyles.flowDot, backgroundColor: referenceColors.yellow['70'] }} />
                 <span style={guideStyles.flowLabel}>Checks existing 40+ components</span>
               </div>
               <div style={guideStyles.flowArrow}>↓</div>
               <div style={guideStyles.flowStep}>
-                <div style={{ ...guideStyles.flowDot, backgroundColor: brandColors.red[60] }} />
+                <div style={{ ...guideStyles.flowDot, backgroundColor: systemColors.light['content-failure'] }} />
                 <span style={guideStyles.flowLabel}>Generates code (reuse or create local)</span>
               </div>
             </div>
@@ -225,21 +225,21 @@ const HowItWorksGuide: React.FC = () => {
             </p>
             <div style={guideStyles.reuseList}>
               <div style={guideStyles.reuseItem}>
-                <div style={{ ...guideStyles.reuseDot, backgroundColor: brandColors.green[60] }} />
+                <div style={{ ...guideStyles.reuseDot, backgroundColor: systemColors.light['content-success'] }} />
                 <div>
                   <div style={guideStyles.reuseLabel}>Exact match</div>
                   <div style={guideStyles.reuseDesc}>Imports from shared component library</div>
                 </div>
               </div>
               <div style={guideStyles.reuseItem}>
-                <div style={{ ...guideStyles.reuseDot, backgroundColor: brandColors.blue[60] }} />
+                <div style={{ ...guideStyles.reuseDot, backgroundColor: systemColors.light['content-brand'] }} />
                 <div>
                   <div style={guideStyles.reuseLabel}>Close match</div>
                   <div style={guideStyles.reuseDesc}>Uses existing component with props/styling</div>
                 </div>
               </div>
               <div style={guideStyles.reuseItem}>
-                <div style={{ ...guideStyles.reuseDot, backgroundColor: brandColors.yellow[70] }} />
+                <div style={{ ...guideStyles.reuseDot, backgroundColor: referenceColors.yellow['70'] }} />
                 <div>
                   <div style={guideStyles.reuseLabel}>No match</div>
                   <div style={guideStyles.reuseDesc}>Creates local component in prototype folder</div>
@@ -268,8 +268,8 @@ const HowItWorksGuide: React.FC = () => {
 
 const guideStyles: Record<string, React.CSSProperties> = {
   wrapper: {
-    backgroundColor: brandColors.white,
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   container: {
     maxWidth: '1200px',
@@ -285,19 +285,19 @@ const guideStyles: Record<string, React.CSSProperties> = {
   introIcon: {
     fontSize: '20px',
     lineHeight: '28px',
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     flexShrink: 0,
   },
   introTitle: {
     fontSize: '18px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.A}px`, // 4px
   },
   introDesc: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '22px',
     margin: 0,
     maxWidth: '720px',
@@ -309,10 +309,10 @@ const guideStyles: Record<string, React.CSSProperties> = {
     marginBottom: `${spacing.E}px`, // 20px
   },
   column: {
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: `${spacing.C}px`, // 12px
     padding: `${spacing.E}px`, // 20px
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   columnHeader: {
     display: 'flex',
@@ -324,8 +324,8 @@ const guideStyles: Record<string, React.CSSProperties> = {
     width: '22px',
     height: '22px',
     borderRadius: `${spacing.A}px`, // 4px
-    backgroundColor: brandColors.blue[60],
-    color: brandColors.white,
+    backgroundColor: systemColors.light['content-brand'],
+    color: systemColors.light['background-base'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -336,13 +336,13 @@ const guideStyles: Record<string, React.CSSProperties> = {
   columnTitle: {
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
   },
   columnDesc: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '20px',
     margin: `0 0 ${spacing.D}px 0`, // 0 0 16px 0
   },
@@ -358,9 +358,9 @@ const guideStyles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: `${spacing.B}px`, // 8px
     padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: `${spacing.B}px`, // 8px
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   flowDot: {
     width: '8px',
@@ -371,12 +371,12 @@ const guideStyles: Record<string, React.CSSProperties> = {
   flowLabel: {
     fontSize: '12px',
     fontWeight: 500,
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
   },
   flowArrow: {
     textAlign: 'center',
     fontSize: '11px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     lineHeight: '12px',
   },
 
@@ -391,9 +391,9 @@ const guideStyles: Record<string, React.CSSProperties> = {
     alignItems: 'flex-start',
     gap: `${spacing.B}px`, // 8px
     padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: `${spacing.B}px`, // 8px
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   branchDot: {
     width: '8px',
@@ -405,13 +405,13 @@ const guideStyles: Record<string, React.CSSProperties> = {
   branchInput: {
     fontSize: '12px',
     fontWeight: 600,
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
     marginBottom: '2px',
   },
   branchRoute: {
     fontSize: '11px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     fontFamily: '"SF Mono", Monaco, monospace',
   },
 
@@ -429,15 +429,15 @@ const guideStyles: Record<string, React.CSSProperties> = {
     gap: `${spacing.B}px`, // 8px
     padding: `${spacing.A}px ${spacing.B}px`, // 4px 8px
     borderRadius: `${spacing.A}px`, // 4px
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   priorityBadge: {
     width: '18px',
     height: '18px',
     borderRadius: `${spacing.A}px`, // 4px
-    backgroundColor: brandColors.gray[20],
-    color: brandColors.gray[70],
+    backgroundColor: systemColors.light['background-subtle'],
+    color: referenceColors.gray['70'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -453,14 +453,14 @@ const guideStyles: Record<string, React.CSSProperties> = {
   priorityFile: {
     fontSize: '11px',
     fontWeight: 600,
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
     fontFamily: '"SF Mono", Monaco, monospace',
     marginBottom: '1px',
   },
   priorityDesc: {
     fontSize: '11px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '15px',
   },
 
@@ -476,9 +476,9 @@ const guideStyles: Record<string, React.CSSProperties> = {
     alignItems: 'flex-start',
     gap: `${spacing.B}px`, // 8px
     padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: `${spacing.B}px`, // 8px
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   reuseDot: {
     width: '8px',
@@ -490,23 +490,23 @@ const guideStyles: Record<string, React.CSSProperties> = {
   reuseLabel: {
     fontSize: '12px',
     fontWeight: 600,
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
     marginBottom: '2px',
   },
   reuseDesc: {
     fontSize: '11px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
   reuseNote: {
     fontSize: '11px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '17px',
     padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: `${spacing.B}px`, // 8px
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
 
   // Tip
@@ -515,12 +515,12 @@ const guideStyles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: `${spacing.B}px`, // 8px
     padding: `${spacing.B}px ${spacing.D}px`, // 8px 16px
-    backgroundColor: brandColors.blue[10],
+    backgroundColor: referenceColors.blue['10'],
     borderRadius: `${spacing.B}px`, // 8px
-    border: `1px solid ${brandColors.blue[20]}`,
+    border: `1px solid ${systemColors.light['background-information']}`,
     fontSize: '12px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '18px',
   },
 };
@@ -538,13 +538,13 @@ const CreateNewProjectCard: React.FC<{ onClick: () => void }> = ({ onClick }) =>
       onClick={onClick}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.borderColor = brandColors.blue[40];
-        e.currentTarget.style.backgroundColor = brandColors.blue[10];
+        e.currentTarget.style.borderColor = referenceColors.brand['40'];
+        e.currentTarget.style.backgroundColor = referenceColors.blue['10'];
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.borderColor = brandColors.gray[20];
-        e.currentTarget.style.backgroundColor = brandColors.white;
+        e.currentTarget.style.borderColor = systemColors.light['background-subtle'];
+        e.currentTarget.style.backgroundColor = systemColors.light['background-base'];
       }}
     >
       <div style={styles.newProjectIconWrapper}>
@@ -588,7 +588,7 @@ const NewProjectModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ i
           {/* Option A: Chat */}
           <div style={modalContentStyles.optionCard}>
             <div style={modalContentStyles.optionHeader}>
-              <div style={{ ...modalContentStyles.optionBadge, background: brandColors.blue[60] }}>A</div>
+              <div style={{ ...modalContentStyles.optionBadge, background: systemColors.light['content-brand'] }}>A</div>
               <h4 style={modalContentStyles.optionTitle}>Tell Cursor in chat</h4>
             </div>
             <p style={modalContentStyles.optionDesc}>
@@ -612,7 +612,7 @@ const NewProjectModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ i
           {/* Option B: Terminal */}
           <div style={modalContentStyles.optionCard}>
             <div style={modalContentStyles.optionHeader}>
-              <div style={{ ...modalContentStyles.optionBadge, background: brandColors.green[60] }}>B</div>
+              <div style={{ ...modalContentStyles.optionBadge, background: systemColors.light['content-success'] }}>B</div>
               <h4 style={modalContentStyles.optionTitle}>Scaffold via terminal</h4>
             </div>
             <p style={modalContentStyles.optionDesc}>
@@ -678,7 +678,7 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
   introText: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '22px',
     margin: 0,
   },
@@ -688,8 +688,8 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     gap: `${spacing.D}px`, // 16px
   },
   optionCard: {
-    background: brandColors.gray[10],
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-sunken'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: `${spacing.C}px`, // 12px
     padding: `${spacing.E}px`, // 20px
   },
@@ -703,7 +703,7 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     width: '24px',
     height: '24px',
     borderRadius: `${spacing.A}px`, // 4px
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -714,20 +714,20 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
   optionTitle: {
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
   },
   optionDesc: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '20px',
     margin: `0 0 ${spacing.C}px 0`, // 0 0 12px 0
   },
   optionHint: {
     fontSize: '12px',
     fontWeight: 500,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     lineHeight: '18px',
     margin: 0,
     fontStyle: 'italic',
@@ -750,11 +750,11 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     fontFamily: '"SF Mono", Consolas, monospace',
     fontSize: '12.5px',
     fontWeight: 500,
-    color: brandColors.blue[60],
-    background: brandColors.blue[10],
+    color: systemColors.light['content-brand'],
+    background: referenceColors.blue['10'],
     padding: `2px ${spacing.A}px`, // 2px 4px
     borderRadius: `${spacing.A}px`, // 4px
-    border: `1px solid ${brandColors.blue[20]}`,
+    border: `1px solid ${systemColors.light['background-information']}`,
   },
   promptList: {
     display: 'flex',
@@ -768,17 +768,17 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     gap: `${spacing.B}px`, // 8px
     fontSize: '12px',
     fontWeight: 400,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '18px',
     padding: `${spacing.B}px ${spacing.B}px`, // 8px 8px
-    background: brandColors.white,
+    background: systemColors.light['background-base'],
     borderRadius: `${spacing.B}px`, // 8px
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     fontStyle: 'italic',
   },
   componentSection: {
-    background: brandColors.gray[10],
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-sunken'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: `${spacing.C}px`, // 12px
     padding: `${spacing.D}px ${spacing.E}px`, // 16px 20px
   },
@@ -787,18 +787,18 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: `${spacing.B}px`, // 8px
     marginBottom: `${spacing.B}px`, // 8px
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
   },
   componentTitle: {
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
   },
   componentDesc: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '20px',
     margin: `0 0 ${spacing.C}px 0`, // 0 0 12px 0
   },
@@ -813,27 +813,27 @@ const modalContentStyles: Record<string, React.CSSProperties> = {
     gap: `${spacing.B}px`, // 8px
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '20px',
     padding: `${spacing.A}px ${spacing.B}px`, // 4px 8px
-    background: brandColors.white,
+    background: systemColors.light['background-base'],
     borderRadius: `${spacing.A}px`, // 4px
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   tip: {
     display: 'flex',
     alignItems: 'flex-start',
     gap: `${spacing.B}px`, // 8px
-    background: brandColors.blue[10],
-    border: `1px solid ${brandColors.blue[20]}`,
+    background: referenceColors.blue['10'],
+    border: `1px solid ${systemColors.light['background-information']}`,
     borderRadius: `${spacing.B}px`, // 8px
     padding: `${spacing.C}px ${spacing.D}px`, // 12px 16px
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
   },
   tipText: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '20px',
   },
 };
@@ -854,12 +854,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
         e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.12)';
-        e.currentTarget.style.borderColor = brandColors.blue[40];
+        e.currentTarget.style.borderColor = referenceColors.brand['40'];
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.06)';
-        e.currentTarget.style.borderColor = brandColors.gray[20];
+        e.currentTarget.style.borderColor = systemColors.light['background-subtle'];
       }}
     >
       {/* Thumbnail */}
@@ -900,7 +900,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
 
@@ -910,8 +910,8 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: `${spacing.D}px ${spacing.H}px`, // 16px 32px
-    backgroundColor: brandColors.white,
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   headerTitle: {
     flex: 1,
@@ -920,13 +920,13 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: '24px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.A}px`, // 4px
   },
   subtitle: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     margin: 0,
   },
   headerActions: {
@@ -954,8 +954,8 @@ const styles: Record<string, React.CSSProperties> = {
   card: {
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: `${spacing.D}px`, // 16px
     overflow: 'hidden',
     cursor: 'pointer',
@@ -965,11 +965,11 @@ const styles: Record<string, React.CSSProperties> = {
   },
   cardThumbnail: {
     height: '160px',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   cardImage: {
     width: '100%',
@@ -977,7 +977,7 @@ const styles: Record<string, React.CSSProperties> = {
     objectFit: 'cover',
   },
   cardPlaceholder: {
-    color: brandColors.gray[40],
+    color: systemColors.light['border-default'],
   },
   cardContent: {
     padding: `${spacing.E}px`, // 20px
@@ -986,13 +986,13 @@ const styles: Record<string, React.CSSProperties> = {
   cardTitle: {
     fontSize: '18px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.B}px`, // 8px
   },
   cardDescription: {
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '22px',
     marginBottom: `${spacing.D}px`, // 16px
     display: '-webkit-box',
@@ -1011,15 +1011,15 @@ const styles: Record<string, React.CSSProperties> = {
     gap: `${spacing.A}px`, // 4px
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   cardArrow: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: `${spacing.C}px ${spacing.E}px`, // 12px 20px
-    borderTop: `1px solid ${brandColors.gray[20]}`,
-    color: brandColors.gray[40],
+    borderTop: `1px solid ${systemColors.light['background-subtle']}`,
+    color: systemColors.light['border-default'],
   },
 
   // Create New Project Card
@@ -1028,8 +1028,8 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: brandColors.white,
-    border: `2px dashed ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `2px dashed ${systemColors.light['background-subtle']}`,
     borderRadius: `${spacing.D}px`, // 16px
     cursor: 'pointer',
     transition: 'all 200ms ease',
@@ -1041,24 +1041,24 @@ const styles: Record<string, React.CSSProperties> = {
     width: '56px',
     height: '56px',
     borderRadius: `${spacing.D}px`, // 16px
-    backgroundColor: brandColors.blue[10],
-    border: `1px solid ${brandColors.blue[20]}`,
+    backgroundColor: referenceColors.blue['10'],
+    border: `1px solid ${systemColors.light['background-information']}`,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     marginBottom: `${spacing.D}px`, // 16px
   },
   newProjectTitle: {
     fontSize: '16px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.B}px`, // 8px
   },
   newProjectDescription: {
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '20px',
     maxWidth: '200px',
     margin: 0,

@@ -14,7 +14,7 @@ import { existingGroups, Group, groupTabs } from './data/mockData';
 import { Button } from '../../components/Button';
 import { Tabs } from '../../components/Tabs';
 import { Icon } from '../../components/icons';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 
 // Wizard step configuration
@@ -203,7 +203,7 @@ export const AdminGroups: React.FC = () => {
                 <Icon name="chevron-right" size="xs" />
                 <span>Users</span>
                 <Icon name="chevron-right" size="xs" />
-                <span style={{ color: brandColors.gray[90] }}>Groups</span>
+                <span style={{ color: systemColors.light['content-primary'] }}>Groups</span>
               </div>
               
               {/* Title */}
@@ -232,7 +232,7 @@ export const AdminGroups: React.FC = () => {
                       left: '12px',
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      color: brandColors.gray[50],
+                      color: systemColors.light['content-tertiary'],
                     }}
                   />
                   <input
@@ -245,7 +245,7 @@ export const AdminGroups: React.FC = () => {
                       height: '36px',
                       paddingLeft: '40px',
                       paddingRight: '12px',
-                      border: `1px solid ${brandColors.gray[30]}`,
+                      border: `1px solid ${referenceColors.gray['30']}`,
                       borderRadius: '6px',
                       fontSize: '14px',
                       outline: 'none',

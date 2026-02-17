@@ -25,7 +25,7 @@
 }
 
 .body.clickable:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
 }
 
@@ -35,7 +35,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -57,7 +57,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -67,7 +67,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -104,7 +104,7 @@
 }
 
 .deleteButton:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
 }
 
@@ -120,7 +120,7 @@
 
 /* Skeleton variant */
 .chip.skeleton .body {
-  border: 1px dashed var(--color-brand-gray-40);
+  border: 1px dashed var(--rd-sys-color-border-default);
   background: transparent;
   padding: 5px var(--spacing-4);
   justify-content: center;
@@ -132,7 +132,7 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-sm);
-  color: var(--color-brand-gray-60);
+  color: var(--rd-sys-color-content-secondary);
   text-align: center;
   letter-spacing: -0.072px;
 }

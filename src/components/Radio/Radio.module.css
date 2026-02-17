@@ -32,19 +32,19 @@
   justify-content: center;
   width: 16px;
   height: 16px;
-  background-color: var(--color-brand-white);
-  border: 1px solid var(--color-brand-gray-50);
+  background-color: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-default);
   border-radius: var(--radius-full);
   flex-shrink: 0;
   transition: border-color var(--duration-fast) var(--easing-standard);
 }
 
 .radio:hover:not(.disabled) .circle {
-  border-color: var(--color-brand-blue-60);
+  border-color: var(--rd-sys-color-border-brand);
 }
 
 .input:focus-visible + .circle {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
 }
 
@@ -52,7 +52,7 @@
   width: 8px;
   height: 8px;
   border-radius: var(--radius-full);
-  background-color: var(--color-brand-blue-60);
+  background-color: var(--rd-sys-color-background-brand);
 }
 
 .label {
@@ -60,10 +60,10 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   white-space: nowrap;
 }
 
 .radio.disabled .label {
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
 }

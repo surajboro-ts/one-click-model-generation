@@ -199,37 +199,37 @@
 /* ========== Color Styles ========== */
 
 .colorBase {
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .colorGray {
-  color: var(--color-brand-gray-70, #484D56);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .colorGrayLight {
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
 }
 
 .colorInfo {
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
 }
 
 .colorAccent {
-  color: var(--color-brand-blue-60, #2770EF);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .colorSuccess {
-  color: var(--color-brand-green-70, #04A36F);
+  color: var(--rd-sys-color-content-success);
 }
 
 .colorWarning {
-  color: var(--color-brand-yellow-70, #D68B00);
+  color: var(--rd-sys-color-content-warning);
 }
 
 .colorFailure {
-  color: var(--color-brand-red-70, #C41E2E);
+  color: var(--rd-sys-color-content-failure);
 }
 
 .colorWhite {
-  color: var(--color-brand-white, #ffffff);
+  color: var(--rd-sys-color-content-alternate);
 }

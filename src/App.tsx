@@ -14,7 +14,7 @@ import { VersionHistoryPage } from './pages/VersionHistoryPage';
 import { ColorSystemPage } from './pages/ColorSystemPage';
 import { TypographyPage } from './pages/TypographyPage';
 // import { RoadmapPage } from './pages/RoadmapPage';
-import { brandColors } from './tokens/colors/brand';
+import { systemColors } from './tokens/colors';
 
 // Prototype examples
 import { FilterDialogExample } from './prototypes/_examples/FilterDialog';
@@ -463,7 +463,7 @@ const styles: Record<string, React.CSSProperties> = {
   app: {
     display: 'flex',
     minHeight: '100vh',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   },
   main: {
     flex: 1,
