@@ -12,20 +12,11 @@ class TypographyPageErrorBoundary extends Component<
   }
 
   static getDerivedStateFromError(error: Error) {
-    // #region agent log
-    try {
-      fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:ErrorBoundary',message:'Error boundary caught error',data:{error:String(error),errorName:error?.name,errorMessage:error?.message,stack:error?.stack},sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-    } catch(e) {}
-    // #endregion
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // #region agent log
-    try {
-      fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:ErrorBoundary',message:'Error boundary componentDidCatch',data:{error:String(error),errorName:error?.name,errorMessage:error?.message,componentStack:errorInfo?.componentStack},sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-    } catch(e) {}
-    // #endregion
+    console.error('TypographyPage error:', error, errorInfo);
   }
 
   render() {
@@ -41,17 +32,7 @@ class TypographyPageErrorBoundary extends Component<
     return this.props.children;
   }
 }
-// #region agent log
-try {
-  fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:3',message:'Import Typography start',data:{timestamp:Date.now()},sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-} catch(e) {}
-// #endregion
 import { Typography } from '../components/Typography';
-// #region agent log
-try {
-  fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:7',message:'Import Typography success',data:{typographyType:typeof Typography,hasTypography:!!Typography},sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-} catch(e) {}
-// #endregion
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
@@ -302,14 +283,6 @@ const TypographyPageContent: React.FC = () => {
     { color: 'failure', label: 'Failure', hex: systemColors.light['content-failure'] },
   ];
 
-  // #region agent log
-  try {
-    fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:54',message:'Before render return',data:{stylesType:typeof styles,hasStyles:!!styles,stylesKeys:Object.keys(styles||{}).length,containerStyle:styles?.container?typeof styles.container:'missing'},sessionId:'debug-session',runId:'run1',hypothesisId:'B,C'})}).catch(()=>{});
-  } catch(e) {
-    fetch('http://127.0.0.1:7244/ingest/f9c65a42-8c92-4209-9745-35eed21a671b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TypographyPage.tsx:54',message:'Error before render',data:{error:String(e),errorName:e?.name,errorMessage:e?.message},sessionId:'debug-session',runId:'run1',hypothesisId:'B,C'})}).catch(()=>{});
-  }
-  // #endregion
-  
   // Wrap component in Error Boundary to catch React rendering errors
   return (
     <div style={styles.container}>
