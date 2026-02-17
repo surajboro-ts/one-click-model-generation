@@ -1,17 +1,17 @@
 /**
  * Color Token Exports
- * 
- * This file serves as the main entry point for all color tokens.
- * Import from here to access both brand and semantic tokens.
+ *
+ * Main entry point for all color tokens.
+ * 3-layer architecture: Reference -> System -> Component
  */
 
-export * from './brand';
-export * from './semantic';
-export * from './alias';
-export * from './mapped';
-export * from './charts';
+// 3-layer token exports
+export { referenceColors } from './reference';
+export type { ReferenceColors } from './reference';
+export { systemColors } from './system';
+export type { SystemColors, SystemColorKey } from './system';
+export { rdComponentColors } from './component';
+export type { RdComponentColors, RdComponentColorKey } from './component';
 
-// Named exports for convenience
-export { brandColors } from './brand';
-export { aliasColors } from './alias';
-export { lightThemeColors, darkThemeColors } from './mapped';
+// Charts (standalone, no migration needed)
+export * from './charts';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 import { Typography } from '../components/Typography';
 
 interface ColorSwatchProps {
@@ -39,7 +39,7 @@ const ColorSwatch: React.FC<ColorSwatchProps> = ({ colorName, colorScale, descri
                 style={{ 
                   ...styles.swatchColor, 
                   backgroundColor: value,
-                  color: isLight ? brandColors.gray[90] : brandColors.white,
+                  color: isLight ? systemColors.light['content-primary'] : systemColors.light['background-base'],
                 }}
               >
                 <span style={styles.swatchLevel}>{key}</span>
@@ -60,7 +60,7 @@ export const ColorSystemPage: React.FC = () => {
   const colorData: ColorSwatchProps[] = [
     {
       colorName: 'Blue',
-      colorScale: brandColors.blue,
+      colorScale: referenceColors.blue,
       description: 'Primary brand color. Used for interactive elements, links, and primary actions.',
       usage: [
         'Primary buttons and CTAs',
@@ -71,7 +71,7 @@ export const ColorSystemPage: React.FC = () => {
     },
     {
       colorName: 'Gray',
-      colorScale: brandColors.gray,
+      colorScale: referenceColors.gray,
       description: 'Neutral scale for text, backgrounds, borders, and UI structure.',
       usage: [
         'Text and typography (90, 70, 60, 50)',
@@ -82,7 +82,7 @@ export const ColorSystemPage: React.FC = () => {
     },
     {
       colorName: 'Green',
-      colorScale: brandColors.green,
+      colorScale: referenceColors.green,
       description: 'Success and positive states. Used for confirmations and positive feedback.',
       usage: [
         'Success alerts and toasts',
@@ -93,7 +93,7 @@ export const ColorSystemPage: React.FC = () => {
     },
     {
       colorName: 'Yellow',
-      colorScale: brandColors.yellow,
+      colorScale: referenceColors.yellow,
       description: 'Warning and caution states. Used for alerts requiring attention.',
       usage: [
         'Warning alerts and messages',
@@ -104,7 +104,7 @@ export const ColorSystemPage: React.FC = () => {
     },
     {
       colorName: 'Red',
-      colorScale: brandColors.red,
+      colorScale: referenceColors.red,
       description: 'Error and failure states. Used for destructive actions and errors.',
       usage: [
         'Error messages and validation',
@@ -115,7 +115,7 @@ export const ColorSystemPage: React.FC = () => {
     },
     {
       colorName: 'Purple',
-      colorScale: brandColors.purple,
+      colorScale: referenceColors.purple,
       description: 'Date/time and secondary accent. Used for temporal data and highlights.',
       usage: [
         'Date and time indicators',
@@ -126,7 +126,7 @@ export const ColorSystemPage: React.FC = () => {
     },
     {
       colorName: 'Orange',
-      colorScale: brandColors.orange,
+      colorScale: referenceColors.orange,
       description: 'Accent color for highlights and differentiation.',
       usage: [
         'Accent highlights',
@@ -137,7 +137,7 @@ export const ColorSystemPage: React.FC = () => {
     },
     {
       colorName: 'Teal',
-      colorScale: brandColors.teal,
+      colorScale: referenceColors.teal,
       description: 'Info and neutral accent. Used for informational content.',
       usage: [
         'Info alerts and messages',
@@ -164,8 +164,8 @@ export const ColorSystemPage: React.FC = () => {
         <Typography variant="modal-title" noMargin>Usage Guidelines</Typography>
         <div style={styles.guidelinesGrid}>
           <div style={styles.guidelineCard}>
-            <div style={{ ...styles.guidelineIcon, backgroundColor: brandColors.blue[10] }}>
-              <span style={{ color: brandColors.blue[60], fontSize: 20 }}>60</span>
+            <div style={{ ...styles.guidelineIcon, backgroundColor: referenceColors.blue['10'] }}>
+              <span style={{ color: systemColors.light['content-brand'], fontSize: 20 }}>60</span>
             </div>
             <div>
               <Typography variant="content-label" noMargin>Primary Shade</Typography>
@@ -175,8 +175,8 @@ export const ColorSystemPage: React.FC = () => {
             </div>
           </div>
           <div style={styles.guidelineCard}>
-            <div style={{ ...styles.guidelineIcon, backgroundColor: brandColors.gray[10] }}>
-              <span style={{ color: brandColors.gray[60], fontSize: 16 }}>10-30</span>
+            <div style={{ ...styles.guidelineIcon, backgroundColor: systemColors.light['background-sunken'] }}>
+              <span style={{ color: systemColors.light['content-secondary'], fontSize: 16 }}>10-30</span>
             </div>
             <div>
               <Typography variant="content-label" noMargin>Light Shades</Typography>
@@ -186,8 +186,8 @@ export const ColorSystemPage: React.FC = () => {
             </div>
           </div>
           <div style={styles.guidelineCard}>
-            <div style={{ ...styles.guidelineIcon, backgroundColor: brandColors.gray[90] }}>
-              <span style={{ color: brandColors.white, fontSize: 16 }}>70-100</span>
+            <div style={{ ...styles.guidelineIcon, backgroundColor: systemColors.light['content-primary'] }}>
+              <span style={{ color: systemColors.light['background-base'], fontSize: 16 }}>70-100</span>
             </div>
             <div>
               <Typography variant="content-label" noMargin>Dark Shades</Typography>
@@ -197,8 +197,8 @@ export const ColorSystemPage: React.FC = () => {
             </div>
           </div>
           <div style={styles.guidelineCard}>
-            <div style={{ ...styles.guidelineIcon, backgroundColor: brandColors.green[10] }}>
-              <span style={{ color: brandColors.green[60], fontSize: 14 }}>40-50</span>
+            <div style={{ ...styles.guidelineIcon, backgroundColor: referenceColors.green['10'] }}>
+              <span style={{ color: systemColors.light['content-success'], fontSize: 14 }}>40-50</span>
             </div>
             <div>
               <Typography variant="content-label" noMargin>Mid Shades</Typography>
@@ -223,28 +223,28 @@ export const ColorSystemPage: React.FC = () => {
         <Typography variant="modal-title" noMargin style={{ marginBottom: 16 }}>Base Colors</Typography>
         <div style={styles.baseColorsGrid}>
           <div style={styles.baseColorItem}>
-            <div style={{ ...styles.baseColorSwatch, backgroundColor: brandColors.white, border: `1px solid ${brandColors.gray[20]}` }} />
+            <div style={{ ...styles.baseColorSwatch, backgroundColor: systemColors.light['background-base'], border: `1px solid ${systemColors.light['background-subtle']}` }} />
             <div>
               <Typography variant="content-label" noMargin>White</Typography>
               <Typography variant="footnote" color="gray" noMargin>#FFFFFF</Typography>
             </div>
           </div>
           <div style={styles.baseColorItem}>
-            <div style={{ ...styles.baseColorSwatch, backgroundColor: brandColors.whiteToned }} />
+            <div style={{ ...styles.baseColorSwatch, backgroundColor: referenceColors.gray['00'] }} />
             <div>
               <Typography variant="content-label" noMargin>White Toned</Typography>
               <Typography variant="footnote" color="gray" noMargin>#FAFBFC</Typography>
             </div>
           </div>
           <div style={styles.baseColorItem}>
-            <div style={{ ...styles.baseColorSwatch, backgroundColor: brandColors.black }} />
+            <div style={{ ...styles.baseColorSwatch, backgroundColor: referenceColors.black }} />
             <div>
               <Typography variant="content-label" noMargin>Black</Typography>
               <Typography variant="footnote" color="gray" noMargin>#000000</Typography>
             </div>
           </div>
           <div style={styles.baseColorItem}>
-            <div style={{ ...styles.baseColorSwatch, backgroundColor: brandColors.blackToned }} />
+            <div style={{ ...styles.baseColorSwatch, backgroundColor: systemColors.light['content-primary'] }} />
             <div>
               <Typography variant="content-label" noMargin>Black Toned</Typography>
               <Typography variant="footnote" color="gray" noMargin>#1C2330</Typography>
@@ -267,21 +267,21 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 36,
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: 12,
   },
   description: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 16,
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '26px',
     maxWidth: 700,
   },
   guidelinesSection: {
     marginBottom: 48,
     padding: 24,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: 12,
   },
   guidelinesGrid: {
@@ -295,9 +295,9 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: 12,
     padding: 16,
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: 8,
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   guidelineIcon: {
     width: 48,
@@ -315,9 +315,9 @@ const styles: Record<string, React.CSSProperties> = {
   colorSection: {
     marginBottom: 40,
     padding: 24,
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: 12,
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   colorHeader: {
     marginBottom: 16,
@@ -325,7 +325,7 @@ const styles: Record<string, React.CSSProperties> = {
   usageList: {
     marginBottom: 20,
     padding: 16,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: 8,
   },
   usageItems: {
@@ -335,7 +335,7 @@ const styles: Record<string, React.CSSProperties> = {
   usageItem: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: 13,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '22px',
   },
   swatchGrid: {
@@ -348,7 +348,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     overflow: 'hidden',
     borderRadius: 8,
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   swatchColor: {
     height: 64,
@@ -364,7 +364,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   swatchInfo: {
     padding: 8,
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     display: 'flex',
     flexDirection: 'column',
     gap: 2,
@@ -372,13 +372,13 @@ const styles: Record<string, React.CSSProperties> = {
   swatchValue: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 11,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     fontWeight: 500,
   },
   swatchToken: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: 10,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   baseSection: {
     marginBottom: 40,
@@ -393,9 +393,9 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: 12,
     padding: 16,
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: 8,
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   baseColorSwatch: {
     width: 48,

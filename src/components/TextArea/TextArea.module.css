@@ -15,12 +15,12 @@
   font-size: var(--font-size-sm, 12px);
   font-weight: var(--font-weight-medium, 500);
   line-height: var(--line-height-md, 1.5);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .helperInline {
   font-weight: var(--font-weight-regular, 400);
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .textarea {
@@ -28,14 +28,14 @@
   width: 100%;
   min-height: 80px;
   padding: 10px 12px;
-  background-color: var(--color-brand-white, #ffffff);
-  border: 1px solid var(--color-brand-gray-30, #DADCE0);
+  background-color: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-default);
   border-radius: var(--radius-lg, 8px);
   font-family: var(--font-family-primary, 'Plain', -apple-system, BlinkMacSystemFont, sans-serif);
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-light, 375);
   line-height: var(--line-height-md, 1.5);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
   transition: border-color var(--duration-fast, 150ms) var(--easing-standard, ease),
               box-shadow var(--duration-fast, 150ms) var(--easing-standard, ease);
   outline: none;
@@ -43,16 +43,16 @@
 }
 
 .textarea::placeholder {
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .textarea:focus {
-  border-color: var(--color-brand-blue-60, #2770EF);
+  border-color: var(--rd-sys-color-border-brand);
   box-shadow: var(--shadow-focus-ring, 0 0 0 3px rgba(39, 112, 239, 0.12));
 }
 
 .textarea:hover:not(:focus):not(:disabled) {
-  border-color: var(--color-brand-gray-40, #B3B8C1);
+  border-color: var(--rd-sys-color-border-default);
 }
 
 /* Resize variants */
@@ -85,24 +85,24 @@
   font-size: var(--font-size-xs, 12px);
   font-weight: var(--font-weight-regular, 400);
   line-height: var(--line-height-xs, 1.4);
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .counter {
   font-family: var(--font-family-primary, 'Plain', -apple-system, BlinkMacSystemFont, sans-serif);
   font-size: var(--font-size-xs, 12px);
   font-weight: var(--font-weight-regular, 400);
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
   margin-left: auto;
 }
 
 /* Error State */
 .error .textarea {
-  border-color: var(--color-brand-red-60, #E22B3D);
+  border-color: var(--rd-sys-color-border-failure);
 }
 
 .error .textarea:focus {
-  border-color: var(--color-brand-red-60, #E22B3D);
+  border-color: var(--rd-sys-color-border-failure);
   box-shadow: var(--shadow-focus-ring-error, 0 0 0 3px rgba(226, 43, 61, 0.12));
 }
 
@@ -111,16 +111,16 @@
   font-size: var(--font-size-xs, 12px);
   font-weight: var(--font-weight-regular, 400);
   line-height: var(--line-height-xs, 1.4);
-  color: var(--color-brand-red-60, #E22B3D);
+  color: var(--rd-sys-color-content-failure);
 }
 
 /* Disabled State */
 .disabled .label {
-  color: var(--color-brand-gray-40, #B3B8C1);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .disabled .textarea {
   opacity: 0.4;
   cursor: not-allowed;
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
 }

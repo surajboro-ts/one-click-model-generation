@@ -30,7 +30,7 @@ import { Stepper } from '../components/Stepper';
 import { DatePicker } from '../components/DatePicker';
 import { IconGallery } from '../components/IconGallery';
 import { SegmentedControl } from '../components/SegmentedControl';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 
 interface PropDefinition {
   name: string;
@@ -670,7 +670,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                 </>
               }
             >
-              <p style={{ margin: 0, color: brandColors.gray[70] }}>
+              <p style={{ margin: 0, color: referenceColors.gray['70'] }}>
                 This is the modal content. You can put any content here.
               </p>
             </Modal>
@@ -689,7 +689,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
               activeTab={activeTab}
               onTabChange={setActiveTab}
             />
-            <div style={{ marginTop: '16px', padding: '16px', background: brandColors.gray[10], borderRadius: '8px' }}>
+            <div style={{ marginTop: '16px', padding: '16px', background: systemColors.light['background-sunken'], borderRadius: '8px' }}>
               Content for {activeTab}
             </div>
           </div>
@@ -875,7 +875,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                   <div style={{ padding: '8px', minWidth: '150px' }}>
                     <Button variant="tertiary" fullWidth style={{ justifyContent: 'flex-start' }}>Edit</Button>
                     <Button variant="tertiary" fullWidth style={{ justifyContent: 'flex-start' }}>Duplicate</Button>
-                    <Button variant="tertiary" fullWidth style={{ justifyContent: 'flex-start', color: brandColors.red[60] }}>Delete</Button>
+                    <Button variant="tertiary" fullWidth style={{ justifyContent: 'flex-start', color: systemColors.light['content-failure'] }}>Delete</Button>
                   </div>
                 }
                 placement="bottom-start"
@@ -886,7 +886,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
               <Popover
                 content={
                   <div style={{ padding: '12px' }}>
-                    <p style={{ margin: 0, fontSize: '14px', color: brandColors.gray[70] }}>
+                    <p style={{ margin: 0, fontSize: '14px', color: referenceColors.gray['70'] }}>
                       This popover appears on hover
                     </p>
                   </div>
@@ -934,11 +934,11 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                   <LoadingIndicator.Contextual size="xl" />
                 </div>
                 <div style={{ ...styles.exampleRow, marginTop: '8px' }}>
-                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>xs (12px)</span>
-                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>s (16px)</span>
-                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>m (24px)</span>
-                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>l (32px)</span>
-                  <span style={{ fontSize: '12px', color: brandColors.gray[60] }}>xl (48px)</span>
+                  <span style={{ fontSize: '12px', color: systemColors.light['content-secondary'] }}>xs (12px)</span>
+                  <span style={{ fontSize: '12px', color: systemColors.light['content-secondary'] }}>s (16px)</span>
+                  <span style={{ fontSize: '12px', color: systemColors.light['content-secondary'] }}>m (24px)</span>
+                  <span style={{ fontSize: '12px', color: systemColors.light['content-secondary'] }}>l (32px)</span>
+                  <span style={{ fontSize: '12px', color: systemColors.light['content-secondary'] }}>xl (48px)</span>
                 </div>
               </div>
               <div>
@@ -1052,19 +1052,19 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
               <Card>
                 <Card.Header title="Basic Card" subtitle="With header and body" />
                 <Card.Body>
-                  <p style={{ margin: 0, color: brandColors.gray[70] }}>Card content goes here.</p>
+                  <p style={{ margin: 0, color: referenceColors.gray['70'] }}>Card content goes here.</p>
                 </Card.Body>
               </Card>
               <Card interactive onClick={() => alert('Card clicked!')}>
                 <Card.Header title="Interactive Card" />
                 <Card.Body>
-                  <p style={{ margin: 0, color: brandColors.gray[70] }}>Click me!</p>
+                  <p style={{ margin: 0, color: referenceColors.gray['70'] }}>Click me!</p>
                 </Card.Body>
               </Card>
               <Card isSelected>
                 <Card.Header title="Selected Card" />
                 <Card.Body>
-                  <p style={{ margin: 0, color: brandColors.gray[70] }}>This card is selected.</p>
+                  <p style={{ margin: 0, color: referenceColors.gray['70'] }}>This card is selected.</p>
                 </Card.Body>
                 <Card.Footer>
                   <Button variant="secondary" size="small">Cancel</Button>
@@ -1074,7 +1074,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
               <Card isDisabled>
                 <Card.Header title="Disabled Card" />
                 <Card.Body>
-                  <p style={{ margin: 0, color: brandColors.gray[70] }}>This card is disabled.</p>
+                  <p style={{ margin: 0, color: referenceColors.gray['70'] }}>This card is disabled.</p>
                 </Card.Body>
               </Card>
             </div>
@@ -1108,14 +1108,14 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
         return (
           <div style={styles.exampleContent}>
             <div style={styles.exampleColumn}>
-              <p style={{ margin: 0, color: brandColors.gray[70] }}>Content above divider</p>
+              <p style={{ margin: 0, color: referenceColors.gray['70'] }}>Content above divider</p>
               <Divider />
-              <p style={{ margin: 0, color: brandColors.gray[70] }}>Content below divider</p>
+              <p style={{ margin: 0, color: referenceColors.gray['70'] }}>Content below divider</p>
             </div>
             <div style={styles.exampleColumn}>
-              <p style={{ margin: 0, color: brandColors.gray[70] }}>With spacing="m"</p>
+              <p style={{ margin: 0, color: referenceColors.gray['70'] }}>With spacing="m"</p>
               <Divider spacing="m" />
-              <p style={{ margin: 0, color: brandColors.gray[70] }}>More space around</p>
+              <p style={{ margin: 0, color: referenceColors.gray['70'] }}>More space around</p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', height: '40px' }}>
               <span>Item 1</span>
@@ -1330,7 +1330,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
             </div>
             <div style={styles.interactiveBox}>
               <h4 style={styles.interactiveLabel}>Selected date:</h4>
-              <p style={{ margin: 0, color: brandColors.gray[70] }}>
+              <p style={{ margin: 0, color: referenceColors.gray['70'] }}>
                 {selectedDate ? selectedDate.toLocaleDateString() : 'No date selected'}
               </p>
             </div>
@@ -1416,31 +1416,31 @@ const styles: Record<string, React.CSSProperties> = {
   breadcrumbItem: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   breadcrumbSeparator: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: brandColors.gray[30],
+    color: referenceColors.gray['30'],
   },
   breadcrumbCurrent: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     fontWeight: 500,
   },
   title: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '36px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '12px',
   },
   description: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 400,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '26px',
     maxWidth: '700px',
   },
@@ -1451,13 +1451,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '16px',
   },
   exampleBox: {
     padding: '32px',
-    background: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: '12px',
   },
   exampleContent: {
@@ -1478,7 +1478,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   interactiveBox: {
     padding: '20px',
-    background: brandColors.gray[10],
+    background: systemColors.light['background-sunken'],
     borderRadius: '8px',
     marginTop: '8px',
   },
@@ -1486,14 +1486,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '12px',
     fontWeight: 600,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     marginBottom: '12px',
   },
   propsTable: {
-    background: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: '12px',
     overflow: 'hidden',
   },
@@ -1501,12 +1501,12 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'grid',
     gridTemplateColumns: '140px 200px 100px 1fr',
     padding: '14px 20px',
-    background: brandColors.gray[10],
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-sunken'],
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '11px',
     fontWeight: 600,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -1514,7 +1514,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'grid',
     gridTemplateColumns: '140px 200px 100px 1fr',
     padding: '14px 20px',
-    borderBottom: `1px solid ${brandColors.gray[10]}`,
+    borderBottom: `1px solid ${systemColors.light['background-sunken']}`,
     alignItems: 'flex-start',
   },
   propName: {},
@@ -1523,27 +1523,27 @@ const styles: Record<string, React.CSSProperties> = {
   propDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '20px',
   },
   propCode: {
     fontFamily: '"SF Mono", Monaco, Inconsolata, monospace',
     fontSize: '13px',
     fontWeight: 500,
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
   },
   typeCode: {
     fontFamily: '"SF Mono", Monaco, Inconsolata, monospace',
     fontSize: '12px',
-    color: brandColors.gray[70],
-    background: brandColors.gray[10],
+    color: referenceColors.gray['70'],
+    background: systemColors.light['background-sunken'],
     padding: '2px 6px',
     borderRadius: '4px',
   },
   defaultCode: {
     fontFamily: '"SF Mono", Monaco, Inconsolata, monospace',
     fontSize: '12px',
-    color: brandColors.green[60],
+    color: systemColors.light['content-success'],
   },
 };
 

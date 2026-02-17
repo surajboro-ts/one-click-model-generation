@@ -9,8 +9,8 @@
   min-width: 180px;
   max-width: 280px;
   padding: var(--spacing-1, 4px) 0;
-  background-color: var(--color-brand-white, #ffffff);
-  border: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  background-color: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-divider);
   border-radius: var(--radius-lg, 8px);
   box-shadow: var(--shadow-lg, 0 4px 16px rgba(0, 0, 0, 0.12));
   z-index: var(--z-index-dropdown, 100);
@@ -24,7 +24,7 @@
   padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-regular, 400);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
   cursor: pointer;
   border: none;
   background: none;
@@ -35,27 +35,27 @@
 }
 
 .item:hover {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .item:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: -2px;
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .item:active {
-  background-color: var(--color-brand-gray-20, #E9EAEC);
+  background-color: var(--rd-sys-color-background-subtle);
 }
 
 /* Active/selected item */
 .itemActive {
-  background-color: var(--color-brand-blue-10, #E8F0FD);
-  color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--rd-sys-color-background-information);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .itemActive:hover {
-  background-color: var(--color-brand-blue-20, #D1E1FB);
+  background-color: var(--rd-sys-color-background-ghost-highlight);
 }
 
 /* Disabled item */
@@ -67,11 +67,11 @@
 
 /* Danger/destructive item */
 .itemDanger {
-  color: var(--color-brand-red-60, #E22B3D);
+  color: var(--rd-sys-color-content-failure);
 }
 
 .itemDanger:hover {
-  background-color: var(--color-brand-red-10, #FCE8EA);
+  background-color: var(--rd-sys-color-background-failure);
 }
 
 /* Item icon */
@@ -98,14 +98,14 @@
 
 .itemDescription {
   font-size: var(--font-size-xs, 12px);
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
   margin-top: var(--spacing-1, 2px);
 }
 
 /* Item shortcut */
 .itemShortcut {
   font-size: var(--font-size-xs, 12px);
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
   margin-left: auto;
   flex-shrink: 0;
 }
@@ -114,7 +114,7 @@
 .itemArrow {
   width: var(--font-size-xs, 12px);
   height: var(--font-size-xs, 12px);
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
   margin-left: auto;
   flex-shrink: 0;
 }
@@ -122,7 +122,7 @@
 /* Menu Divider */
 .divider {
   height: 1px;
-  background-color: var(--color-brand-gray-20, #E9EAEC);
+  background-color: var(--rd-sys-color-background-subtle);
   margin: var(--spacing-1, 4px) 0;
 }
 
@@ -136,7 +136,7 @@
   padding: var(--spacing-2, 8px) var(--spacing-3, 12px) var(--spacing-1, 4px) var(--spacing-3, 12px);
   font-size: 11px;
   font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -152,27 +152,27 @@
 
 /* Dark theme */
 .dark {
-  background-color: var(--color-brand-gray-80, #333740);
-  border-color: var(--color-brand-gray-70, #484D56);
+  background-color: var(--rd-sys-color-background-raised-inverse);
+  border-color: var(--rd-sys-color-border-default-inverse);
 }
 
 .dark .item {
-  color: var(--color-brand-gray-20, #E9EAEC);
+  color: var(--rd-sys-color-background-subtle);
 }
 
 .dark .item:hover {
-  background-color: var(--color-brand-gray-70, #484D56);
+  background-color: var(--rd-sys-color-background-subtle);
 }
 
 .dark .itemActive {
   background-color: rgba(39, 112, 239, 0.2);
-  color: var(--color-brand-blue-40, #5A9CFF);
+  color: var(--rd-comp-color-button-primary-pressed);
 }
 
 .dark .groupLabel {
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .dark .divider {
-  background-color: var(--color-brand-gray-70, #484D56);
+  background-color: var(--rd-sys-color-background-subtle);
 }

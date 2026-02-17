@@ -23,33 +23,33 @@
   font-family: inherit;
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-gray-70, #484D56);
+  color: var(--rd-sys-color-content-primary);
   cursor: pointer;
   transition: all var(--duration-fast, 150ms) var(--easing-standard, ease);
 }
 
 .pageButton:hover {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .pageButton:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: var(--spacing-1, 2px);
 }
 
 .pageButton:active {
-  background-color: var(--color-brand-gray-20, #E9EAEC);
+  background-color: var(--rd-sys-color-background-subtle);
 }
 
 /* Active page */
 .pageButtonActive {
-  background-color: var(--color-brand-blue-60, #2770EF);
-  color: var(--color-brand-white, #ffffff);
-  border-color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
+  border-color: var(--rd-sys-color-border-brand);
 }
 
 .pageButtonActive:hover {
-  background-color: var(--color-brand-blue-70, #1E5BBB);
+  background-color: var(--rd-comp-color-button-primary-hover);
 }
 
 /* Disabled button */
@@ -66,21 +66,21 @@
   justify-content: center;
   width: var(--spacing-8, 32px);
   height: var(--spacing-8, 32px);
-  border: 1px solid var(--color-brand-gray-30, #DADCE0);
+  border: 1px solid var(--rd-sys-color-border-default);
   border-radius: var(--radius-md, 6px);
-  background-color: var(--color-brand-white, #ffffff);
-  color: var(--color-brand-gray-70, #484D56);
+  background-color: var(--rd-sys-color-background-base);
+  color: var(--rd-sys-color-content-primary);
   cursor: pointer;
   transition: all var(--duration-fast, 150ms) var(--easing-standard, ease);
 }
 
 .navButton:hover:not(:disabled) {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
-  border-color: var(--color-brand-gray-40, #B3B8C1);
+  background-color: var(--rd-sys-color-background-sunken);
+  border-color: var(--rd-sys-color-border-default);
 }
 
 .navButton:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: var(--spacing-1, 2px);
 }
 
@@ -101,7 +101,7 @@
   justify-content: center;
   min-width: var(--spacing-8, 32px);
   height: var(--spacing-8, 32px);
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
   font-size: var(--font-size-sm, 14px);
   cursor: default;
 }
@@ -117,7 +117,7 @@
   width: var(--spacing-2, 8px);
   height: var(--spacing-2, 8px);
   border-radius: var(--radius-full, 50%);
-  background-color: var(--color-brand-gray-30, #DADCE0);
+  background-color: var(--rd-sys-color-background-subtle);
   cursor: pointer;
   transition: all var(--duration-fast, 150ms) var(--easing-standard, ease);
   border: none;
@@ -125,17 +125,17 @@
 }
 
 .dot:hover {
-  background-color: var(--color-brand-gray-40, #B3B8C1);
+  background-color: var(--rd-sys-color-background-inset);
 }
 
 .dotActive {
-  background-color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--rd-sys-color-background-brand);
   width: var(--spacing-6, 24px);
   border-radius: var(--radius-sm, 4px);
 }
 
 .dotActive:hover {
-  background-color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--rd-sys-color-background-brand);
 }
 
 /* Compact variant */
@@ -156,7 +156,7 @@
   align-items: center;
   gap: var(--spacing-2, 8px);
   font-size: var(--font-size-sm, 14px);
-  color: var(--color-brand-gray-70, #484D56);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .rangeText {
@@ -165,5 +165,5 @@
 
 .rangeStrong {
   font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
 }

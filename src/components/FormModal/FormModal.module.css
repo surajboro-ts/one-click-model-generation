@@ -32,22 +32,22 @@
   font-family: var(--font-family-primary);
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-gray-70, #4A515E);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .required {
-  color: var(--color-brand-red-60, #E22B3D);
+  color: var(--rd-sys-color-content-failure);
   margin-left: 2px;
 }
 
 .helperText {
   font-family: var(--font-family-primary);
   font-size: var(--font-size-xs, 12px);
-  color: var(--color-brand-gray-50, #A5ACB9);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .errorText {
-  color: var(--color-brand-red-60, #E22B3D);
+  color: var(--rd-sys-color-content-failure);
 }
 
 /* Form Row - horizontal layout */

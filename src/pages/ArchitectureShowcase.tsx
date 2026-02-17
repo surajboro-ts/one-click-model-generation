@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 
 type ActiveLayer = 'brand' | 'semantic' | 'component' | null;
 
@@ -53,7 +53,7 @@ export const ArchitectureShowcase: React.FC = () => {
           {/* Arrow 1 */}
           <div style={styles.arrowContainer}>
             <svg width="40" height="60" viewBox="0 0 40 60" style={styles.arrow}>
-              <path d="M20 0 L20 45 M10 35 L20 50 L30 35" stroke={brandColors.gray[40]} strokeWidth="2" fill="none" />
+              <path d="M20 0 L20 45 M10 35 L20 50 L30 35" stroke={systemColors.light['border-default']} strokeWidth="2" fill="none" />
             </svg>
             <span style={styles.arrowLabel}>references</span>
           </div>
@@ -86,7 +86,7 @@ export const ArchitectureShowcase: React.FC = () => {
           {/* Arrow 2 */}
           <div style={styles.arrowContainer}>
             <svg width="40" height="60" viewBox="0 0 40 60" style={styles.arrow}>
-              <path d="M20 0 L20 45 M10 35 L20 50 L30 35" stroke={brandColors.gray[40]} strokeWidth="2" fill="none" />
+              <path d="M20 0 L20 45 M10 35 L20 50 L30 35" stroke={systemColors.light['border-default']} strokeWidth="2" fill="none" />
             </svg>
             <span style={styles.arrowLabel}>used by</span>
           </div>
@@ -355,7 +355,7 @@ export const ArchitectureShowcase: React.FC = () => {
         <h3 style={styles.sectionTitle}>Token Categories</h3>
         <div style={styles.categoryGrid}>
           <div style={styles.categoryCard}>
-            <div style={{ ...styles.categoryIcon, backgroundColor: brandColors.blue[10] }}>🎨</div>
+            <div style={{ ...styles.categoryIcon, backgroundColor: referenceColors.blue['10'] }}>🎨</div>
             <h4 style={styles.categoryTitle}>Colors</h4>
             <ul style={styles.categoryList}>
               <li>Blue scale (10-100)</li>
@@ -365,7 +365,7 @@ export const ArchitectureShowcase: React.FC = () => {
             </ul>
           </div>
           <div style={styles.categoryCard}>
-            <div style={{ ...styles.categoryIcon, backgroundColor: brandColors.green[10] }}>📏</div>
+            <div style={{ ...styles.categoryIcon, backgroundColor: referenceColors.green['10'] }}>📏</div>
             <h4 style={styles.categoryTitle}>Spacing</h4>
             <ul style={styles.categoryList}>
               <li>4px increments</li>
@@ -375,7 +375,7 @@ export const ArchitectureShowcase: React.FC = () => {
             </ul>
           </div>
           <div style={styles.categoryCard}>
-            <div style={{ ...styles.categoryIcon, backgroundColor: brandColors.purple[10] }}>🔤</div>
+            <div style={{ ...styles.categoryIcon, backgroundColor: referenceColors.purple['10'] }}>🔤</div>
             <h4 style={styles.categoryTitle}>Typography</h4>
             <ul style={styles.categoryList}>
               <li>Font family: Plain</li>
@@ -385,7 +385,7 @@ export const ArchitectureShowcase: React.FC = () => {
             </ul>
           </div>
           <div style={styles.categoryCard}>
-            <div style={{ ...styles.categoryIcon, backgroundColor: brandColors.yellow[10] }}>⬜</div>
+            <div style={{ ...styles.categoryIcon, backgroundColor: referenceColors.yellow['10'] }}>⬜</div>
             <h4 style={styles.categoryTitle}>Radius & Shadow</h4>
             <ul style={styles.categoryList}>
               <li>Radius: 2-24px, full</li>
@@ -436,7 +436,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   // Header
   headerSection: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
     padding: '32px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -445,14 +445,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '28px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '12px',
   },
   pageDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 375,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '24px',
     maxWidth: '800px',
   },
@@ -462,20 +462,20 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '8px',
   },
   sectionDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 375,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     marginBottom: '24px',
   },
 
   // Diagram Section
   diagramSection: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
     padding: '32px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -501,16 +501,16 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
   },
   brandLayer: {
-    backgroundColor: brandColors.blue[10],
-    borderColor: brandColors.blue[20],
+    backgroundColor: referenceColors.blue['10'],
+    borderColor: systemColors.light['background-information'],
   },
   semanticLayer: {
-    backgroundColor: brandColors.green[10],
-    borderColor: brandColors.green[20],
+    backgroundColor: referenceColors.green['10'],
+    borderColor: systemColors.light['background-success'],
   },
   componentLayer: {
-    backgroundColor: brandColors.purple[10],
-    borderColor: brandColors.purple[20],
+    backgroundColor: referenceColors.purple['10'],
+    borderColor: referenceColors.purple['20'],
   },
   layerHeader: {
     display: 'flex',
@@ -522,8 +522,8 @@ const styles: Record<string, React.CSSProperties> = {
     width: '28px',
     height: '28px',
     borderRadius: '50%',
-    backgroundColor: brandColors.gray[90],
-    color: brandColors.white,
+    backgroundColor: systemColors.light['content-primary'],
+    color: systemColors.light['background-base'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -534,12 +534,12 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '18px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   layerSubtitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     marginLeft: '40px',
     marginBottom: '12px',
   },
@@ -553,7 +553,7 @@ const styles: Record<string, React.CSSProperties> = {
   tokenExample: {
     fontFamily: '"SF Mono", "Monaco", "Inconsolata", monospace',
     fontSize: '12px',
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     backgroundColor: 'rgba(255,255,255,0.7)',
     padding: '4px 8px',
     borderRadius: '4px',
@@ -565,7 +565,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '6px',
     marginLeft: '40px',
     fontSize: '12px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   fileIcon: {
     fontSize: '14px',
@@ -582,7 +582,7 @@ const styles: Record<string, React.CSSProperties> = {
   arrowLabel: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '11px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     marginTop: '-8px',
   },
 
@@ -590,49 +590,49 @@ const styles: Record<string, React.CSSProperties> = {
   detailsPanel: {
     marginTop: '24px',
     padding: '24px',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: '8px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   detailsTitle: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '8px',
   },
   detailsDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '20px',
     marginBottom: '16px',
   },
   codeBlock: {
     borderRadius: '8px',
     overflow: 'hidden',
-    backgroundColor: brandColors.gray[90],
+    backgroundColor: systemColors.light['content-primary'],
   },
   codeHeader: {
     padding: '8px 16px',
-    backgroundColor: brandColors.gray[80],
+    backgroundColor: systemColors.light['background-raised-inverse'],
     fontFamily: '"SF Mono", "Monaco", "Inconsolata", monospace',
     fontSize: '12px',
-    color: brandColors.gray[40],
+    color: systemColors.light['border-default'],
   },
   code: {
     padding: '16px',
     margin: 0,
     fontFamily: '"SF Mono", "Monaco", "Inconsolata", monospace',
     fontSize: '13px',
-    color: brandColors.gray[30],
+    color: referenceColors.gray['30'],
     lineHeight: '20px',
     overflow: 'auto',
   },
 
   // Example Section
   exampleSection: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
     padding: '32px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -648,9 +648,9 @@ const styles: Record<string, React.CSSProperties> = {
     flex: '1 1 200px',
     minWidth: '180px',
     padding: '16px',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: '8px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   stepHeader: {
     display: 'flex',
@@ -662,8 +662,8 @@ const styles: Record<string, React.CSSProperties> = {
     width: '24px',
     height: '24px',
     borderRadius: '50%',
-    backgroundColor: brandColors.blue[60],
-    color: brandColors.white,
+    backgroundColor: systemColors.light['content-brand'],
+    color: systemColors.light['background-base'],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -674,7 +674,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   stepContent: {
     display: 'flex',
@@ -684,8 +684,8 @@ const styles: Record<string, React.CSSProperties> = {
   stepCode: {
     fontFamily: '"SF Mono", "Monaco", "Inconsolata", monospace',
     fontSize: '11px',
-    color: brandColors.gray[70],
-    backgroundColor: brandColors.white,
+    color: referenceColors.gray['70'],
+    backgroundColor: systemColors.light['background-base'],
     padding: '6px 8px',
     borderRadius: '4px',
     wordBreak: 'break-all',
@@ -694,7 +694,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     fontSize: '24px',
-    color: brandColors.gray[40],
+    color: systemColors.light['border-default'],
     flexShrink: 0,
   },
   colorPreview: {
@@ -702,18 +702,18 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '8px',
     fontSize: '12px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
   colorSwatch: {
     width: '20px',
     height: '20px',
     borderRadius: '4px',
-    border: `1px solid ${brandColors.gray[30]}`,
+    border: `1px solid ${referenceColors.gray['30']}`,
   },
   previewButton: {
     padding: '6px 16px',
-    backgroundColor: brandColors.blue[60],
-    color: brandColors.white,
+    backgroundColor: systemColors.light['content-brand'],
+    color: systemColors.light['background-base'],
     border: 'none',
     borderRadius: '16px',
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -724,7 +724,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   // File Structure
   structureSection: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
     padding: '32px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -743,26 +743,26 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '16px',
   },
   folderName: {
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     fontWeight: 500,
   },
   fileName: {
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
   },
   treeLabel: {
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     fontSize: '11px',
     marginLeft: '8px',
   },
   treeDesc: {
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     fontSize: '11px',
     marginLeft: '8px',
   },
 
   // Categories
   categoriesSection: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
     padding: '32px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -774,7 +774,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   categoryCard: {
     padding: '20px',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: '8px',
     textAlign: 'center',
   },
@@ -792,7 +792,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '8px',
   },
   categoryList: {
@@ -801,14 +801,14 @@ const styles: Record<string, React.CSSProperties> = {
     margin: 0,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '22px',
     textAlign: 'left',
   },
 
   // Benefits
   benefitsSection: {
-    backgroundColor: brandColors.gray[90],
+    backgroundColor: systemColors.light['content-primary'],
     borderRadius: '12px',
     padding: '32px',
   },
@@ -819,7 +819,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   benefitCard: {
     padding: '20px',
-    backgroundColor: brandColors.gray[80],
+    backgroundColor: systemColors.light['background-raised-inverse'],
     borderRadius: '8px',
   },
   benefitIcon: {
@@ -831,13 +831,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 600,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     marginBottom: '8px',
   },
   benefitDesc: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: brandColors.gray[40],
+    color: systemColors.light['border-default'],
     lineHeight: '18px',
   },
 };

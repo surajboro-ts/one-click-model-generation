@@ -55,7 +55,7 @@
 }
 
 .page .dismissButton:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
 }
 
@@ -129,7 +129,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -139,7 +139,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   margin: 0;
   word-wrap: break-word;
 }
@@ -149,7 +149,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-md);
-  color: var(--color-brand-blue-60);
+  color: var(--rd-sys-color-content-brand);
   background: none;
   border: none;
   padding: 0;
@@ -164,7 +164,7 @@
 }
 
 .link:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
   border-radius: var(--radius-xs);
 }
@@ -174,7 +174,7 @@
   align-items: center;
   justify-content: center;
   padding: 3px var(--spacing-3);
-  background-color: var(--color-brand-white);
+  background-color: var(--rd-sys-color-background-base);
   border: none;
   border-radius: var(--radius-xl);
   cursor: pointer;
@@ -182,18 +182,18 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-sm);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   letter-spacing: -0.072px;
   transition: background-color var(--duration-fast) var(--easing-standard);
   white-space: nowrap;
 }
 
 .actionButton:hover {
-  background-color: var(--color-brand-gray-10);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .actionButton:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
 }
 
@@ -217,7 +217,7 @@
 }
 
 .dismissButtonSmall:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: 2px;
 }
 

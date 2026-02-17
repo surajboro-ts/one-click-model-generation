@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, SearchInput, Tabs, Select } from '../components';
 import { Icon } from '../components/icons';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors } from '../tokens/colors';
 
 // === TYPES ===
 interface WatchlistItem {
@@ -728,7 +728,7 @@ const tableStyles: Record<string, React.CSSProperties> = {
     width: '24px',
     height: '24px',
     borderRadius: '50%',
-    backgroundColor: brandColors.blue[60],
+    backgroundColor: systemColors.light['content-brand'],
     color: '#FFFFFF',
     display: 'flex',
     alignItems: 'center',

@@ -13,7 +13,7 @@
 .label {
   font-size: var(--font-size-xs, 12px);
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-gray-70, #484D56);
+  color: var(--rd-sys-color-content-primary);
 }
 
 /* Input wrapper */
@@ -27,41 +27,41 @@
   width: 200px;
   height: 36px;
   padding: var(--spacing-2, 8px) 36px var(--spacing-2, 8px) var(--spacing-3, 12px);
-  border: 1px solid var(--color-brand-gray-30, #DADCE0);
+  border: 1px solid var(--rd-sys-color-border-default);
   border-radius: var(--radius-md, 6px);
   font-family: inherit;
   font-size: var(--font-size-sm, 14px);
-  color: var(--color-brand-gray-90, #1D1F26);
-  background-color: var(--color-brand-white, #ffffff);
+  color: var(--rd-sys-color-content-primary);
+  background-color: var(--rd-sys-color-background-base);
   transition: border-color var(--duration-fast, 150ms) var(--easing-standard, ease),
               box-shadow var(--duration-fast, 150ms) var(--easing-standard, ease);
 }
 
 .input:hover {
-  border-color: var(--color-brand-gray-40, #B3B8C1);
+  border-color: var(--rd-sys-color-border-default);
 }
 
 .input:focus {
   outline: none;
-  border-color: var(--color-brand-blue-60, #2770EF);
+  border-color: var(--rd-sys-color-border-brand);
   box-shadow: 0 0 0 3px rgba(39, 112, 239, 0.12);
 }
 
 .input::placeholder {
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .inputError {
-  border-color: var(--color-brand-red-60, #E22B3D);
+  border-color: var(--rd-sys-color-border-failure);
 }
 
 .inputError:focus {
-  border-color: var(--color-brand-red-60, #E22B3D);
+  border-color: var(--rd-sys-color-border-failure);
   box-shadow: 0 0 0 3px rgba(226, 43, 61, 0.12);
 }
 
 .inputDisabled {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -78,7 +78,7 @@
   padding: 0;
   border: none;
   background: none;
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
   cursor: pointer;
   border-radius: var(--radius-sm, 4px);
   transition: color var(--duration-fast, 150ms) var(--easing-standard, ease),
@@ -86,8 +86,8 @@
 }
 
 .calendarButton:hover {
-  color: var(--color-brand-gray-80, #333740);
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  color: var(--rd-sys-color-content-primary);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .calendarIcon {
@@ -102,8 +102,8 @@
   left: 0;
   margin-top: var(--spacing-1, 4px);
   padding: var(--spacing-4, 16px);
-  background-color: var(--color-brand-white, #ffffff);
-  border: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  background-color: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-divider);
   border-radius: var(--radius-lg, 8px);
   box-shadow: var(--shadow-lg, 0 4px 16px rgba(0, 0, 0, 0.12));
   z-index: var(--z-index-dropdown, 100);
@@ -120,7 +120,7 @@
 .monthYear {
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
 }
 
 /* Clickable header button */
@@ -130,7 +130,7 @@
   background: none;
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
   cursor: pointer;
   border-radius: var(--radius-sm, 4px);
   transition: background-color var(--duration-fast, 150ms) var(--easing-standard, ease),
@@ -138,8 +138,8 @@
 }
 
 .headerButton:hover {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
-  color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--rd-sys-color-background-sunken);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .navButton {
@@ -150,7 +150,7 @@
   height: 28px;
   border: none;
   background: none;
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
   cursor: pointer;
   border-radius: var(--radius-sm, 4px);
   transition: background-color var(--duration-fast, 150ms) var(--easing-standard, ease),
@@ -158,8 +158,8 @@
 }
 
 .navButton:hover {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
-  color: var(--color-brand-gray-80, #333740);
+  background-color: var(--rd-sys-color-background-sunken);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .navButton:disabled {
@@ -184,7 +184,7 @@
   text-align: center;
   font-size: 11px;
   font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-brand-gray-50, #777E8B);
+  color: var(--rd-sys-color-content-tertiary);
   text-transform: uppercase;
 }
 
@@ -203,7 +203,7 @@
   height: var(--spacing-8, 32px);
   font-size: 13px;
   font-weight: var(--font-weight-regular, 400);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
   background: none;
   border: none;
   border-radius: var(--radius-full, 50%);
@@ -213,25 +213,25 @@
 }
 
 .day:hover {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .dayOtherMonth {
-  color: var(--color-brand-gray-40, #B3B8C1);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .dayToday {
   font-weight: var(--font-weight-semibold, 600);
-  border: 1px solid var(--color-brand-blue-60, #2770EF);
+  border: 1px solid var(--rd-sys-color-border-brand);
 }
 
 .daySelected {
-  background-color: var(--color-brand-blue-60, #2770EF);
-  color: var(--color-brand-white, #ffffff);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 .daySelected:hover {
-  background-color: var(--color-brand-blue-70, #1E5BBB);
+  background-color: var(--rd-comp-color-button-primary-hover);
 }
 
 .dayDisabled {
@@ -250,16 +250,16 @@
 .underlineIcon {
   width: var(--font-size-xs, 12px);
   height: var(--font-size-xs, 12px);
-  color: var(--color-brand-red-60, #E22B3D);
+  color: var(--rd-sys-color-content-failure);
 }
 
 .underlineText {
   font-size: var(--font-size-xs, 12px);
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
 }
 
 .underlineTextError {
-  color: var(--color-brand-red-60, #E22B3D);
+  color: var(--rd-sys-color-content-failure);
 }
 
 /* Months Grid */
@@ -277,7 +277,7 @@
   height: 40px;
   font-size: 13px;
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
   background: none;
   border: none;
   border-radius: var(--radius-md, 6px);
@@ -287,20 +287,20 @@
 }
 
 .monthCell:hover {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .monthCellCurrent {
-  border: 1px solid var(--color-brand-blue-60, #2770EF);
+  border: 1px solid var(--rd-sys-color-border-brand);
 }
 
 .monthCellSelected {
-  background-color: var(--color-brand-blue-60, #2770EF);
-  color: var(--color-brand-white, #ffffff);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 .monthCellSelected:hover {
-  background-color: var(--color-brand-blue-70, #1E5BBB);
+  background-color: var(--rd-comp-color-button-primary-hover);
 }
 
 /* Years Grid */
@@ -318,7 +318,7 @@
   height: 40px;
   font-size: 13px;
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
   background: none;
   border: none;
   border-radius: var(--radius-md, 6px);
@@ -328,18 +328,18 @@
 }
 
 .yearCell:hover {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .yearCellCurrent {
-  border: 1px solid var(--color-brand-blue-60, #2770EF);
+  border: 1px solid var(--rd-sys-color-border-brand);
 }
 
 .yearCellSelected {
-  background-color: var(--color-brand-blue-60, #2770EF);
-  color: var(--color-brand-white, #ffffff);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 .yearCellSelected:hover {
-  background-color: var(--color-brand-blue-70, #1E5BBB);
+  background-color: var(--rd-comp-color-button-primary-hover);
 }

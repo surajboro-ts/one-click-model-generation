@@ -6,8 +6,8 @@
 .card {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-brand-white, #ffffff);
-  border: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  background-color: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-divider);
   border-radius: var(--radius-lg, 8px);
   overflow: hidden;
   transition: box-shadow var(--duration-normal, 200ms) var(--easing-standard, ease),
@@ -15,7 +15,7 @@
 }
 
 .card:focus-visible {
-  outline: 2px solid var(--color-brand-blue-60, #2770EF);
+  outline: 2px solid var(--rd-sys-color-border-focus);
   outline-offset: var(--spacing-1, 2px);
 }
 
@@ -25,12 +25,12 @@
 }
 
 .interactive:hover {
-  border-color: var(--color-brand-gray-30, #DADCE0);
+  border-color: var(--rd-sys-color-border-default);
   box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.08));
 }
 
 .interactive:active {
-  border-color: var(--color-brand-blue-60, #2770EF);
+  border-color: var(--rd-sys-color-border-brand);
 }
 
 /* No border variant */
@@ -40,8 +40,8 @@
 
 /* Selected state */
 .selected {
-  border-color: var(--color-brand-blue-60, #2770EF);
-  box-shadow: 0 0 0 1px var(--color-brand-blue-60, #2770EF);
+  border-color: var(--rd-sys-color-border-brand);
+  box-shadow: 0 0 0 1px var(--rd-sys-color-border-focus);
 }
 
 /* Disabled state */
@@ -57,13 +57,13 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4, 16px);
-  border-bottom: 1px solid var(--color-brand-gray-20, #E9EAEC);
+  border-bottom: 1px solid var(--rd-sys-color-border-divider);
 }
 
 .headerTitle {
   font-size: var(--font-size-md, 16px);
   font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-brand-gray-90, #1D1F26);
+  color: var(--rd-sys-color-content-primary);
   line-height: 1.4;
   margin: 0;
 }
@@ -71,7 +71,7 @@
 .headerSubtitle {
   font-size: var(--font-size-xs, 12px);
   font-weight: var(--font-weight-regular, 400);
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
   margin-top: var(--spacing-1, 2px);
 }
 
@@ -99,8 +99,8 @@
   justify-content: flex-end;
   gap: var(--spacing-2, 8px);
   padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
-  border-top: 1px solid var(--color-brand-gray-20, #E9EAEC);
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  border-top: 1px solid var(--rd-sys-color-border-divider);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .footerLeft {

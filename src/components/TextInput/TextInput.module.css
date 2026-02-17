@@ -12,21 +12,21 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .input {
   display: flex;
   align-items: center;
   padding: 10px 12px;
-  background-color: var(--color-brand-white);
-  border: 1px solid var(--color-brand-gray-30);
+  background-color: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-default);
   border-radius: var(--radius-lg);
   font-family: var(--font-family-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-md);
-  color: var(--color-brand-gray-90);
+  color: var(--rd-sys-color-content-primary);
   transition: border-color var(--duration-fast) var(--easing-standard),
               box-shadow var(--duration-fast) var(--easing-standard);
   outline: none;
@@ -34,25 +34,25 @@
 }
 
 .input::placeholder {
-  color: var(--color-brand-gray-50);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .input:focus {
-  border-color: var(--color-brand-blue-60);
+  border-color: var(--rd-sys-color-border-brand);
   box-shadow: var(--shadow-focus-ring);
 }
 
 .input:hover:not(:focus):not(:disabled) {
-  border-color: var(--color-brand-gray-40);
+  border-color: var(--rd-sys-color-border-default);
 }
 
 /* Error State */
 .error .input {
-  border-color: var(--color-brand-red-60);
+  border-color: var(--rd-sys-color-border-failure);
 }
 
 .error .input:focus {
-  border-color: var(--color-brand-red-60);
+  border-color: var(--rd-sys-color-border-failure);
   box-shadow: var(--shadow-focus-ring-error);
 }
 
@@ -61,16 +61,16 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-xs);
-  color: var(--color-brand-red-60);
+  color: var(--rd-sys-color-content-failure);
 }
 
 /* Disabled State */
 .disabled .label {
-  color: var(--color-brand-gray-40);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .disabled .input {
   opacity: 0.4;
   cursor: not-allowed;
-  background-color: var(--color-brand-gray-10);
+  background-color: var(--rd-sys-color-background-sunken);
 }

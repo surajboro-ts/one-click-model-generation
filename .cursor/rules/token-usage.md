@@ -7,13 +7,13 @@ globs: ["src/**/*.tsx", "src/**/*.ts", "src/**/*.css"]
 
 **NEVER hard-code colors, spacing, typography, or other visual values.** Always use design tokens.
 
-## Token Hierarchy
+## Token Hierarchy (3-Layer Architecture)
 
 ```
-Brand Tokens (primitives) → Semantic Tokens → Component Tokens
-     ↓                           ↓                  ↓
-  brandColors              statusColors        componentSpacing
-  (raw values)          (usage context)      (component-specific)
+Reference Tokens (primitives) → System Tokens (semantic) → Component Tokens
+     ↓                              ↓                          ↓
+  referenceColors              systemColors              rdComponentColors
+  (mode-agnostic)           (mode-aware light/dark)    (per-component colors)
 ```
 
 ---
@@ -22,57 +22,70 @@ Brand Tokens (primitives) → Semantic Tokens → Component Tokens
 
 ### Import Path
 ```typescript
-import { brandColors } from '../../tokens/colors/brand';
-import { statusColors, textColors, backgroundColors } from '../../tokens/colors';
+import { systemColors, referenceColors, rdComponentColors } from '../../tokens/colors';
 ```
 
-### Brand Colors (primitives)
+### System Colors (preferred for most uses)
 
-Use for custom styling when semantic tokens don't apply:
+Mode-aware tokens organized into 3 groups:
 
-| Scale | Usage | Example |
-|-------|-------|---------|
-| `brandColors.blue[60]` | Primary brand color | `#2770EF` |
-| `brandColors.gray[90]` | Default text | `#1D232F` |
-| `brandColors.gray[60]` | Secondary text | `#777E8B` |
-| `brandColors.gray[50]` | Disabled/placeholder | `#A5ACB9` |
-| `brandColors.gray[20]` | Borders, dividers | `#EAEDF2` |
-| `brandColors.gray[10]` | Page background | `#F6F8FA` |
-| `brandColors.white` | Card/surface background | `#FFFFFF` |
+| Group | Example Token | Light Value | Usage |
+|-------|--------------|-------------|-------|
+| **background-base** | `systemColors.light['background-base']` | `#FFFFFF` | Page/card surfaces |
+| **background-sunken** | `systemColors.light['background-sunken']` | `#F6F8FA` | Page background |
+| **background-subtle** | `systemColors.light['background-subtle']` | `#EAEDF2` | Muted fills |
+| **background-brand** | `systemColors.light['background-brand']` | `#2770EF` | Primary brand bg |
+| **content-primary** | `systemColors.light['content-primary']` | `#1D232F` | Default text |
+| **content-secondary** | `systemColors.light['content-secondary']` | `#777E8B` | Secondary text |
+| **content-tertiary** | `systemColors.light['content-tertiary']` | `#A5ACB9` | Disabled/placeholder |
+| **content-brand** | `systemColors.light['content-brand']` | `#2770EF` | Brand text/links |
+| **content-success** | `systemColors.light['content-success']` | `#06BF7F` | Success text |
+| **content-failure** | `systemColors.light['content-failure']` | `#E22B3D` | Error text |
+| **border-default** | `systemColors.light['border-default']` | `#C0C6CF` | Default borders |
+| **border-divider** | `systemColors.light['border-divider']` | `#EAEDF2` | Dividers |
+| **border-focus** | `systemColors.light['border-focus']` | `#2770EF` | Focus rings |
 
-### Color Scale Reference (10-100)
+### Reference Colors (primitives)
 
-| Shade | Blue | Gray | Green | Red | Yellow |
-|-------|------|------|-------|-----|--------|
-| 100 | Darkest | `#000000` | Darkest | Darkest | Darkest |
-| 90 | Dark | `#1D232F` (text) | Dark | Dark | Dark |
-| 70 | Medium-dark | `#4A515E` | Medium | Medium | Medium |
-| 60 | **Primary** | `#777E8B` (muted text) | **Success** | **Error** | **Warning** |
-| 50 | Medium | `#A5ACB9` (disabled) | Medium-light | Medium | Medium |
-| 40 | Light | `#C0C6CF` (borders) | Light | Light | Light |
-| 20 | Very light | `#EAEDF2` (dividers) | Very light | Very light | Very light |
-| 10 | Lightest | `#F6F8FA` (bg) | Background | Background | Background |
+Mode-agnostic tonal scales for custom styling:
+
+```typescript
+referenceColors.gray['90']    // #1D232F
+referenceColors.brand['60']   // #2770EF
+referenceColors.red['60']     // #E22B3D
+referenceColors.purple['60']  // #8C62F5
+referenceColors.black          // #000000
+referenceColors.white          // #FFFFFF
+```
+
+### Component Colors
+
+Per-component tokens:
+```typescript
+rdComponentColors.light['button-primary-default']   // #2770EF
+rdComponentColors.light['button-primary-hover']      // #2359B6
+rdComponentColors.light['toggle-track-on']           // #2770EF
+rdComponentColors.light['chip-attribute-default']    // #DEE8FA
+```
 
 ### Status Colors
 
-Use for feedback states:
-
 ```typescript
-// Success states
-backgroundColor: brandColors.green[10]  // Light green background
-color: brandColors.green[60]            // Green text/icon
+// Success
+backgroundColor: systemColors.light['background-success']   // #E0F8EF
+color: systemColors.light['content-success']                 // #06BF7F
 
-// Warning states
-backgroundColor: brandColors.yellow[10]
-color: brandColors.yellow[70]           // Darker for contrast
+// Warning
+backgroundColor: systemColors.light['background-warning']    // #FFF8E5
+color: systemColors.light['content-warning']                 // #FCC838
 
-// Error states
-backgroundColor: brandColors.red[10]
-color: brandColors.red[60]
+// Error
+backgroundColor: systemColors.light['background-failure']    // #FFEBEC
+color: systemColors.light['content-failure']                 // #E22B3D
 
-// Info states
-backgroundColor: brandColors.blue[10]
-color: brandColors.blue[60]
+// Info
+backgroundColor: systemColors.light['background-information'] // #DEE8FA
+color: systemColors.light['content-information']              // #2770EF
 ```
 
 ---
@@ -114,21 +127,10 @@ spacing.xl   // 32px - extra large
 ```typescript
 import { componentSpacing } from '../../tokens/spacing';
 
-// Button padding
 componentSpacing.button.medium.paddingX  // 16px
-componentSpacing.button.medium.paddingY  // 8px
-
-// Modal spacing
 componentSpacing.modal.padding           // 24px
-componentSpacing.modal.headerPaddingY    // 20px
-
-// Form spacing
-componentSpacing.form.fieldGap           // 20px between fields
-componentSpacing.form.sectionGap         // 32px between sections
-
-// Page layout
+componentSpacing.form.fieldGap           // 20px
 componentSpacing.page.paddingX           // 24px
-componentSpacing.page.sectionGap         // 32px
 ```
 
 ---
@@ -140,62 +142,19 @@ componentSpacing.page.sectionGap         // 32px
 import { fontFamily, fontSize, fontWeight, lineHeight, v2TextStyles } from '../../tokens/typography';
 ```
 
-### Font Family
-```typescript
-fontFamily.primary  // "Plain" font stack
-fontFamily.mono     // "SF Mono" font stack for code
-```
-
 ### V2 Text Styles (Recommended)
-
-Use these composite styles for consistent typography:
 
 ```typescript
 import { v2TextStyles } from '../../tokens/typography';
 
-// Page titles
 style={{ ...v2TextStyles.pageTitle }}    // 24px, semibold
-
-// Modal titles
 style={{ ...v2TextStyles.modalTitle }}   // 20px, medium
-
-// Section headers
 style={{ ...v2TextStyles.sectionLabel }} // 18px, medium
-
-// Content labels
 style={{ ...v2TextStyles.contentLabel }} // 16px, medium
-
-// Body text
 style={{ ...v2TextStyles.bodyNormal }}   // 14px, regular
-
-// Small text
 style={{ ...v2TextStyles.footnote }}     // 12px, regular
-style={{ ...v2TextStyles.caption }}      // 12px, regular
-
-// Uppercase labels
-style={{ ...v2TextStyles.overline }}     // 12px, uppercase, wider tracking
+style={{ ...v2TextStyles.overline }}     // 12px, uppercase
 ```
-
-### Font Size Scale
-
-| Token | Size | Use Case |
-|-------|------|----------|
-| `fontSize.xs` | 12px | Footnotes, captions, overlines |
-| `fontSize.sm` | 14px | Body text, labels |
-| `fontSize.md` | 16px | Large body, content labels |
-| `fontSize.lg` | 18px | Section labels |
-| `fontSize.xl` | 20px | Modal titles |
-| `fontSize['2xl']` | 24px | Page titles |
-| `fontSize['3xl']` | 32px | Headlines |
-
-### Font Weight
-
-| Token | Weight | Use Case |
-|-------|--------|----------|
-| `fontWeight.light` | 375 | Body text |
-| `fontWeight.regular` | 400 | Default |
-| `fontWeight.medium` | 500 | Labels, buttons |
-| `fontWeight.semibold` | 600 | Titles, headings |
 
 ---
 
@@ -206,23 +165,28 @@ style={{ ...v2TextStyles.overline }}     // 12px, uppercase, wider tracking
 ```css
 /* ComponentName.module.css */
 .container {
-  color: var(--color-text-default);
-  background-color: var(--color-bg-surface);
+  color: var(--rd-sys-color-content-primary);
+  background-color: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-divider);
   padding: var(--spacing-4);
   border-radius: var(--radius-md);
+}
+
+.button {
+  background-color: var(--rd-comp-color-button-primary-default);
+  color: var(--rd-comp-color-button-primary-on-color-default);
 }
 ```
 
 ### Use TypeScript Imports in Inline Styles
 
 ```typescript
-// For prototype styling
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 
 const styles = {
   container: {
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     padding: `${spacing.F}px`,
     borderRadius: '6px',
   },
@@ -233,10 +197,10 @@ const styles = {
 
 | Scenario | Use |
 |----------|-----|
-| CSS Module files | CSS Variables (`var(--...)`) |
-| Inline styles in prototypes | TypeScript imports |
+| CSS Module files | CSS Variables (`var(--rd-sys-color-...)`) |
+| Inline styles in prototypes | TypeScript imports (`systemColors.light[...]`) |
 | Dynamic/conditional values | TypeScript imports |
-| Theme-aware styling | CSS Variables |
+| Theme-aware styling | CSS Variables (automatically switch with theme) |
 
 ---
 
@@ -245,65 +209,37 @@ const styles = {
 ### Card Container
 ```typescript
 const cardStyle = {
-  backgroundColor: brandColors.white,
-  border: `1px solid ${brandColors.gray[20]}`,
+  backgroundColor: systemColors.light['background-base'],
+  border: `1px solid ${systemColors.light['border-divider']}`,
   borderRadius: '8px',
-  padding: `${spacing.F}px`,  // 24px
-};
-```
-
-### Modal Container
-```typescript
-const modalStyle = {
-  backgroundColor: brandColors.white,
-  borderRadius: '6px',
-  boxShadow: '0px 24px 32px rgba(25, 35, 49, 0.16)',
   padding: `${spacing.F}px`,
-};
-```
-
-### Form Field Group
-```typescript
-const fieldGroupStyle = {
-  marginBottom: `${spacing.E}px`,  // 20px
-};
-
-const labelStyle = {
-  ...v2TextStyles.contentLabelSubhead,
-  color: brandColors.gray[90],
-  marginBottom: `${spacing.B}px`,  // 8px
 };
 ```
 
 ### Page Layout
 ```typescript
 const pageStyle = {
-  backgroundColor: brandColors.gray[10],
-  padding: `${spacing.F}px ${spacing.H}px`,  // 24px 32px
+  backgroundColor: systemColors.light['background-sunken'],
+  padding: `${spacing.F}px ${spacing.H}px`,
   minHeight: '100vh',
-};
-
-const contentStyle = {
-  backgroundColor: brandColors.white,
-  borderRadius: '8px',
-  padding: `${spacing.F}px`,
 };
 ```
 
-### Table Row
+### Form Field Label
 ```typescript
-const rowStyle = {
-  borderBottom: `1px solid ${brandColors.gray[20]}`,
-  padding: `${spacing.C}px ${spacing.D}px`,  // 12px 16px
+const labelStyle = {
+  ...v2TextStyles.contentLabelSubhead,
+  color: systemColors.light['content-primary'],
+  marginBottom: `${spacing.B}px`,
 };
 ```
 
 ### Status Badge
 ```typescript
 const successBadge = {
-  backgroundColor: brandColors.green[10],
-  color: brandColors.green[60],
-  padding: `${spacing.A}px ${spacing.B}px`,  // 4px 8px
+  backgroundColor: systemColors.light['background-success'],
+  color: systemColors.light['content-success'],
+  padding: `${spacing.A}px ${spacing.B}px`,
   borderRadius: '4px',
 };
 ```
@@ -315,17 +251,21 @@ const successBadge = {
 ```typescript
 // BAD - Hard-coded values
 {
-  color: '#1D232F',           // Use brandColors.gray[90]
-  padding: '16px',            // Use `${spacing.D}px`
-  fontSize: '14px',           // Use fontSize.sm
-  backgroundColor: '#F6F8FA', // Use brandColors.gray[10]
+  color: '#1D232F',
+  backgroundColor: '#F6F8FA',
 }
 
-// GOOD - Token usage
+// BAD - Old token imports (deprecated)
+import { brandColors } from '../../tokens/colors/brand';
 {
   color: brandColors.gray[90],
-  padding: `${spacing.D}px`,
-  fontSize: `${fontSize.sm}px`,
   backgroundColor: brandColors.gray[10],
+}
+
+// GOOD - New token system
+import { systemColors } from '../../tokens/colors';
+{
+  color: systemColors.light['content-primary'],
+  backgroundColor: systemColors.light['background-sunken'],
 }
 ```

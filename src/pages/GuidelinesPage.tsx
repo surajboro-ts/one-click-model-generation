@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 
 // Guideline sections data
 const GUIDELINES_DATA = {
@@ -360,7 +360,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   // Header
   headerSection: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
     padding: '32px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -376,14 +376,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '32px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '12px',
   },
   pageDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 375,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     lineHeight: '24px',
     maxWidth: '600px',
     margin: 0,
@@ -394,13 +394,13 @@ const styles: Record<string, React.CSSProperties> = {
   },
   actionButton: {
     padding: '8px 16px',
-    backgroundColor: brandColors.gray[10],
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-sunken'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: '8px',
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 500,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     cursor: 'pointer',
     transition: 'all 150ms ease',
   },
@@ -415,7 +415,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     margin: 0,
@@ -426,7 +426,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '16px',
   },
   quickRefCard: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '10px',
     padding: '20px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -441,13 +441,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   quickRefValue: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
     fontWeight: 375,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
 
   // Guidelines Grid
@@ -459,7 +459,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   // Guideline Card
   guidelineCard: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '12px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
     overflow: 'hidden',
@@ -469,7 +469,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'flex-start',
     gap: '16px',
     padding: '24px',
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   cardIcon: {
     fontSize: '32px',
@@ -479,14 +479,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '4px',
   },
   cardDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 375,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     margin: 0,
   },
 
@@ -496,7 +496,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
   },
   accordionItem: {
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   accordionHeader: {
     width: '100%',
@@ -513,13 +513,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '15px',
     fontWeight: 500,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   accordionIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     transition: 'transform 200ms ease',
   },
   accordionContent: {
@@ -534,19 +534,19 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 375,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '22px',
     margin: 0,
   },
   boldText: {
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   bulletPoint: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 375,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '22px',
     paddingLeft: '8px',
   },
@@ -554,24 +554,24 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 375,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '22px',
   },
   inlineCode: {
     fontFamily: '"SF Mono", Monaco, Inconsolata, monospace',
     fontSize: '13px',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     padding: '2px 6px',
     borderRadius: '4px',
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
   },
   codeBlock: {
     fontFamily: '"SF Mono", Monaco, Inconsolata, monospace',
     fontSize: '13px',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     padding: '12px 16px',
     borderRadius: '6px',
-    color: brandColors.gray[80],
+    color: systemColors.light['background-raised-inverse'],
     whiteSpace: 'pre-wrap',
     margin: '8px 0',
     lineHeight: '20px',
@@ -583,12 +583,12 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'flex-start',
     gap: '12px',
     padding: '20px',
-    backgroundColor: brandColors.blue[10],
+    backgroundColor: referenceColors.blue['10'],
     borderRadius: '10px',
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 375,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     lineHeight: '22px',
   },
   footerIcon: {

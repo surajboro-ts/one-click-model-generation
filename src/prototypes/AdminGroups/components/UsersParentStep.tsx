@@ -4,7 +4,7 @@ import { Chip } from '../../../components/Chip';
 import { Icon } from '../../../components/icons';
 import { usersParentStyles as styles, formStyles } from '../styles';
 import { users, existingGroups, User } from '../data/mockData';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors } from '../../../tokens/colors';
 
 interface UsersParentStepProps {
   parentGroupId: string;
@@ -90,7 +90,7 @@ export const UsersParentStep: React.FC<UsersParentStepProps> = ({
                 left: '12px',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: brandColors.gray[50],
+                color: systemColors.light['content-tertiary'],
               }}
             />
             <input
@@ -107,7 +107,7 @@ export const UsersParentStep: React.FC<UsersParentStepProps> = ({
                 height: '36px',
                 paddingLeft: '40px',
                 paddingRight: '12px',
-                border: `1px solid ${brandColors.gray[40]}`,
+                border: `1px solid ${systemColors.light['border-default']}`,
                 borderRadius: '6px',
                 fontSize: '14px',
                 outline: 'none',
@@ -125,8 +125,8 @@ export const UsersParentStep: React.FC<UsersParentStepProps> = ({
                 left: 0,
                 right: 0,
                 marginTop: '4px',
-                backgroundColor: brandColors.white,
-                border: `1px solid ${brandColors.gray[20]}`,
+                backgroundColor: systemColors.light['background-base'],
+                border: `1px solid ${systemColors.light['background-subtle']}`,
                 borderRadius: '6px',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                 maxHeight: '200px',
@@ -142,26 +142,26 @@ export const UsersParentStep: React.FC<UsersParentStepProps> = ({
                     style={{
                       padding: '10px 12px',
                       cursor: 'pointer',
-                      borderBottom: `1px solid ${brandColors.gray[10]}`,
+                      borderBottom: `1px solid ${systemColors.light['background-sunken']}`,
                       transition: 'background-color 0.15s ease',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = brandColors.gray[10];
+                      e.currentTarget.style.backgroundColor = systemColors.light['background-sunken'];
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.backgroundColor = 'transparent';
                     }}
                   >
-                    <div style={{ fontSize: '14px', fontWeight: 500, color: brandColors.gray[90] }}>
+                    <div style={{ fontSize: '14px', fontWeight: 500, color: systemColors.light['content-primary'] }}>
                       {user.name}
                     </div>
-                    <div style={{ fontSize: '12px', color: brandColors.gray[50] }}>
+                    <div style={{ fontSize: '12px', color: systemColors.light['content-tertiary'] }}>
                       {user.email}
                     </div>
                   </div>
                 ))
               ) : (
-                <div style={{ padding: '12px', textAlign: 'center', color: brandColors.gray[50], fontSize: '14px' }}>
+                <div style={{ padding: '12px', textAlign: 'center', color: systemColors.light['content-tertiary'], fontSize: '14px' }}>
                   No users found
                 </div>
               )}

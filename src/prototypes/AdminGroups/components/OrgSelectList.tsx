@@ -3,7 +3,7 @@ import { Checkbox } from '../../../components/Checkbox';
 import { Toggle } from '../../../components/Toggle';
 import { Icon } from '../../../components/icons';
 import { orgSelectStyles as styles } from '../styles';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors } from '../../../tokens/colors';
 import { Organization } from '../data/mockData';
 
 interface OrgSelectListProps {
@@ -84,7 +84,7 @@ export const OrgSelectList: React.FC<OrgSelectListProps> = ({
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: brandColors.gray[50],
+              color: systemColors.light['content-tertiary'],
             }}
           />
           <input
@@ -97,7 +97,7 @@ export const OrgSelectList: React.FC<OrgSelectListProps> = ({
               height: '32px',
               paddingLeft: '40px',
               paddingRight: '12px',
-              border: `1px solid ${brandColors.gray[40]}`,
+              border: `1px solid ${systemColors.light['border-default']}`,
               borderRadius: '6px',
               fontSize: '14px',
               outline: 'none',
@@ -137,7 +137,7 @@ export const OrgSelectList: React.FC<OrgSelectListProps> = ({
             <div style={{ 
               textAlign: 'center', 
               padding: '24px',
-              color: brandColors.gray[50],
+              color: systemColors.light['content-tertiary'],
               fontSize: '14px',
             }}>
               {showSelectedOnly ? 'No organizations selected' : 'No organizations found'}

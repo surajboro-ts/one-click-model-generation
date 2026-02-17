@@ -4,7 +4,7 @@
  * Uses Radiant design tokens for consistent styling.
  */
 
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 
 /**
@@ -12,45 +12,45 @@ import { spacing } from '../../tokens/spacing';
  */
 export const colors = {
   // Text colors
-  textPrimary: brandColors.gray[90],     // #1D232F
-  textSecondary: brandColors.gray[60],   // #777E8B
-  textMuted: brandColors.gray[50],       // #A5ACB9
-  textDisabled: brandColors.gray[40],    // #C0C6CF
+  textPrimary: systemColors.light['content-primary'],     // #1D232F
+  textSecondary: systemColors.light['content-secondary'],   // #777E8B
+  textMuted: systemColors.light['content-tertiary'],       // #A5ACB9
+  textDisabled: systemColors.light['border-default'],    // #C0C6CF
   
   // Background colors
-  modalBg: brandColors.white,
+  modalBg: systemColors.light['background-base'],
   overlay: 'rgba(29, 35, 47, 0.5)',
-  hoverBg: brandColors.gray[10],         // #F6F8FA
-  selectedBg: brandColors.gray[10],
-  footerBg: brandColors.gray[10],
+  hoverBg: systemColors.light['background-sunken'],         // #F6F8FA
+  selectedBg: systemColors.light['background-sunken'],
+  footerBg: systemColors.light['background-sunken'],
   
   // Border colors
-  border: brandColors.gray[20],          // #EAEDF2
-  borderHover: brandColors.gray[30],     // #DBDFE7
+  border: systemColors.light['background-subtle'],          // #EAEDF2
+  borderHover: referenceColors.gray['30'],     // #DBDFE7
   
   // Icon colors
-  iconDefault: brandColors.gray[50],     // #A5ACB9
-  iconActive: brandColors.gray[70],      // #4A515E
-  iconBlue: brandColors.blue[60],        // #2770EF
+  iconDefault: systemColors.light['content-tertiary'],     // #A5ACB9
+  iconActive: referenceColors.gray['70'],      // #4A515E
+  iconBlue: systemColors.light['content-brand'],        // #2770EF
   
   // Filter chip colors
-  filterChipBg: brandColors.blue[10],    // #F2F7FF
-  filterChipBorder: brandColors.blue[60], // #2770EF
-  filterChipText: brandColors.blue[60],
+  filterChipBg: referenceColors.blue['10'],    // #F2F7FF
+  filterChipBorder: systemColors.light['content-brand'], // #2770EF
+  filterChipText: systemColors.light['content-brand'],
   
   // Keyboard hint colors
-  kbdBg: brandColors.gray[10],           // #F6F8FA
-  kbdBorder: brandColors.gray[20],       // #EAEDF2
-  kbdText: brandColors.gray[60],         // #777E8B
+  kbdBg: systemColors.light['background-sunken'],           // #F6F8FA
+  kbdBorder: systemColors.light['background-subtle'],       // #EAEDF2
+  kbdText: systemColors.light['content-secondary'],         // #777E8B
   
   // Highlight colors
-  highlightBg: brandColors.yellow[20],   // #FFF8E5
+  highlightBg: systemColors.light['background-warning'],   // #FFF8E5
   
   // Status colors
-  success: brandColors.green[60],        // #06BF7F
-  warning: brandColors.yellow[60],       // #FCC838
-  error: brandColors.red[60],            // #E22B3D
-  info: brandColors.blue[60],            // #2770EF
+  success: systemColors.light['content-success'],        // #06BF7F
+  warning: systemColors.light['content-warning'],       // #FCC838
+  error: systemColors.light['content-failure'],            // #E22B3D
+  info: systemColors.light['content-brand'],            // #2770EF
 };
 
 /**
@@ -167,7 +167,7 @@ export const componentStyles = {
     minWidth: 18,
     height: 18,
     padding: '0 4px',
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     border: `1px solid ${colors.borderHover}`,
     borderRadius: 3,
     fontSize: 11,

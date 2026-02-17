@@ -3,7 +3,7 @@ import { Button } from '../../components/Button';
 import { Checkbox } from '../../components/Checkbox';
 import { Toggle } from '../../components/Toggle';
 import { SearchInput } from '../../components/SearchInput';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../tokens/colors';
 
 /**
  * Filter Dialog Example
@@ -131,7 +131,7 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     position: 'relative',
     height: '600px',
-    backgroundColor: brandColors.gray[30],
+    backgroundColor: referenceColors.gray['30'],
     borderRadius: '12px',
     overflow: 'hidden',
   },
@@ -142,7 +142,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   mockSidebar: {
     width: '200px',
-    backgroundColor: brandColors.gray[90],
+    backgroundColor: systemColors.light['content-primary'],
   },
   mockContent: {
     flex: 1,
@@ -150,7 +150,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   mockHeader: {
     height: '48px',
-    backgroundColor: brandColors.gray[20],
+    backgroundColor: systemColors.light['background-subtle'],
     borderRadius: '4px',
     marginBottom: '12px',
   },
@@ -161,7 +161,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   mockRow: {
     height: '40px',
-    backgroundColor: brandColors.gray[20],
+    backgroundColor: systemColors.light['background-subtle'],
     borderRadius: '4px',
   },
   overlay: {
@@ -174,7 +174,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   dialog: {
     width: '394px',
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '6px',
     boxShadow: '0px 24px 32px rgba(25, 35, 49, 0.16)',
     display: 'flex',
@@ -182,13 +182,13 @@ const styles: Record<string, React.CSSProperties> = {
   },
   header: {
     padding: '20px 24px',
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   title: {
     fontFamily: '"Plain", sans-serif',
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
   },
   body: {
@@ -206,7 +206,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", sans-serif',
     fontSize: '14px',
     fontWeight: 500,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   listActions: {
     display: 'flex',
@@ -215,7 +215,7 @@ const styles: Record<string, React.CSSProperties> = {
   list: {
     height: '200px',
     overflowY: 'auto',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: '6px',
     padding: '8px 0',
   },
@@ -225,16 +225,16 @@ const styles: Record<string, React.CSSProperties> = {
   empty: {
     padding: '24px',
     textAlign: 'center',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     fontSize: '14px',
   },
   toggleRow: {
     paddingTop: '12px',
-    borderTop: `1px solid ${brandColors.gray[20]}`,
+    borderTop: `1px solid ${systemColors.light['background-subtle']}`,
   },
   footer: {
     padding: '20px 24px',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderBottomLeftRadius: '6px',
     borderBottomRightRadius: '6px',
     display: 'flex',

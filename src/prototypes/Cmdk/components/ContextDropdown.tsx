@@ -7,7 +7,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Icon } from '../../../components/icons';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 import type { PageContext } from '../types';
 import { CONTEXT_OPTIONS } from '../data/mockData';
@@ -90,7 +90,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     border: '1px solid rgba(255, 255, 255, 0.2)',
     borderRadius: 6,
-    color: brandColors.white,
+    color: systemColors.light['background-base'],
     fontSize: 13,
     fontWeight: 400,
     cursor: 'pointer',
@@ -108,8 +108,8 @@ const styles: Record<string, React.CSSProperties> = {
     minWidth: 220,
     maxHeight: 320,
     overflowY: 'auto',
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: 8,
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
     zIndex: 100,
@@ -118,20 +118,20 @@ const styles: Record<string, React.CSSProperties> = {
     padding: `${spacing.C}px ${spacing.D}px`, // 12px 16px
     cursor: 'pointer',
     transition: 'background-color 0.1s ease',
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`,
   },
   optionSelected: {
-    backgroundColor: brandColors.green[10],
+    backgroundColor: referenceColors.green['10'],
   },
   optionLabel: {
     fontSize: 14,
     fontWeight: 500,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: 2,
   },
   optionDescription: {
     fontSize: 12,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
   },
 };
 

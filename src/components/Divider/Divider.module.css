@@ -4,7 +4,7 @@
  */
 
 .divider {
-  background-color: var(--color-brand-gray-20, #E9EAEC);
+  background-color: var(--rd-sys-color-background-subtle);
   flex-shrink: 0;
 }
 
@@ -61,5 +61,5 @@
 
 /* Dark background variant */
 .onDarkBg {
-  background-color: var(--color-brand-gray-60, #777E8B);
+  background-color: var(--rd-sys-color-background-inset);
 }

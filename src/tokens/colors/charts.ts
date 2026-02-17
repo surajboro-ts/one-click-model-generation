@@ -1,45 +1,43 @@
 /**
  * Chart Color Tokens
- * 
+ *
  * Dedicated color palette for data visualization.
  * These colors are optimized for accessibility and differentiation.
  */
 
-import { brandColors } from './brand';
+import { referenceColors } from './reference';
 
 /**
  * Primary chart color palette
  * Use these as the main colors for data series
  */
 export const chartPalette = {
-  // Primary data series colors (in order of usage)
   primary: [
-    brandColors.blue[60],    // #2770EF - Primary blue
-    brandColors.teal[60],    // #48D1E0 - Teal
-    brandColors.green[60],   // #06BF7F - Green
-    brandColors.yellow[60],  // #FCC838 - Yellow
-    brandColors.purple[60],  // #8C62F5 - Purple
-    brandColors.orange[60],  // #FF8142 - Orange
-    brandColors.red[60],     // #E22B3D - Red
-    brandColors.gray[60],    // #777E8B - Gray
+    referenceColors.brand['60'],   // #2770EF - Primary blue
+    referenceColors.teal['60'],    // #48D1E0 - Teal
+    referenceColors.green['60'],   // #06BF7F - Green
+    referenceColors.yellow['60'],  // #FCC838 - Yellow
+    referenceColors.purple['60'],  // #8C62F5 - Purple
+    referenceColors.orange['60'],  // #FF8142 - Orange
+    referenceColors.red['60'],     // #E22B3D - Red
+    referenceColors.gray['60'],    // #777E8B - Gray
   ],
 
-  // Extended palette for more data series
   extended: [
-    brandColors.blue[50],
-    brandColors.teal[50],
-    brandColors.green[50],
-    brandColors.yellow[50],
-    brandColors.purple[50],
-    brandColors.orange[50],
-    brandColors.red[50],
-    brandColors.blue[70],
-    brandColors.teal[70],
-    brandColors.green[70],
-    brandColors.yellow[70],
-    brandColors.purple[70],
-    brandColors.orange[70],
-    brandColors.red[70],
+    referenceColors.brand['50'],
+    referenceColors.teal['50'],
+    referenceColors.green['50'],
+    referenceColors.yellow['50'],
+    referenceColors.purple['50'],
+    referenceColors.orange['50'],
+    referenceColors.red['50'],
+    referenceColors.brand['70'],
+    referenceColors.teal['70'],
+    referenceColors.green['70'],
+    referenceColors.yellow['70'],
+    referenceColors.purple['70'],
+    referenceColors.orange['70'],
+    referenceColors.red['70'],
   ],
 } as const;
 
@@ -49,34 +47,34 @@ export const chartPalette = {
  */
 export const sequentialScales = {
   blue: [
-    brandColors.blue[10],
-    brandColors.blue[20],
-    brandColors.blue[30],
-    brandColors.blue[40],
-    brandColors.blue[50],
-    brandColors.blue[60],
-    brandColors.blue[70],
-    brandColors.blue[80],
+    referenceColors.blue['10'],
+    referenceColors.blue['20'],
+    referenceColors.blue['30'],
+    referenceColors.blue['40'],
+    referenceColors.blue['50'],
+    referenceColors.blue['60'],
+    referenceColors.blue['70'],
+    referenceColors.blue['80'],
   ],
   green: [
-    brandColors.green[10],
-    brandColors.green[20],
-    brandColors.green[30],
-    brandColors.green[40],
-    brandColors.green[50],
-    brandColors.green[60],
-    brandColors.green[70],
+    referenceColors.green['10'],
+    referenceColors.green['20'],
+    referenceColors.green['30'],
+    referenceColors.green['40'],
+    referenceColors.green['50'],
+    referenceColors.green['60'],
+    referenceColors.green['70'],
   ],
   gray: [
-    brandColors.gray[10],
-    brandColors.gray[20],
-    brandColors.gray[30],
-    brandColors.gray[40],
-    brandColors.gray[50],
-    brandColors.gray[60],
-    brandColors.gray[70],
-    brandColors.gray[80],
-    brandColors.gray[90],
+    referenceColors.gray['10'],
+    referenceColors.gray['20'],
+    referenceColors.gray['30'],
+    referenceColors.gray['40'],
+    referenceColors.gray['50'],
+    referenceColors.gray['60'],
+    referenceColors.gray['70'],
+    referenceColors.gray['80'],
+    referenceColors.gray['90'],
   ],
 } as const;
 
@@ -86,22 +84,22 @@ export const sequentialScales = {
  */
 export const divergingScales = {
   redToGreen: [
-    brandColors.red[60],
-    brandColors.red[40],
-    brandColors.red[20],
-    brandColors.gray[10],
-    brandColors.green[20],
-    brandColors.green[40],
-    brandColors.green[60],
+    referenceColors.red['60'],
+    referenceColors.red['40'],
+    referenceColors.red['20'],
+    referenceColors.gray['10'],
+    referenceColors.green['20'],
+    referenceColors.green['40'],
+    referenceColors.green['60'],
   ],
   blueToOrange: [
-    brandColors.blue[60],
-    brandColors.blue[40],
-    brandColors.blue[20],
-    brandColors.gray[10],
-    brandColors.orange[20],
-    brandColors.orange[40],
-    brandColors.orange[60],
+    referenceColors.brand['60'],
+    referenceColors.brand['40'],
+    referenceColors.brand['20'],
+    referenceColors.gray['10'],
+    referenceColors.orange['20'],
+    referenceColors.orange['40'],
+    referenceColors.orange['60'],
   ],
 } as const;
 
@@ -110,36 +108,34 @@ export const divergingScales = {
  * For consistent meaning across visualizations
  */
 export const chartSemanticColors = {
-  positive: brandColors.green[60],
-  negative: brandColors.red[60],
-  neutral: brandColors.gray[60],
-  warning: brandColors.yellow[60],
-  info: brandColors.blue[60],
-  
-  // Comparison colors
-  current: brandColors.blue[60],
-  previous: brandColors.gray[40],
-  target: brandColors.green[60],
-  actual: brandColors.blue[60],
-  
-  // Threshold colors
-  above: brandColors.green[60],
-  below: brandColors.red[60],
-  onTarget: brandColors.yellow[60],
+  positive: referenceColors.green['60'],
+  negative: referenceColors.red['60'],
+  neutral: referenceColors.gray['60'],
+  warning: referenceColors.yellow['60'],
+  info: referenceColors.brand['60'],
+
+  current: referenceColors.brand['60'],
+  previous: referenceColors.gray['40'],
+  target: referenceColors.green['60'],
+  actual: referenceColors.brand['60'],
+
+  above: referenceColors.green['60'],
+  below: referenceColors.red['60'],
+  onTarget: referenceColors.yellow['60'],
 } as const;
 
 /**
  * Chart background and grid colors
  */
 export const chartBackgroundColors = {
-  background: brandColors.white,
-  backgroundAlt: brandColors.gray[10],
-  grid: brandColors.gray[20],
-  gridSubtle: brandColors.gray[10],
-  axis: brandColors.gray[40],
-  axisLabel: brandColors.gray[60],
-  tooltip: brandColors.gray[90],
-  tooltipText: brandColors.white,
+  background: referenceColors.white,
+  backgroundAlt: referenceColors.gray['10'],
+  grid: referenceColors.gray['20'],
+  gridSubtle: referenceColors.gray['10'],
+  axis: referenceColors.gray['40'],
+  axisLabel: referenceColors.gray['60'],
+  tooltip: referenceColors.gray['90'],
+  tooltipText: referenceColors.white,
 } as const;
 
 /**
@@ -158,9 +154,7 @@ export const getChartColors = (count: number): string[] => {
   return Array.from({ length: count }, (_, i) => getChartColor(i));
 };
 
-// Type exports
 export type ChartPalette = typeof chartPalette;
 export type SequentialScale = keyof typeof sequentialScales;
 export type DivergingScale = keyof typeof divergingScales;
 export type ChartSemanticColor = keyof typeof chartSemanticColors;
-

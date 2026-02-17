@@ -4,7 +4,7 @@ import { Avatar } from '../../../components/Avatar';
 import { Icon } from '../../../components/icons';
 import { tableStyles as styles } from '../styles';
 import { Liveboard, getRelativeTime, paginationData } from '../data/mockData';
-import { brandColors } from '../../../tokens/colors/brand';
+import { referenceColors } from '../../../tokens/colors';
 
 interface MemorySourcesTableProps {
   data: Liveboard[];
@@ -48,7 +48,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
           <div style={styles.authorCell}>
             <Avatar name={author.name} src={author.avatar} size="xs" />
             <span style={{ 
-              color: brandColors.gray[70],
+              color: referenceColors.gray['70'],
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -71,7 +71,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
         
         return (
           <div style={styles.modelsCell}>
-            <span style={{ color: brandColors.gray[70] }}>
+            <span style={{ color: referenceColors.gray['70'] }}>
               {displayModels.filter(m => !m.startsWith('+')).join(', ')}
             </span>
             {hasMore && (
@@ -92,7 +92,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
       render: (value) => {
         const date = value as Date;
         return (
-          <span style={{ color: brandColors.gray[70] }}>
+          <span style={{ color: referenceColors.gray['70'] }}>
             {getRelativeTime(date)}
           </span>
         );
@@ -108,7 +108,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
           <div style={styles.authorCell}>
             <Avatar name={author.name} src={author.avatar} size="xs" />
             <span style={{ 
-              color: brandColors.gray[70],
+              color: referenceColors.gray['70'],
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors, referenceColors } from '../tokens/colors';
 import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
 
 interface ComponentCardProps {
@@ -189,8 +189,8 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
         </div>
         <div style={styles.tokenFlow}>
           <div style={styles.tokenLayer} onClick={() => onNavigate('colours')}>
-            <div style={{ ...styles.tokenLayerIcon, backgroundColor: brandColors.blue[10] }}>
-              <span style={{ color: brandColors.blue[60], fontSize: '20px' }}>1</span>
+            <div style={{ ...styles.tokenLayerIcon, backgroundColor: referenceColors.blue['10'] }}>
+              <span style={{ color: systemColors.light['content-brand'], fontSize: '20px' }}>1</span>
             </div>
             <div style={styles.tokenLayerContent}>
               <h4 style={styles.tokenLayerTitle}>Brand Tokens</h4>
@@ -199,8 +199,8 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
           </div>
           <div style={styles.tokenArrow}>→</div>
           <div style={styles.tokenLayer} onClick={() => onNavigate('architecture')}>
-            <div style={{ ...styles.tokenLayerIcon, backgroundColor: brandColors.green[10] }}>
-              <span style={{ color: brandColors.green[60], fontSize: '20px' }}>2</span>
+            <div style={{ ...styles.tokenLayerIcon, backgroundColor: referenceColors.green['10'] }}>
+              <span style={{ color: systemColors.light['content-success'], fontSize: '20px' }}>2</span>
             </div>
             <div style={styles.tokenLayerContent}>
               <h4 style={styles.tokenLayerTitle}>Semantic Tokens</h4>
@@ -209,8 +209,8 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
           </div>
           <div style={styles.tokenArrow}>→</div>
           <div style={styles.tokenLayer} onClick={() => onNavigate('button')}>
-            <div style={{ ...styles.tokenLayerIcon, backgroundColor: brandColors.purple[10] }}>
-              <span style={{ color: brandColors.purple[60], fontSize: '20px' }}>3</span>
+            <div style={{ ...styles.tokenLayerIcon, backgroundColor: referenceColors.purple['10'] }}>
+              <span style={{ color: referenceColors.purple['60'], fontSize: '20px' }}>3</span>
             </div>
             <div style={styles.tokenLayerContent}>
               <h4 style={styles.tokenLayerTitle}>Component Tokens</h4>
@@ -421,7 +421,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '8px',
     padding: '24px',
-    background: brandColors.white,
+    background: systemColors.light['background-base'],
     borderRadius: '16px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
   },
@@ -432,13 +432,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '32px',
     fontWeight: 700,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
   },
   statLabel: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
     fontWeight: 500,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -447,9 +447,9 @@ const styles: Record<string, React.CSSProperties> = {
   tokenSection: {
     marginBottom: '48px',
     padding: '32px',
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '20px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   tokenFlow: {
     display: 'flex',
@@ -464,7 +464,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '16px',
     padding: '20px',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     borderRadius: '12px',
     cursor: 'pointer',
     transition: 'all 200ms ease',
@@ -485,30 +485,30 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
     marginBottom: '4px',
   },
   tokenLayerDesc: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: '11px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     margin: 0,
   },
   tokenArrow: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '24px',
-    color: brandColors.gray[30],
+    color: referenceColors.gray['30'],
   },
   tokenCTA: {
     padding: '10px 20px',
     backgroundColor: 'transparent',
-    border: `1px solid ${brandColors.gray[30]}`,
+    border: `1px solid ${referenceColors.gray['30']}`,
     borderRadius: '8px',
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
     fontWeight: 500,
-    color: brandColors.gray[70],
+    color: referenceColors.gray['70'],
     cursor: 'pointer',
     transition: 'all 150ms ease',
   },
@@ -524,14 +524,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '28px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '8px',
   },
   sectionDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
   },
   categorySection: {
     marginBottom: '32px',
@@ -540,7 +540,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 600,
-    color: brandColors.gray[60],
+    color: systemColors.light['content-secondary'],
     marginBottom: '16px',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
@@ -555,8 +555,8 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '16px',
     padding: '20px',
-    background: brandColors.white,
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: '16px',
     cursor: 'pointer',
     transition: 'all 200ms ease',
@@ -569,7 +569,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: brandColors.gray[10],
+    background: systemColors.light['background-sunken'],
     borderRadius: '12px',
   },
   cardContent: {
@@ -585,7 +585,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
   },
   cardStatus: {
@@ -601,7 +601,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     margin: 0,
     marginBottom: '8px',
     lineHeight: '18px',
@@ -615,12 +615,12 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '12px',
     fontWeight: 500,
-    color: brandColors.gray[40],
+    color: systemColors.light['border-default'],
   },
   cardArrow: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '20px',
-    color: brandColors.gray[30],
+    color: referenceColors.gray['30'],
     transition: 'all 200ms ease',
   },
 
@@ -635,8 +635,8 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'flex-start',
     gap: '20px',
     padding: '28px',
-    background: `linear-gradient(135deg, ${brandColors.gray[10]} 0%, ${brandColors.white} 100%)`,
-    border: `1px solid ${brandColors.gray[20]}`,
+    background: `linear-gradient(135deg, ${systemColors.light['background-sunken']} 0%, ${systemColors.light['background-base']} 100%)`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: '16px',
     cursor: 'pointer',
     transition: 'all 200ms ease',
@@ -651,14 +651,14 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '18px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: '8px',
   },
   quickLinkDescription: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '14px',
     fontWeight: 400,
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     lineHeight: '22px',
     margin: 0,
   },

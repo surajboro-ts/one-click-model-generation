@@ -6,7 +6,7 @@
 .progressBar {
   width: 100%;
   height: 6px;
-  background-color: var(--color-gray-20);
+  background-color: var(--rd-sys-color-background-subtle);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -41,19 +41,19 @@
 
 /* Color variants */
 .green .progressBarInner {
-  background-color: var(--color-green-60);
+  background-color: var(--rd-sys-color-content-success);
 }
 
 .blue .progressBarInner {
-  background-color: var(--color-blue-60);
+  background-color: var(--rd-sys-color-content-brand);
 }
 
 .yellow .progressBarInner {
-  background-color: var(--color-yellow-60);
+  background-color: var(--rd-sys-color-content-warning);
 }
 
 .red .progressBarInner {
-  background-color: var(--color-red-60);
+  background-color: var(--rd-sys-color-content-failure);
 }
 
 /* Hide on initial step */
@@ -93,11 +93,11 @@
 .label {
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-gray-70);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .value {
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-gray-60);
+  color: var(--rd-sys-color-content-secondary);
 }

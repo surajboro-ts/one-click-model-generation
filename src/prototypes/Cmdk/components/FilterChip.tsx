@@ -10,7 +10,7 @@
 
 import React from 'react';
 import { Icon } from '../../../components/icons';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../../tokens/colors';
 import type { FilterOption } from '../types';
 
 interface FilterChipProps {
@@ -49,17 +49,17 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 4,
     height: 24,
     padding: '0 4px 0 8px',
-    backgroundColor: brandColors.blue[10], // #F2F7FF
-    border: `1px solid ${brandColors.blue[60]}`, // #2770EF
+    backgroundColor: referenceColors.blue['10'], // #F2F7FF
+    border: `1px solid ${systemColors.light['content-brand']}`, // #2770EF
     borderRadius: 4,
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     fontSize: 14,
     fontWeight: 375, // Plain Light
     lineHeight: '20px',
     flexShrink: 0,
   },
   label: {
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
   },
   closeButton: {
     display: 'flex',
@@ -71,7 +71,7 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     borderRadius: 2,
     transition: 'background-color 0.1s ease',
   },

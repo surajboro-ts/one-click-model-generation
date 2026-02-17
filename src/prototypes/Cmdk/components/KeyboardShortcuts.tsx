@@ -11,7 +11,7 @@
  */
 
 import React from 'react';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 import type { KeyboardShortcut } from '../types';
 
@@ -48,8 +48,8 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'flex-end',
     height: 34,
     padding: `${spacing.B}px ${spacing.C}px`, // 8px 12px
-    borderTop: `1px solid ${brandColors.gray[20]}`, // #EAEDF2
-    backgroundColor: brandColors.gray[10], // #F6F8FA
+    borderTop: `1px solid ${systemColors.light['background-subtle']}`, // #EAEDF2
+    backgroundColor: systemColors.light['background-sunken'], // #F6F8FA
     flexShrink: 0,
   },
   shortcutsRow: {
@@ -74,8 +74,8 @@ const styles: Record<string, React.CSSProperties> = {
     minWidth: 18,
     height: 18,
     padding: '1px 4px',
-    backgroundColor: brandColors.white,
-    border: `1px solid ${brandColors.gray[30]}`, // #DBDFE7 -> matches #e5e7eb
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${referenceColors.gray['30']}`, // #DBDFE7 -> matches #e5e7eb
     borderRadius: 4,
     fontSize: 10,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
@@ -87,7 +87,7 @@ const styles: Record<string, React.CSSProperties> = {
   label: {
     fontSize: 12,
     fontWeight: 400,
-    color: brandColors.gray[50], // #A5ACB9
+    color: systemColors.light['content-tertiary'], // #A5ACB9
     letterSpacing: '-0.072px',
     lineHeight: '18px',
   },

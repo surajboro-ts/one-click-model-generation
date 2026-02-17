@@ -13,7 +13,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Icon } from '../../../components/icons';
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 import { FilterChip } from './FilterChip';
 import type { FilterOption } from '../types';
@@ -116,8 +116,8 @@ const styles: Record<string, React.CSSProperties> = {
     padding: `${spacing.D}px`, // 16px all around
     paddingTop: 16,
     paddingBottom: 12,
-    borderBottom: `1px solid ${brandColors.gray[20]}`, // #EAEDF2
-    backgroundColor: brandColors.white,
+    borderBottom: `1px solid ${systemColors.light['background-subtle']}`, // #EAEDF2
+    backgroundColor: systemColors.light['background-base'],
   },
   iconWrapper: {
     display: 'flex',
@@ -125,7 +125,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     width: 16,
     height: 16,
-    color: brandColors.gray[50], // #A5ACB9
+    color: systemColors.light['content-tertiary'], // #A5ACB9
     flexShrink: 0,
   },
   inputWrapper: {
@@ -142,7 +142,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontWeight: 400,
     lineHeight: '24px',
-    color: brandColors.gray[90], // #1D232F
+    color: systemColors.light['content-primary'], // #1D232F
     backgroundColor: 'transparent',
     padding: 0,
   },
@@ -156,7 +156,7 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     borderRadius: 4,
     flexShrink: 0,
   },
@@ -173,16 +173,16 @@ const styles: Record<string, React.CSSProperties> = {
     minWidth: 20,
     height: 20,
     padding: '0 6px',
-    backgroundColor: brandColors.gray[10], // #F6F8FA
-    border: `1px solid ${brandColors.gray[20]}`, // #EAEDF2
+    backgroundColor: systemColors.light['background-sunken'], // #F6F8FA
+    border: `1px solid ${systemColors.light['background-subtle']}`, // #EAEDF2
     borderRadius: 4,
     fontSize: 11,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
-    color: brandColors.gray[60], // #777E8B
+    color: systemColors.light['content-secondary'], // #777E8B
   },
   filterText: {
     fontSize: 12,
-    color: brandColors.gray[50], // #A5ACB9
+    color: systemColors.light['content-tertiary'], // #A5ACB9
   },
 };
 

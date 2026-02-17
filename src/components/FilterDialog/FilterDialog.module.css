@@ -14,7 +14,7 @@
   display: flex;
   gap: var(--spacing-4, 16px);
   padding-bottom: var(--spacing-2, 8px);
-  border-bottom: 1px solid var(--color-brand-gray-20, #EAEDF2);
+  border-bottom: 1px solid var(--rd-sys-color-border-divider);
 }
 
 .actionButton {
@@ -24,13 +24,13 @@
   font-family: var(--font-family-primary);
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-medium, 500);
-  color: var(--color-brand-blue-60, #2770EF);
+  color: var(--rd-sys-color-content-brand);
   cursor: pointer;
   transition: color 150ms ease;
 }
 
 .actionButton:hover {
-  color: var(--color-brand-blue-70, #2359B6);
+  color: var(--rd-sys-color-content-brand);
 }
 
 .optionsList {
@@ -45,7 +45,7 @@
 }
 
 .optionItem + .optionItem {
-  border-top: 1px solid var(--color-brand-gray-10, #F6F8FA);
+  border-top: 1px solid var(--rd-sys-color-border-divider);
 }
 
 .noResults {
@@ -53,7 +53,7 @@
   text-align: center;
   font-family: var(--font-family-primary);
   font-size: var(--font-size-sm, 14px);
-  color: var(--color-brand-gray-50, #A5ACB9);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .footer {
@@ -66,7 +66,7 @@
 .selectedCount {
   font-family: var(--font-family-primary);
   font-size: var(--font-size-sm, 14px);
-  color: var(--color-brand-gray-50, #A5ACB9);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .footerActions {

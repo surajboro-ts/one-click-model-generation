@@ -1,11 +1,14 @@
 /**
  * Theme System
- * 
+ *
  * Provides theme context and utilities for React components.
+ * Uses the new 3-layer token architecture (reference -> system -> component).
  */
 
-import { lightThemeColors, darkThemeColors } from './colors/mapped';
-import type { LightThemeColors, DarkThemeColors } from './colors/mapped';
+import { systemColors } from './colors/system';
+import type { SystemColorKey } from './colors/system';
+import { rdComponentColors } from './colors/component';
+import type { RdComponentColorKey } from './colors/component';
 
 // Theme names
 export type ThemeName = 'light' | 'dark' | 'system';
@@ -17,21 +20,24 @@ export type ThemeMode = 'light' | 'dark';
 export interface ThemeConfig {
   name: ThemeName;
   mode: ThemeMode;
-  colors: LightThemeColors | DarkThemeColors;
+  system: Record<SystemColorKey, string>;
+  component: Record<RdComponentColorKey, string>;
 }
 
 // Light theme configuration
 export const lightTheme: ThemeConfig = {
   name: 'light',
   mode: 'light',
-  colors: lightThemeColors,
+  system: systemColors.light,
+  component: rdComponentColors.light,
 };
 
 // Dark theme configuration
 export const darkTheme: ThemeConfig = {
   name: 'dark',
   mode: 'dark',
-  colors: darkThemeColors,
+  system: systemColors.dark,
+  component: rdComponentColors.dark,
 };
 
 /**

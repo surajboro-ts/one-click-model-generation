@@ -31,7 +31,7 @@
 .modal {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-brand-white, #ffffff);
+  background-color: var(--rd-sys-color-background-base);
   border-radius: var(--radius-xl, 16px);
   box-shadow: 0 24px 48px rgba(25, 35, 49, 0.2);
   max-height: calc(100vh - var(--spacing-12, 48px));
@@ -58,8 +58,8 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-5, 20px) var(--spacing-6, 24px);
-  border-bottom: 1px solid var(--color-brand-gray-20, #EAEDF2);
-  background-color: var(--color-brand-white, #ffffff);
+  border-bottom: 1px solid var(--rd-sys-color-border-divider);
+  background-color: var(--rd-sys-color-background-base);
 }
 
 .headerContent {
@@ -72,14 +72,14 @@
   font-family: var(--font-family-primary);
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-regular, 400);
-  color: var(--color-brand-gray-50, #A5ACB9);
+  color: var(--rd-sys-color-content-tertiary);
 }
 
 .stepTitle {
   font-family: var(--font-family-primary);
   font-size: var(--font-size-lg, 18px);
   font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-brand-gray-90, #1D232F);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .closeButton {
@@ -92,14 +92,14 @@
   border: none;
   background-color: transparent;
   border-radius: var(--radius-md, 6px);
-  color: var(--color-brand-gray-60, #777E8B);
+  color: var(--rd-sys-color-content-secondary);
   cursor: pointer;
   transition: background-color 150ms ease, color 150ms ease;
 }
 
 .closeButton:hover:not(:disabled) {
-  background-color: var(--color-brand-gray-10, #F6F8FA);
-  color: var(--color-brand-gray-90, #1D232F);
+  background-color: var(--rd-sys-color-background-sunken);
+  color: var(--rd-sys-color-content-primary);
 }
 
 .closeButton:disabled {
@@ -110,26 +110,26 @@
 /* Progress Bar */
 .progressContainer {
   padding: 0 var(--spacing-6, 24px);
-  background-color: var(--color-brand-white, #ffffff);
+  background-color: var(--rd-sys-color-background-base);
 }
 
 .progressBar {
   display: flex;
   gap: 4px;
   height: 4px;
-  background-color: var(--color-brand-gray-20, #EAEDF2);
+  background-color: var(--rd-sys-color-background-subtle);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .progressStep {
   height: 100%;
-  background-color: var(--color-brand-gray-20, #EAEDF2);
+  background-color: var(--rd-sys-color-background-subtle);
   transition: background-color 200ms ease;
 }
 
 .progressStepActive {
-  background-color: var(--color-brand-blue-60, #2770EF);
+  background-color: var(--rd-sys-color-background-brand);
 }
 
 /* Error Banner */
@@ -151,8 +151,8 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4, 16px) var(--spacing-6, 24px);
-  border-top: 1px solid var(--color-brand-gray-20, #EAEDF2);
-  background-color: var(--color-brand-gray-10, #F6F8FA);
+  border-top: 1px solid var(--rd-sys-color-border-divider);
+  background-color: var(--rd-sys-color-background-sunken);
 }
 
 .footerLeft {

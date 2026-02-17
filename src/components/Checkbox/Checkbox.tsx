@@ -1,5 +1,5 @@
 import React, { useCallback, useId } from 'react';
-import { componentColors, statusColors } from '../../tokens/colors';
+import { systemColors } from '../../tokens/colors';
 import styles from './Checkbox.module.css';
 
 export type CheckboxState = 'unchecked' | 'checked' | 'indeterminate';
@@ -80,15 +80,14 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   // Determine border color - using semantic tokens
   const getBorderColor = () => {
-    if (error) return statusColors.error.default;
-    if (state !== 'unchecked') return componentColors.selection.selected;
-    return componentColors.selection.default;
+    if (error) return systemColors.light['content-failure'];
+    if (state !== 'unchecked') return systemColors.light['content-brand'];
+    return systemColors.light['border-default'];
   };
 
-  // Determine icon color - using semantic tokens
   const getIconColor = () => {
-    if (error) return statusColors.error.default;
-    return componentColors.selection.selected;
+    if (error) return systemColors.light['content-failure'];
+    return systemColors.light['content-brand'];
   };
 
   const containerClasses = [
