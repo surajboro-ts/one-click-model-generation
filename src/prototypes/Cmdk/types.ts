@@ -35,6 +35,16 @@ export type CardVariant =
  */
 export type CommandItemType = 'result' | 'filter' | 'create';
 
+export type AppTab = 'insights' | 'data' | 'develop' | 'admin';
+
+export type ThoughtSpotObjectType =
+  | 'Liveboard'
+  | 'Answer'
+  | 'Collection'
+  | 'Data Model'
+  | 'Table'
+  | 'Connection';
+
 /**
  * Command item data structure
  */
@@ -57,6 +67,30 @@ export interface CommandItem {
   type?: CommandItemType;
   /** Author/creator name */
   author?: string;
+  /** Optional tags used in search matching */
+  tags?: string[];
+  /** Additional keywords used in search matching */
+  keywords?: string[];
+  /** Navigation page target */
+  page?: string;
+  /** Optional tab within a page */
+  tab?: string;
+  /** Optional top-level app tab target */
+  appTab?: AppTab;
+  /** Optional action id for non-navigation commands */
+  action?: string;
+  /** Optional query payload */
+  query?: string;
+  /** Special marker for Spotter commands */
+  isSpotter?: boolean;
+  /** Special marker for "View all" command */
+  isViewAll?: boolean;
+  /** Marker for data-object-backed result */
+  isObject?: boolean;
+  /** Linked object id */
+  objectId?: string;
+  /** Linked object type */
+  objectType?: ThoughtSpotObjectType;
 }
 
 /**
@@ -105,6 +139,8 @@ export interface CommandPaletteProps {
   ResultCardComponent?: ComponentType<ResultCardProps>;
   /** Page context for filter ranking */
   context?: PageContext;
+  /** Optional filter chip id to pre-select on open */
+  initialFilter?: string;
 }
 
 /**

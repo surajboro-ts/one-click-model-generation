@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { systemColors, referenceColors } from '../tokens/colors';
 
-type ActiveLayer = 'brand' | 'semantic' | 'component' | null;
+type ActiveLayer = 'reference' | 'system' | 'component' | null;
 
 export const ArchitectureShowcase: React.FC = () => {
   const [activeLayer, setActiveLayer] = useState<ActiveLayer>(null);
@@ -21,32 +21,32 @@ export const ArchitectureShowcase: React.FC = () => {
       <section style={styles.diagramSection}>
         <h3 style={styles.sectionTitle}>Token Flow Diagram</h3>
         <p style={styles.sectionDescription}>
-          Click on each layer to see details. Tokens flow from Brand → Semantic → Component.
+          Click on each layer to see details. Tokens flow from Reference → System → Component.
         </p>
         
         <div style={styles.flowChart}>
-          {/* Brand Layer */}
+          {/* Reference Layer */}
           <div 
             style={{
               ...styles.layer,
               ...styles.brandLayer,
-              ...(activeLayer === 'brand' ? styles.layerActive : {}),
+              ...(activeLayer === 'reference' ? styles.layerActive : {}),
             }}
-            onClick={() => setActiveLayer(activeLayer === 'brand' ? null : 'brand')}
+            onClick={() => setActiveLayer(activeLayer === 'reference' ? null : 'reference')}
           >
             <div style={styles.layerHeader}>
               <span style={styles.layerNumber}>1</span>
-              <span style={styles.layerTitle}>Brand Tokens</span>
+              <span style={styles.layerTitle}>Reference Tokens</span>
             </div>
-            <p style={styles.layerSubtitle}>Primitive Values</p>
+            <p style={styles.layerSubtitle}>Primitive Values (rd-ref-color-*)</p>
             <div style={styles.layerContent}>
-              <code style={styles.tokenExample}>blue.60 = #2770EF</code>
-              <code style={styles.tokenExample}>gray.90 = #1D232F</code>
-              <code style={styles.tokenExample}>green.60 = #06BF7F</code>
+              <code style={styles.tokenExample}>brand.'60' = #2770EF</code>
+              <code style={styles.tokenExample}>gray.'90' = #1D232F</code>
+              <code style={styles.tokenExample}>green.'60' = #06BF7F</code>
             </div>
             <div style={styles.layerFile}>
               <span style={styles.fileIcon}>📄</span>
-              <code>tokens/colors/brand.ts</code>
+              <code>tokens/colors/reference.ts</code>
             </div>
           </div>
 
@@ -55,31 +55,31 @@ export const ArchitectureShowcase: React.FC = () => {
             <svg width="40" height="60" viewBox="0 0 40 60" style={styles.arrow}>
               <path d="M20 0 L20 45 M10 35 L20 50 L30 35" stroke={systemColors.light['border-default']} strokeWidth="2" fill="none" />
             </svg>
-            <span style={styles.arrowLabel}>references</span>
+            <span style={styles.arrowLabel}>maps to</span>
           </div>
 
-          {/* Semantic Layer */}
+          {/* System Layer */}
           <div 
             style={{
               ...styles.layer,
               ...styles.semanticLayer,
-              ...(activeLayer === 'semantic' ? styles.layerActive : {}),
+              ...(activeLayer === 'system' ? styles.layerActive : {}),
             }}
-            onClick={() => setActiveLayer(activeLayer === 'semantic' ? null : 'semantic')}
+            onClick={() => setActiveLayer(activeLayer === 'system' ? null : 'system')}
           >
             <div style={styles.layerHeader}>
               <span style={styles.layerNumber}>2</span>
-              <span style={styles.layerTitle}>Semantic Tokens</span>
+              <span style={styles.layerTitle}>System Tokens</span>
             </div>
-            <p style={styles.layerSubtitle}>Meaningful Names</p>
+            <p style={styles.layerSubtitle}>Semantic, Mode-Aware (rd-sys-color-*)</p>
             <div style={styles.layerContent}>
-              <code style={styles.tokenExample}>--color-primary</code>
-              <code style={styles.tokenExample}>--color-text-default</code>
-              <code style={styles.tokenExample}>--color-success</code>
+              <code style={styles.tokenExample}>--rd-sys-color-background-base</code>
+              <code style={styles.tokenExample}>--rd-sys-color-content-primary</code>
+              <code style={styles.tokenExample}>--rd-sys-color-border-brand</code>
             </div>
             <div style={styles.layerFile}>
               <span style={styles.fileIcon}>📄</span>
-              <code>styles/tokens.css</code>
+              <code>tokens/colors/system.ts</code>
             </div>
           </div>
 
@@ -104,14 +104,14 @@ export const ArchitectureShowcase: React.FC = () => {
               <span style={styles.layerNumber}>3</span>
               <span style={styles.layerTitle}>Component Tokens</span>
             </div>
-            <p style={styles.layerSubtitle}>Applied Styles</p>
+            <p style={styles.layerSubtitle}>Per-Component (rd-comp-color-*)</p>
             <div style={styles.layerContent}>
-              <code style={styles.tokenExample}>.button &#123; color: var(--color-brand-white) &#125;</code>
-              <code style={styles.tokenExample}>.checkbox &#123; border: var(--color-brand-gray-50) &#125;</code>
+              <code style={styles.tokenExample}>--rd-comp-color-button-primary-default</code>
+              <code style={styles.tokenExample}>--rd-comp-color-chip-attribute-default</code>
             </div>
             <div style={styles.layerFile}>
               <span style={styles.fileIcon}>📄</span>
-              <code>components/*.module.css</code>
+              <code>tokens/colors/component.ts</code>
             </div>
           </div>
         </div>
@@ -119,70 +119,69 @@ export const ArchitectureShowcase: React.FC = () => {
         {/* Layer Details */}
         {activeLayer && (
           <div style={styles.detailsPanel}>
-            {activeLayer === 'brand' && (
+            {activeLayer === 'reference' && (
               <>
-                <h4 style={styles.detailsTitle}>🎨 Brand / Primitive Tokens</h4>
+                <h4 style={styles.detailsTitle}>🎨 Reference / Primitive Tokens</h4>
                 <p style={styles.detailsDescription}>
-                  The foundation of the color system. These are raw color values organized by hue and lightness.
-                  They should <strong>never be used directly</strong> in components.
+                  The foundation of the color system. Mode-agnostic tonal scales for 9 color families
+                  (gray, brand, red, purple, blue, teal, yellow, green, orange) plus black/white.
+                  Scale runs from '00' (lightest) to '100' (darkest).
                 </p>
                 <div style={styles.codeBlock}>
-                  <div style={styles.codeHeader}>tokens/colors/brand.ts</div>
-                  <pre style={styles.code}>{`export const brandColors = {
-  blue: {
-    100: '#001740',  // Darkest
-    80: '#163772',
-    70: '#2359B6',
-    60: '#2770EF',   // Primary
-    50: '#71A1F4',
-    40: '#ABC7F9',
-    30: '#CEDCF5',
-    20: '#DEE8FA',
-    10: '#EBF2FD',   // Lightest
-  },
+                  <div style={styles.codeHeader}>tokens/colors/reference.ts</div>
+                  <pre style={styles.code}>{`export const referenceColors = {
   gray: {
-    90: '#1D232F',   // Text default
-    60: '#777E8B',   // Text secondary
-    50: '#A5ACB9',   // Borders
-    20: '#EAEDF2',   // Backgrounds
-    10: '#F6F8FA',
+    '00': '#FFFFFF',
+    '10': '#F6F8FA',
+    '20': '#EAEDF2',
+    '40': '#C0C6CF',
+    '60': '#777E8B',
+    '90': '#1D232F',
+    '100': '#000000',
   },
-  // green, red, yellow, etc.
+  brand: {
+    '60': '#2770EF',  // Primary
+    '70': '#2359B6',  // Hover
+    '80': '#163772',  // Pressed
+  },
+  // red, purple, blue, teal, yellow, green, orange
+  black: '#000000',
+  white: '#FFFFFF',
 }`}</pre>
                 </div>
               </>
             )}
-            {activeLayer === 'semantic' && (
+            {activeLayer === 'system' && (
               <>
-                <h4 style={styles.detailsTitle}>💡 Semantic / Alias Tokens</h4>
+                <h4 style={styles.detailsTitle}>💡 System Tokens (Light + Dark)</h4>
                 <p style={styles.detailsDescription}>
-                  CSS custom properties that give meaningful names to colors. They reference brand tokens 
-                  and can change based on theme (light/dark mode).
+                  Mode-aware semantic tokens organized into 3 groups: background (15), content (15),
+                  and border (12) — 42 tokens per mode. They automatically switch between light and dark
+                  values via CSS custom properties and <code>data-theme</code>.
                 </p>
                 <div style={styles.codeBlock}>
                   <div style={styles.codeHeader}>styles/tokens.css</div>
-                  <pre style={styles.code}>{`:root {
-  /* Brand color references */
-  --color-brand-blue-60: #2770EF;
-  --color-brand-gray-90: #1D232F;
-  --color-brand-white: #FFFFFF;
-  
-  /* Semantic aliases */
-  --color-primary: var(--color-brand-blue-60);
-  --color-primary-hover: var(--color-brand-blue-70);
-  --color-text-default: var(--color-brand-gray-90);
-  --color-text-inverse: var(--color-brand-white);
-  
-  /* Spacing tokens */
-  --spacing-1: 4px;
-  --spacing-2: 8px;
-  --spacing-3: 12px;
-  --spacing-4: 16px;
-  
-  /* Typography tokens */
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-weight-light: 375;
+                  <pre style={styles.code}>{`:root, [data-theme="light"] {
+  /* Background */
+  --rd-sys-color-background-base: #FFFFFF;
+  --rd-sys-color-background-sunken: #F6F8FA;
+  --rd-sys-color-background-brand: #2770EF;
+
+  /* Content */
+  --rd-sys-color-content-primary: #1D232F;
+  --rd-sys-color-content-brand: #2770EF;
+  --rd-sys-color-content-success: #06BF7F;
+
+  /* Border */
+  --rd-sys-color-border-default: #C0C6CF;
+  --rd-sys-color-border-brand: #2770EF;
+  --rd-sys-color-border-focus: #2770EF;
+}
+
+[data-theme="dark"] {
+  --rd-sys-color-background-base: #1D232F;
+  --rd-sys-color-content-primary: #FFFFFF;
+  /* ... all tokens swap */
 }`}</pre>
                 </div>
               </>
@@ -191,8 +190,8 @@ export const ArchitectureShowcase: React.FC = () => {
               <>
                 <h4 style={styles.detailsTitle}>🧩 Component Tokens</h4>
                 <p style={styles.detailsDescription}>
-                  CSS modules that consume tokens to style components. They use CSS variables 
-                  for consistent, maintainable styling.
+                  Per-component tokens for button (11), chip (25), and toggle (5). CSS modules
+                  consume system and component tokens via CSS custom properties.
                 </p>
                 <div style={styles.codeBlock}>
                   <div style={styles.codeHeader}>components/Button/Button.module.css</div>
@@ -203,17 +202,17 @@ export const ArchitectureShowcase: React.FC = () => {
 }
 
 .primary.standard {
-  background-color: var(--color-brand-blue-60);
-  color: var(--color-brand-white);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
 }
 
 .primary.standard:hover {
-  background-color: var(--color-brand-blue-70);
+  background-color: var(--rd-comp-color-button-primary-hover);
 }
 
 .secondary.standard {
-  background-color: var(--color-brand-gray-20);
-  color: var(--color-brand-gray-90);
+  background-color: var(--rd-sys-color-background-subtle);
+  color: var(--rd-sys-color-content-primary);
 }`}</pre>
                 </div>
               </>
@@ -226,7 +225,7 @@ export const ArchitectureShowcase: React.FC = () => {
       <section style={styles.exampleSection}>
         <h3 style={styles.sectionTitle}>Real Example: Button Component</h3>
         <p style={styles.sectionDescription}>
-          See how tokens flow through the system to create a Primary Button.
+          See how tokens flow through the 3-layer system to create a Primary Button.
         </p>
 
         <div style={styles.exampleFlow}>
@@ -234,10 +233,10 @@ export const ArchitectureShowcase: React.FC = () => {
           <div style={styles.exampleStep}>
             <div style={styles.stepHeader}>
               <span style={styles.stepNumber}>1</span>
-              <span style={styles.stepTitle}>Brand Token Defined</span>
+              <span style={styles.stepTitle}>Reference Token</span>
             </div>
             <div style={styles.stepContent}>
-              <code style={styles.stepCode}>blue.60 = '#2770EF'</code>
+              <code style={styles.stepCode}>referenceColors.brand['60']</code>
               <div style={styles.colorPreview}>
                 <div style={{ ...styles.colorSwatch, backgroundColor: '#2770EF' }} />
                 <span>#2770EF</span>
@@ -251,10 +250,10 @@ export const ArchitectureShowcase: React.FC = () => {
           <div style={styles.exampleStep}>
             <div style={styles.stepHeader}>
               <span style={styles.stepNumber}>2</span>
-              <span style={styles.stepTitle}>CSS Variable Created</span>
+              <span style={styles.stepTitle}>System Token</span>
             </div>
             <div style={styles.stepContent}>
-              <code style={styles.stepCode}>--color-brand-blue-60: #2770EF</code>
+              <code style={styles.stepCode}>--rd-sys-color-background-brand: #2770EF</code>
             </div>
           </div>
 
@@ -264,10 +263,10 @@ export const ArchitectureShowcase: React.FC = () => {
           <div style={styles.exampleStep}>
             <div style={styles.stepHeader}>
               <span style={styles.stepNumber}>3</span>
-              <span style={styles.stepTitle}>Component Uses Token</span>
+              <span style={styles.stepTitle}>CSS Module Applies</span>
             </div>
             <div style={styles.stepContent}>
-              <code style={styles.stepCode}>background: var(--color-brand-blue-60)</code>
+              <code style={styles.stepCode}>background: var(--rd-sys-color-background-brand)</code>
             </div>
           </div>
 
@@ -297,7 +296,7 @@ export const ArchitectureShowcase: React.FC = () => {
           <div style={{ ...styles.treeItem, marginLeft: 20 }}>
             <span style={styles.folderIcon}>📁</span>
             <span style={styles.folderName}>tokens/</span>
-            <span style={styles.treeLabel}>← Brand tokens (TypeScript)</span>
+            <span style={styles.treeLabel}>← 3-layer token system (TypeScript)</span>
           </div>
           <div style={{ ...styles.treeItem, marginLeft: 40 }}>
             <span style={styles.folderIcon}>📁</span>
@@ -305,13 +304,23 @@ export const ArchitectureShowcase: React.FC = () => {
           </div>
           <div style={{ ...styles.treeItem, marginLeft: 60 }}>
             <span style={styles.fileIcon}>📄</span>
-            <span style={styles.fileName}>brand.ts</span>
-            <span style={styles.treeDesc}>Raw color values</span>
+            <span style={styles.fileName}>reference.ts</span>
+            <span style={styles.treeDesc}>Primitive tonal scales (9 families)</span>
           </div>
           <div style={{ ...styles.treeItem, marginLeft: 60 }}>
             <span style={styles.fileIcon}>📄</span>
-            <span style={styles.fileName}>semantic.ts</span>
-            <span style={styles.treeDesc}>Meaningful color names</span>
+            <span style={styles.fileName}>system.ts</span>
+            <span style={styles.treeDesc}>Semantic tokens (light + dark)</span>
+          </div>
+          <div style={{ ...styles.treeItem, marginLeft: 60 }}>
+            <span style={styles.fileIcon}>📄</span>
+            <span style={styles.fileName}>component.ts</span>
+            <span style={styles.treeDesc}>Per-component tokens (button, chip, toggle)</span>
+          </div>
+          <div style={{ ...styles.treeItem, marginLeft: 60 }}>
+            <span style={styles.fileIcon}>📄</span>
+            <span style={styles.fileName}>charts.ts</span>
+            <span style={styles.treeDesc}>Chart color palettes</span>
           </div>
           <div style={{ ...styles.treeItem, marginLeft: 20 }}>
             <span style={styles.folderIcon}>📁</span>
@@ -321,7 +330,7 @@ export const ArchitectureShowcase: React.FC = () => {
           <div style={{ ...styles.treeItem, marginLeft: 40 }}>
             <span style={styles.fileIcon}>📄</span>
             <span style={styles.fileName}>tokens.css</span>
-            <span style={styles.treeDesc}>All CSS variables</span>
+            <span style={styles.treeDesc}>rd-sys-color-* and rd-comp-color-* variables</span>
           </div>
           <div style={{ ...styles.treeItem, marginLeft: 40 }}>
             <span style={styles.fileIcon}>📄</span>
@@ -345,7 +354,7 @@ export const ArchitectureShowcase: React.FC = () => {
           <div style={{ ...styles.treeItem, marginLeft: 60 }}>
             <span style={styles.fileIcon}>📄</span>
             <span style={styles.fileName}>Button.module.css</span>
-            <span style={styles.treeDesc}>Scoped styles with tokens</span>
+            <span style={styles.treeDesc}>Scoped styles with rd-sys/rd-comp tokens</span>
           </div>
         </div>
       </section>
@@ -358,10 +367,10 @@ export const ArchitectureShowcase: React.FC = () => {
             <div style={{ ...styles.categoryIcon, backgroundColor: referenceColors.blue['10'] }}>🎨</div>
             <h4 style={styles.categoryTitle}>Colors</h4>
             <ul style={styles.categoryList}>
-              <li>Blue scale (10-100)</li>
-              <li>Gray scale (0-100)</li>
-              <li>Green, Red, Yellow</li>
-              <li>Purple, Orange, Teal</li>
+              <li>9 reference scales (00-100)</li>
+              <li>42 system tokens × 2 modes</li>
+              <li>41 component tokens × 2 modes</li>
+              <li>rd-ref / rd-sys / rd-comp prefix</li>
             </ul>
           </div>
           <div style={styles.categoryCard}>
@@ -404,12 +413,12 @@ export const ArchitectureShowcase: React.FC = () => {
           <div style={styles.benefitCard}>
             <span style={styles.benefitIcon}>🔄</span>
             <h4 style={styles.benefitTitle}>Single Source of Truth</h4>
-            <p style={styles.benefitDesc}>Change a color once in brand.ts, and it updates everywhere automatically.</p>
+            <p style={styles.benefitDesc}>Change a color once in reference.ts, and it cascades through system and component tokens automatically.</p>
           </div>
           <div style={styles.benefitCard}>
             <span style={styles.benefitIcon}>🌙</span>
-            <h4 style={styles.benefitTitle}>Theme Support</h4>
-            <p style={styles.benefitDesc}>Semantic tokens can swap values for light/dark mode without touching components.</p>
+            <h4 style={styles.benefitTitle}>Built-in Light/Dark Mode</h4>
+            <p style={styles.benefitDesc}>System tokens have light and dark maps. Set data-theme on the HTML element and all components adapt.</p>
           </div>
           <div style={styles.benefitCard}>
             <span style={styles.benefitIcon}>🧩</span>

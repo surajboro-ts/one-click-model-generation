@@ -31,6 +31,9 @@ export * from './Toggle';
 export * from './Tooltip';
 export * from './Typography';
 export * from './icons';
+export * from './GlobalHeader';
+export * from './AppSidebar';
+export * from './AppShell';
 
 // New modal-related components
 export * from './ConfirmDialog';

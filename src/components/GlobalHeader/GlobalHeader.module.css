@@ -1,0 +1,228 @@
+.header {
+  align-items: center;
+  background: var(--gh-bg);
+  border-bottom: 1px solid var(--gh-border);
+  box-sizing: border-box;
+  display: flex;
+  gap: 16px;
+  height: 60px;
+  justify-content: space-between;
+  padding: 0 24px;
+  width: 100%;
+}
+
+.leftSection {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  min-width: 0;
+}
+
+.rightSection {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  min-width: 0;
+}
+
+.logoButton {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--gh-text);
+  cursor: pointer;
+  display: inline-flex;
+  height: 28px;
+  justify-content: center;
+  min-width: 120px;
+  padding: 2px 6px;
+}
+
+.logoButton:hover {
+  background: var(--gh-surface);
+}
+
+.logoButton:focus-visible {
+  outline: 2px solid var(--gh-focus);
+  outline-offset: 1px;
+}
+
+.logo {
+  display: block;
+  height: 24px;
+  width: auto;
+}
+
+.iconButton,
+.circleButton {
+  align-items: center;
+  background: var(--gh-surface);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--gh-text);
+  cursor: pointer;
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  position: relative;
+  width: 32px;
+}
+
+.iconButton:hover,
+.circleButton:hover {
+  border-color: var(--gh-hover-ring);
+}
+
+.iconButton:focus-visible,
+.circleButton:focus-visible {
+  outline: 2px solid var(--gh-focus);
+  outline-offset: 1px;
+}
+
+.searchTrigger,
+.searchField {
+  align-items: center;
+  background: var(--gh-surface);
+  border: 1px solid var(--gh-border);
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 10px;
+  height: 32px;
+  min-width: 260px;
+  padding: 0 12px;
+}
+
+.searchTrigger {
+  color: var(--gh-muted);
+  cursor: pointer;
+}
+
+.searchTrigger:hover,
+.searchField:focus-within {
+  border-color: var(--gh-active);
+}
+
+.searchTrigger:focus-visible {
+  outline: 2px solid var(--gh-focus);
+  outline-offset: 1px;
+}
+
+.searchIcon {
+  color: var(--gh-muted);
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 16px;
+  width: 16px;
+}
+
+.searchPlaceholder {
+  color: var(--gh-muted);
+  flex: 1;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.searchInput {
+  background: transparent;
+  border: 0;
+  color: var(--gh-text);
+  flex: 1;
+  font-size: 14px;
+  line-height: 20px;
+  min-width: 0;
+  outline: 0;
+}
+
+.searchInput::placeholder {
+  color: var(--gh-muted);
+}
+
+.keyboardHint {
+  background: var(--gh-bg);
+  border-radius: 4px;
+  color: var(--gh-subtle);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 10px;
+  line-height: 1;
+  padding: 3px 5px;
+}
+
+.helpIcon {
+  display: block;
+  height: 16px;
+  width: 9px;
+}
+
+.notificationIcon {
+  display: block;
+  height: 14px;
+  width: 16px;
+}
+
+.notificationDot {
+  background: var(--gh-danger);
+  border: 1px solid var(--gh-bg);
+  border-radius: 999px;
+  height: 9px;
+  position: absolute;
+  right: 5px;
+  top: 4px;
+  width: 9px;
+}
+
+.profileButton {
+  align-items: center;
+  background: var(--gh-surface);
+  border: 1px solid var(--gh-border);
+  border-radius: 999px;
+  color: var(--gh-text);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  height: 32px;
+  max-width: 220px;
+  min-width: 0;
+  padding: 0 6px 0 10px;
+}
+
+.profileButton:hover {
+  border-color: var(--gh-hover-ring);
+}
+
+.profileButton:focus-visible {
+  outline: 2px solid var(--gh-focus);
+  outline-offset: 1px;
+}
+
+.profileName {
+  color: var(--gh-text);
+  font-size: 14px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar {
+  border-radius: 999px;
+  display: block;
+  height: 24px;
+  object-fit: cover;
+  width: 24px;
+}
+
+.avatarFallback {
+  align-items: center;
+  background: var(--gh-surface-hover);
+  border-radius: 999px;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}

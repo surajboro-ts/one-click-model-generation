@@ -1,34 +1,22 @@
-/**
- * ResultCard - Default Figma Spec Variant
- * 
- * Exact match to Figma design specifications:
- * - Padding: 16px horizontal, 8px vertical
- * - Icon: 14px
- * - Gap: 12px between icon and text, 8px between text lines
- */
-
 import React from 'react';
 import { Icon } from '../../../components/icons';
 import { systemColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 import type { ResultCardProps } from '../types';
 
-/**
- * Highlight matching text in a string
- */
 function highlightMatch(text: string, query?: string): React.ReactNode {
   if (!query || query.length === 0) return text;
-  
+
   const lowerText = text.toLowerCase();
   const lowerQuery = query.toLowerCase();
   const index = lowerText.indexOf(lowerQuery);
-  
+
   if (index === -1) return text;
-  
+
   return (
     <>
       {text.slice(0, index)}
-      <span style={{ backgroundColor: systemColors.light['background-warning'], borderRadius: 2 }}>
+      <span style={{ fontWeight: 700, color: systemColors.light['content-primary'] }}>
         {text.slice(index, index + query.length)}
       </span>
       {text.slice(index + query.length)}
@@ -42,6 +30,8 @@ export const ResultCard: React.FC<ResultCardProps> = ({
   onClick,
   query,
 }) => {
+  const hasSecondary = Boolean(item.context) || Boolean(item.description) || Boolean(item.category);
+
   return (
     <div
       style={{
@@ -52,41 +42,32 @@ export const ResultCard: React.FC<ResultCardProps> = ({
       role="option"
       aria-selected={isSelected}
     >
-      {/* Icon */}
       <div style={styles.iconContainer}>
         <Icon name={item.icon} size="s" />
       </div>
 
-      {/* Text content */}
-      <div style={styles.textContent}>
-        <div style={styles.topRow}>
-          <span style={styles.label}>
-            {highlightMatch(item.label, query)}
-          </span>
-          {item.context && (
-            <span style={styles.context}>
-              {item.context}
-            </span>
-          )}
-        </div>
-        {item.description && (
-          <div style={styles.bottomRow}>
-            <span style={styles.description}>
-              {item.description}
-            </span>
-            {item.author && (
-              <span style={styles.author}>
-                by {item.author}
-              </span>
+      <div style={styles.textRow}>
+        <span style={styles.label}>
+          {highlightMatch(item.label, query)}
+        </span>
+
+        {hasSecondary && (
+          <span style={styles.secondary}>
+            {item.context && <span>{item.context}</span>}
+            {item.category && item.page ? (
+              <span>{item.category} / {item.page}</span>
+            ) : (
+              item.description && <span>{highlightMatch(item.description, query)}</span>
             )}
-          </div>
+          </span>
         )}
       </div>
 
-      {/* Right label */}
-      <div style={styles.rightLabel}>
-        {item.rightLabel}
-      </div>
+      {item.rightLabel && (
+        <span style={styles.rightLabel}>
+          {item.rightLabel}
+        </span>
+      )}
     </div>
   );
 };
@@ -95,87 +76,61 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     display: 'flex',
     alignItems: 'center',
-    padding: `${spacing.B}px ${spacing.D}px`, // 8px 16px
-    gap: `${spacing.C}px`, // 12px
+    padding: `${spacing.B}px ${spacing.D}px`,
+    gap: `${spacing.C}px`,
     cursor: 'pointer',
-    borderRadius: 4,
-    margin: `0 ${spacing.D}px`, // 16px horizontal margin for hover effect
     transition: 'background-color 0.1s ease',
   },
   selected: {
-    backgroundColor: systemColors.light['background-sunken'], // #F6F8FA
+    backgroundColor: systemColors.light['background-sunken'],
   },
   iconContainer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 20,
-    height: 20,
-    color: systemColors.light['content-tertiary'], // #A5ACB9
+    width: 18,
+    height: 18,
+    color: systemColors.light['content-tertiary'],
     flexShrink: 0,
   },
-  textContent: {
-    flex: 1,
-    minWidth: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 2,
-  },
-  topRow: {
+  textRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: `${spacing.B}px`, // 8px
+    gap: `${spacing.B}px`,
+    flex: 1,
+    minWidth: 0,
+    overflow: 'hidden',
   },
   label: {
     fontSize: 14,
-    fontWeight: 375, // Plain Light
+    fontWeight: 375,
     lineHeight: '20px',
-    color: systemColors.light['content-primary'], // #1D232F
-    whiteSpace: 'nowrap',
+    color: systemColors.light['content-primary'],
+    whiteSpace: 'nowrap' as const,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
-  context: {
+  secondary: {
     fontSize: 12,
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: systemColors.light['content-secondary'], // #777E8B
-    whiteSpace: 'nowrap',
+    color: systemColors.light['content-secondary'],
+    whiteSpace: 'nowrap' as const,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-  },
-  bottomRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: `${spacing.B}px`, // 8px
-  },
-  description: {
-    fontSize: 12,
-    fontWeight: 400,
-    lineHeight: '18px',
-    letterSpacing: '-0.072px',
-    color: systemColors.light['content-tertiary'], // #A5ACB9
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  author: {
-    fontSize: 12,
-    fontWeight: 400,
-    lineHeight: '18px',
-    letterSpacing: '-0.072px',
-    color: systemColors.light['content-tertiary'], // #A5ACB9
-    whiteSpace: 'nowrap',
   },
   rightLabel: {
     fontSize: 12,
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: systemColors.light['content-secondary'], // #777E8B
-    whiteSpace: 'nowrap',
+    color: systemColors.light['content-secondary'],
+    whiteSpace: 'nowrap' as const,
     flexShrink: 0,
+    marginLeft: 'auto',
   },
 };
 

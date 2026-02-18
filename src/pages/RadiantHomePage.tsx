@@ -184,7 +184,7 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
         <div style={styles.sectionHeader}>
           <h2 style={styles.sectionTitle}>Token Architecture</h2>
           <p style={styles.sectionDescription}>
-            A 3-tier token system that powers consistent visual language across all components
+            A 3-layer token system (Reference → System → Component) with built-in light/dark mode
           </p>
         </div>
         <div style={styles.tokenFlow}>
@@ -193,8 +193,8 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
               <span style={{ color: systemColors.light['content-brand'], fontSize: '20px' }}>1</span>
             </div>
             <div style={styles.tokenLayerContent}>
-              <h4 style={styles.tokenLayerTitle}>Brand Tokens</h4>
-              <p style={styles.tokenLayerDesc}>Primitive color values: blue.60, gray.90, green.60</p>
+              <h4 style={styles.tokenLayerTitle}>Reference Tokens</h4>
+              <p style={styles.tokenLayerDesc}>Primitive tonal scales: brand.'60', gray.'90'</p>
             </div>
           </div>
           <div style={styles.tokenArrow}>→</div>
@@ -203,8 +203,8 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
               <span style={{ color: systemColors.light['content-success'], fontSize: '20px' }}>2</span>
             </div>
             <div style={styles.tokenLayerContent}>
-              <h4 style={styles.tokenLayerTitle}>Semantic Tokens</h4>
-              <p style={styles.tokenLayerDesc}>Meaningful names: --color-primary, --color-success</p>
+              <h4 style={styles.tokenLayerTitle}>System Tokens</h4>
+              <p style={styles.tokenLayerDesc}>Semantic, mode-aware: --rd-sys-color-background-brand</p>
             </div>
           </div>
           <div style={styles.tokenArrow}>→</div>
@@ -214,7 +214,7 @@ export const RadiantHomePage: React.FC<RadiantHomePageProps> = ({ onNavigate }) 
             </div>
             <div style={styles.tokenLayerContent}>
               <h4 style={styles.tokenLayerTitle}>Component Tokens</h4>
-              <p style={styles.tokenLayerDesc}>Component-specific: --button-bg, --input-border</p>
+              <p style={styles.tokenLayerDesc}>Per-component: --rd-comp-color-button-primary-hover</p>
             </div>
           </div>
         </div>

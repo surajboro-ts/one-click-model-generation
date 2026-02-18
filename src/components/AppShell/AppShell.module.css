@@ -1,0 +1,88 @@
+.shell {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.header {
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 20;
+}
+
+.body {
+  background: var(--ash-content-bg);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 60px;
+}
+
+.sidebar {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+}
+
+.content {
+  background: var(--ash-content-bg);
+  bottom: 0;
+  left: var(--ash-sidebar-width);
+  overflow: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: left 180ms ease;
+}
+
+.contentNoSidebar {
+  left: 0;
+}
+
+.sidebarOverlayContainer {
+  bottom: 0;
+  display: flex;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 40;
+}
+
+.sidebarOverlay {
+  height: 100%;
+  left: 0;
+  position: relative;
+  top: 0;
+  z-index: 41;
+}
+
+.sidebarOverlayBackdrop {
+  background: rgba(0, 0, 0, 0.45);
+  border: 0;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebarOverlayBackdrop:focus-visible {
+  outline: 2px solid #2770ef;
+  outline-offset: -2px;
+}
+
+.overlaySlot {
+  bottom: 0;
+  left: 0;
+  pointer-events: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 60;
+}

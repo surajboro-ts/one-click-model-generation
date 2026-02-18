@@ -148,16 +148,103 @@ export const ColorSystemPage: React.FC = () => {
     },
   ];
 
+  const systemBackgroundTokens = Object.entries(systemColors.light)
+    .filter(([key]) => key.startsWith('background-'))
+    .map(([key, value]) => ({ key, value, cssVar: `--rd-sys-color-${key}` }));
+
+  const systemContentTokens = Object.entries(systemColors.light)
+    .filter(([key]) => key.startsWith('content-'))
+    .map(([key, value]) => ({ key, value, cssVar: `--rd-sys-color-${key}` }));
+
+  const systemBorderTokens = Object.entries(systemColors.light)
+    .filter(([key]) => key.startsWith('border-'))
+    .map(([key, value]) => ({ key, value, cssVar: `--rd-sys-color-${key}` }));
+
   return (
     <div style={styles.container}>
       {/* Header */}
       <div style={styles.header}>
         <h1 style={styles.title}>Color System</h1>
         <p style={styles.description}>
-          The Radiant color system provides a comprehensive palette for consistent UI design. 
-          Each color scale runs from 10 (lightest) to 100 (darkest), with 60 typically being the primary shade.
+          The Radiant color system uses a 3-layer architecture: Reference (primitive tonal scales), 
+          System (semantic, mode-aware tokens), and Component (per-component tokens). 
+          All prefixed with rd-ref, rd-sys, and rd-comp respectively.
         </p>
       </div>
+
+      {/* System Tokens Section */}
+      <section style={styles.systemSection}>
+        <Typography variant="modal-title" noMargin style={{ marginBottom: 20 }}>System Tokens (Light Mode)</Typography>
+        <Typography variant="body-normal" color="gray" noMargin style={{ marginBottom: 24 }}>
+          42 semantic tokens organized into background, content, and border groups. These automatically switch values in dark mode.
+        </Typography>
+
+        {/* Background Tokens */}
+        <div style={styles.systemGroup}>
+          <Typography variant="section-label" noMargin style={{ marginBottom: 12 }}>Background (15 tokens)</Typography>
+          <div style={styles.systemTokenGrid}>
+            {systemBackgroundTokens.map(({ key, value, cssVar }) => {
+              const isTransparent = value.includes('rgba');
+              return (
+                <div key={key} style={styles.systemTokenItem}>
+                  <div style={{
+                    ...styles.systemTokenSwatch,
+                    backgroundColor: value,
+                    border: isTransparent || value === '#FFFFFF' ? `1px solid ${systemColors.light['background-subtle']}` : 'none',
+                  }} />
+                  <div style={styles.systemTokenInfo}>
+                    <span style={styles.systemTokenName}>{key}</span>
+                    <span style={styles.systemTokenVar}>{cssVar}</span>
+                    <span style={styles.systemTokenValue}>{value}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Content Tokens */}
+        <div style={styles.systemGroup}>
+          <Typography variant="section-label" noMargin style={{ marginBottom: 12 }}>Content (15 tokens)</Typography>
+          <div style={styles.systemTokenGrid}>
+            {systemContentTokens.map(({ key, value, cssVar }) => (
+              <div key={key} style={styles.systemTokenItem}>
+                <div style={{
+                  ...styles.systemTokenSwatch,
+                  backgroundColor: value,
+                  border: value === '#FFFFFF' ? `1px solid ${systemColors.light['background-subtle']}` : 'none',
+                }} />
+                <div style={styles.systemTokenInfo}>
+                  <span style={styles.systemTokenName}>{key}</span>
+                  <span style={styles.systemTokenVar}>{cssVar}</span>
+                  <span style={styles.systemTokenValue}>{value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Border Tokens */}
+        <div style={styles.systemGroup}>
+          <Typography variant="section-label" noMargin style={{ marginBottom: 12 }}>Border (12 tokens)</Typography>
+          <div style={styles.systemTokenGrid}>
+            {systemBorderTokens.map(({ key, value, cssVar }) => (
+              <div key={key} style={styles.systemTokenItem}>
+                <div style={{
+                  ...styles.systemTokenSwatch,
+                  backgroundColor: value,
+                  border: value === '#FFFFFF' ? `1px solid ${systemColors.light['background-subtle']}` : 'none',
+                }} />
+                <div style={styles.systemTokenInfo}>
+                  <span style={styles.systemTokenName}>{key}</span>
+                  <span style={styles.systemTokenVar}>{cssVar}</span>
+                  <span style={styles.systemTokenValue}>{value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Usage Guidelines */}
       <section style={styles.guidelinesSection}>
@@ -210,9 +297,9 @@ export const ColorSystemPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Color Scales */}
+      {/* Reference Color Scales */}
       <section style={styles.scalesSection}>
-        <Typography variant="modal-title" noMargin style={{ marginBottom: 24 }}>Color Scales</Typography>
+        <Typography variant="modal-title" noMargin style={{ marginBottom: 24 }}>Reference Color Scales</Typography>
         {colorData.map((color) => (
           <ColorSwatch key={color.colorName} {...color} />
         ))}
@@ -262,6 +349,60 @@ const styles: Record<string, React.CSSProperties> = {
   },
   header: {
     marginBottom: 40,
+  },
+  systemSection: {
+    marginBottom: 48,
+    padding: 24,
+    backgroundColor: systemColors.light['background-base'],
+    borderRadius: 12,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
+  },
+  systemGroup: {
+    marginBottom: 28,
+  },
+  systemTokenGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: 10,
+  },
+  systemTokenItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    padding: 10,
+    backgroundColor: systemColors.light['background-sunken'],
+    borderRadius: 8,
+  },
+  systemTokenSwatch: {
+    width: 36,
+    height: 36,
+    borderRadius: 6,
+    flexShrink: 0,
+  },
+  systemTokenInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 1,
+    minWidth: 0,
+  },
+  systemTokenName: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: 12,
+    fontWeight: 600,
+    color: systemColors.light['content-primary'],
+  },
+  systemTokenVar: {
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: 9,
+    color: systemColors.light['content-tertiary'],
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  systemTokenValue: {
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: 10,
+    color: systemColors.light['content-secondary'],
   },
   title: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',

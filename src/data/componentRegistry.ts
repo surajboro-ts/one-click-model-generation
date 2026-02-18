@@ -543,6 +543,45 @@ export const componentRegistry: ComponentMeta[] = [
     author: 'Engineering Team',
     category: 'Utilities',
   },
+  {
+    id: 'globalheader',
+    name: 'GlobalHeader',
+    description: 'Reusable global app header with search and profile actions',
+    states: ['default', 'search-input', 'search-trigger'],
+    path: '/radiant/components/globalheader',
+    lastModified: '2026-02-14',
+    source: 'custom',
+    status: 'new',
+    variants: 2,
+    author: 'Engineering Team',
+    category: 'Widgets',
+  },
+  {
+    id: 'appsidebar',
+    name: 'AppSidebar',
+    description: 'Multi-tab application sidebar with category navigation',
+    states: ['default', 'overlay', 'highlighted-item'],
+    path: '/radiant/components/appsidebar',
+    lastModified: '2026-02-14',
+    source: 'custom',
+    status: 'new',
+    variants: 3,
+    author: 'Engineering Team',
+    category: 'Widgets',
+  },
+  {
+    id: 'appshell',
+    name: 'AppShell',
+    description: 'Application shell layout that composes GlobalHeader and AppSidebar',
+    states: ['sidebar-visible', 'sidebar-hidden', 'sidebar-overlay'],
+    path: '/radiant/components/appshell',
+    lastModified: '2026-02-14',
+    source: 'custom',
+    status: 'new',
+    variants: 3,
+    author: 'Engineering Team',
+    category: 'Widgets',
+  },
 ];
 
 /**
@@ -633,7 +672,7 @@ export const getIconCount = (): number => {
  * Get token count label
  */
 export const getTokenCountLabel = (): string => {
-  return '150+';
+  return '290+';
 };
 
 /**

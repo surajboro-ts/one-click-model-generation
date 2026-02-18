@@ -1,27 +1,61 @@
 /**
  * Mock Data for Command Palette
- * 
- * Comprehensive data for testing the command palette with all features.
+ *
+ * Phase 1 migration data set:
+ * - Rich object metadata (Liveboards, Answers, Collections, Data Models, Tables, Connections)
+ * - Expanded admin/navigation command set
+ * - Default groups aligned with Figma Make: Recent, Create, Quick links
  */
 
-import type { 
-  CommandItem, 
-  FilterOption, 
-  CommandGroup, 
+import type {
+  CommandItem,
+  FilterOption,
+  CommandGroup,
   KeyboardShortcut,
   ContextRankingMap,
   ContextOption,
-  PageContext 
+  PageContext,
+  ThoughtSpotObjectType,
+  AppTab,
 } from '../types';
 
+export interface ThoughtSpotObject {
+  id: string;
+  name: string;
+  type: ThoughtSpotObjectType;
+  author: string;
+  authorAvatar?: string;
+  modified: string;
+  tags: string[];
+  description?: string;
+  views?: number;
+  favorites?: number;
+  visualizationType?: string;
+  chartsCount?: number;
+  objectsCount?: number;
+  rowCount?: number;
+  connectionType?: string;
+  status?: 'Active' | 'Inactive' | 'Error';
+}
+
+type AdminCommandDef = {
+  id: string;
+  label: string;
+  page: string;
+  tab?: string;
+  category: string;
+  rightLabel: string;
+  icon?: CommandItem['icon'];
+  appTab?: AppTab;
+};
+
 /**
- * Filter options shown when "/" is typed
- * Order matches Figma spec: Admin Settings, Answers, Liveboard, Navigate, Create, Help, Collections, Models, Spotter
+ * Filter options shown when "/" is typed.
  */
 export const FILTER_OPTIONS: FilterOption[] = [
   { id: 'admin', label: 'Admin settings', icon: 'cog', rightLabel: 'Filter', filterType: 'Admin Settings' },
   { id: 'answers', label: 'Answers', icon: 'answer', rightLabel: 'Filter', filterType: 'Answers' },
-  { id: 'liveboards', label: 'Liveboard', icon: 'liveboard', rightLabel: 'Filter', filterType: 'Liveboards' },
+  { id: 'liveboards', label: 'Liveboards', icon: 'liveboard', rightLabel: 'Filter', filterType: 'Liveboards' },
   { id: 'navigate', label: 'Navigate', icon: 'navigate', rightLabel: 'Filter', filterType: 'Navigate' },
   { id: 'create', label: 'Create', icon: 'plus', rightLabel: 'Filter', filterType: 'Create' },
   { id: 'help', label: 'Help', icon: 'info-circle', rightLabel: 'Filter', filterType: 'Help' },
@@ -31,8 +65,7 @@ export const FILTER_OPTIONS: FilterOption[] = [
 ];
 
 /**
- * Context-aware filter ranking
- * Maps page context to ordered filter types
+ * Context-aware filter ranking.
  */
 export const CONTEXT_RANKINGS: ContextRankingMap = {
   default: ['Admin Settings', 'Answers', 'Liveboards', 'Navigate', 'Create', 'Help', 'Collections', 'Models', 'Spotter'],
@@ -46,191 +79,346 @@ export const CONTEXT_RANKINGS: ContextRankingMap = {
 };
 
 /**
- * Context options for dropdown selector
+ * Context options for demo selector.
  */
 export const CONTEXT_OPTIONS: ContextOption[] = [
   { id: 'default', label: 'Default', description: 'Standard filter order' },
   { id: 'answer', label: 'Answer Page', description: 'Answers filter ranked first' },
   { id: 'liveboard', label: 'Liveboard Page', description: 'Liveboards filter ranked first' },
-  { id: 'admin', label: 'Admin Page', description: 'Admin Settings filter ranked first' },
+  { id: 'admin', label: 'Admin Page', description: 'Admin settings ranked first' },
   { id: 'spotter', label: 'Spotter Chat', description: 'Spotter filter ranked first' },
   { id: 'create', label: 'Create Mode', description: 'Create filter ranked first' },
   { id: 'navigate', label: 'Navigation', description: 'Navigate filter ranked first' },
   { id: 'help', label: 'Help Center', description: 'Help filter ranked first' },
 ];
 
+// Liveboards (10)
+export const mockLiveboards: ThoughtSpotObject[] = [
+  { id: 'lb-1', name: 'Design : Muze + Tooltips', type: 'Liveboard', author: 'mohammed.faris', modified: '4 days ago', tags: [], description: 'Design variations and tooltip experiments', views: 15, favorites: 3, chartsCount: 8 },
+  { id: 'lb-2', name: 'Content Density', type: 'Liveboard', author: 'mohammed.faris', modified: '4 days ago', tags: [], description: 'Testing different content density layouts', views: 3, favorites: 0, chartsCount: 5 },
+  { id: 'lb-3', name: 'Billable Query Stats Liveboard', type: 'Liveboard', author: 'System User', modified: '4 days ago', tags: [], description: 'Statistics on billable queries', views: 6, favorites: 0, chartsCount: 12 },
+  { id: 'lb-4', name: 'User Adoption', type: 'Liveboard', author: 'System User', modified: '4 days ago', tags: [], description: 'User adoption metrics and trends', views: 23, favorites: 2, chartsCount: 15 },
+  { id: 'lb-5', name: 'testing', type: 'Liveboard', author: 'Vikas Gautam', modified: '6 days ago', tags: [], description: 'Testing scratchpad', views: 2, favorites: 0, chartsCount: 3 },
+  { id: 'lb-6', name: 'Muze Studio Gallery', type: 'Liveboard', author: 'Nakshatra Mukhopadhyay', modified: '6 days ago', tags: [], description: 'Gallery of Muze Studio creations', views: 2, favorites: 0, chartsCount: 20 },
+  { id: 'lb-7', name: 'Arpit Test Liveboard', type: 'Liveboard', author: 'Arpit Rai', modified: '6 days ago', tags: [], description: "Arpit's personal test board", views: 5, favorites: 0, chartsCount: 4 },
+  { id: 'lb-8', name: 'Bar/Column Charts Enhancements', type: 'Liveboard', author: 'mohammed.faris', modified: '6 days ago', tags: [], description: 'Testing enhancements for bar and column charts', views: 1, favorites: 0, chartsCount: 7 },
+  { id: 'lb-9', name: 'bugs - airplane crashes', type: 'Liveboard', author: 'ash', modified: '6 days ago', tags: [], description: 'Analysis of airplane crash data bugs', views: 5, favorites: 1, chartsCount: 6 },
+  { id: 'lb-10', name: 'Sales', type: 'Liveboard', author: 'shubham.agrawal', modified: '6 days ago', tags: [], description: 'General sales overview', views: 15, favorites: 4, chartsCount: 10 },
+];
+
+// Answers (7)
+export const mockAnswers: ThoughtSpotObject[] = [
+  { id: 'ans-1', name: 'Daily Sales vs Target', type: 'Answer', author: 'Anya Sharma', modified: '4 hours ago', tags: ['Sales', 'Daily', 'Target'], description: 'Daily sales comparison against targets', views: 234, favorites: 18, visualizationType: 'Column Chart' },
+  { id: 'ans-2', name: 'Top 10 Products by Revenue', type: 'Answer', author: 'Mike Ross', modified: '1 day ago', tags: ['Products', 'Revenue', 'Top Performers'], description: 'Best performing products by revenue', views: 445, favorites: 34, visualizationType: 'Bar Chart' },
+  { id: 'ans-3', name: 'Regional Sales Breakdown', type: 'Answer', author: 'Sarah Chen', modified: '6 hours ago', tags: ['Regional', 'Sales', 'Geography'], description: 'Sales distribution across regions', views: 312, favorites: 22, visualizationType: 'Map' },
+  { id: 'ans-4', name: 'Customer Acquisition Trends', type: 'Answer', author: 'David Park', modified: '2 days ago', tags: ['Customer', 'Acquisition', 'Trends'], description: 'New customer acquisition over time', views: 189, favorites: 15, visualizationType: 'Line Chart' },
+  { id: 'ans-5', name: 'Churn Rate by Segment', type: 'Answer', author: 'Anya Sharma', modified: '3 days ago', tags: ['Churn', 'Retention', 'Segments'], description: 'Customer churn across different segments', views: 276, favorites: 21, visualizationType: 'Stacked Bar' },
+  { id: 'ans-6', name: 'Quarterly Revenue Growth', type: 'Answer', author: 'Mike Ross', modified: '1 week ago', tags: ['Revenue', 'Growth', 'Quarterly'], description: 'Quarter over quarter revenue growth', views: 567, favorites: 45, visualizationType: 'Area Chart' },
+  { id: 'ans-7', name: 'Product Category Performance', type: 'Answer', author: 'Sarah Chen', modified: '5 days ago', tags: ['Products', 'Categories', 'Performance'], description: 'Sales performance by product category', views: 398, favorites: 28, visualizationType: 'Pie Chart' },
+];
+
+// Collections (5)
+export const mockCollections: ThoughtSpotObject[] = [
+  { id: 'col-1', name: 'Executive Reports', type: 'Collection', author: 'Anya Sharma', modified: '1 day ago', tags: ['Executive', 'Reports', 'Leadership'], description: 'Executive-level dashboards and reports', views: 892, favorites: 67, objectsCount: 24 },
+  { id: 'col-2', name: 'Sales Team Resources', type: 'Collection', author: 'Mike Ross', modified: '3 days ago', tags: ['Sales', 'Team', 'Resources'], description: 'Sales analytics and tracking tools', views: 543, favorites: 41, objectsCount: 18 },
+  { id: 'col-3', name: 'Marketing Analytics', type: 'Collection', author: 'Sarah Chen', modified: '2 days ago', tags: ['Marketing', 'Analytics', 'Campaigns'], description: 'Marketing performance and campaign analytics', views: 467, favorites: 35, objectsCount: 15 },
+  { id: 'col-4', name: 'Financial Planning', type: 'Collection', author: 'David Park', modified: '1 week ago', tags: ['Finance', 'Planning', 'Budgets'], description: 'Financial planning and budgeting resources', views: 721, favorites: 52, objectsCount: 21 },
+  { id: 'col-5', name: 'Customer Analytics Hub', type: 'Collection', author: 'Anya Sharma', modified: '4 days ago', tags: ['Customer', 'Analytics', 'Insights'], description: 'Customer behavior and insights', views: 634, favorites: 48, objectsCount: 19 },
+];
+
+// Data models (5)
+export const mockDataModels: ThoughtSpotObject[] = [
+  { id: 'dm-1', name: 'Retail Sales Model', type: 'Data Model', author: 'Tech Team', modified: '2 weeks ago', tags: ['Sales', 'Retail', 'Core'], description: 'Primary sales data model for retail operations', views: 1834, favorites: 123 },
+  { id: 'dm-2', name: 'Customer 360 Model', type: 'Data Model', author: 'Data Engineering', modified: '1 month ago', tags: ['Customer', '360', 'Master'], description: 'Comprehensive customer data model', views: 2156, favorites: 156 },
+  { id: 'dm-3', name: 'Financial Reporting Model', type: 'Data Model', author: 'Finance Team', modified: '3 weeks ago', tags: ['Finance', 'Reporting', 'Compliance'], description: 'Financial reporting and compliance model', views: 987, favorites: 78 },
+  { id: 'dm-4', name: 'Inventory Management Model', type: 'Data Model', author: 'Tech Team', modified: '1 week ago', tags: ['Inventory', 'Operations', 'Supply Chain'], description: 'Inventory and supply chain data model', views: 654, favorites: 45 },
+  { id: 'dm-5', name: 'Marketing Attribution Model', type: 'Data Model', author: 'Marketing Ops', modified: '2 weeks ago', tags: ['Marketing', 'Attribution', 'ROI'], description: 'Marketing campaign attribution model', views: 543, favorites: 38 },
+];
+
+// Tables (8)
+export const mockTables: ThoughtSpotObject[] = [
+  { id: 'tbl-1', name: 'sales_transactions', type: 'Table', author: 'Data Engineering', modified: '1 hour ago', tags: ['Sales', 'Transactions', 'Fact'], description: 'Daily sales transaction records', views: 3421, favorites: 234, rowCount: 15678234 },
+  { id: 'tbl-2', name: 'customer_master', type: 'Table', author: 'Data Engineering', modified: '2 hours ago', tags: ['Customer', 'Master', 'Dimension'], description: 'Customer master data', views: 2876, favorites: 198, rowCount: 456789 },
+  { id: 'tbl-3', name: 'product_catalog', type: 'Table', author: 'Tech Team', modified: '5 hours ago', tags: ['Product', 'Catalog', 'Dimension'], description: 'Product catalog and attributes', views: 1987, favorites: 145, rowCount: 234567 },
+  { id: 'tbl-4', name: 'inventory_levels', type: 'Table', author: 'Data Engineering', modified: '30 minutes ago', tags: ['Inventory', 'Stock', 'Fact'], description: 'Real-time inventory levels by location', views: 1543, favorites: 112, rowCount: 987654 },
+  { id: 'tbl-5', name: 'marketing_campaigns', type: 'Table', author: 'Marketing Ops', modified: '1 day ago', tags: ['Marketing', 'Campaigns', 'Dimension'], description: 'Marketing campaign metadata', views: 987, favorites: 76, rowCount: 12345 },
+  { id: 'tbl-6', name: 'web_analytics_events', type: 'Table', author: 'Data Engineering', modified: '15 minutes ago', tags: ['Web', 'Analytics', 'Events'], description: 'Website user behavior events', views: 2341, favorites: 167, rowCount: 45678912 },
+  { id: 'tbl-7', name: 'order_fulfillment', type: 'Table', author: 'Tech Team', modified: '3 hours ago', tags: ['Orders', 'Fulfillment', 'Fact'], description: 'Order fulfillment and shipping data', views: 1678, favorites: 123, rowCount: 3456789 },
+  { id: 'tbl-8', name: 'store_locations', type: 'Table', author: 'Data Engineering', modified: '1 week ago', tags: ['Store', 'Location', 'Dimension'], description: 'Physical store location data', views: 876, favorites: 54, rowCount: 567 },
+];
+
+// Connections (6)
+export const mockConnections: ThoughtSpotObject[] = [
+  { id: 'conn-1', name: 'Snowflake Production', type: 'Connection', author: 'Data Engineering', modified: '1 day ago', tags: ['Snowflake', 'Production', 'Primary'], description: 'Primary Snowflake data warehouse connection', views: 456, favorites: 34, connectionType: 'Snowflake', status: 'Active' },
+  { id: 'conn-2', name: 'PostgreSQL Analytics', type: 'Connection', author: 'Tech Team', modified: '3 days ago', tags: ['PostgreSQL', 'Analytics', 'Database'], description: 'PostgreSQL analytics database', views: 234, favorites: 23, connectionType: 'PostgreSQL', status: 'Active' },
+  { id: 'conn-3', name: 'Google BigQuery', type: 'Connection', author: 'Data Engineering', modified: '1 week ago', tags: ['BigQuery', 'Google', 'Cloud'], description: 'Google BigQuery cloud data warehouse', views: 345, favorites: 28, connectionType: 'BigQuery', status: 'Active' },
+  { id: 'conn-4', name: 'Salesforce CRM', type: 'Connection', author: 'Sales Ops', modified: '2 days ago', tags: ['Salesforce', 'CRM', 'SaaS'], description: 'Salesforce CRM integration', views: 567, favorites: 45, connectionType: 'Salesforce', status: 'Active' },
+  { id: 'conn-5', name: 'AWS Redshift', type: 'Connection', author: 'Data Engineering', modified: '5 days ago', tags: ['Redshift', 'AWS', 'Warehouse'], description: 'AWS Redshift data warehouse', views: 289, favorites: 19, connectionType: 'Redshift', status: 'Error' },
+  { id: 'conn-6', name: 'MongoDB Documents', type: 'Connection', author: 'Tech Team', modified: '1 week ago', tags: ['MongoDB', 'NoSQL', 'Documents'], description: 'MongoDB document database', views: 178, favorites: 12, connectionType: 'MongoDB', status: 'Active' },
+];
+
+export const allMockObjects: ThoughtSpotObject[] = [
+  ...mockLiveboards,
+  ...mockAnswers,
+  ...mockCollections,
+  ...mockDataModels,
+  ...mockTables,
+  ...mockConnections,
+];
+
+const OBJECT_ICONS: Record<ThoughtSpotObjectType, CommandItem['icon']> = {
+  Liveboard: 'liveboard',
+  Answer: 'answer',
+  Collection: 'collection',
+  'Data Model': 'save-worksheet',
+  Table: 'table',
+  Connection: 'database',
+};
+
+function toObjectCommandItem(object: ThoughtSpotObject, group: string): CommandItem {
+  return {
+    id: `object-${object.id}`,
+    label: object.name,
+    description: `by ${object.author}`,
+    context: object.tags.length > 0 ? `in ${object.tags[0]}` : undefined,
+    rightLabel: object.type,
+    icon: OBJECT_ICONS[object.type],
+    group,
+    type: 'result',
+    author: object.author,
+    tags: object.tags,
+    objectId: object.id,
+    objectType: object.type,
+    isObject: true,
+    keywords: [object.modified, object.connectionType ?? '', object.status ?? ''].filter(Boolean),
+  };
+}
+
+export const answerItems: CommandItem[] = mockAnswers.map((item) => toObjectCommandItem(item, 'Answers'));
+export const liveboardItems: CommandItem[] = mockLiveboards.map((item) => toObjectCommandItem(item, 'Liveboards'));
+export const collectionItems: CommandItem[] = mockCollections.map((item) => toObjectCommandItem(item, 'Collections'));
+export const modelItems: CommandItem[] = [
+  ...mockDataModels.map((item) => toObjectCommandItem(item, 'Models')),
+  ...mockTables.map((item) => toObjectCommandItem(item, 'Models')),
+  ...mockConnections.map((item) => toObjectCommandItem(item, 'Models')),
+];
+
 /**
- * Recent items
+ * Default items shown when the palette opens.
  */
 export const recentItems: CommandItem[] = [
-  { id: 'recent-1', label: 'Q4 Revenue Analysis', description: 'Revenue breakdown by region', context: 'Sales Analytics', rightLabel: 'Answer', icon: 'answer', group: 'Recent', author: 'Maya Chen' },
-  { id: 'recent-2', label: 'Customer Churn Dashboard', description: 'Monthly churn metrics', context: 'Customer Success', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Recent', author: 'James Wilson' },
-  { id: 'recent-3', label: 'Product Usage Trends', description: 'Feature adoption rates', context: 'Product Analytics', rightLabel: 'Answer', icon: 'answer', group: 'Recent', author: 'Sarah Kim' },
-  { id: 'recent-4', label: 'Sales Pipeline Overview', description: 'Pipeline by stage', context: 'Sales', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Recent', author: 'Alex Rivera' },
-  { id: 'recent-5', label: 'Support Ticket Analysis', description: 'Ticket volume and resolution', context: 'Support', rightLabel: 'Answer', icon: 'answer', group: 'Recent', author: 'Jordan Lee' },
+  {
+    id: 'recent-1',
+    label: 'Daily Sales vs Target',
+    description: 'by Anya Sharma',
+    context: 'in Customer Sales',
+    rightLabel: 'Answer',
+    icon: 'answer',
+    group: 'Recent',
+    objectId: 'ans-1',
+    objectType: 'Answer',
+    isObject: true,
+  },
+  {
+    id: 'recent-2',
+    label: 'Design : Muze + Tooltips',
+    description: 'by mohammed.faris',
+    context: 'in Product Design',
+    rightLabel: 'Liveboard',
+    icon: 'liveboard',
+    group: 'Recent',
+    objectId: 'lb-1',
+    objectType: 'Liveboard',
+    isObject: true,
+  },
+  {
+    id: 'recent-3',
+    label: 'Beta Access',
+    description: 'Application settings',
+    context: 'in Feature management',
+    rightLabel: 'Admin settings',
+    icon: 'settings',
+    group: 'Recent',
+    page: 'Feature management',
+    tab: 'beta access',
+  },
+  {
+    id: 'recent-4',
+    label: 'Retail Sales Model',
+    description: 'by Tech Team',
+    context: 'in Core models',
+    rightLabel: 'Data Model',
+    icon: 'save-worksheet',
+    group: 'Recent',
+    objectId: 'dm-1',
+    objectType: 'Data Model',
+    isObject: true,
+  },
+  {
+    id: 'recent-5',
+    label: 'Spotter chat',
+    description: 'Ask anything about your data',
+    rightLabel: 'Spotter',
+    icon: 'spotter',
+    group: 'Recent',
+    isSpotter: true,
+  },
 ];
 
-/**
- * Recommended items
- */
-export const recommendedItems: CommandItem[] = [
-  { id: 'rec-1', label: 'Weekly Sales Report', description: 'Automated weekly summary', context: 'Sales Analytics', rightLabel: 'Answer', icon: 'answer', group: 'Recommended', author: 'System' },
-  { id: 'rec-2', label: 'Marketing ROI Dashboard', description: 'Campaign performance', context: 'Marketing', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Recommended', author: 'Emily Brown' },
-  { id: 'rec-3', label: 'Engineering Velocity', description: 'Sprint metrics and velocity', context: 'Engineering', rightLabel: 'Answer', icon: 'answer', group: 'Recommended', author: 'Dev Team' },
-  { id: 'rec-4', label: 'Revenue by Product Line', description: 'Product revenue breakdown', context: 'Finance', rightLabel: 'Answer', icon: 'answer', group: 'Recommended', author: 'Finance Team' },
-  { id: 'rec-5', label: 'Customer Satisfaction', description: 'NPS and CSAT scores', context: 'Customer Success', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Recommended', author: 'CS Team' },
-  { id: 'rec-6', label: 'Inventory Levels', description: 'Stock and reorder points', context: 'Operations', rightLabel: 'Answer', icon: 'answer', group: 'Recommended', author: 'Ops Team' },
-  { id: 'rec-7', label: 'Employee Metrics', description: 'Headcount and attrition', context: 'HR', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Recommended', author: 'HR Team' },
-];
-
-/**
- * Quick links
- */
-export const quickLinkItems: CommandItem[] = [
-  { id: 'quick-1', label: 'My Favorites', description: 'Starred items', context: '', rightLabel: 'Navigate', icon: 'star', group: 'Quick Links' },
-  { id: 'quick-2', label: 'Shared with Me', description: 'Items shared by others', context: '', rightLabel: 'Navigate', icon: 'share', group: 'Quick Links' },
-  { id: 'quick-3', label: 'My Collections', description: 'Organized content', context: '', rightLabel: 'Navigate', icon: 'collection', group: 'Quick Links' },
-];
-
-/**
- * Answer items
- */
-export const answerItems: CommandItem[] = [
-  { id: 'ans-1', label: 'Total Revenue by Quarter', description: 'Quarterly revenue trends', context: 'Finance > Revenue', rightLabel: 'Answer', icon: 'answer', group: 'Answers', author: 'Finance Team' },
-  { id: 'ans-2', label: 'Customer Acquisition Cost', description: 'CAC by channel', context: 'Marketing > Metrics', rightLabel: 'Answer', icon: 'answer', group: 'Answers', author: 'Marketing Team' },
-  { id: 'ans-3', label: 'Monthly Active Users', description: 'MAU trends over time', context: 'Product > Usage', rightLabel: 'Answer', icon: 'answer', group: 'Answers', author: 'Product Team' },
-  { id: 'ans-4', label: 'Average Order Value', description: 'AOV by segment', context: 'Sales > Metrics', rightLabel: 'Answer', icon: 'answer', group: 'Answers', author: 'Sales Ops' },
-  { id: 'ans-5', label: 'Net Promoter Score', description: 'NPS by region', context: 'Customer Success', rightLabel: 'Answer', icon: 'answer', group: 'Answers', author: 'CS Team' },
-  { id: 'ans-6', label: 'Website Conversion Rate', description: 'Funnel analysis', context: 'Marketing > Web', rightLabel: 'Answer', icon: 'answer', group: 'Answers', author: 'Web Team' },
-  { id: 'ans-7', label: 'Employee Engagement Score', description: 'Engagement metrics', context: 'HR > People', rightLabel: 'Answer', icon: 'answer', group: 'Answers', author: 'HR Team' },
-  { id: 'ans-8', label: 'Support Response Time', description: 'Average response metrics', context: 'Support > SLA', rightLabel: 'Answer', icon: 'answer', group: 'Answers', author: 'Support Team' },
-];
-
-/**
- * Liveboard items
- */
-export const liveboardItems: CommandItem[] = [
-  { id: 'lb-1', label: 'Executive Dashboard', description: 'High-level KPIs for leadership', context: 'Executive', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Liveboards', author: 'Admin' },
-  { id: 'lb-2', label: 'Sales Performance', description: 'Sales team metrics and targets', context: 'Sales', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Liveboards', author: 'Sales Ops' },
-  { id: 'lb-3', label: 'Marketing Analytics', description: 'Campaign and channel performance', context: 'Marketing', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Liveboards', author: 'Marketing Team' },
-  { id: 'lb-4', label: 'Product Health', description: 'Product usage and health metrics', context: 'Product', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Liveboards', author: 'Product Team' },
-  { id: 'lb-5', label: 'Operations Overview', description: 'Operational efficiency metrics', context: 'Operations', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Liveboards', author: 'Ops Team' },
-  { id: 'lb-6', label: 'Finance Summary', description: 'Financial performance overview', context: 'Finance', rightLabel: 'Liveboard', icon: 'liveboard', group: 'Liveboards', author: 'Finance Team' },
-];
-
-/**
- * Admin Settings items
- */
-export const adminItems: CommandItem[] = [
-  { id: 'admin-1', label: 'User Management', description: 'Manage users and permissions', context: 'Admin > Users', rightLabel: 'Admin Settings', icon: 'profile', group: 'Admin Settings' },
-  { id: 'admin-2', label: 'Group Management', description: 'Manage groups and roles', context: 'Admin > Groups', rightLabel: 'Admin Settings', icon: 'community', group: 'Admin Settings' },
-  { id: 'admin-3', label: 'Data Connections', description: 'Manage data sources', context: 'Admin > Data', rightLabel: 'Admin Settings', icon: 'database', group: 'Admin Settings' },
-  { id: 'admin-4', label: 'Security Settings', description: 'Security and access controls', context: 'Admin > Security', rightLabel: 'Admin Settings', icon: 'lock', group: 'Admin Settings' },
-  { id: 'admin-5', label: 'Org Settings', description: 'Organization preferences', context: 'Admin > Org', rightLabel: 'Admin Settings', icon: 'cog', group: 'Admin Settings' },
-  { id: 'admin-6', label: 'Audit Logs', description: 'View system activity', context: 'Admin > Logs', rightLabel: 'Admin Settings', icon: 'clock', group: 'Admin Settings' },
-  { id: 'admin-7', label: 'Integrations', description: 'Manage third-party integrations', context: 'Admin > Integrations', rightLabel: 'Admin Settings', icon: 'share', group: 'Admin Settings' },
-  { id: 'admin-8', label: 'API Access', description: 'API keys and tokens', context: 'Admin > API', rightLabel: 'Admin Settings', icon: 'key', group: 'Admin Settings' },
-];
-
-/**
- * Navigate items
- */
-export const navigateItems: CommandItem[] = [
-  { id: 'nav-1', label: 'Home', description: 'Go to homepage', context: '', rightLabel: 'Navigate', icon: 'navigate', group: 'Navigate' },
-  { id: 'nav-2', label: 'Answers', description: 'Browse all answers', context: '', rightLabel: 'Navigate', icon: 'answer', group: 'Navigate' },
-  { id: 'nav-3', label: 'Liveboards', description: 'Browse all liveboards', context: '', rightLabel: 'Navigate', icon: 'liveboard', group: 'Navigate' },
-  { id: 'nav-4', label: 'Data', description: 'Explore data sources', context: '', rightLabel: 'Navigate', icon: 'database', group: 'Navigate' },
-  { id: 'nav-5', label: 'Spotter', description: 'Open Spotter chat', context: '', rightLabel: 'Navigate', icon: 'star', group: 'Navigate' },
-  { id: 'nav-6', label: 'Admin', description: 'Admin console', context: '', rightLabel: 'Navigate', icon: 'cog', group: 'Navigate' },
-  { id: 'nav-7', label: 'Profile', description: 'Your profile settings', context: '', rightLabel: 'Navigate', icon: 'profile', group: 'Navigate' },
-];
-
-/**
- * Help items
- */
-export const helpItems: CommandItem[] = [
-  { id: 'help-1', label: 'Getting Started', description: 'Learn the basics', context: 'Documentation', rightLabel: 'Help', icon: 'book', group: 'Help' },
-  { id: 'help-2', label: 'Keyboard Shortcuts', description: 'View all shortcuts', context: 'Documentation', rightLabel: 'Help', icon: 'info-circle', group: 'Help' },
-  { id: 'help-3', label: 'Contact Support', description: 'Get help from our team', context: 'Support', rightLabel: 'Help', icon: 'paper-plane', group: 'Help' },
-  { id: 'help-4', label: 'Community Forum', description: 'Join the community', context: 'Community', rightLabel: 'Help', icon: 'community', group: 'Help' },
-  { id: 'help-5', label: 'API Documentation', description: 'Developer resources', context: 'Developers', rightLabel: 'Help', icon: 'documentation', group: 'Help' },
-  { id: 'help-6', label: 'Video Tutorials', description: 'Watch and learn', context: 'Learning', rightLabel: 'Help', icon: 'video', group: 'Help' },
-  { id: 'help-7', label: 'Release Notes', description: 'Latest updates', context: 'Updates', rightLabel: 'Help', icon: 'note', group: 'Help' },
-  { id: 'help-8', label: 'System Status', description: 'Check service status', context: 'Status', rightLabel: 'Help', icon: 'monitor', group: 'Help' },
-];
-
-/**
- * Spotter items
- */
-export const spotterItems: CommandItem[] = [
-  { id: 'spot-1', label: 'New Chat', description: 'Start a new Spotter conversation', context: 'Spotter', rightLabel: 'Spotter', icon: 'star', group: 'Spotter', type: 'create' },
-  { id: 'spot-2', label: 'Recent Conversations', description: 'View past Spotter chats', context: 'Spotter', rightLabel: 'Spotter', icon: 'clock', group: 'Spotter' },
-  { id: 'spot-3', label: 'Saved Insights', description: 'View saved Spotter insights', context: 'Spotter', rightLabel: 'Spotter', icon: 'bookmark', group: 'Spotter' },
-  { id: 'spot-4', label: 'Spotter Settings', description: 'Configure Spotter preferences', context: 'Spotter', rightLabel: 'Spotter', icon: 'cog', group: 'Spotter' },
-];
-
-/**
- * Create items
- */
 export const createItems: CommandItem[] = [
-  { id: 'create-1', label: 'New Answer', description: 'Create a new analysis', context: '', rightLabel: 'Create', icon: 'answer', group: 'Create', type: 'create' },
-  { id: 'create-2', label: 'New Liveboard', description: 'Create a new dashboard', context: '', rightLabel: 'Create', icon: 'liveboard', group: 'Create', type: 'create' },
-  { id: 'create-3', label: 'New Collection', description: 'Organize content in a collection', context: '', rightLabel: 'Create', icon: 'collection', group: 'Create', type: 'create' },
-  { id: 'create-4', label: 'New Connection', description: 'Connect a new data source', context: '', rightLabel: 'Create', icon: 'database', group: 'Create', type: 'create' },
+  { id: 'create-1', label: 'Spotter chat', description: 'Start a new conversation', rightLabel: 'Spotter', icon: 'spotter', group: 'Create', type: 'create', isSpotter: true },
+  { id: 'create-2', label: 'Answer', description: 'Create a new analysis', rightLabel: 'Create', icon: 'answer', group: 'Create', type: 'create', action: 'create-answer' },
+  { id: 'create-3', label: 'Liveboard', description: 'Create a new dashboard', rightLabel: 'Create', icon: 'liveboard', group: 'Create', type: 'create', action: 'create-liveboard' },
+  { id: 'create-4', label: 'Connection', description: 'Connect a new data source', rightLabel: 'Create', icon: 'database', group: 'Create', type: 'create', action: 'create-connection' },
+  { id: 'create-5', label: 'Collection', description: 'Group related content', rightLabel: 'Create', icon: 'collection', group: 'Create', type: 'create', action: 'create-collection' },
 ];
 
-/**
- * Collection items
- */
-export const collectionItems: CommandItem[] = [
-  { id: 'col-1', label: 'Sales Collection', description: 'Curated sales dashboards and answers', context: 'Sales', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'Sales Ops' },
-  { id: 'col-2', label: 'Executive Briefing', description: 'Key metrics for leadership', context: 'Executive', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'Admin' },
-  { id: 'col-3', label: 'Onboarding Resources', description: 'Getting started content', context: 'HR', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'HR Team' },
-  { id: 'col-4', label: 'Marketing Analytics', description: 'Campaign performance collection', context: 'Marketing', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'Marketing Team' },
-  { id: 'col-5', label: 'Product Health Metrics', description: 'Product usage and health', context: 'Product', rightLabel: 'Collection', icon: 'collection', group: 'Collections', author: 'Product Team' },
+export const quickLinkItems: CommandItem[] = [
+  { id: 'quick-1', label: 'Admin settings', description: 'Open administration controls', rightLabel: 'Admin settings', icon: 'settings', group: 'Quick links', page: 'General settings', tab: 'administration' },
+  { id: 'quick-2', label: 'Profile settings', description: 'Manage your profile', rightLabel: 'Admin settings', icon: 'profile', group: 'Quick links', page: 'Profile' },
+  { id: 'quick-3', label: 'Community', description: 'Visit the user community', rightLabel: 'Help', icon: 'community', group: 'Quick links', action: 'open-community' },
+  { id: 'quick-4', label: 'Developer docs', description: 'Open embedding documentation', rightLabel: 'Help', icon: 'documentation', group: 'Quick links', action: 'open-docs' },
+  { id: 'quick-5', label: 'Muze docs', description: 'Open charting documentation', rightLabel: 'Help', icon: 'book', group: 'Quick links', action: 'open-muze-docs' },
 ];
 
-/**
- * Model items
- */
-export const modelItems: CommandItem[] = [
-  { id: 'model-1', label: 'Sales Data Model', description: 'Revenue and pipeline data', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'Data Team' },
-  { id: 'model-2', label: 'Customer 360', description: 'Unified customer data model', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'Data Team' },
-  { id: 'model-3', label: 'Product Usage Model', description: 'Feature usage and engagement', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'Analytics Team' },
-  { id: 'model-4', label: 'HR People Model', description: 'Employee and org data', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'HR Analytics' },
-  { id: 'model-5', label: 'Financial Reporting', description: 'Financial metrics and reports', context: 'Data > Models', rightLabel: 'Model', icon: 'save-worksheet', group: 'Models', author: 'Finance Team' },
+const ADMIN_COMMAND_DEFS: AdminCommandDef[] = [
+  { id: 'cmd-cc', label: 'Resource Control Centre', page: 'Resource control centre', category: 'Overview', rightLabel: 'Admin' },
+  { id: 'cmd-ai', label: 'AI and BI Stats', page: 'AI and BI Stats', category: 'Overview', rightLabel: 'Admin' },
+  { id: 'cmd-billing', label: 'Billing Stats', page: 'Billing stats', category: 'Overview', rightLabel: 'Admin' },
+  { id: 'cmd-users-main', label: 'User Management', page: 'User management', tab: 'users', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-users-users', label: 'Users', page: 'User management', tab: 'users', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-users-groups', label: 'Groups', page: 'User management', tab: 'groups', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-users-auth', label: 'Authentication', page: 'User management', tab: 'authentication', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-org', label: 'Org Management', page: 'Org management', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-usage-main', label: 'Usage Insights', page: 'Usage insights', tab: 'user adoption', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-usage-adoption', label: 'User Adoption', page: 'Usage insights', tab: 'user adoption', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-usage-object', label: 'Object Usage', page: 'Usage insights', tab: 'object usage', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-usage-prod', label: 'User Productivity', page: 'Usage insights', tab: 'user productivity', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-usage-perf', label: 'Performance Tracking', page: 'Usage insights', tab: 'performance tracking', category: 'Users & Orgs', rightLabel: 'Admin' },
+  { id: 'cmd-general-main', label: 'General Settings', page: 'General settings', tab: 'language', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-general-lang', label: 'Language', page: 'General settings', tab: 'language', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-general-time', label: 'Time Zone', page: 'General settings', tab: 'time zone', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-general-curr', label: 'Currency', page: 'General settings', tab: 'currency', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-general-admin', label: 'Administration', page: 'General settings', tab: 'administration', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-agent-main', label: 'Agent Settings', page: 'Agent settings', tab: 'spotter', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-agent-spotter', label: 'Spotter', page: 'Agent settings', tab: 'spotter', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-agent-viz', label: 'Spotter Viz', page: 'Agent settings', tab: 'spotter viz', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-agent-model', label: 'Spotter Model', page: 'Agent settings', tab: 'spotter model', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-agent-code', label: 'Spotter Code', page: 'Agent settings', tab: 'spotter code', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-sim-main', label: 'Simulations & Impersonation', page: 'Simulations & Impersonation', tab: 'policy sandbox', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-sim-policy', label: 'Policy Sandbox', page: 'Simulations & Impersonation', tab: 'policy sandbox', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-sim-imp', label: 'Impersonation', page: 'Simulations & Impersonation', tab: 'impersonation', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-features-main', label: 'Feature Management', page: 'Feature management', tab: 'general access', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-features-gen', label: 'General Access', page: 'Feature management', tab: 'general access', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-features-early', label: 'Early Access', page: 'Feature management', tab: 'early access', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-features-beta', label: 'Beta Access', page: 'Feature management', tab: 'beta access', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-custom-main', label: 'Customisations', page: 'Customisations', tab: 'style', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-custom-style', label: 'Style', page: 'Customisations', tab: 'style', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-custom-chart', label: 'Chart', page: 'Customisations', tab: 'chart', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-custom-home', label: 'Homepage', page: 'Customisations', tab: 'homepage', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-custom-email', label: 'Email', page: 'Customisations', tab: 'email', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-custom-help', label: 'Help', page: 'Customisations', tab: 'help', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-core-main', label: 'Core Features', page: 'Core features', tab: 'search and spot iq', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-core-search', label: 'Search and Spot IQ', page: 'Core features', tab: 'search and spot iq', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-core-data', label: 'Data Modelling', page: 'Core features', tab: 'data modelling', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-core-dl', label: 'Downloads & Schedules', page: 'Core features', tab: 'downloads & schedules', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-gov-main', label: 'Governance & Security', page: 'Governance & Security', tab: 'security overview', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-gov-sec', label: 'Security Overview', page: 'Governance & Security', tab: 'security overview', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-gov-audit', label: 'Audit & Logs', page: 'Governance & Security', tab: 'audit & logs', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-gov-pol', label: 'Security Policies', page: 'Governance & Security', tab: 'security policies', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-conn-main', label: 'Connections & Integrations', page: 'Connections & Integrations', tab: 'connections', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-conn-conn', label: 'Connections', page: 'Connections & Integrations', tab: 'connections', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-conn-web', label: 'Webhooks', page: 'Connections & Integrations', tab: 'webhooks', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-conn-api', label: 'API & Service Accounts', page: 'Connections & Integrations', tab: 'api & service accounts', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-infra-main', label: 'Infrastructure & Support', page: 'Infrastructure & Support', tab: 'cluster info', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-infra-cluster', label: 'Cluster Info', page: 'Infrastructure & Support', tab: 'cluster info', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-infra-net', label: 'Network', page: 'Infrastructure & Support', tab: 'network', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-infra-up', label: 'Upgrades', page: 'Infrastructure & Support', tab: 'upgrades', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-infra-supp', label: 'Support', page: 'Infrastructure & Support', tab: 'support', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-ts-ai', label: 'ThoughtSpot AI', page: 'ThoughtSpot AI', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-vars', label: 'Variables', page: 'Variables', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-ver', label: 'Version Control', page: 'Version control', category: 'Application Settings', rightLabel: 'Admin' },
+  { id: 'cmd-data-obj', label: 'Data objects', page: 'Data objects', category: 'Data Workspace', rightLabel: 'Data', icon: 'database', appTab: 'data' },
+  { id: 'cmd-data-conn', label: 'Connections', page: 'Connections', category: 'Data Workspace', rightLabel: 'Data', icon: 'share', appTab: 'data' },
+  { id: 'cmd-data-analyst', label: 'Analyst Studio', page: 'Analyst Studio', category: 'Data Workspace', rightLabel: 'Data', icon: 'chart', appTab: 'data' },
+  { id: 'cmd-data-util', label: 'Utilities', page: 'Utilities', category: 'Data Workspace', rightLabel: 'Data', icon: 'wrench', appTab: 'data' },
+  { id: 'cmd-data-sync', label: 'Sync', page: 'Sync', category: 'Data Workspace', rightLabel: 'Data', icon: 'sync', appTab: 'data' },
+  { id: 'cmd-data-ref', label: 'Reference questions', page: 'Reference questions', category: 'Data Workspace', rightLabel: 'Data', icon: 'question-mark', appTab: 'data' },
+  { id: 'cmd-data-terms', label: 'Business terms', page: 'Business terms', category: 'Data Workspace', rightLabel: 'Data', icon: 'book', appTab: 'data' },
+  { id: 'cmd-data-cat', label: 'Data catalog', page: 'Data catalog', category: 'Data Workspace', rightLabel: 'Data', icon: 'book-closed', appTab: 'data' },
+  { id: 'cmd-data-usage', label: 'Usage', page: 'Usage', category: 'Data Workspace', rightLabel: 'Data', icon: 'monitor', appTab: 'data' },
+  { id: 'cmd-data-dbt', label: 'dbt', page: 'dbt', category: 'Data Workspace', rightLabel: 'Data', icon: 'database', appTab: 'data' },
+  { id: 'cmd-data-verif', label: 'Liveboard verification', page: 'Liveboard verification', category: 'Data Workspace', rightLabel: 'Data', icon: 'verified', appTab: 'data' },
+  { id: 'cmd-dev-home', label: 'Develop Home', page: 'Home', category: 'Develop', rightLabel: 'Develop', icon: 'liveboard', appTab: 'develop' },
+  { id: 'cmd-dev-guide', label: 'Visual Embed SDK Guide', page: 'Guide', category: 'Develop', rightLabel: 'Develop', icon: 'book', appTab: 'develop' },
+  { id: 'cmd-dev-play', label: 'Playground', page: 'Playground', category: 'Develop', rightLabel: 'Develop', icon: 'chart', appTab: 'develop' },
+  { id: 'cmd-dev-rest-guide', label: 'REST API Guide', page: 'REST API Guide', category: 'Develop', rightLabel: 'Develop', icon: 'book-closed', appTab: 'develop' },
+  { id: 'cmd-dev-rest-v2', label: 'REST Playground v2.0', page: 'REST Playground v2.0', category: 'Develop', rightLabel: 'Develop', icon: 'chart', appTab: 'develop' },
+  { id: 'cmd-dev-rest-v1', label: 'REST Playground v1', page: 'REST Playground v1', category: 'Develop', rightLabel: 'Develop', icon: 'chart', appTab: 'develop' },
+  { id: 'cmd-dev-graphql', label: 'GraphQL v2.0', page: 'GraphQL v2.0', category: 'Develop', rightLabel: 'Develop', icon: 'chart', appTab: 'develop' },
+  { id: 'cmd-dev-theme', label: 'Theme Builder', page: 'Theme Builder', category: 'Develop', rightLabel: 'Develop', icon: 'brush', appTab: 'develop' },
+  { id: 'cmd-dev-action', label: 'Custom actions', page: 'Custom actions', category: 'Develop', rightLabel: 'Develop', icon: 'settings', appTab: 'develop' },
+  { id: 'cmd-dev-styles', label: 'Styles', page: 'Styles', category: 'Develop', rightLabel: 'Develop', icon: 'brush', appTab: 'develop' },
+  { id: 'cmd-dev-links', label: 'Links settings', page: 'Links settings', category: 'Develop', rightLabel: 'Develop', icon: 'share', appTab: 'develop' },
+  { id: 'cmd-dev-sec', label: 'Security settings', page: 'Security settings', category: 'Develop', rightLabel: 'Develop', icon: 'lock', appTab: 'develop' },
+  { id: 'cmd-dev-web', label: 'Webhooks', page: 'Webhooks', category: 'Develop', rightLabel: 'Develop', icon: 'sync', appTab: 'develop' },
 ];
 
-/**
- * All command items combined
- */
+export const adminItems: CommandItem[] = ADMIN_COMMAND_DEFS.map((command) => ({
+  id: command.id,
+  label: command.label,
+  description: `${command.category} / ${command.page}`,
+  rightLabel: command.rightLabel,
+  icon: command.icon ?? 'settings',
+  group: 'Admin Settings',
+  page: command.page,
+  tab: command.tab,
+  appTab: command.appTab,
+  keywords: [command.category],
+}));
+
+export const navigateItems: CommandItem[] = [
+  { id: 'nav-1', label: 'Home', description: 'Go to the home page', rightLabel: 'Navigate', icon: 'navigate', group: 'Navigate', page: 'Home', appTab: 'insights' },
+  { id: 'nav-2', label: 'Liveboards', description: 'Browse all liveboards', rightLabel: 'Navigate', icon: 'liveboard', group: 'Navigate', page: 'Liveboards', appTab: 'insights' },
+  { id: 'nav-3', label: 'Answers', description: 'Browse all answers', rightLabel: 'Navigate', icon: 'answer', group: 'Navigate', page: 'Answers', appTab: 'insights' },
+  { id: 'nav-4', label: 'Spotter', description: 'Open Spotter chat', rightLabel: 'Navigate', icon: 'spotter', group: 'Navigate', page: 'Spotter', appTab: 'insights', isSpotter: true },
+  { id: 'nav-5', label: 'Admin', description: 'Open administration section', rightLabel: 'Navigate', icon: 'cog', group: 'Navigate', page: 'General settings', appTab: 'admin' },
+];
+
+export const helpItems: CommandItem[] = [
+  { id: 'help-1', label: 'Getting started', description: 'Learn the basics', rightLabel: 'Help', icon: 'book', group: 'Help' },
+  { id: 'help-2', label: 'Keyboard shortcuts', description: 'View all keyboard shortcuts', rightLabel: 'Help', icon: 'info-circle', group: 'Help' },
+  { id: 'help-3', label: 'Contact support', description: 'Get help from our team', rightLabel: 'Help', icon: 'paper-plane', group: 'Help' },
+  { id: 'help-4', label: 'Community forum', description: 'Join the community', rightLabel: 'Help', icon: 'community', group: 'Help' },
+  { id: 'help-5', label: 'Release notes', description: 'Read latest updates', rightLabel: 'Help', icon: 'note', group: 'Help' },
+];
+
+export const spotterItems: CommandItem[] = [
+  { id: 'spotter-1', label: 'Spotter chat', description: 'Open a new chat', rightLabel: 'Spotter', icon: 'spotter', group: 'Spotter', isSpotter: true },
+  { id: 'spotter-2', label: 'Recent conversations', description: 'View your recent chats', rightLabel: 'Spotter', icon: 'clock', group: 'Spotter' },
+  { id: 'spotter-3', label: 'Saved insights', description: 'Open saved Spotter answers', rightLabel: 'Spotter', icon: 'bookmark', group: 'Spotter' },
+];
+
 export const allItems: CommandItem[] = [
   ...recentItems,
-  ...recommendedItems,
+  ...createItems,
   ...quickLinkItems,
   ...answerItems,
   ...liveboardItems,
+  ...collectionItems,
+  ...modelItems,
   ...adminItems,
   ...navigateItems,
   ...helpItems,
   ...spotterItems,
-  ...createItems,
-  ...collectionItems,
-  ...modelItems,
 ];
 
-/**
- * Command groups with items
- */
 export const commandGroups: CommandGroup[] = [
   { id: 'recent', title: 'Recent', items: recentItems },
-  { id: 'recommended', title: 'Recommended', items: recommendedItems },
-  { id: 'quickLinks', title: 'Quick Links', items: quickLinkItems },
+  { id: 'create', title: 'Create', items: createItems },
+  { id: 'quick-links', title: 'Quick links', items: quickLinkItems },
 ];
 
-/**
- * Get items filtered by type
- */
 export function getItemsByFilter(filterType: string): CommandItem[] {
   switch (filterType) {
     case 'Answers':
@@ -240,7 +428,7 @@ export function getItemsByFilter(filterType: string): CommandItem[] {
     case 'Admin Settings':
       return adminItems;
     case 'Navigate':
-      return navigateItems;
+      return [...navigateItems, ...adminItems];
     case 'Help':
       return helpItems;
     case 'Spotter':
@@ -256,23 +444,14 @@ export function getItemsByFilter(filterType: string): CommandItem[] {
   }
 }
 
-/**
- * Get filter options ranked by context
- */
 export function getRankedFilterOptions(context: PageContext): FilterOption[] {
   const ranking = CONTEXT_RANKINGS[context] || CONTEXT_RANKINGS.default;
-  return [...FILTER_OPTIONS].sort((a, b) => {
-    const aIndex = ranking.indexOf(a.filterType);
-    const bIndex = ranking.indexOf(b.filterType);
-    return aIndex - bIndex;
-  });
+  return [...FILTER_OPTIONS].sort((a, b) => ranking.indexOf(a.filterType) - ranking.indexOf(b.filterType));
 }
 
-/**
- * Keyboard shortcuts for footer
- */
 export const keyboardShortcuts: KeyboardShortcut[] = [
   { keys: ['↑ ↓'], label: 'Navigate' },
+  { keys: ['Tab'], label: 'Autocomplete' },
   { keys: ['↵'], label: 'Select' },
   { keys: ['Shift + ↵'], label: 'Open in new tab' },
   { keys: ['⌘ + ↵'], label: 'Open in Spotter' },

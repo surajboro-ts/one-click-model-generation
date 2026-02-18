@@ -30,6 +30,9 @@ import { Stepper } from '../components/Stepper';
 import { DatePicker } from '../components/DatePicker';
 import { IconGallery } from '../components/IconGallery';
 import { SegmentedControl } from '../components/SegmentedControl';
+import { GlobalHeader } from '../components/GlobalHeader';
+import { AppSidebar } from '../components/AppSidebar';
+import { AppShell } from '../components/AppShell';
 import { systemColors, referenceColors } from '../tokens/colors';
 
 interface PropDefinition {
@@ -448,6 +451,58 @@ const componentDocs: Record<string, {
       { name: 'selectable', type: 'boolean', default: 'false', description: 'Enable icon selection' },
       { name: 'selectedIcon', type: 'IconName', description: 'Currently selected icon' },
       { name: 'onSelectIcon', type: '(iconName: IconName) => void', description: 'Selection handler' },
+    ],
+  },
+  // Widgets
+  globalheader: {
+    name: 'GlobalHeader',
+    description: 'A reusable global application header bar with ThoughtSpot logo, search trigger/input, help, notifications, and profile actions. Designed for use inside AppShell or standalone.',
+    props: [
+      { name: 'logo', type: 'ReactNode', description: 'Custom logo element (defaults to ThoughtSpot logo)' },
+      { name: 'onLogoClick', type: '() => void', description: 'Handler when logo is clicked' },
+      { name: 'searchPlaceholder', type: 'string', default: "'Search in ThoughtSpot'", description: 'Placeholder text for the search bar' },
+      { name: 'searchMode', type: "'trigger' | 'input'", default: "'trigger'", description: 'Search bar mode: click-to-open trigger or live text input' },
+      { name: 'onSearchClick', type: '() => void', description: 'Handler when search trigger is clicked (trigger mode)' },
+      { name: 'onSearchChange', type: '(query: string) => void', description: 'Handler when search text changes (input mode)' },
+      { name: 'searchValue', type: 'string', default: "''", description: 'Controlled search value (input mode)' },
+      { name: 'showKeyboardHint', type: 'boolean', default: 'true', description: 'Show Cmd+K keyboard shortcut badge' },
+      { name: 'userName', type: 'string', default: "'Workspace'", description: 'Name displayed in the profile button' },
+      { name: 'userAvatar', type: 'string', description: 'Avatar image URL for the profile button' },
+      { name: 'notificationCount', type: 'number', default: '0', description: 'Notification badge count (hidden when 0)' },
+      { name: 'showHamburger', type: 'boolean', default: 'false', description: 'Show hamburger menu button (for fullscreen modes)' },
+      { name: 'onHamburgerClick', type: '() => void', description: 'Handler when hamburger is clicked' },
+      { name: 'showDefaultActions', type: 'boolean', default: 'true', description: 'Show help, notification, and profile actions' },
+      { name: 'rightSlot', type: 'ReactNode', description: 'Custom content rendered after default actions' },
+    ],
+  },
+  appsidebar: {
+    name: 'AppSidebar',
+    description: 'A multi-tab application sidebar with icon tab switcher, categorized navigation items, scope toggle, and overlay mode. Data-driven via props for maximum reusability.',
+    props: [
+      { name: 'tabs', type: 'SidebarTab[]', description: 'Array of tab definitions with id, label, headerTitle, icon, and optional add button' },
+      { name: 'activeTab', type: 'string', description: 'Currently active tab ID' },
+      { name: 'onTabChange', type: '(tabId: string) => void', description: 'Handler when a tab is selected' },
+      { name: 'categories', type: 'Record<string, SidebarCategory[]>', description: 'Navigation categories keyed by tab ID. Each category has a title and array of nav items' },
+      { name: 'selectedNav', type: 'string', description: 'Currently selected navigation item ID' },
+      { name: 'onNavSelect', type: '(navId: string) => void', description: 'Handler when a navigation item is selected' },
+      { name: 'scopeToggle', type: 'ScopeToggle', description: 'Optional scope/org toggle with options array, activeId, and onChange' },
+      { name: 'highlightedItem', type: 'string | null', default: 'null', description: 'Item ID to flash-highlight (e.g., after command palette navigation)' },
+      { name: 'headerSlot', type: 'ReactNode', description: 'Custom content rendered below the tab title (e.g., search input)' },
+      { name: 'isOverlay', type: 'boolean', default: 'false', description: 'Render in overlay mode with shadow (for fullscreen views)' },
+      { name: 'onClose', type: '() => void', description: 'Close handler for overlay mode' },
+      { name: 'width', type: 'number', default: '261', description: 'Sidebar width in pixels' },
+    ],
+  },
+  appshell: {
+    name: 'AppShell',
+    description: 'A complete application shell layout that composes GlobalHeader and AppSidebar with a content area. Handles sidebar visibility, overlay mode, and an overlay slot for modals and command palettes.',
+    props: [
+      { name: 'headerProps', type: 'GlobalHeaderProps', description: 'Props passed to the GlobalHeader component' },
+      { name: 'sidebarProps', type: 'AppSidebarProps', description: 'Props passed to the AppSidebar component' },
+      { name: 'hideSidebar', type: 'boolean', default: 'false', description: 'Hide sidebar for fullscreen content mode (enables hamburger toggle)' },
+      { name: 'overlaySlot', type: 'ReactNode', description: 'Content rendered above everything (command palette, modals, etc.)' },
+      { name: 'contentBackground', type: 'string', default: "brandColors.gray[10]", description: 'Background color of the main content area' },
+      { name: 'children', type: 'ReactNode', description: 'Main content rendered in the content area' },
     ],
   },
 };
@@ -1341,6 +1396,155 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
         return (
           <div style={styles.exampleContent}>
             <IconGallery size="compact" iconSize="m" />
+          </div>
+        );
+
+      case 'globalheader':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Trigger mode (default)</Typography>
+                <div style={{ borderRadius: '8px', overflow: 'hidden', border: `1px solid ${referenceColors.gray['20']}` }}>
+                  <GlobalHeader
+                    userName="Royal Enfield"
+                    notificationCount={3}
+                    onSearchClick={() => alert('Search clicked — open command palette')}
+                    onLogoClick={() => alert('Logo clicked — navigate home')}
+                  />
+                </div>
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Input mode</Typography>
+                <div style={{ borderRadius: '8px', overflow: 'hidden', border: `1px solid ${referenceColors.gray['20']}` }}>
+                  <GlobalHeader
+                    searchMode="input"
+                    searchPlaceholder="Search library"
+                    userName="Acme Corp"
+                    showKeyboardHint={false}
+                  />
+                </div>
+              </div>
+              <div>
+                <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>With hamburger (fullscreen mode)</Typography>
+                <div style={{ borderRadius: '8px', overflow: 'hidden', border: `1px solid ${referenceColors.gray['20']}` }}>
+                  <GlobalHeader
+                    showHamburger
+                    onHamburgerClick={() => alert('Hamburger clicked — toggle sidebar overlay')}
+                    userName="Demo User"
+                    notificationCount={0}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'appsidebar':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ display: 'flex', gap: '24px' }}>
+              <div style={{ height: '480px', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${referenceColors.gray['20']}` }}>
+                <AppSidebar
+                  tabs={[
+                    { id: 'insights', label: 'Insights', headerTitle: 'Insights', showAddButton: true },
+                    { id: 'data', label: 'Data', headerTitle: 'Data workspace', showAddButton: true },
+                    { id: 'develop', label: 'Develop', headerTitle: 'Develop' },
+                    { id: 'admin', label: 'Admin', headerTitle: 'Admin' },
+                  ]}
+                  activeTab="insights"
+                  onTabChange={() => {}}
+                  categories={{
+                    insights: [
+                      { title: 'Main', items: [
+                        { id: 'Home', label: 'Home' },
+                        { id: 'Spotter', label: 'Spotter' },
+                        { id: 'Search data', label: 'Search data' },
+                      ]},
+                      { title: 'Library', items: [
+                        { id: 'Liveboards', label: 'Liveboards' },
+                        { id: 'Answers', label: 'Answers' },
+                        { id: 'Collections', label: 'Collections' },
+                      ]},
+                      { title: 'Analysis & Alerts', items: [
+                        { id: 'Liveboard schedules', label: 'Liveboard schedules' },
+                        { id: 'Monitor subscriptions', label: 'Monitor subscriptions' },
+                      ]},
+                    ],
+                    data: [
+                      { title: 'Main', items: [
+                        { id: 'Data objects', label: 'Data objects' },
+                        { id: 'Connections', label: 'Connections' },
+                      ]},
+                    ],
+                    develop: [
+                      { title: 'Main', items: [
+                        { id: 'Dev Home', label: 'Home' },
+                      ]},
+                    ],
+                    admin: [
+                      { title: 'Overview', items: [
+                        { id: 'Resource control centre', label: 'Resource control centre' },
+                      ]},
+                    ],
+                  }}
+                  selectedNav="Home"
+                  onNavSelect={() => {}}
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'appshell':
+        return (
+          <div style={styles.exampleContent}>
+            <div style={{ height: '500px', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${referenceColors.gray['20']}`, position: 'relative' }}>
+              <AppShell
+                headerProps={{
+                  userName: 'Demo User',
+                  notificationCount: 2,
+                  onSearchClick: () => {},
+                  onLogoClick: () => {},
+                }}
+                sidebarProps={{
+                  tabs: [
+                    { id: 'insights', label: 'Insights', headerTitle: 'Insights', showAddButton: true },
+                    { id: 'data', label: 'Data', headerTitle: 'Data workspace' },
+                    { id: 'admin', label: 'Admin', headerTitle: 'Admin' },
+                  ],
+                  activeTab: 'insights',
+                  onTabChange: () => {},
+                  categories: {
+                    insights: [
+                      { title: 'Main', items: [
+                        { id: 'Home', label: 'Home' },
+                        { id: 'Spotter', label: 'Spotter' },
+                      ]},
+                      { title: 'Library', items: [
+                        { id: 'Liveboards', label: 'Liveboards' },
+                        { id: 'Answers', label: 'Answers' },
+                      ]},
+                    ],
+                    data: [
+                      { title: 'Main', items: [{ id: 'Data objects', label: 'Data objects' }] },
+                    ],
+                    admin: [
+                      { title: 'Overview', items: [{ id: 'Resource control centre', label: 'Resource control centre' }] },
+                    ],
+                  },
+                  selectedNav: 'Home',
+                  onNavSelect: () => {},
+                }}
+              >
+                <div style={{ padding: '32px' }}>
+                  <Typography variant="page-title">Home</Typography>
+                  <Typography variant="body-normal" color="gray" style={{ marginTop: '8px' }}>
+                    This is the main content area rendered inside the AppShell. The header and sidebar are composed automatically.
+                  </Typography>
+                </div>
+              </AppShell>
+            </div>
           </div>
         );
       

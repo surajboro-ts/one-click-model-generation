@@ -67,13 +67,13 @@ export const ResultCardTwoLine16: React.FC<ResultCardProps> = ({
           </span>
           {item.context && (
             <span style={styles16.context}>
-              {item.context}
+              {highlightMatch(item.context, query)}
             </span>
           )}
         </div>
         {item.description && (
           <div style={styles16.description}>
-            {item.description}
+            {highlightMatch(item.description, query)}
           </div>
         )}
       </div>
@@ -118,13 +118,13 @@ export const ResultCardTwoLine20: React.FC<ResultCardProps> = ({
           </span>
           {item.context && (
             <span style={styles20.context}>
-              {item.context}
+              {highlightMatch(item.context, query)}
             </span>
           )}
         </div>
         {item.description && (
           <div style={styles20.description}>
-            {item.description}
+            {highlightMatch(item.description, query)}
           </div>
         )}
       </div>

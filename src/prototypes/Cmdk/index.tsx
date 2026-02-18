@@ -13,11 +13,12 @@
  * Based on ThoughtSpot Radiant design system.
  */
 
-// Default export is the demo wrapper
-export { default } from './CmdkDemo';
+// Default export is the full app-shell prototype
+export { default } from './CmdkApp';
 
 // Named exports for individual components
 export { CmdkDemo } from './CmdkDemo';
+export { CmdkApp } from './CmdkApp';
 export { CommandPalette } from './CommandPalette';
 
 // Component exports

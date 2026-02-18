@@ -1,19 +1,17 @@
 /**
  * CommandPalette - Main Component
- * 
- * Command palette with context-aware filtering and multiple UI variants.
- * 
- * Features:
- * - Type "/" to show filter options
- * - Context-aware filter ranking
- * - Keyboard navigation
- * - Multiple ResultCard variants
- * 
- * Fixed dimensions: 624px x 540px (matches Figma spec)
+ *
+ * Phase 1 enhancements:
+ * - richer default groups (Recent, Create, Quick links)
+ * - broad search across objects + admin commands
+ * - special query actions (View all / Spotter)
+ * - initial filter support
+ * - keyboard actions: Tab, Shift+Enter, Cmd/Ctrl+Enter
  */
 
-import React, { useState, useEffect, useCallback, useRef, useMemo, ComponentType } from 'react';
-import { systemColors } from '../../tokens/colors';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { Icon } from '../../components/icons';
+import { systemColors, referenceColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 import { CommandSearch } from './components/CommandSearch';
 import { KeyboardShortcuts } from './components/KeyboardShortcuts';
@@ -25,18 +23,84 @@ import {
   keyboardShortcuts,
   getItemsByFilter,
   getRankedFilterOptions,
+  FILTER_OPTIONS,
 } from './data/mockData';
 import type {
   CommandItem,
   FilterOption,
   CommandPaletteProps,
-  ResultCardProps,
-  PageContext,
 } from './types';
 
-// Modal dimensions (fixed)
-const MODAL_WIDTH = 624;
+const MODAL_WIDTH = 754;
 const MODAL_HEIGHT = 540;
+const MAX_RESULTS = 25;
+
+const VIEW_ALL_ACTION_ID = 'special-view-all';
+const SPOTTER_ACTION_ID = 'special-spotter-search';
+
+function matchesItemQuery(item: CommandItem, query: string): boolean {
+  const queryText = query.toLowerCase();
+  return (
+    item.label.toLowerCase().includes(queryText) ||
+    item.description?.toLowerCase().includes(queryText) === true ||
+    item.context?.toLowerCase().includes(queryText) === true ||
+    item.tags?.some((tag) => tag.toLowerCase().includes(queryText)) === true ||
+    item.keywords?.some((keyword) => keyword.toLowerCase().includes(queryText)) === true
+  );
+}
+
+function dedupeItems(items: CommandItem[]): CommandItem[] {
+  const seen = new Set<string>();
+  const deduped: CommandItem[] = [];
+  items.forEach((item) => {
+    const uniqueKey = item.objectId ? `object-${item.objectId}` : `item-${item.id}`;
+    if (seen.has(uniqueKey)) {
+      return;
+    }
+    seen.add(uniqueKey);
+    deduped.push(item);
+  });
+  return deduped;
+}
+
+function getSpecialQueryItems(query: string): CommandItem[] {
+  return [
+    {
+      id: VIEW_ALL_ACTION_ID,
+      label: `View all objects for "${query}"`,
+      description: 'Open full search results',
+      rightLabel: 'Search',
+      icon: 'search',
+      group: 'Actions',
+      query,
+      isViewAll: true,
+    },
+    {
+      id: SPOTTER_ACTION_ID,
+      label: `View search in Spotter for "${query}"`,
+      description: 'Ask Spotter with current query',
+      rightLabel: 'Spotter',
+      icon: 'spotter',
+      group: 'Actions',
+      query,
+      isSpotter: true,
+    },
+  ];
+}
+
+const Toast: React.FC<{ message: string; onDismiss: () => void }> = ({ message, onDismiss }) => {
+  useEffect(() => {
+    const timer = window.setTimeout(onDismiss, 2500);
+    return () => window.clearTimeout(timer);
+  }, [onDismiss]);
+
+  return (
+    <div style={styles.toast}>
+      <Icon name="checkmark-circle" size="s" />
+      <span style={styles.toastText}>{message}</span>
+    </div>
+  );
+};
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({
   isOpen,
@@ -45,67 +109,67 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onFilterSelect,
   ResultCardComponent = ResultCard,
   context = 'default',
+  initialFilter,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterOption | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [showFilterOptions, setShowFilterOptions] = useState(false);
-  
+  const [notification, setNotification] = useState<string | null>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Get ranked filter options based on context
-  const rankedFilterOptions = useMemo(
-    () => getRankedFilterOptions(context),
-    [context]
-  );
+  const rankedFilterOptions = useMemo(() => getRankedFilterOptions(context), [context]);
 
-  // Determine if showing filter mode (when "/" is typed)
   const isFilterMode = searchQuery.startsWith('/') && !activeFilter;
-  const filterQuery = isFilterMode ? searchQuery.slice(1) : '';
+  const filterQuery = isFilterMode ? searchQuery.slice(1).trim() : '';
 
-  // Get filtered items based on search and active filter
-  const filteredItems = useMemo(() => {
-    let items: CommandItem[];
+  const filteredFilterOptions = useMemo(() => {
+    if (!filterQuery) {
+      return rankedFilterOptions;
+    }
+    return rankedFilterOptions.filter((option) =>
+      option.label.toLowerCase().includes(filterQuery.toLowerCase())
+    );
+  }, [filterQuery, rankedFilterOptions]);
+
+  const resultItems = useMemo(() => {
+    if (isFilterMode) {
+      return [];
+    }
 
     if (activeFilter) {
-      // Filter by active filter type
-      items = getItemsByFilter(activeFilter.filterType);
-    } else if (isFilterMode) {
-      // Don't show items in filter mode
-      return [];
-    } else {
-      // Show default groups
-      items = commandGroups.flatMap(g => g.items);
+      const filteredByType = getItemsByFilter(activeFilter.filterType);
+      if (!searchQuery.trim()) {
+        return dedupeItems(filteredByType);
+      }
+      return dedupeItems(filteredByType.filter((item) => matchesItemQuery(item, searchQuery)));
     }
 
-    // Apply text search
-    if (searchQuery && !isFilterMode) {
-      const query = searchQuery.toLowerCase();
-      items = items.filter(
-        item =>
-          item.label.toLowerCase().includes(query) ||
-          item.description?.toLowerCase().includes(query) ||
-          item.context?.toLowerCase().includes(query)
-      );
+    if (!searchQuery.trim()) {
+      return commandGroups.flatMap((group) => group.items);
     }
 
-    return items;
-  }, [searchQuery, activeFilter, isFilterMode]);
+    const query = searchQuery.trim();
+    const searchResults = dedupeItems(allItems.filter((item) => matchesItemQuery(item, query))).slice(0, MAX_RESULTS);
+    return [...searchResults, ...getSpecialQueryItems(query)];
+  }, [activeFilter, isFilterMode, searchQuery]);
 
-  // Group items by their group property
   const groupedItems = useMemo(() => {
-    if (isFilterMode) return [];
-    
+    if (isFilterMode) {
+      return [];
+    }
+
     const groups: { title: string; items: CommandItem[] }[] = [];
     const groupMap = new Map<string, CommandItem[]>();
 
-    filteredItems.forEach(item => {
-      const existing = groupMap.get(item.group);
+    resultItems.forEach((item) => {
+      const groupTitle = item.group || 'Results';
+      const existing = groupMap.get(groupTitle);
       if (existing) {
         existing.push(item);
       } else {
-        groupMap.set(item.group, [item]);
+        groupMap.set(groupTitle, [item]);
       }
     });
 
@@ -114,24 +178,19 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     });
 
     return groups;
-  }, [filteredItems, isFilterMode]);
+  }, [resultItems, isFilterMode]);
 
-  // Flatten items for navigation
   const flatItems = useMemo(() => {
     if (isFilterMode) {
-      return rankedFilterOptions.filter(opt =>
-        opt.label.toLowerCase().includes(filterQuery.toLowerCase())
-      );
+      return filteredFilterOptions;
     }
-    return filteredItems;
-  }, [isFilterMode, rankedFilterOptions, filterQuery, filteredItems]);
+    return resultItems;
+  }, [isFilterMode, filteredFilterOptions, resultItems]);
 
-  // Reset selection when items change
   useEffect(() => {
     setSelectedIndex(0);
   }, [flatItems.length, activeFilter, isFilterMode]);
 
-  // Scroll selected item into view
   useEffect(() => {
     if (contentRef.current && selectedIndex >= 0) {
       const selected = contentRef.current.querySelector('[aria-selected="true"]');
@@ -141,55 +200,122 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     }
   }, [selectedIndex]);
 
-  // Focus input when opened
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
+      const preselectedFilter = initialFilter
+        ? FILTER_OPTIONS.find((option) => option.id === initialFilter)
+        : null;
+      if (preselectedFilter) {
+        setActiveFilter(preselectedFilter);
+        setSearchQuery('');
+      } else {
+        setActiveFilter(null);
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, initialFilter]);
 
-  // Reset state when closed
   useEffect(() => {
     if (!isOpen) {
       setSearchQuery('');
       setActiveFilter(null);
       setSelectedIndex(0);
-      setShowFilterOptions(false);
+      setNotification(null);
     }
   }, [isOpen]);
 
-  // Handle keyboard navigation
+  const executeItem = useCallback((item: CommandItem, mode: 'default' | 'new-tab' = 'default') => {
+    if (mode === 'new-tab') {
+      setNotification(`Opening "${item.label}" in new tab`);
+      onSelect?.(item);
+      return;
+    }
+
+    if (item.isSpotter) {
+      setNotification(item.query ? `Asking Spotter: "${item.query}"` : 'Opening Spotter');
+      onSelect?.(item);
+      return;
+    }
+
+    if (item.isViewAll) {
+      setNotification(item.query ? `Showing all results for "${item.query}"` : 'Showing full results');
+      onSelect?.(item);
+      return;
+    }
+
+    if (item.page) {
+      setNotification(`Navigating to ${item.label}`);
+    }
+
+    onSelect?.(item);
+  }, [onSelect]);
+
+  const handleFilterSelect = useCallback((filter: FilterOption) => {
+    setActiveFilter(filter);
+    setSearchQuery('');
+    onFilterSelect?.(filter);
+  }, [onFilterSelect]);
+
   const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (!isOpen) return;
+    (event: KeyboardEvent) => {
+      if (!isOpen) {
+        return;
+      }
 
-      switch (e.key) {
+      switch (event.key) {
         case 'ArrowDown':
-          e.preventDefault();
-          setSelectedIndex(prev => Math.min(prev + 1, flatItems.length - 1));
-          break;
-
+          event.preventDefault();
+          setSelectedIndex((previous) => Math.min(previous + 1, Math.max(flatItems.length - 1, 0)));
+          return;
         case 'ArrowUp':
-          e.preventDefault();
-          setSelectedIndex(prev => Math.max(prev - 1, 0));
-          break;
-
-        case 'Enter':
-          e.preventDefault();
-          if (isFilterMode && flatItems[selectedIndex]) {
-            // Select filter
-            const filter = flatItems[selectedIndex] as FilterOption;
-            setActiveFilter(filter);
-            setSearchQuery('');
-            onFilterSelect?.(filter);
-          } else if (flatItems[selectedIndex]) {
-            // Select item
-            onSelect?.(flatItems[selectedIndex] as CommandItem);
+          event.preventDefault();
+          setSelectedIndex((previous) => Math.max(previous - 1, 0));
+          return;
+        case 'Tab':
+          event.preventDefault();
+          if (!flatItems[selectedIndex]) {
+            return;
           }
-          break;
+          if (isFilterMode) {
+            handleFilterSelect(flatItems[selectedIndex] as FilterOption);
+          } else {
+            executeItem(flatItems[selectedIndex] as CommandItem);
+          }
+          return;
+        case 'Enter':
+          event.preventDefault();
 
+          if (event.shiftKey && !isFilterMode && flatItems[selectedIndex]) {
+            executeItem(flatItems[selectedIndex] as CommandItem, 'new-tab');
+            return;
+          }
+
+          if ((event.metaKey || event.ctrlKey) && searchQuery.trim()) {
+            executeItem({
+              id: SPOTTER_ACTION_ID,
+              label: `View search in Spotter for "${searchQuery.trim()}"`,
+              description: 'Ask Spotter with current query',
+              rightLabel: 'Spotter',
+              icon: 'spotter',
+              group: 'Actions',
+              query: searchQuery.trim(),
+              isSpotter: true,
+            });
+            return;
+          }
+
+          if (!flatItems[selectedIndex]) {
+            return;
+          }
+
+          if (isFilterMode) {
+            handleFilterSelect(flatItems[selectedIndex] as FilterOption);
+          } else {
+            executeItem(flatItems[selectedIndex] as CommandItem);
+          }
+          return;
         case 'Escape':
-          e.preventDefault();
+          event.preventDefault();
           if (activeFilter) {
             setActiveFilter(null);
           } else if (searchQuery) {
@@ -197,17 +323,26 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           } else {
             onClose();
           }
-          break;
-
+          return;
         case 'Backspace':
-          // Clear filter when backspace on empty input
           if (searchQuery === '' && activeFilter) {
             setActiveFilter(null);
           }
-          break;
+          return;
+        default:
       }
     },
-    [isOpen, flatItems, selectedIndex, isFilterMode, activeFilter, searchQuery, onClose, onSelect, onFilterSelect]
+    [
+      isOpen,
+      flatItems,
+      selectedIndex,
+      isFilterMode,
+      searchQuery,
+      activeFilter,
+      onClose,
+      executeItem,
+      handleFilterSelect,
+    ]
   );
 
   useEffect(() => {
@@ -215,46 +350,33 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  // Handle filter selection
-  const handleFilterSelect = (filter: FilterOption) => {
-    setActiveFilter(filter);
-    setSearchQuery('');
-    onFilterSelect?.(filter);
-  };
-
-  // Handle clear filter
   const handleClearFilter = () => {
     setActiveFilter(null);
     inputRef.current?.focus();
   };
 
-  // Handle clear search
   const handleClearSearch = () => {
     setSearchQuery('');
     inputRef.current?.focus();
   };
 
-  // Handle item click
-  const handleItemClick = (item: CommandItem) => {
-    onSelect?.(item);
-  };
-
-  // Handle overlay click
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
+  const handleOverlayClick = (event: React.MouseEvent) => {
+    if (event.target === event.currentTarget) {
       onClose();
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
-  // Render current index tracker for items
   let currentItemIndex = 0;
 
   return (
     <div style={styles.overlay} onClick={handleOverlayClick}>
-      <div style={styles.modal} onClick={e => e.stopPropagation()}>
-        {/* Search Header */}
+      {notification && <Toast message={notification} onDismiss={() => setNotification(null)} />}
+
+      <div style={styles.modal} onClick={(event) => event.stopPropagation()}>
         <CommandSearch
           value={searchQuery}
           onChange={setSearchQuery}
@@ -265,32 +387,29 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           autoFocus
         />
 
-        {/* Content Area */}
         <div ref={contentRef} style={styles.content}>
-          {/* Filter Options Mode */}
           {isFilterMode && (
             <FilterOptions
-              options={rankedFilterOptions}
+              options={filteredFilterOptions}
               selectedIndex={selectedIndex}
               onSelect={handleFilterSelect}
               query={filterQuery}
             />
           )}
 
-          {/* Results Mode */}
           {!isFilterMode && groupedItems.length > 0 && (
             <>
-              {groupedItems.map(group => (
+              {groupedItems.map((group) => (
                 <div key={group.title} style={styles.group}>
                   <div style={styles.groupHeader}>{group.title}</div>
-                  {group.items.map(item => {
+                  {group.items.map((item) => {
                     const itemIndex = currentItemIndex++;
                     return (
                       <ResultCardComponent
                         key={item.id}
                         item={item}
                         isSelected={itemIndex === selectedIndex}
-                        onClick={() => handleItemClick(item)}
+                        onClick={() => executeItem(item)}
                         query={searchQuery}
                       />
                     );
@@ -300,7 +419,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
             </>
           )}
 
-          {/* Empty State */}
           {!isFilterMode && groupedItems.length === 0 && searchQuery && (
             <div style={styles.emptyState}>
               <p style={styles.emptyText}>No results found for "{searchQuery}"</p>
@@ -308,7 +426,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           )}
         </div>
 
-        {/* Footer */}
         <KeyboardShortcuts shortcuts={keyboardShortcuts} />
       </div>
     </div>
@@ -323,10 +440,11 @@ const styles: Record<string, React.CSSProperties> = {
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(29, 35, 47, 0.5)',
+    backdropFilter: 'blur(2px)',
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 80,
+    padding: '12px',
     zIndex: 1000,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
@@ -346,15 +464,15 @@ const styles: Record<string, React.CSSProperties> = {
     overflowX: 'hidden',
   },
   group: {
-    paddingTop: `${spacing.A}px`, // 4px
+    paddingTop: `${spacing.A}px`,
   },
   groupHeader: {
-    padding: `${spacing.D}px ${spacing.D}px ${spacing.B}px`, // 16px 16px 8px
+    padding: `${spacing.D}px ${spacing.D}px ${spacing.B}px`,
     fontSize: 12,
     fontWeight: 400,
     lineHeight: '18px',
     letterSpacing: '-0.072px',
-    color: systemColors.light['content-secondary'], // #777E8B
+    color: systemColors.light['content-secondary'],
   },
   emptyState: {
     display: 'flex',
@@ -368,6 +486,24 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 14,
     color: systemColors.light['content-tertiary'],
     textAlign: 'center',
+  },
+  toast: {
+    position: 'fixed',
+    right: spacing.F,
+    bottom: spacing.F,
+    display: 'flex',
+    alignItems: 'center',
+    gap: spacing.B,
+    padding: `${spacing.B}px ${spacing.C}px`,
+    borderRadius: 8,
+    backgroundColor: systemColors.light['content-primary'],
+    color: systemColors.light['background-base'],
+    border: `1px solid ${referenceColors.gray['30']}`,
+    zIndex: 1100,
+  },
+  toastText: {
+    fontSize: 12,
+    lineHeight: '18px',
   },
 };
 

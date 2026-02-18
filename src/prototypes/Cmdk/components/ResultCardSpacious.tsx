@@ -65,7 +65,7 @@ export const ResultCardSpacious: React.FC<ResultCardProps> = ({
       {/* Context */}
       {item.context && (
         <div style={styles.context}>
-          {item.context}
+          {highlightMatch(item.context, query)}
         </div>
       )}
 
