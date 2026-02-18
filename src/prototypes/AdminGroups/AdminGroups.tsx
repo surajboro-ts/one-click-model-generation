@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { GlobalHeader } from '../../components/GlobalHeader';
 import {
-  AdminHeader,
   AdminSidebar,
   GroupsTable,
   WizardModal,
@@ -180,9 +180,12 @@ export const AdminGroups: React.FC = () => {
 
   return (
     <div style={styles.layout}>
-      {/* Top Header */}
       <div style={styles.header}>
-        <AdminHeader />
+        <GlobalHeader
+          searchPlaceholder="Search"
+          userName="Admin User"
+          notificationCount={1}
+        />
       </div>
 
       {/* Body: Sidebar + Main Content */}

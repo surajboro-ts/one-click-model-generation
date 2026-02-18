@@ -3,6 +3,7 @@ import { systemColors, referenceColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 import { Icon } from '../../components/icons';
 import { Button } from '../../components/Button';
+import { GlobalHeader } from '../../components/GlobalHeader';
 
 /**
  * ChartEditorAI — Chart editor with Spotter AI assistant
@@ -75,19 +76,13 @@ export const ChartEditorAI: React.FC = () => {
 
   return (
     <div style={S.root}>
-      {/* ━━ Global Header ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <header style={S.hdr}>
-        <div style={S.hL}>
-          <button style={S.hBtn}><Icon name="hamburger" size="m" color="#fff" /></button>
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 4L4 10l12 6 12-6L16 4z" fill="#fff"/><path d="M4 22l12 6 12-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M4 16l12 6 12-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        </div>
-        <div style={S.hSearch}><Icon name="magnifying-glass" size="s" color="rgba(255,255,255,.45)" /><span style={{fontSize:'14px',color:'rgba(255,255,255,.45)'}}>Search in your library</span></div>
-        <div style={S.hR}>
-          <button style={S.hBtn}><Icon name="question-mark" size="m" color="rgba(255,255,255,.7)" /></button>
-          <button style={{...S.hBtn,position:'relative'}}><Icon name="information" size="m" color="rgba(255,255,255,.7)" /><span style={S.hDot}/></button>
-          <div style={S.hAv}><Icon name="profile" size="s" color="#fff" /></div>
-        </div>
-      </header>
+      <GlobalHeader
+        showHamburger
+        searchPlaceholder="Search in your library"
+        userName="Workspace"
+        notificationCount={1}
+        style={{ flexShrink: 0 }}
+      />
 
       {/* ━━ Query Bar ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <div style={S.qBar}>

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Table } from '../../components/Table';
 import { Typography } from '../../components/Typography';
+import { GlobalHeader } from '../../components/GlobalHeader';
+import { Button } from '../../components/Button';
+import { Icon } from '../../components/icons';
+import { Tooltip } from '../../components/Tooltip';
+import { Avatar } from '../../components/Avatar';
 import {
-  Header,
   FilterBar,
   KPICard,
   DonutChart,
@@ -142,12 +146,29 @@ export const Liveboard: React.FC = () => {
         onClose={handleSidebarClose}
       />
 
-      {/* Header */}
-      <Header 
-        activeTab={activeTab} 
-        onTabChange={setActiveTab}
-        onStylingClick={handleStylingPanelToggle}
-        onMenuClick={handleSidebarToggle}
+      <GlobalHeader
+        showHamburger
+        onHamburgerClick={handleSidebarToggle}
+        searchPlaceholder="Search in your library"
+        userName="Priya Mishra"
+        notificationCount={1}
+        rightSlot={
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Tooltip content="Styling settings" placement="bottom">
+              <button
+                onClick={handleStylingPanelToggle}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: 6, borderRadius: 4 }}
+              >
+                <Icon name="cog" size="s" color="var(--gh-text)" />
+              </button>
+            </Tooltip>
+            <Tooltip content="More options" placement="bottom">
+              <button style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: 6, borderRadius: 4 }}>
+                <Icon name="more" size="s" color="var(--gh-text)" />
+              </button>
+            </Tooltip>
+          </div>
+        }
       />
 
       {/* Filter Bar */}
