@@ -37,7 +37,7 @@ export const HomePage: React.FC = () => {
       {/* Main Content */}
       <main style={styles.main}>
         <div style={styles.heroText}>
-          <h1 style={styles.title}>Radiant Design System and Playground</h1>
+          <h1 style={styles.title}>Radiant Playground</h1>
           <p style={styles.subtitle}>
             Explore the design system or build your own prototypes using ThoughtSpot's component library.
           </p>
@@ -67,7 +67,7 @@ export const HomePage: React.FC = () => {
                 </svg>
               </div>
             </div>
-            <h2 style={styles.cardTitle}>Radiant</h2>
+            <h2 style={styles.cardTitle}>Radiant DS</h2>
             <p style={styles.cardDescription}>
               Explore the complete design system. Browse components, design tokens, icons, and documentation.
             </p>

@@ -889,6 +889,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         </div>
       </div>
 
+      {/* Component Count Pills */}
+      {(project.dsComponents != null || project.customComponents != null) && (
+        <div style={styles.cardPills}>
+          {project.dsComponents != null && project.dsComponents > 0 && (
+            <span style={styles.cardPill}>
+              <Icon name="grid-view" size="xs" />
+              {project.dsComponents} DS
+            </span>
+          )}
+          {project.customComponents != null && project.customComponents > 0 && (
+            <span style={{ ...styles.cardPill, ...styles.cardPillCustom }}>
+              <Icon name="plus" size="xs" />
+              {project.customComponents} Custom
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Arrow */}
       <div style={styles.cardArrow}>
         <Icon name="arrow-right" size="m" />
@@ -1013,11 +1031,35 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     color: systemColors.light['content-tertiary'],
   },
+  cardPills: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: `${spacing.B}px`,
+    padding: `0 ${spacing.E}px ${spacing.D}px`,
+    flexWrap: 'wrap',
+  },
+  cardPill: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: `${spacing.A}px`,
+    fontSize: '12px',
+    fontWeight: 500,
+    color: systemColors.light['content-brand'],
+    background: referenceColors.blue['10'],
+    padding: `3px ${spacing.B}px`,
+    borderRadius: `${spacing.A}px`,
+    border: `1px solid ${systemColors.light['background-information']}`,
+  },
+  cardPillCustom: {
+    color: '#8B5CF6',
+    background: 'rgba(139, 92, 246, 0.08)',
+    borderColor: 'rgba(139, 92, 246, 0.2)',
+  },
   cardArrow: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: `${spacing.C}px ${spacing.E}px`, // 12px 20px
+    padding: `${spacing.C}px ${spacing.E}px`,
     borderTop: `1px solid ${systemColors.light['background-subtle']}`,
     color: systemColors.light['border-default'],
   },

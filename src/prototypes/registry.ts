@@ -12,7 +12,6 @@ import CmdkThumbnail from './thumbnails/Cmdk.svg';
 import AdminGroupsThumbnail from './thumbnails/AdminGroups.svg';
 import SpotterMemoryThumbnail from './thumbnails/SpotterMemory.svg';
 import LiveboardThumbnail from './thumbnails/Liveboard.svg';
-import HomepageExampleThumbnail from './thumbnails/Homepage_example.svg';
 
 /**
  * Metadata for a playground project
@@ -32,6 +31,10 @@ export interface ProjectMeta {
   thumbnail?: string;
   /** Project component */
   component: React.ComponentType;
+  /** Number of shared Radiant design system components used */
+  dsComponents?: number;
+  /** Number of custom/local components created for this prototype */
+  customComponents?: number;
 }
 
 /**
@@ -41,9 +44,7 @@ export interface ProjectMeta {
  * To add a thumbnail later, import an SVG and add it to the entry.
  */
 
-// Import project components
-// Use dynamic imports for better code splitting
-const HomepageExample = React.lazy(() => import('./Homepage_example'));
+// Import project components (lazy-loaded for code splitting)
 const Liveboard = React.lazy(() => import('./Liveboard'));
 const Cmdk = React.lazy(() => import('./Cmdk'));
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
@@ -55,20 +56,14 @@ const ChartEditorAI = React.lazy(() => import('./ChartEditorAI'));
  */
 export const projectRegistry: ProjectMeta[] = [
   {
-    id: 'Homepage_example',
-    name: 'Homepage Example',
-    description: 'A sample homepage prototype demonstrating the template structure.',
-    author: 'Template',
-    thumbnail: HomepageExampleThumbnail,
-    component: HomepageExample,
-  },
-  {
     id: 'Liveboard',
     name: 'Liveboard',
     description: 'TSE Business Overview dashboard with KPIs, charts, and regional data visualization.',
     author: 'Design Team',
     thumbnail: LiveboardThumbnail,
     component: Liveboard,
+    dsComponents: 10,
+    customComponents: 10,
   },
   {
     id: 'Cmdk',
@@ -77,6 +72,8 @@ export const projectRegistry: ProjectMeta[] = [
     author: 'Design Team',
     thumbnail: CmdkThumbnail,
     component: Cmdk,
+    dsComponents: 12,
+    customComponents: 11,
   },
   {
     id: 'SpotterMemory',
@@ -85,6 +82,8 @@ export const projectRegistry: ProjectMeta[] = [
     author: 'Design Team',
     thumbnail: SpotterMemoryThumbnail,
     component: SpotterMemory,
+    dsComponents: 6,
+    customComponents: 5,
   },
   {
     id: 'AdminGroups',
@@ -93,6 +92,8 @@ export const projectRegistry: ProjectMeta[] = [
     author: 'Design Team',
     thumbnail: AdminGroupsThumbnail,
     component: AdminGroups,
+    dsComponents: 9,
+    customComponents: 10,
   },
   {
     id: 'ChartEditorAI',
@@ -100,6 +101,8 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Chart editor with Spotter AI assistant for intelligent chart suggestions, conditional formatting, and data insights.',
     author: 'Design Team',
     component: ChartEditorAI,
+    dsComponents: 2,
+    customComponents: 0,
   },
   // Add more projects here as they are created
   // {
@@ -109,6 +112,8 @@ export const projectRegistry: ProjectMeta[] = [
   //   author: 'Designer Name',
   //   thumbnail: MyProjectThumbnail,
   //   component: React.lazy(() => import('./my-project')),
+  //   dsComponents: 0,
+  //   customComponents: 0,
   // },
 ];
 
