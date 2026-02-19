@@ -74,6 +74,7 @@ export interface SidebarTab {
   icon?: React.ReactNode;
   showAddButton?: boolean;
   onAddClick?: () => void;
+  headerActionSlot?: React.ReactNode;
 }
 
 export interface SidebarNavItem {
@@ -246,6 +247,7 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(
           <div className={styles.header}>
             <div className={styles.headerRow}>
               <h2 className={styles.headerTitle}>{activeTabConfig.headerTitle}</h2>
+              {activeTabConfig.headerActionSlot}
               {activeTabConfig.showAddButton && (
                 <button type="button" className={styles.addButton} onClick={activeTabConfig.onAddClick} aria-label="Add">
                   <Icon name="plus" size="m" color="currentColor" />

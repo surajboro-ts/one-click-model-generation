@@ -133,6 +133,30 @@ export const HomePage: React.FC = () => {
             </p>
           </div>
 
+          {/* Overview Steps */}
+          <div style={styles.overviewGrid}>
+            <div style={styles.overviewCard}>
+              <span style={styles.overviewBadge}>1</span>
+              <h3 style={styles.overviewTitle}>Fork &amp; Setup</h3>
+              <p style={styles.overviewDesc}>Clone the repo, install deps, start the dev server.</p>
+            </div>
+            <div style={styles.overviewCard}>
+              <span style={styles.overviewBadge}>2</span>
+              <h3 style={styles.overviewTitle}>Scaffold</h3>
+              <p style={styles.overviewDesc}>Run one command to create a new prototype file.</p>
+            </div>
+            <div style={styles.overviewCard}>
+              <span style={styles.overviewBadge}>3</span>
+              <h3 style={styles.overviewTitle}>Describe &amp; Build</h3>
+              <p style={styles.overviewDesc}>Tell Cursor AI what to build — paste screenshots or type prompts.</p>
+            </div>
+            <div style={styles.overviewCard}>
+              <span style={styles.overviewBadge}>4</span>
+              <h3 style={styles.overviewTitle}>Preview &amp; Iterate</h3>
+              <p style={styles.overviewDesc}>See live changes in the Playground and refine with AI.</p>
+            </div>
+          </div>
+
           {/* Step 1: Fork and start the project */}
           <div style={styles.stepCard}>
             <div style={styles.stepHeader}>
@@ -500,6 +524,49 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
     border: `1px solid ${systemColors.light['background-information']}`,
     transition: 'all 150ms ease',
+  },
+
+  // Overview Grid (4-step summary)
+  overviewGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: `${spacing.D}px`,
+    marginBottom: `${spacing.F}px`,
+    width: '100%',
+  },
+  overviewCard: {
+    background: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
+    borderRadius: `${spacing.C}px`,
+    padding: `${spacing.E}px ${spacing.D}px`,
+    textAlign: 'center' as const,
+  },
+  overviewBadge: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '32px',
+    height: '32px',
+    borderRadius: '8px',
+    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
+    color: '#fff',
+    fontSize: '14px',
+    fontWeight: 700,
+    marginBottom: `${spacing.C}px`,
+    boxShadow: '0 2px 8px rgba(39, 112, 239, 0.3)',
+  },
+  overviewTitle: {
+    fontSize: '14px',
+    fontWeight: 600,
+    color: systemColors.light['content-primary'],
+    marginBottom: `${spacing.A}px`,
+  },
+  overviewDesc: {
+    fontSize: '12px',
+    fontWeight: 400,
+    color: systemColors.light['content-secondary'],
+    lineHeight: 1.5,
+    margin: 0,
   },
 
   // Guide Section
