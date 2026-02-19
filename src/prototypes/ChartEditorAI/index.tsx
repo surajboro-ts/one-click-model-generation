@@ -4,6 +4,8 @@ import { spacing } from '../../tokens/spacing';
 import { Icon } from '../../components/icons';
 import { Button } from '../../components/Button';
 import { GlobalHeader } from '../../components/GlobalHeader';
+import { AppSidebar } from '../../components/AppSidebar';
+import type { SidebarTab, SidebarCategory } from '../../components/AppSidebar';
 
 /**
  * ChartEditorAI — Chart editor with Spotter AI assistant
@@ -45,6 +47,70 @@ const TB_BOT: typeof TB_TOP = [
   {id:'bolt',icon:'bulb'},
 ];
 
+// ─── Sidebar data ─────────────────────────────────────────────────────────────
+
+type SidebarTabId = 'insights' | 'data' | 'develop' | 'admin';
+
+const SIDEBAR_TABS: SidebarTab[] = [
+  { id: 'insights', label: 'Insights', headerTitle: 'Insights' },
+  { id: 'data', label: 'Data', headerTitle: 'Data Workspace' },
+  { id: 'develop', label: 'Develop', headerTitle: 'Develop' },
+  { id: 'admin', label: 'Admin', headerTitle: 'Admin' },
+];
+
+const SIDEBAR_CATEGORIES: Record<SidebarTabId, SidebarCategory[]> = {
+  insights: [
+    {
+      title: 'Navigation',
+      items: [
+        { id: 'home', label: 'Home' },
+        { id: 'liveboards', label: 'Liveboards' },
+        { id: 'answers', label: 'Answers' },
+        { id: 'spotter', label: 'Spotter' },
+        { id: 'monitor', label: 'Monitor' },
+      ],
+    },
+  ],
+  data: [
+    {
+      title: 'Data Workspace',
+      items: [
+        { id: 'data-objects', label: 'Data objects' },
+        { id: 'connections', label: 'Connections' },
+        { id: 'analyst-studio', label: 'Analyst studio', isExternal: true },
+        { id: 'utilities', label: 'Utilities' },
+      ],
+    },
+    {
+      title: 'Governance',
+      items: [
+        { id: 'data-catalog', label: 'Data catalog' },
+        { id: 'usage', label: 'Usage' },
+      ],
+    },
+  ],
+  develop: [
+    {
+      title: 'Developer',
+      items: [
+        { id: 'playground', label: 'Playground' },
+        { id: 'custom-actions', label: 'Custom actions' },
+      ],
+    },
+  ],
+  admin: [
+    {
+      title: 'Admin Settings',
+      items: [
+        { id: 'users', label: 'Users' },
+        { id: 'groups', label: 'Groups' },
+        { id: 'orgs', label: 'Orgs' },
+        { id: 'security', label: 'Security' },
+      ],
+    },
+  ],
+};
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function aiReply(t:string):string {
@@ -63,6 +129,9 @@ export const ChartEditorAI: React.FC = () => {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [prompt, setPrompt] = useState('');
   const chatRef = useRef<HTMLDivElement>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState<SidebarTabId>('insights');
+  const [sidebarNav, setSidebarNav] = useState('');
 
   useEffect(() => { chatRef.current?.scrollTo(0, chatRef.current.scrollHeight); }, [msgs]);
 
@@ -76,8 +145,30 @@ export const ChartEditorAI: React.FC = () => {
 
   return (
     <div style={S.root}>
+      {/* AppSidebar overlay */}
+      {sidebarOpen && (
+        <div style={{ position: 'fixed', top: 60, left: 0, right: 0, bottom: 0, zIndex: 1000, display: 'flex' }}>
+          <AppSidebar
+            tabs={SIDEBAR_TABS}
+            activeTab={sidebarTab}
+            onTabChange={(tabId) => { setSidebarTab(tabId as SidebarTabId); setSidebarNav(''); }}
+            categories={SIDEBAR_CATEGORIES}
+            selectedNav={sidebarNav}
+            onNavSelect={setSidebarNav}
+            isOverlay
+            onClose={() => setSidebarOpen(false)}
+          />
+          <button
+            aria-label="Close sidebar"
+            style={{ flex: 1, background: 'rgba(0,0,0,0.4)', border: 'none', cursor: 'default' }}
+            onClick={() => setSidebarOpen(false)}
+          />
+        </div>
+      )}
+
       <GlobalHeader
         showHamburger
+        onHamburgerClick={() => setSidebarOpen(o => !o)}
         searchPlaceholder="Search in your library"
         userName="Workspace"
         notificationCount={1}

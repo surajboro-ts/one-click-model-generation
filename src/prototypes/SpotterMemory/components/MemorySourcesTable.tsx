@@ -33,7 +33,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
     {
       key: 'name',
       label: 'Liveboard name',
-      width: '200px',
+      minWidth: '180px',
       render: (value) => (
         <span style={styles.linkCell}>{String(value)}</span>
       ),
@@ -41,7 +41,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
     {
       key: 'author',
       label: 'Liveboard author',
-      width: '160px',
+      minWidth: '140px',
       render: (value) => {
         const author = value as Liveboard['author'];
         return (
@@ -63,7 +63,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
     {
       key: 'modelsWithMemory',
       label: 'Models with added memory',
-      width: '200px',
+      minWidth: '180px',
       render: (value) => {
         const models = value as string[];
         const displayModels = models.slice(0, 2);
@@ -87,7 +87,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
     {
       key: 'lastAdded',
       label: 'Last added',
-      width: '140px',
+      minWidth: '120px',
       sortable: true,
       render: (value) => {
         const date = value as Date;
@@ -101,7 +101,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
     {
       key: 'lastAddedBy',
       label: 'Last added by',
-      width: '160px',
+      minWidth: '140px',
       render: (value) => {
         const author = value as Liveboard['lastAddedBy'];
         return (
@@ -124,6 +124,7 @@ export const MemorySourcesTable: React.FC<MemorySourcesTableProps> = ({
       key: 'actions',
       label: '',
       width: '48px',
+      minWidth: '48px',
       render: () => (
         <div style={styles.actionsCell}>
           <button 

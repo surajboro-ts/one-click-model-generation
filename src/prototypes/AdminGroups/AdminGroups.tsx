@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { GlobalHeader } from '../../components/GlobalHeader';
+import { AppShell } from '../../components/AppShell';
+import type { AppSidebarProps, SidebarTab, SidebarCategory, ScopeToggle } from '../../components/AppSidebar';
+import type { GlobalHeaderProps } from '../../components/GlobalHeader';
 import {
-  AdminSidebar,
   GroupsTable,
   WizardModal,
   GroupDetailsStep,
@@ -9,13 +10,92 @@ import {
   RoleAssignStep,
   UsersParentStep,
 } from './components';
-import { styles, pageHeaderStyles, toolbarStyles } from './styles';
+import { pageHeaderStyles, toolbarStyles } from './styles';
 import { existingGroups, Group, groupTabs } from './data/mockData';
 import { Button } from '../../components/Button';
 import { Tabs } from '../../components/Tabs';
 import { Icon } from '../../components/icons';
 import { systemColors, referenceColors } from '../../tokens/colors';
-import { spacing } from '../../tokens/spacing';
+
+type SidebarTabId = 'insights' | 'data' | 'develop' | 'admin';
+
+const SIDEBAR_TABS: SidebarTab[] = [
+  { id: 'insights', label: 'Insights', headerTitle: 'Insights' },
+  { id: 'data', label: 'Data', headerTitle: 'Data Workspace' },
+  { id: 'develop', label: 'Develop', headerTitle: 'Develop' },
+  { id: 'admin', label: 'Admin', headerTitle: 'Admin Settings' },
+];
+
+const SIDEBAR_CATEGORIES: Record<SidebarTabId, SidebarCategory[]> = {
+  insights: [
+    {
+      title: 'Navigation',
+      items: [
+        { id: 'home', label: 'Home' },
+        { id: 'liveboards', label: 'Liveboards' },
+        { id: 'answers', label: 'Answers' },
+        { id: 'spotter', label: 'Spotter' },
+      ],
+    },
+  ],
+  data: [
+    {
+      title: 'Data Workspace',
+      items: [
+        { id: 'data-objects', label: 'Data objects' },
+        { id: 'connections', label: 'Connections' },
+        { id: 'utilities', label: 'Utilities' },
+      ],
+    },
+  ],
+  develop: [
+    {
+      title: 'Developer',
+      items: [
+        { id: 'playground', label: 'Playground' },
+        { id: 'custom-actions', label: 'Custom actions' },
+      ],
+    },
+  ],
+  admin: [
+    {
+      title: '',
+      items: [
+        { id: 'admin-dashboard', label: 'Admin Dashboard' },
+      ],
+    },
+    {
+      title: 'Orgs',
+      items: [
+        { id: 'orgs-list', label: 'Orgs' },
+      ],
+    },
+    {
+      title: 'Users',
+      items: [
+        { id: 'users-list', label: 'Users' },
+        { id: 'groups', label: 'Groups' },
+      ],
+    },
+    {
+      title: 'Application Settings',
+      items: [
+        { id: 'search', label: 'Search' },
+        { id: 'style', label: 'Style customization' },
+        { id: 'onboarding', label: 'Onboarding' },
+        { id: 'email', label: 'Email and onboarding' },
+        { id: 'spotter-admin', label: 'Spotter' },
+      ],
+    },
+    {
+      title: 'Security & Performance',
+      items: [
+        { id: 'security', label: 'Security' },
+        { id: 'link-settings', label: 'Link settings' },
+      ],
+    },
+  ],
+};
 
 // Wizard step configuration
 const WIZARD_STEPS = [
@@ -63,6 +143,8 @@ export const AdminGroups: React.FC = () => {
   const [wizardStep, setWizardStep] = useState(0);
   const [wizardData, setWizardData] = useState<WizardData>(initialWizardData);
   const [groups, setGroups] = useState<Group[]>(existingGroups);
+  const [sidebarTab, setSidebarTab] = useState<SidebarTabId>('admin');
+  const [sidebarNav, setSidebarNav] = useState('');
 
   // Filter groups based on search
   const filteredGroups = groups.filter(group =>
@@ -178,99 +260,105 @@ export const AdminGroups: React.FC = () => {
     }
   };
 
+  const scopeToggle: ScopeToggle = {
+    options: [
+      { id: 'all-orgs', label: 'All Orgs' },
+      { id: 'primary-org', label: 'Primary Org' },
+    ],
+    activeId: 'all-orgs',
+    onChange: () => {},
+  };
+
+  const headerProps: GlobalHeaderProps = {
+    searchPlaceholder: 'Search',
+    userName: 'Admin User',
+    notificationCount: 1,
+    showHamburger: true,
+  };
+
+  const sidebarProps: AppSidebarProps = {
+    tabs: SIDEBAR_TABS,
+    activeTab: sidebarTab,
+    onTabChange: (tabId) => { setSidebarTab(tabId as SidebarTabId); setSidebarNav(''); },
+    categories: SIDEBAR_CATEGORIES,
+    selectedNav: sidebarNav,
+    onNavSelect: setSidebarNav,
+    ...(sidebarTab === 'admin' ? { scopeToggle } : {}),
+  };
+
   return (
-    <div style={styles.layout}>
-      <div style={styles.header}>
-        <GlobalHeader
-          searchPlaceholder="Search"
-          userName="Admin User"
-          notificationCount={1}
-        />
-      </div>
+    <AppShell headerProps={headerProps} sidebarProps={sidebarProps} contentBackground="#FFFFFF" style={{ height: '100vh' }}>
+      <div style={{ padding: '24px 32px' }}>
+        {/* Page Header */}
+        <div style={pageHeaderStyles.container}>
+          {/* Breadcrumb */}
+          <div style={pageHeaderStyles.breadcrumb}>
+            <span>Admin</span>
+            <Icon name="chevron-right" size="xs" />
+            <span>Users</span>
+            <Icon name="chevron-right" size="xs" />
+            <span style={{ color: systemColors.light['content-primary'] }}>Groups</span>
+          </div>
+          
+          {/* Title */}
+          <h1 style={pageHeaderStyles.title}>Groups</h1>
 
-      {/* Body: Sidebar + Main Content */}
-      <div style={styles.body}>
-        {/* Left Sidebar */}
-        <aside style={styles.sidebar}>
-          <AdminSidebar activeItem="groups" />
-        </aside>
-
-        {/* Main Content */}
-        <main style={styles.main}>
-          <div style={styles.content}>
-            {/* Page Header */}
-            <div style={pageHeaderStyles.container}>
-              {/* Breadcrumb */}
-              <div style={pageHeaderStyles.breadcrumb}>
-                <span>Admin</span>
-                <Icon name="chevron-right" size="xs" />
-                <span>Users</span>
-                <Icon name="chevron-right" size="xs" />
-                <span style={{ color: systemColors.light['content-primary'] }}>Groups</span>
-              </div>
-              
-              {/* Title */}
-              <h1 style={pageHeaderStyles.title}>Groups</h1>
-
-              {/* Tabs */}
-              <div style={pageHeaderStyles.tabs}>
-                <Tabs
-                  tabs={groupTabs}
-                  activeTab={activeTab}
-                  onTabChange={setActiveTab}
-                />
-              </div>
-            </div>
-
-            {/* Toolbar */}
-            <div style={toolbarStyles.container}>
-              {/* Search */}
-              <div style={toolbarStyles.searchWrapper}>
-                <div style={{ position: 'relative' }}>
-                  <Icon
-                    name="magnifying-glass"
-                    size="s"
-                    style={{
-                      position: 'absolute',
-                      left: '12px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      color: systemColors.light['content-tertiary'],
-                    }}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Search groups"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    style={{
-                      width: '100%',
-                      height: '36px',
-                      paddingLeft: '40px',
-                      paddingRight: '12px',
-                      border: `1px solid ${referenceColors.gray['30']}`,
-                      borderRadius: '6px',
-                      fontSize: '14px',
-                      outline: 'none',
-                      fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Add button */}
-              <Button variant="primary" onClick={handleAddGroup}>
-                Add group
-              </Button>
-            </div>
-
-            {/* Groups Table */}
-            <GroupsTable 
-              groups={filteredGroups}
-              onGroupClick={(group) => console.log('Group clicked:', group)}
+          {/* Tabs */}
+          <div style={pageHeaderStyles.tabs}>
+            <Tabs
+              tabs={groupTabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
             />
           </div>
-        </main>
+        </div>
+
+        {/* Toolbar */}
+        <div style={toolbarStyles.container}>
+          {/* Search */}
+          <div style={toolbarStyles.searchWrapper}>
+            <div style={{ position: 'relative' }}>
+              <span style={{
+                position: 'absolute',
+                left: '12px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: systemColors.light['content-tertiary'],
+                display: 'flex',
+              }}>
+                <Icon name="magnifying-glass" size="s" color="currentColor" />
+              </span>
+              <input
+                type="text"
+                placeholder="Search groups"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                style={{
+                  width: '100%',
+                  height: '36px',
+                  paddingLeft: '40px',
+                  paddingRight: '12px',
+                  border: `1px solid ${referenceColors.gray['30']}`,
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Add button */}
+          <Button variant="primary" onClick={handleAddGroup}>
+            Add group
+          </Button>
+        </div>
+
+        {/* Groups Table */}
+        <GroupsTable 
+          groups={filteredGroups}
+          onGroupClick={(group) => console.log('Group clicked:', group)}
+        />
       </div>
 
       {/* Wizard Modal */}
@@ -289,7 +377,7 @@ export const AdminGroups: React.FC = () => {
       >
         {renderWizardStep()}
       </WizardModal>
-    </div>
+    </AppShell>
   );
 };
 

@@ -41,7 +41,7 @@
 
 .tabButtonActive {
   background: var(--as-panel-bg);
-  color: #ffffff;
+  color: var(--as-text);
 }
 
 .tabButton:focus-visible {
@@ -93,10 +93,10 @@
 
 .headerTitle {
   color: var(--as-text);
-  font-size: 24px;
-  font-weight: 500;
-  letter-spacing: -0.3px;
-  line-height: 28px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.072px;
+  line-height: 24px;
   margin: 0;
 }
 
@@ -129,10 +129,8 @@
 .scopeToggle {
   align-items: center;
   background: var(--as-bg);
-  border: 1px solid var(--as-border);
   border-radius: 999px;
   display: flex;
-  gap: 4px;
   padding: 2px;
 }
 
@@ -143,9 +141,11 @@
   color: var(--as-subtle);
   cursor: pointer;
   flex: 1;
-  font-size: 12px;
-  line-height: 16px;
-  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 375;
+  line-height: 20px;
+  padding: 4px 16px;
   white-space: nowrap;
 }
 
@@ -154,8 +154,9 @@
 }
 
 .scopeButtonActive {
-  background: var(--as-panel-selected);
-  color: var(--as-active);
+  background: var(--as-scope-active-bg);
+  box-shadow: 0px 2px 4px 0px rgba(25, 35, 49, 0.04);
+  color: var(--as-scope-active);
 }
 
 .scopeButton:focus-visible {
@@ -184,9 +185,9 @@
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.6px;
-  line-height: 12px;
+  line-height: 20px;
   margin: 0;
-  padding: 0 24px;
+  padding: 6px 24px;
   text-transform: uppercase;
 }
 
@@ -203,7 +204,7 @@
   cursor: pointer;
   display: flex;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 375;
   gap: 8px;
   justify-content: space-between;
   line-height: 20px;
@@ -226,7 +227,7 @@
 .itemActive {
   background: var(--as-active-bg);
   color: var(--as-active);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .itemHighlighted {

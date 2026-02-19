@@ -6,6 +6,8 @@ import { Button } from '../../components/Button';
 import { Icon } from '../../components/icons';
 import { Tooltip } from '../../components/Tooltip';
 import { Avatar } from '../../components/Avatar';
+import { AppSidebar } from '../../components/AppSidebar';
+import type { SidebarTab, SidebarCategory } from '../../components/AppSidebar';
 import {
   FilterBar,
   KPICard,
@@ -13,7 +15,6 @@ import {
   StackedBarChart,
   USMapChart,
   StylingPanel,
-  NavigationSidebar,
 } from './components';
 import type { StylingSettings } from './components';
 import { colors, spacing, typography, shadows, borderRadius } from './styles';
@@ -29,45 +30,68 @@ import {
   northAmericaOpportunities,
 } from './data/mockData';
 
-/**
- * Liveboard - TSE Business Overview Dashboard
- * 
- * A comprehensive business analytics dashboard showcasing:
- * - Navigation sidebar with app-level menu items
- * - KPI metric cards with trend indicators
- * - Area, donut, and bar chart visualizations
- * - US map with regional data
- * - Filter bar with multiple selectors
- * 
- * Built using Radiant design system components.
- * 
- * ============================================================
- * COMPONENT MAPPING (Figma to Radiant)
- * ============================================================
- * 
- * | Figma Element        | Radiant Component        | Location                       |
- * |----------------------|--------------------------|--------------------------------|
- * | Navigation sidebar   | NavigationSidebar        | components/NavigationSidebar   |
- * | Top header bar       | Header                   | components/Header.tsx          |
- * | Search input         | SearchInput              | Radiant (in Header)            |
- * | AI highlights button | Button (primary)         | Radiant (in Header)            |
- * | User profile avatar  | Avatar                   | Radiant (in Header)            |
- * | Navigation tabs      | Custom Tabs              | Header.tsx                     |
- * | Filter dropdowns     | Custom FilterDropdown    | FilterBar.tsx                  |
- * | Filter chips         | Chip (filter type)       | Radiant                        |
- * | Weekly Update card   | KPICard (highlight)      | components/KPICard.tsx         |
- * | CFY/Quarter cards    | KPICard (chart)          | components/KPICard.tsx         |
- * | Pipeline cards       | KPICard (dual-metric)    | components/KPICard.tsx         |
- * | Donut chart          | DonutChart               | components/DonutChart.tsx      |
- * | Bar chart            | StackedBarChart          | components/StackedBarChart.tsx |
- * | US Map               | USMapChart               | components/USMapChart.tsx      |
- * | Data table           | Table                    | Radiant                        |
- * | Panel titles         | Typography               | Radiant                        |
- * | Icon buttons         | Icon + Tooltip           | Radiant                        |
- * | Styling panel        | StylingPanel             | components/StylingPanel.tsx    |
- * 
- * ============================================================
- */
+type SidebarTabId = 'insights' | 'data' | 'develop' | 'admin';
+
+const SIDEBAR_TABS: SidebarTab[] = [
+  { id: 'insights', label: 'Insights', headerTitle: 'Insights' },
+  { id: 'data', label: 'Data', headerTitle: 'Data Workspace' },
+  { id: 'develop', label: 'Develop', headerTitle: 'Develop' },
+  { id: 'admin', label: 'Admin', headerTitle: 'Admin' },
+];
+
+const SIDEBAR_CATEGORIES: Record<SidebarTabId, SidebarCategory[]> = {
+  insights: [
+    {
+      title: 'Navigation',
+      items: [
+        { id: 'home', label: 'Home' },
+        { id: 'liveboards', label: 'Liveboards' },
+        { id: 'answers', label: 'Answers' },
+        { id: 'spotter', label: 'Spotter' },
+        { id: 'monitor', label: 'Monitor' },
+      ],
+    },
+  ],
+  data: [
+    {
+      title: 'Data Workspace',
+      items: [
+        { id: 'data-objects', label: 'Data objects' },
+        { id: 'connections', label: 'Connections' },
+        { id: 'analyst-studio', label: 'Analyst studio', isExternal: true },
+        { id: 'utilities', label: 'Utilities' },
+      ],
+    },
+    {
+      title: 'Governance',
+      items: [
+        { id: 'data-catalog', label: 'Data catalog' },
+        { id: 'usage', label: 'Usage' },
+      ],
+    },
+  ],
+  develop: [
+    {
+      title: 'Developer',
+      items: [
+        { id: 'playground', label: 'Playground' },
+        { id: 'custom-actions', label: 'Custom actions' },
+      ],
+    },
+  ],
+  admin: [
+    {
+      title: 'Admin Settings',
+      items: [
+        { id: 'users', label: 'Users' },
+        { id: 'groups', label: 'Groups' },
+        { id: 'orgs', label: 'Orgs' },
+        { id: 'security', label: 'Security' },
+      ],
+    },
+  ],
+};
+
 export const Liveboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('bookings');
   const [filters, setFilters] = useState({
@@ -80,7 +104,8 @@ export const Liveboard: React.FC = () => {
 
   // Navigation sidebar state
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeNavItem, setActiveNavItem] = useState('liveboards');
+  const [sidebarTab, setSidebarTab] = useState<SidebarTabId>('insights');
+  const [sidebarNav, setSidebarNav] = useState('');
 
   // Styling panel state
   const [isStylingPanelOpen, setIsStylingPanelOpen] = useState(false);
@@ -107,10 +132,9 @@ export const Liveboard: React.FC = () => {
     setIsSidebarOpen(false);
   };
 
-  const handleNavItemClick = (itemId: string) => {
-    setActiveNavItem(itemId);
-    // In a real app, this would navigate to the selected section
-    console.log('Navigate to:', itemId);
+  const handleSidebarTabChange = (tabId: string) => {
+    setSidebarTab(tabId as SidebarTabId);
+    setSidebarNav('');
   };
 
   const handleStylingPanelToggle = () => {
@@ -138,13 +162,26 @@ export const Liveboard: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      {/* Navigation Sidebar */}
-      <NavigationSidebar
-        isOpen={isSidebarOpen}
-        activeItem={activeNavItem}
-        onItemClick={handleNavItemClick}
-        onClose={handleSidebarClose}
-      />
+      {/* AppSidebar overlay */}
+      {isSidebarOpen && (
+        <div style={overlayStyles.container}>
+          <AppSidebar
+            tabs={SIDEBAR_TABS}
+            activeTab={sidebarTab}
+            onTabChange={handleSidebarTabChange}
+            categories={SIDEBAR_CATEGORIES}
+            selectedNav={sidebarNav}
+            onNavSelect={setSidebarNav}
+            isOverlay
+            onClose={handleSidebarClose}
+          />
+          <button
+            aria-label="Close sidebar"
+            style={overlayStyles.backdrop}
+            onClick={handleSidebarClose}
+          />
+        </div>
+      )}
 
       <GlobalHeader
         showHamburger
@@ -430,6 +467,24 @@ const styles: Record<string, React.CSSProperties> = {
   },
   tableContainer: {
     marginTop: spacing.md,
+  },
+};
+
+const overlayStyles: Record<string, React.CSSProperties> = {
+  container: {
+    position: 'fixed',
+    top: 60,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
+    display: 'flex',
+  },
+  backdrop: {
+    flex: 1,
+    background: 'rgba(0, 0, 0, 0.4)',
+    border: 'none',
+    cursor: 'default',
   },
 };
 
