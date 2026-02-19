@@ -190,7 +190,7 @@ export const ArchitectureShowcase: React.FC = () => {
               <>
                 <h4 style={styles.detailsTitle}>🧩 Component Tokens</h4>
                 <p style={styles.detailsDescription}>
-                  Per-component tokens for button (11), chip (25), and toggle (5). CSS modules
+                  46 per-component tokens for button (11), chip (30), and toggle (5). CSS modules
                   consume system and component tokens via CSS custom properties.
                 </p>
                 <div style={styles.codeBlock}>
@@ -285,6 +285,76 @@ export const ArchitectureShowcase: React.FC = () => {
         </div>
       </section>
 
+      {/* Consumption Patterns */}
+      <section style={styles.consumptionSection}>
+        <h3 style={styles.sectionTitle}>How Tokens Are Consumed</h3>
+        <p style={styles.sectionDescription}>
+          Tokens are available through two paths. Components use CSS custom properties for theme-aware styling.
+          Pages and prototypes use TypeScript objects for inline styles.
+        </p>
+
+        <div style={styles.consumptionGrid}>
+          {/* Path 1: CSS Custom Properties */}
+          <div style={styles.consumptionCard}>
+            <div style={styles.consumptionHeader}>
+              <span style={styles.consumptionBadge}>CSS Modules</span>
+              <span style={styles.consumptionTag}>Theme-aware</span>
+            </div>
+            <p style={styles.consumptionDesc}>
+              Component <code>.module.css</code> files use <code>var(--rd-sys-color-*)</code> and <code>var(--rd-comp-color-*)</code>.
+              These automatically switch values when <code>data-theme</code> changes — no JS needed.
+            </p>
+            <div style={styles.codeBlock}>
+              <div style={styles.codeHeader}>Button.module.css</div>
+              <pre style={styles.code}>{`.primary {
+  background: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
+}
+.primary:hover {
+  background: var(--rd-comp-color-button-primary-hover);
+}`}</pre>
+            </div>
+            <div style={styles.consumptionUsage}>
+              <span style={styles.consumptionUsageLabel}>Used by</span>
+              <span style={styles.consumptionUsageValue}>35 component CSS modules</span>
+            </div>
+          </div>
+
+          {/* Path 2: TypeScript Objects */}
+          <div style={styles.consumptionCard}>
+            <div style={styles.consumptionHeader}>
+              <span style={{ ...styles.consumptionBadge, backgroundColor: referenceColors.green['10'], color: systemColors.light['content-success'] }}>TypeScript</span>
+              <span style={styles.consumptionTag}>Inline styles</span>
+            </div>
+            <p style={styles.consumptionDesc}>
+              Pages and prototypes import <code>systemColors</code> and <code>referenceColors</code> directly
+              for inline styles. Access light/dark maps via <code>.light[...]</code> or <code>.dark[...]</code>.
+            </p>
+            <div style={styles.codeBlock}>
+              <div style={styles.codeHeader}>MyPage.tsx</div>
+              <pre style={styles.code}>{`import { systemColors, referenceColors }
+  from '../tokens/colors';
+
+<div style={{
+  background: systemColors.light['background-base'],
+  color: systemColors.light['content-primary'],
+  borderColor: referenceColors.gray['20'],
+}} />`}</pre>
+            </div>
+            <div style={styles.consumptionUsage}>
+              <span style={styles.consumptionUsageLabel}>Used by</span>
+              <span style={styles.consumptionUsageValue}>46+ page and prototype files</span>
+            </div>
+          </div>
+        </div>
+
+        <div style={styles.consumptionNote}>
+          <strong>When to use which?</strong>{' '}
+          Use CSS custom properties in reusable components (they respond to theme changes automatically).
+          Use TypeScript imports in pages, prototypes, and one-off layouts where inline styles are more convenient.
+        </div>
+      </section>
+
       {/* File Structure */}
       <section style={styles.structureSection}>
         <h3 style={styles.sectionTitle}>File Structure</h3>
@@ -315,7 +385,7 @@ export const ArchitectureShowcase: React.FC = () => {
           <div style={{ ...styles.treeItem, marginLeft: 60 }}>
             <span style={styles.fileIcon}>📄</span>
             <span style={styles.fileName}>component.ts</span>
-            <span style={styles.treeDesc}>Per-component tokens (button, chip, toggle)</span>
+            <span style={styles.treeDesc}>46 per-component tokens (button, chip, toggle)</span>
           </div>
           <div style={{ ...styles.treeItem, marginLeft: 60 }}>
             <span style={styles.fileIcon}>📄</span>
@@ -369,7 +439,7 @@ export const ArchitectureShowcase: React.FC = () => {
             <ul style={styles.categoryList}>
               <li>9 reference scales (00-100)</li>
               <li>42 system tokens × 2 modes</li>
-              <li>41 component tokens × 2 modes</li>
+              <li>46 component tokens × 2 modes</li>
               <li>rd-ref / rd-sys / rd-comp prefix</li>
             </ul>
           </div>
@@ -729,6 +799,86 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '14px',
     fontWeight: 375,
     cursor: 'pointer',
+  },
+
+  // Consumption Patterns
+  consumptionSection: {
+    backgroundColor: systemColors.light['background-base'],
+    borderRadius: '12px',
+    padding: '32px',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+  },
+  consumptionGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '20px',
+    marginBottom: '20px',
+  },
+  consumptionCard: {
+    backgroundColor: systemColors.light['background-sunken'],
+    borderRadius: '10px',
+    padding: '24px',
+    border: `1px solid ${systemColors.light['background-subtle']}`,
+  },
+  consumptionHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '12px',
+  },
+  consumptionBadge: {
+    fontSize: '12px',
+    fontWeight: 600,
+    padding: '3px 10px',
+    borderRadius: '6px',
+    backgroundColor: referenceColors.blue['10'],
+    color: systemColors.light['content-brand'],
+  },
+  consumptionTag: {
+    fontSize: '11px',
+    fontWeight: 500,
+    color: systemColors.light['content-tertiary'],
+    padding: '2px 8px',
+    borderRadius: '4px',
+    backgroundColor: systemColors.light['background-subtle'],
+  },
+  consumptionDesc: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '13px',
+    fontWeight: 400,
+    color: systemColors.light['content-secondary'],
+    lineHeight: '20px',
+    marginBottom: '16px',
+  },
+  consumptionUsage: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginTop: '12px',
+    paddingTop: '12px',
+    borderTop: `1px solid ${systemColors.light['background-subtle']}`,
+  },
+  consumptionUsageLabel: {
+    fontSize: '11px',
+    fontWeight: 600,
+    color: systemColors.light['content-tertiary'],
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.5px',
+  },
+  consumptionUsageValue: {
+    fontSize: '12px',
+    fontWeight: 500,
+    color: systemColors.light['content-primary'],
+  },
+  consumptionNote: {
+    fontSize: '13px',
+    fontWeight: 400,
+    color: systemColors.light['content-secondary'],
+    lineHeight: '20px',
+    backgroundColor: referenceColors.blue['10'],
+    border: `1px solid ${systemColors.light['background-information']}`,
+    borderRadius: '8px',
+    padding: '12px 16px',
   },
 
   // File Structure

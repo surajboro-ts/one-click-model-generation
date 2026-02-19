@@ -1,16 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   AppShell,
-  Button,
-  SearchInput,
-  SegmentedControl,
   Toast,
-  Typography,
 } from '../../components';
+import { Icon } from '../../components/icons';
 import type { AppSidebarProps } from '../../components/AppSidebar';
 import type { GlobalHeaderProps } from '../../components/GlobalHeader';
 import { CommandPalette } from './CommandPalette';
-import { LibrarySearchDropdown } from './components/LibrarySearchDropdown';
 import {
   allMockObjects,
   type CommandItem,
@@ -22,11 +18,9 @@ import {
   NAV_ITEMS_BY_TAB,
   SIDEBAR_CATEGORIES,
   SIDEBAR_TABS,
-  filterAdminCategories,
   findNavIdForPage,
   getNavLabel,
   type AppTabId,
-  type SearchVariant,
 } from './data/appConfig';
 import { HomePage } from './pages/HomePage';
 import { LiveboardsPage } from './pages/LiveboardsPage';
@@ -38,12 +32,6 @@ import { BillingStatsPage } from './pages/BillingStatsPage';
 import { SpotterPage } from './pages/SpotterPage';
 import { GenericPage } from './pages/GenericPage';
 import type { PageContext } from './types';
-
-const SEARCH_OPTION_LABELS: Record<SearchVariant, string> = {
-  option1: 'Option 1',
-  option2: 'Option 2',
-  option3: 'Option 3',
-};
 
 const OBJECT_TYPE_TO_DATA_NAV: Record<ThoughtSpotObjectType, string> = {
   Liveboard: 'liveboards',
@@ -75,18 +63,13 @@ const getContextForState = (activeTab: AppTabId, selectedNav: string): PageConte
 };
 
 export const CmdkApp: React.FC = () => {
-  const [searchVariant, setSearchVariant] = useState<SearchVariant>('option2');
   const [activeTab, setActiveTab] = useState<AppTabId>(DEFAULT_TAB);
   const [selectedNav, setSelectedNav] = useState<string>(DEFAULT_NAV_BY_TAB[DEFAULT_TAB]);
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null);
   const [adminScope, setAdminScope] = useState<'all-orgs' | 'primary-org'>('primary-org');
-  const [adminLocalQuery, setAdminLocalQuery] = useState('');
 
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [commandPaletteFilter, setCommandPaletteFilter] = useState<string | undefined>(undefined);
-
-  const [librarySearchQuery, setLibrarySearchQuery] = useState('');
-  const [librarySearchOpen, setLibrarySearchOpen] = useState(false);
 
   const [selectedLiveboardId, setSelectedLiveboardId] = useState<string | null>(null);
   const [searchResultsQuery, setSearchResultsQuery] = useState('');
@@ -100,16 +83,6 @@ export const CmdkApp: React.FC = () => {
     [selectedLiveboardId],
   );
 
-  const sidebarCategories = useMemo(() => {
-    if (activeTab !== 'admin' || searchVariant !== 'option3') {
-      return SIDEBAR_CATEGORIES;
-    }
-    return {
-      ...SIDEBAR_CATEGORIES,
-      admin: filterAdminCategories(adminLocalQuery),
-    };
-  }, [activeTab, adminLocalQuery, searchVariant]);
-
   useEffect(() => {
     if (!highlightedItem) {
       return;
@@ -120,9 +93,6 @@ export const CmdkApp: React.FC = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (searchVariant === 'option3') {
-        return;
-      }
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
         setCommandPaletteOpen((previous) => !previous);
@@ -130,16 +100,7 @@ export const CmdkApp: React.FC = () => {
     };
     window.addEventListener('keydown', handleKeyDown, true);
     return () => window.removeEventListener('keydown', handleKeyDown, true);
-  }, [searchVariant]);
-
-  useEffect(() => {
-    if (searchVariant !== 'option3') {
-      setLibrarySearchOpen(false);
-      setLibrarySearchQuery('');
-      setAdminLocalQuery('');
-    }
-  }, [searchVariant]);
-
+  }, []);
 
   const navigateTo = (tab: AppTabId, navId: string) => {
     setActiveTab(tab);
@@ -217,13 +178,8 @@ export const CmdkApp: React.FC = () => {
   };
 
   const headerProps: GlobalHeaderProps = {
-    searchPlaceholder: searchVariant === 'option3' ? 'Search library' : 'Search in ThoughtSpot',
-    searchMode: searchVariant === 'option3' ? 'input' : 'trigger',
-    searchValue: librarySearchQuery,
-    onSearchChange: (query) => {
-      setLibrarySearchQuery(query);
-      setLibrarySearchOpen(Boolean(query.trim()));
-    },
+    searchPlaceholder: 'Search in ThoughtSpot',
+    searchMode: 'trigger',
     onSearchClick: () => {
       setCommandPaletteFilter(undefined);
       setCommandPaletteOpen(true);
@@ -234,8 +190,6 @@ export const CmdkApp: React.FC = () => {
       setSelectedLiveboardId(null);
       setSearchResultsQuery('');
       setSearchObjectType(undefined);
-      setLibrarySearchOpen(false);
-      setLibrarySearchQuery('');
       setCommandPaletteFilter(undefined);
       setCommandPaletteOpen(false);
       setToast(null);
@@ -244,42 +198,39 @@ export const CmdkApp: React.FC = () => {
     notificationCount: 1,
   };
 
-  const adminHeaderSlot = searchVariant === 'option3'
-    ? (
-      <SearchInput
-        placeholder="Search admin settings"
-        value={adminLocalQuery}
-        onChange={(event) => setAdminLocalQuery(event.target.value)}
-      />
-    )
-    : searchVariant === 'option2'
-      ? (
-        <Button
-          variant="tertiary"
-          size="small"
-          icon="search"
-          iconPosition="leading"
-          onClick={() => {
-            setCommandPaletteFilter('admin');
-            setCommandPaletteOpen(true);
-          }}
-        >
-          Search admin
-        </Button>
-      )
-      : undefined;
+  const adminSearchIcon = (
+    <button
+      type="button"
+      style={styles.adminSearchButton}
+      onClick={() => {
+        setCommandPaletteFilter('admin');
+        setCommandPaletteOpen(true);
+      }}
+      title="Search admin settings"
+    >
+      <Icon name="search" size="s" color="var(--as-text, #A5ACB9)" />
+    </button>
+  );
+
+  const sidebarTabs = useMemo(
+    () =>
+      SIDEBAR_TABS.map((tab) =>
+        tab.id === 'admin' ? { ...tab, headerActionSlot: adminSearchIcon } : tab,
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   const sidebarProps: AppSidebarProps = {
-    tabs: SIDEBAR_TABS,
+    tabs: sidebarTabs,
     activeTab,
     onTabChange: (tabId) => {
       const nextTab = tabId as AppTabId;
       setActiveTab(nextTab);
       setSelectedNav(DEFAULT_NAV_BY_TAB[nextTab]);
       setSelectedLiveboardId(null);
-      setAdminLocalQuery('');
     },
-    categories: sidebarCategories,
+    categories: SIDEBAR_CATEGORIES,
     selectedNav,
     onNavSelect: (navId) => {
       setSelectedNav(navId);
@@ -300,7 +251,6 @@ export const CmdkApp: React.FC = () => {
         onChange: (id) => setAdminScope(id as 'all-orgs' | 'primary-org'),
       }
       : undefined,
-    headerSlot: activeTab === 'admin' ? adminHeaderSlot : undefined,
   };
 
   const renderActiveContent = () => {
@@ -366,53 +316,18 @@ export const CmdkApp: React.FC = () => {
         hideSidebar={Boolean(selectedLiveboardId)}
         contentBackground="#F6F8FA"
       >
-        <div style={styles.optionBar}>
-          <Typography variant="content-label-subhead" color="gray" noMargin>
-            Search pattern
-          </Typography>
-          <SegmentedControl
-            size="small"
-            options={[
-              { id: 'option1', label: SEARCH_OPTION_LABELS.option1 },
-              { id: 'option2', label: SEARCH_OPTION_LABELS.option2 },
-              { id: 'option3', label: SEARCH_OPTION_LABELS.option3 },
-            ]}
-            value={searchVariant}
-            onChange={(value) => setSearchVariant(value as SearchVariant)}
-          />
-          <Typography variant="footnote" color="gray" noMargin>
-            {searchVariant === 'option1' && 'Cmd+K command palette only'}
-            {searchVariant === 'option2' && 'Cmd+K plus Admin search trigger'}
-            {searchVariant === 'option3' && 'Library search dropdown plus admin local search'}
-          </Typography>
-        </div>
-
         {renderActiveContent()}
       </AppShell>
 
-      {(searchVariant === 'option1' || searchVariant === 'option2') && (
-        <CommandPalette
-          isOpen={commandPaletteOpen}
-          onClose={() => {
-            setCommandPaletteOpen(false);
-            setCommandPaletteFilter(undefined);
-          }}
-          onSelect={handlePaletteSelect}
-          context={getContextForState(activeTab, selectedNav)}
-          initialFilter={commandPaletteFilter}
-        />
-      )}
-
-      <LibrarySearchDropdown
-        isOpen={searchVariant === 'option3' && librarySearchOpen}
-        query={librarySearchQuery}
-        objects={allMockObjects}
-        onOpenObject={(objectId, objectType) => {
-          setLibrarySearchOpen(false);
-          setLibrarySearchQuery('');
-          handleOpenObject(objectId, objectType);
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => {
+          setCommandPaletteOpen(false);
+          setCommandPaletteFilter(undefined);
         }}
-        onClose={() => setLibrarySearchOpen(false)}
+        onSelect={handlePaletteSelect}
+        context={getContextForState(activeTab, selectedNav)}
+        initialFilter={commandPaletteFilter}
       />
 
       {toast && (
@@ -433,11 +348,18 @@ const styles: Record<string, React.CSSProperties> = {
   shell: {
     height: '100vh',
   },
-  optionBar: {
+  adminSearchButton: {
     display: 'flex',
     alignItems: 'center',
-    gap: 10,
-    padding: '12px 24px 0',
+    justifyContent: 'center',
+    width: 28,
+    height: 28,
+    padding: 0,
+    border: 'none',
+    borderRadius: '50%',
+    background: 'transparent',
+    cursor: 'pointer',
+    transition: 'background 150ms ease',
   },
 };
 

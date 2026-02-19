@@ -14,6 +14,7 @@ import { VersionHistoryPage } from './pages/VersionHistoryPage';
 import { ColorSystemPage } from './pages/ColorSystemPage';
 import { TypographyPage } from './pages/TypographyPage';
 // import { RoadmapPage } from './pages/RoadmapPage';
+import { HowItWorksPage } from './pages/HowItWorksPage';
 import { systemColors } from './tokens/colors';
 
 // Prototype examples
@@ -102,14 +103,15 @@ const ROUTES = {
   home: '/',
   // Radiant routes
   radiant: '/radiant',
-  radiantArchitecture: '/radiant/architecture',
-  radiantIcons: '/radiant/icons',
-  radiantSurfaces: '/radiant/surfaces',
-  radiantRegistry: '/radiant/registry',
-  radiantChangelog: '/radiant/changelog',
-  // radiantRoadmap: '/radiant/roadmap',
+  colours: '/radiant/colours',
+  'typography-page': '/radiant/typography',
+  architecture: '/radiant/architecture',
+  icons: '/radiant/icons',
+  surfaces: '/radiant/surfaces',
+  registry: '/radiant/registry',
+  changelog: '/radiant/changelog',
   // Example prototypes
-  filterDialog: '/radiant/examples/filter-dialog',
+  'example-filter-dialog': '/radiant/examples/filter-dialog',
   // Widgets
   globalheader: '/radiant/components/globalheader',
   appsidebar: '/radiant/components/appsidebar',
@@ -394,6 +396,7 @@ const App: React.FC = () => {
     <Routes>
       {/* Home - Simple split page */}
       <Route path="/" element={<HomePage />} />
+      <Route path="/how-it-works" element={<HowItWorksPage />} />
       
       {/* Radiant Section - With sidebar */}
       <Route path="/radiant" element={<RadiantLayout><RadiantHomePageWrapper /></RadiantLayout>} />

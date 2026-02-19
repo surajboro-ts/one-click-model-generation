@@ -14,6 +14,55 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '2.0.0',
+    date: '2026-02-18',
+    title: '3-Layer Color Token Migration',
+    type: 'major',
+    changes: [
+      {
+        category: 'added',
+        items: [
+          'Reference tokens layer (reference.ts) — 9 tonal scales with 12 stops each (00–100)',
+          'System tokens layer (system.ts) — 42 semantic tokens (background, content, border) × light/dark modes',
+          'Component tokens layer (component.ts) — 46 per-component tokens (button, chip, toggle) × light/dark modes',
+          'CSS custom properties with rd-sys-color-* and rd-comp-color-* prefixes in tokens.css',
+          'Built-in dark mode support via data-theme attribute and prefers-color-scheme media query',
+          'System Tokens preview section on Color System page showing all 42 semantic tokens',
+          'Updated Token Architecture page with accurate 3-layer documentation and code examples',
+        ],
+      },
+      {
+        category: 'changed',
+        items: [
+          'Migrated all 36 CSS module files from old --color-brand-* / --color-* variables to --rd-sys-color-* / --rd-comp-color-*',
+          'Migrated all 48 TypeScript files from brandColors.* to systemColors / referenceColors',
+          'Updated token count from 150+ to 290+ reflecting the expanded system',
+          'Token Architecture page rewritten with Reference → System → Component flow',
+          'Radiant Home page token section updated with new layer names and examples',
+          'Color System page header updated to describe 3-layer architecture',
+          'token-usage.md rule rewritten with new import paths and CSS variable names',
+        ],
+      },
+      {
+        category: 'removed',
+        items: [
+          'brand.ts — replaced by reference.ts',
+          'alias.ts — functionality absorbed into system.ts',
+          'mapped.ts — replaced by system.ts light/dark maps',
+          'semantic.ts — replaced by system.ts and component.ts',
+          'All legacy --color-brand-* and --color-* CSS custom properties',
+        ],
+      },
+      {
+        category: 'fixed',
+        items: [
+          'Dark mode override on macOS — added data-theme="light" to index.html to prevent prefers-color-scheme from overriding light theme',
+          'Sidebar nav items now correctly show selected/active state on all pages',
+        ],
+      },
+    ],
+  },
+  {
     version: '1.1.0',
     date: '2026-01-27',
     title: 'Modal Components & Navigation',

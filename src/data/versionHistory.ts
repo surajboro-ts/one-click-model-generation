@@ -26,6 +26,22 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '2.0.0',
+    date: '2026-02-18',
+    type: 'major',
+    changes: [
+      { type: 'added', component: 'Reference Tokens', description: '9 tonal scales (brand, gray, blue, green, red, yellow, orange, purple, teal) × 12 stops' },
+      { type: 'added', component: 'System Tokens', description: '42 semantic tokens (background, content, border) with light/dark mode support' },
+      { type: 'added', component: 'Component Tokens', description: '46 per-component tokens (button, chip, toggle) with light/dark mode' },
+      { type: 'added', component: 'CSS Custom Properties', description: 'rd-sys-color-* and rd-comp-color-* variables in tokens.css' },
+      { type: 'added', component: 'Dark Mode', description: 'Built-in light/dark mode via data-theme attribute' },
+      { type: 'modified', component: 'All Components', description: 'Migrated 36 CSS modules and 48 TS files to new 3-layer token system' },
+      { type: 'modified', component: 'Color System Page', description: 'Added System Tokens preview with 42 semantic tokens' },
+      { type: 'modified', component: 'Architecture Page', description: 'Rewritten with Reference → System → Component documentation' },
+      { type: 'removed', component: 'brand.ts / alias.ts / mapped.ts', description: 'Replaced by reference.ts, system.ts, and component.ts' },
+    ],
+  },
+  {
     version: '1.6.1',
     date: '2026-02-03',
     type: 'patch',
