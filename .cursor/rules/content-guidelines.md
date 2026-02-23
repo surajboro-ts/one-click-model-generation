@@ -1,6 +1,6 @@
 ---
 description: ThoughtSpot content design rules for all UI text in components
-globs: ["src/components/**/*.tsx", "src/pages/**/*.tsx"]
+globs: ["src/components/**/*.tsx", "src/pages/**/*.tsx", "src/prototypes/**/*.tsx"]
 ---
 
 # ThoughtSpot Content Design Rules

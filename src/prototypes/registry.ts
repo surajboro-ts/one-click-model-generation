@@ -50,6 +50,7 @@ const Cmdk = React.lazy(() => import('./Cmdk'));
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
 const ChartEditorAI = React.lazy(() => import('./ChartEditorAI'));
+const AdminImpersonation = React.lazy(() => import('./AdminImpersonation'));
 
 /**
  * All registered projects
@@ -103,6 +104,15 @@ export const projectRegistry: ProjectMeta[] = [
     component: ChartEditorAI,
     dsComponents: 2,
     customComponents: 0,
+  },
+  {
+    id: 'AdminImpersonation',
+    name: 'Admin Impersonation',
+    description: 'Admin impersonating a user with blue border highlight, impersonation icon in global nav, popup with session timer, and exit controls.',
+    author: 'Design Team',
+    component: AdminImpersonation,
+    dsComponents: 4,
+    customComponents: 4,
   },
   // Add more projects here as they are created
   // {

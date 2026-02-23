@@ -13,6 +13,52 @@ You are helping designers create interactive prototypes using the **Radiant Desi
 
 ## Generation Workflow
 
+### Step 0: Pre-Flight Checklist (MANDATORY before writing any code)
+
+Before generating a single line of code, complete this checklist:
+
+**A. Inventory Radiant components**
+
+Open `component-inventory.md` and identify which Radiant components map to every UI element in the design. List them explicitly. For each UI element, answer: does a Radiant component cover this? If yes, it MUST be used.
+
+**B. Confirm zero raw HTML elements for covered patterns**
+
+| If you're about to write… | Use this Radiant component instead |
+|--------------------------|-----------------------------------|
+| `<button>` | `Button` from `../../components/Button` |
+| `<input type="text">` | `TextInput` or `SearchInput` |
+| `<table>` / `<tr>` / `<td>` | `Table` from `../../components/Table` |
+| `<select>` | `Select` or `Dropdown` from `../../components/Select` |
+| pill/tag/badge element | `Chip` from `../../components/Chip` |
+| user avatar circle | `Avatar` from `../../components/Avatar` |
+| floating tooltip | `Tooltip` from `../../components/Tooltip` |
+| floating panel | `Popover` from `../../components/Popover` |
+| notification banner | `Toast` or `Alert` from the relevant component |
+
+If any element is missing from the table above, check `component-inventory.md` before creating custom HTML.
+
+**C. Confirm all colors come from tokens**
+
+```typescript
+// ALLOWED — import and use tokens
+import { systemColors, referenceColors } from '../../tokens/colors';
+import { fontFamily } from '../../tokens/typography';
+
+// FORBIDDEN — never use these in prototype files:
+// '#2770EF', '#FFFFFF', '#1D232F', '#E22B3D', rgba(...), hsl(...)
+// '"Plain", -apple-system, ...'   (use fontFamily.primary instead)
+```
+
+**D. Confirm layout scaffolding**
+
+- Does the design require a full-page layout with header + sidebar? → Use `AppShell` (not a custom `<div>` layout)
+- Does the content need to fill the viewport? → Wrap in `AppShell` and pass content as children
+- Is responsive behavior required? → Apply responsive grid patterns from `layout-patterns.md`
+
+Only proceed to step 1 after confirming all four checklist items.
+
+---
+
 ### 1. Determine the input type
 
 | Input | Action |
@@ -98,7 +144,7 @@ Follow **`prototype-structure.md`** for file organization:
 
 ---
 
-## 9. Visual Verification Loop (MANDATORY for Figma-based prototypes)
+## Step 9: Visual Verification Loop (MANDATORY for Figma-based prototypes)
 
 After generating the prototype code, you MUST:
 
@@ -125,7 +171,74 @@ After generating the prototype code, you MUST:
 
 ---
 
-## 10. Figma Sub-Node Drill-Down (MANDATORY when design is too large)
+## Step 10: Compliance Check (MANDATORY after every prototype or edit)
+
+After completing the Visual Verification Loop, run these compliance checks on every `.tsx` file you created or modified:
+
+### 10a. Color token compliance
+
+Search for any hardcoded color values and replace them with tokens:
+
+```typescript
+// FAIL — these must not appear in prototype files:
+color: '#1D232F'           // → systemColors.light['content-primary']
+backgroundColor: '#FFFFFF' // → systemColors.light['background-base']
+stroke: '#E22B3D'          // → systemColors.light['content-failure']
+fill: '#2770EF'            // → systemColors.light['content-brand']
+// Any pattern: '#' followed by 3–8 hex characters (outside SVG path data)
+
+// FAIL — deprecated token imports:
+import { brandColors } from '../../tokens/colors/brand';
+```
+
+### 10b. Font family compliance
+
+```typescript
+// FAIL — hardcoded font strings:
+fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif'
+fontFamily: 'Arial, sans-serif'
+
+// PASS — use token:
+import { fontFamily } from '../../tokens/typography';
+fontFamily: fontFamily.primary
+```
+
+### 10c. Raw HTML element compliance
+
+Search for these raw elements that have Radiant equivalents:
+
+| Raw element in code | Should be |
+|---------------------|-----------|
+| `<button` (outside an icon/SVG context) | `<Button` from `../../components/Button` |
+| `<input` (text/search) | `<TextInput>` or `<SearchInput>` |
+| `<table` | `<Table>` from `../../components/Table` |
+
+**Exception:** Raw `<button>` is acceptable ONLY for icon-only triggers (e.g. the impersonation icon) where `Button` would apply unwanted text styling. Document the exception with a comment.
+
+### 10d. Spacing compliance
+
+```typescript
+// FAIL — magic pixel values not from the spacing scale:
+padding: '17px 12px'
+gap: 7
+
+// PASS — use tokens:
+import { spacing } from '../../tokens/spacing';
+padding: `${spacing.E}px ${spacing.D}px`  // 20px 16px
+gap: spacing.B                             // 8px
+```
+
+### 10e. Responsive layout check
+
+- Does the watchlist / metrics grid use `repeat(auto-fill, minmax(Xpx, 1fr))`? ✓
+- Is the data table wrapped in a `div` with `overflowX: 'auto'`? ✓
+- Are fixed pixel column counts (`gridTemplateColumns: 'repeat(4, 1fr)'`) avoided in content grids? ✓
+
+Declare done only after all five checks pass.
+
+---
+
+## Step 11. Figma Sub-Node Drill-Down (MANDATORY when design is too large)
 
 When `get_design_context` returns "design was too large," you MUST:
 
@@ -142,17 +255,19 @@ Every prototype MUST follow this structure:
 
 ```tsx
 import React, { useState } from 'react';
-// 1. Import components (see component-inventory.md for full list)
-import { Button, Modal, TextInput } from '../../components';
-// 2. Import tokens (see token-usage.md for all available tokens)
-import { brandColors } from '../../tokens/colors/brand';
+// 1. Import Radiant components (never use raw <button>, <input>, <table> — check component-inventory.md)
+import { Button, TextInput } from '../../components/Button';
+import { Table } from '../../components/Table';
+// 2. Import tokens — NEVER hard-code colors, fonts, or spacing
+import { systemColors, referenceColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
-// 3. Import mock data
-import { users } from '../../mocks';
+import { fontFamily } from '../../tokens/typography';
+// 3. Import mock data if needed
+// import { users } from '../../mocks';
 
 /**
  * PrototypeName
- * 
+ *
  * Brief description of what this prototype demonstrates.
  */
 export const PrototypeName: React.FC = () => {
@@ -172,13 +287,13 @@ export const PrototypeName: React.FC = () => {
   );
 };
 
-// 7. Styles object — always use tokens
+// 7. Styles object — ONLY use design tokens; never hard-code hex values or font strings
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     padding: `${spacing.F}px`,
     minHeight: '100vh',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
+    fontFamily: fontFamily.primary,
   },
 };
 

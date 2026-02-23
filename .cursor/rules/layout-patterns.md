@@ -25,43 +25,43 @@ Standard layouts for building prototypes. Use these patterns as starting points.
 └──────────────┴──────────────────────────────────────┘
 ```
 
+**NOTE: For any full-page prototype with header + sidebar, use `AppShell` — do NOT hand-roll the layout below.**
+
 ```tsx
-import { brandColors } from '../../tokens/colors/brand';
+// Preferred — use AppShell
+import { AppShell } from '../../components/AppShell';
+import { systemColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
+import { fontFamily } from '../../tokens/typography';
 
-const FullPageLayout: React.FC = () => {
-  return (
-    <div style={styles.layout}>
-      {/* Header */}
-      <header style={styles.header}>
-        <AppHeader />
-      </header>
-
-      {/* Body */}
-      <div style={styles.body}>
-        {/* Sidebar */}
-        <aside style={styles.sidebar}>
-          <Sidebar items={navItems} activeItem={active} />
-        </aside>
-
-        {/* Main Content */}
-        <main style={styles.main}>
-          <div style={styles.content}>
-            {/* Page content here */}
-          </div>
-        </main>
-      </div>
+const FullPageLayout: React.FC = () => (
+  <AppShell
+    headerProps={{ searchPlaceholder: 'Search', userName: 'User Name' }}
+    sidebarProps={{ tabs, activeTab, onTabChange, categories, selectedNav, onNavSelect }}
+    contentBackground={systemColors.light['background-sunken']}
+  >
+    {/* Main content rendered here */}
+    <div style={{ padding: `${spacing.F}px ${spacing.H}px`, fontFamily: fontFamily.primary }}>
+      {/* Page content */}
     </div>
-  );
-};
+  </AppShell>
+);
+```
+
+If you cannot use `AppShell` (e.g. embedding inside an existing shell), use the manual layout below — but replace all `brandColors` with `systemColors` / `referenceColors`:
+
+```tsx
+import { systemColors } from '../../tokens/colors';
+import { spacing } from '../../tokens/spacing';
+import { fontFamily } from '../../tokens/typography';
 
 const styles = {
   layout: {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    backgroundColor: brandColors.gray[10],
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
+    backgroundColor: systemColors.light['background-sunken'],
+    fontFamily: fontFamily.primary,
   },
   header: {
     flexShrink: 0,
@@ -75,15 +75,15 @@ const styles = {
   sidebar: {
     width: '240px',
     flexShrink: 0,
-    backgroundColor: brandColors.white,
-    borderRight: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    borderRight: `1px solid ${systemColors.light['border-divider']}`,
     overflowY: 'auto',
   },
   main: {
     flex: 1,
     overflowY: 'auto',
-    padding: `${spacing.F}px ${spacing.H}px`,  // 24px 32px
-    backgroundColor: brandColors.white,
+    padding: `${spacing.F}px ${spacing.H}px`,
+    backgroundColor: systemColors.light['background-base'],
   },
   content: {
     maxWidth: '1200px',
@@ -585,11 +585,96 @@ const styles = {
 | Tablet | 768px - 1024px | Collapsible sidebar |
 | Desktop | > 1024px | Full layout |
 
+### useBreakpoint Hook (recommended pattern)
+
 ```typescript
-// In responsive scenarios:
-const isMobile = window.innerWidth < 768;
-const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
-const isDesktop = window.innerWidth >= 1024;
+import { useState, useEffect } from 'react';
+
+type Breakpoint = 'mobile' | 'tablet' | 'desktop';
+
+function useBreakpoint(): Breakpoint {
+  const [bp, setBp] = useState<Breakpoint>(() => {
+    const w = window.innerWidth;
+    if (w < 768) return 'mobile';
+    if (w < 1024) return 'tablet';
+    return 'desktop';
+  });
+
+  useEffect(() => {
+    const handler = () => {
+      const w = window.innerWidth;
+      setBp(w < 768 ? 'mobile' : w < 1024 ? 'tablet' : 'desktop');
+    };
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  return bp;
+}
+
+// Usage
+const MyPage: React.FC = () => {
+  const breakpoint = useBreakpoint();
+  return (
+    <AppShell
+      hideSidebar={breakpoint === 'mobile'}
+      // ... other props
+    >
+      <div style={{ padding: breakpoint === 'mobile' ? spacing.D : spacing.H }}>
+        {/* content */}
+      </div>
+    </AppShell>
+  );
+};
+```
+
+### Responsive Grid Pattern (content cards / metric tiles)
+
+**Always use `auto-fill` + `minmax` — never hard-code column counts.**
+
+```typescript
+// GOOD — collapses automatically as viewport narrows
+gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))'
+
+// BAD — clips on smaller screens
+gridTemplateColumns: 'repeat(4, 1fr)'
+gridTemplateColumns: '48px 32px 1fr 180px 140px 100px 60px'
+```
+
+Full example:
+
+```tsx
+import { spacing } from '../../tokens/spacing';
+
+const gridStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+  gap: spacing.F,   // 24px
+};
+```
+
+### Scrollable Table Pattern
+
+Wrap every `<Table>` in an `overflowX: 'auto'` container so it scrolls horizontally on narrow screens rather than clipping:
+
+```tsx
+<div style={{ overflowX: 'auto' }}>
+  <Table columns={columns} data={data} rowKey="id" hoverable />
+</div>
+```
+
+### AppShell Responsive Collapse
+
+`AppShell` accepts a `hideSidebar` prop that collapses the left sidebar:
+
+```tsx
+<AppShell
+  hideSidebar={breakpoint === 'mobile'}
+  headerProps={...}
+  sidebarProps={...}
+>
+  {children}
+</AppShell>
 ```
 
 ---

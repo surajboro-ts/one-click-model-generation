@@ -248,24 +248,84 @@ const successBadge = {
 
 ## Anti-Patterns (NEVER DO)
 
+### 1. Hardcoded hex colors — ALWAYS forbidden
+
 ```typescript
-// BAD - Hard-coded values
+// BAD — any raw hex or rgba value
 {
   color: '#1D232F',
   backgroundColor: '#F6F8FA',
+  border: '1px solid #EAEDF2',
+  fill: '#2770EF',
+  stroke: '#E22B3D',
+  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
 }
 
-// BAD - Old token imports (deprecated)
+// GOOD — use systemColors or referenceColors
+import { systemColors, referenceColors } from '../../tokens/colors';
+{
+  color: systemColors.light['content-primary'],
+  backgroundColor: systemColors.light['background-sunken'],
+  border: `1px solid ${systemColors.light['border-divider']}`,
+  fill: systemColors.light['content-brand'],
+  stroke: systemColors.light['content-failure'],
+}
+```
+
+**No exceptions for "obvious" whites or blacks.** `#FFFFFF` → `systemColors.light['background-base']` or `referenceColors.white`. `#000000` → `referenceColors.black`.
+
+### 2. Deprecated token imports
+
+```typescript
+// BAD — deprecated, removed
 import { brandColors } from '../../tokens/colors/brand';
 {
   color: brandColors.gray[90],
   backgroundColor: brandColors.gray[10],
 }
 
-// GOOD - New token system
+// GOOD
 import { systemColors } from '../../tokens/colors';
 {
   color: systemColors.light['content-primary'],
   backgroundColor: systemColors.light['background-sunken'],
 }
 ```
+
+### 3. Hardcoded font family strings
+
+```typescript
+// BAD — never hardcode font stacks
+{
+  fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
+  fontFamily: 'Arial, sans-serif',
+}
+
+// GOOD — import the token
+import { fontFamily } from '../../tokens/typography';
+{
+  fontFamily: fontFamily.primary,   // full "Plain" stack
+  fontFamily: fontFamily.mono,      // monospace stack
+}
+```
+
+### 4. Magic spacing values not from the scale
+
+```typescript
+// BAD — magic pixel numbers
+{
+  padding: '17px 12px',
+  gap: 7,
+  marginTop: 44,
+}
+
+// GOOD — nearest spacing token
+import { spacing } from '../../tokens/spacing';
+{
+  padding: `${spacing.E}px ${spacing.D}px`,  // 20px 16px
+  gap: spacing.B,                             // 8px
+  marginTop: spacing.J,                       // 48px
+}
+```
+
+The spacing scale: A=4, B=8, C=12, D=16, E=20, F=24, G=28, H=32, I=40, J=48, K=56, L=64, M=80, N=96.
