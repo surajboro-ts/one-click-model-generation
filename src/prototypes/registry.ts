@@ -51,6 +51,7 @@ const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
 const ChartEditorAI = React.lazy(() => import('./ChartEditorAI'));
 const AdminImpersonation = React.lazy(() => import('./AdminImpersonation'));
+const ImpersonationV2 = React.lazy(() => import('./ImpersonationV2'));
 
 /**
  * All registered projects
@@ -113,6 +114,15 @@ export const projectRegistry: ProjectMeta[] = [
     component: AdminImpersonation,
     dsComponents: 4,
     customComponents: 4,
+  },
+  {
+    id: 'ImpersonationV2',
+    name: 'Impersonation V2',
+    description: 'Admin palette impersonation — blue viewport border, GlobalHeader icon, session timer popup, and Toast notification. Clean rewrite from Figma node 2935-65873.',
+    author: 'Design Team',
+    component: ImpersonationV2,
+    dsComponents: 11,
+    customComponents: 3,
   },
   // Add more projects here as they are created
   // {
