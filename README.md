@@ -1,21 +1,24 @@
 # Radiant Prototyping Kit
 
-Build interactive prototypes with AI assistance using ThoughtSpot's Radiant design system.
+AI-assisted interactive prototype builder using ThoughtSpot's Radiant design system.
 
 [![React](https://img.shields.io/badge/React-19.2-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.2-646CFF)](https://vitejs.dev/)
+[![Vercel](https://img.shields.io/badge/Deployed-Vercel-black)](https://vercel.com)
 
 ---
 
 ## What is This?
 
-The **Radiant Prototyping Kit** is a fork-ready repository for designers to create interactive prototypes that look and feel like ThoughtSpot's product. 
+The **Radiant Prototyping Kit** is a fork-ready repository for ThoughtSpot designers to build interactive prototypes that look and feel like the real product. It ships with 35+ Radiant UI components, design tokens, mock data, and Cursor AI rules — so you can describe a UI and get working code in seconds.
+
+**Live site:** [radiantplay.vercel.app](https://radiantplay.vercel.app) *(ThoughtSpot internal)*
 
 **How it works:**
 1. Fork this repository
-2. Open in Cursor IDE
-3. Describe your UI or paste a screenshot
+2. Open in Cursor IDE — AI rules load automatically
+3. Describe your UI or paste a Figma screenshot
 4. AI generates code using Radiant components
 5. Preview your interactive prototype in the browser
 
@@ -23,125 +26,108 @@ The **Radiant Prototyping Kit** is a fork-ready repository for designers to crea
 
 ## Quick Start
 
-### 1. Fork and Clone
+### New to this project? Read the full setup guide first:
+- [FORK-WORKFLOW.md](FORK-WORKFLOW.md) — fork-based setup for designers (recommended)
+- [SETUP-GUIDE.md](SETUP-GUIDE.md) — detailed step-by-step guide
+
+### Minimal setup
 
 ```bash
-# Fork this repo on GitHub, then:
+# Fork this repo on GitHub or Galaxy, then clone your fork:
 git clone https://github.com/YOUR-USERNAME/figmaradiant.git
 cd figmaradiant
 npm install
-```
-
-### 2. Start Development
-
-```bash
 npm run dev
 ```
 
-Open http://localhost:5173
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### 3. Open in Cursor
+### Create a prototype
 
-```bash
-cursor .
-```
-
-### 4. Create Your Prototype
-
-**Option A: Use the CLI**
 ```bash
 npm run new-prototype MyPrototype
 ```
 
-**Option B: Describe to AI**
-
-In Cursor, open a new file and describe your UI:
-
-> "Create a filter dialog with a search input, list of country checkboxes, and a 'Show selected' toggle at the bottom"
-
-The AI will generate the code using Radiant components.
+Then open `src/prototypes/MyPrototype/index.tsx` in Cursor and describe your UI in the Chat panel.
 
 ---
 
 ## Available Components
 
+35+ production-quality Radiant components, ready to use.
+
 | Category | Components |
 |----------|------------|
-| **Buttons** | Button (primary, secondary, tertiary) |
-| **Forms** | TextInput, SearchInput, Select, Checkbox, Radio, Toggle |
-| **Feedback** | Alert, Modal, Tooltip, Popover |
-| **Data** | Table, Chip |
-| **Navigation** | Tabs, Sidebar |
-| **Icons** | 46 icons |
+| **Buttons & Actions** | Button (primary, secondary, tertiary, icon) |
+| **Forms** | TextInput, TextArea, SearchInput, Select, Checkbox, Radio, Toggle, DatePicker, SegmentedControl |
+| **Data Display** | Table, Chip, Card, Accordion, ProgressBar, LoadingIndicator, Typography |
+| **Feedback** | Alert, Toast, Tooltip, Popover |
+| **Navigation** | Tabs, Sidebar, Pagination, Stepper, Link |
+| **Overlays** | Modal, WizardModal, ConfirmDialog, FilterDialog, FormModal |
+| **Layout** | AppShell, AppSidebar, GlobalHeader, Divider |
+| **Media** | Avatar, IconGallery |
+| **Icons** | `Icon` component with 46 built-in icons |
+
+Import from the shared library:
+
+```tsx
+import { Button, Modal, TextInput, Toggle, Table } from '../../components';
+import { Icon } from '../../components/icons';
+```
+
+---
+
+## Prototypes
+
+Seven full-page interactive prototypes included as reference and inspiration:
+
+| Prototype | Description |
+|-----------|-------------|
+| **Liveboard** | TSE Business Overview dashboard with KPIs, charts, and regional data |
+| **Command Palette** | Command-K interface with keyboard shortcuts and context-aware filtering |
+| **Spotter Memory** | Memory Sources object table with search, filtering, and pagination |
+| **Admin Groups** | Group creation wizard with bulk org assignment and role management |
+| **Chart Editor AI** | Chart editor with Spotter AI assistant for intelligent suggestions |
+| **Admin Impersonation** | Admin impersonation flow with blue border highlight and session timer |
+| **Impersonation V2** | Redesigned impersonation — GlobalHeader icon, session popup, Toast notification |
+
+Browse them at `http://localhost:5173/playground` or study the code in `src/prototypes/`.
 
 ---
 
 ## Project Structure
 
 ```
-src/
-├── components/       # Radiant component library
-├── prototypes/       # Your prototypes go here
-│   ├── _template/    # Starter template
-│   └── _examples/    # Reference implementations
-├── mocks/           # Sample data for prototypes
-└── tokens/          # Design tokens
+figmaradiant/
+├── src/
+│   ├── components/        # 35+ Radiant UI components
+│   │   ├── Button/
+│   │   ├── Modal/
+│   │   ├── Table/
+│   │   ├── AppSidebar/
+│   │   ├── GlobalHeader/
+│   │   └── icons/         # Icon component + 46 icons
+│   ├── prototypes/        # Your prototypes go here
+│   │   ├── Liveboard/
+│   │   ├── Cmdk/
+│   │   ├── AdminGroups/
+│   │   ├── SpotterMemory/
+│   │   ├── ChartEditorAI/
+│   │   ├── AdminImpersonation/
+│   │   └── ImpersonationV2/
+│   ├── pages/             # Radiant DS section pages
+│   ├── data/              # Component registry & roadmap data
+│   ├── tokens/            # Design tokens (colors, spacing, icons)
+│   ├── mocks/             # Sample data for prototypes
+│   ├── context/           # React context providers
+│   └── styles/            # Global CSS
+├── .cursor/
+│   └── rules/             # AI rules — auto-loaded by Cursor
+├── project.config.ts      # Fork-level project metadata
+├── FORK-WORKFLOW.md       # Designer onboarding guide
+├── SETUP-GUIDE.md         # Detailed setup instructions
+└── FORK-WORKFLOW.md       # Fork-based collaboration guide
 ```
-
----
-
-## Example Prototypes
-
-The kit includes three example prototypes:
-
-- **Filter Dialog** - Modal with search and multi-select
-- **Data Dashboard** - Metrics, tabs, and data table
-- **Settings Panel** - Sidebar navigation with forms
-
-Browse them in the app or study the code in `src/prototypes/_examples/`.
-
----
-
-## Mock Data
-
-Import realistic sample data for your prototypes:
-
-```tsx
-import { users, analytics, navigation, forms } from '../mocks';
-
-// User profiles
-users.profiles
-
-// KPI metrics
-analytics.metrics
-
-// Dropdown options
-forms.countries
-```
-
----
-
-## For Designers
-
-### Workflow
-
-1. **Describe** - Tell Cursor AI what you want to build
-2. **Generate** - AI creates code using Radiant components
-3. **Preview** - See your prototype live in the browser
-4. **Iterate** - Ask for changes and refinements
-
-### Tips
-
-- Paste screenshots from Figma for visual reference
-- Mention specific component names (Button, Modal, etc.)
-- Describe interactions ("opens when clicking...")
-- Reference example prototypes for patterns
-
-### Documentation
-
-- [Prototyping Guide](docs/prototyping-guide.md) - Detailed how-to
-- [Forking Guide](docs/collaboration/forking-guide.md) - Setup instructions
-- [Contributing](docs/collaboration/contributing-back.md) - Share your work
 
 ---
 
@@ -149,44 +135,79 @@ forms.countries
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm run new-prototype` | Create a new prototype |
+| `npm run dev` | Start development server at localhost:5173 |
+| `npm run build` | Build for production (skips type checking) |
+| `npm run build:strict` | Build with full TypeScript type checking |
+| `npm run typecheck` | Run TypeScript checks without building |
+| `npm run preview` | Preview the production build locally |
+| `npm run new-prototype Name` | Scaffold a new prototype folder |
 
 ---
 
-## Design System Docs
+## Repositories
 
-| Document | Description |
-|----------|-------------|
-| [Design Tokens](design-token-structure.md) | Token architecture |
-| [Component Patterns](docs/component-patterns.md) | React patterns |
-| [Content Guidelines](docs/content-guidelines-detailed.md) | UI text rules |
+This project is hosted on two remotes:
+
+| Remote | URL | Purpose |
+|--------|-----|---------|
+| `origin` | `github.com/faris-ts/figmaradiant` | Primary — Vercel deploys from here |
+| `galaxy` | `galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay` | Internal ThoughtSpot access |
+
+To push to both after making changes:
+
+```bash
+git push origin main
+git push galaxy main
+```
 
 ---
 
-## Contributing
+## For Designers
 
-Created something useful? Consider contributing back:
+### Recommended workflow
 
-1. Fork the repo
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+1. **Fork** the repo (Galaxy or GitHub) — see [FORK-WORKFLOW.md](FORK-WORKFLOW.md)
+2. **Clone** your fork and run `npm install && npm run dev`
+3. **Open** the `figmaradiant` folder in Cursor — AI rules load automatically
+4. **Create** a prototype: `npm run new-prototype MyPrototype`
+5. **Describe** your UI to Cursor AI in the Chat panel or with Cmd+K
+6. **Browse** existing prototypes at `/playground` for reference
+7. **Explore** the design system at `/radiant` (components, tokens, icons, roadmap)
 
-See [Contributing Guide](docs/collaboration/contributing-back.md) for details.
+### Tips for better AI output
+
+| Tip | Example prompt |
+|-----|---------------|
+| Name specific components | "Use a `Modal` with a `SearchInput` and `Checkbox` list" |
+| Describe layout | "Sidebar on the left, main content on the right with a header" |
+| Describe interactions | "Clicking a row opens a slide-in detail panel" |
+| Paste Figma screenshots | Drop an image in the chat and say "Recreate this using Radiant" |
+| Reference existing prototypes | "Similar layout to the AdminGroups wizard" |
+
+### Key pages in the app
+
+| Route | What it shows |
+|-------|--------------|
+| `/` | Home — links to DS and Playground |
+| `/radiant` | Radiant DS — components, tokens, icons, architecture |
+| `/radiant/roadmap` | Roadmap — what's in progress and planned |
+| `/playground` | Playground gallery — all your prototypes |
+| `/playground/:id` | Individual prototype in full-screen |
 
 ---
 
 ## Tech Stack
 
-- **React 19** - UI framework
-- **TypeScript** - Type safety
-- **Vite** - Build tool
-- **CSS Modules** - Scoped styling
-- **Design Tokens** - Consistent theming
+| Technology | Version | Role |
+|-----------|---------|------|
+| React | 19.2 | UI framework |
+| TypeScript | 5.9 | Type safety |
+| Vite | 7.2 | Build tool and dev server |
+| React Router | 7.13 | Client-side routing |
+| CSS Modules | — | Scoped component styling |
+| Vercel Analytics | 1.6 | Visitor analytics (production only) |
+| Vercel Speed Insights | 1.3 | Core Web Vitals tracking |
 
 ---
 
-**Built for ThoughtSpot designers to prototype faster.**
+**Built for ThoughtSpot designers to prototype faster.** — Faris
