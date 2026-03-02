@@ -1,0 +1,100 @@
+/* NestedCheckbox Component Styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.node {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label row */
+.nodeLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  padding-right: var(--spacing-3);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast, 120ms) ease;
+  min-height: 32px;
+  box-sizing: border-box;
+}
+
+.nodeLabel:hover {
+  background: var(--rd-sys-color-background-subtle);
+}
+
+/* Custom checkbox */
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-xs, 2px);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background-color var(--duration-fast, 120ms) ease,
+    border-color var(--duration-fast, 120ms) ease;
+}
+
+.checkbox:checked {
+  background: var(--rd-sys-color-background-brand);
+  border-color: var(--rd-sys-color-background-brand);
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  width: 6px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* Indeterminate state */
+.checkbox:indeterminate {
+  background: var(--rd-sys-color-background-brand);
+  border-color: var(--rd-sys-color-background-brand);
+}
+
+.checkbox:indeterminate::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+}
+
+.checkbox:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+}
+
+.labelText {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  line-height: var(--line-height-md);
+  user-select: none;
+}
+
+/* Children container */
+.children {
+  display: flex;
+  flex-direction: column;
+}

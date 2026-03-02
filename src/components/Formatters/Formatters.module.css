@@ -1,0 +1,54 @@
+/* Formatters Component Styles */
+
+.text {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.number {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.line {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.interval {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.background {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  background-color: var(--rd-sys-color-background-subtle);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.marker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+}
+
+.markerDot {
+  display: inline-block;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.markerLabel {
+  color: var(--rd-sys-color-content-primary);
+}

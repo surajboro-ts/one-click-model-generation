@@ -1,0 +1,185 @@
+/* ColorPicker Component Styles */
+
+.container {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── Preview swatch ─────────────────────────────────────────────────────── */
+
+.previewWrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--rd-sys-color-border-default);
+  flex-shrink: 0;
+}
+
+/* Checkerboard transparency indicator */
+.checkerboard {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+}
+
+.previewSwatch {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Hex selector ───────────────────────────────────────────────────────── */
+
+.hexRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.colorNativeInput {
+  width: 32px;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--rd-sys-color-background-raised);
+  cursor: pointer;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.colorNativeInput:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+}
+
+.hexTextInput {
+  height: 32px;
+  padding: 0 var(--spacing-2);
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  background: var(--rd-sys-color-background-raised);
+  outline: none;
+  width: 90px;
+  transition: border-color var(--duration-fast) ease;
+}
+
+.hexTextInput:hover {
+  border-color: var(--rd-sys-color-border-hover);
+}
+
+.hexTextInput:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+  border-color: var(--rd-sys-color-border-brand);
+}
+
+.hexTextInput::placeholder {
+  color: var(--rd-sys-color-content-tertiary);
+}
+
+/* ── RGB selector ───────────────────────────────────────────────────────── */
+
+.rgbRow {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--spacing-2);
+}
+
+.rgbField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  align-items: center;
+}
+
+.rgbLabel {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-secondary);
+  line-height: 1;
+}
+
+.rgbInput {
+  height: 32px;
+  width: 52px;
+  padding: 0 var(--spacing-1);
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  background: var(--rd-sys-color-background-raised);
+  outline: none;
+  text-align: center;
+  transition: border-color var(--duration-fast) ease;
+  -moz-appearance: textfield;
+}
+
+.rgbInput::-webkit-outer-spin-button,
+.rgbInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.rgbInput:hover {
+  border-color: var(--rd-sys-color-border-hover);
+}
+
+.rgbInput:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+  border-color: var(--rd-sys-color-border-brand);
+}
+
+/* ── Palette selector ───────────────────────────────────────────────────── */
+
+.paletteGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 20px);
+  gap: var(--spacing-1);
+}
+
+.swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+}
+
+.swatch:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-sm);
+}
+
+.swatch.swatchSelected {
+  outline: 2px solid var(--rd-sys-color-border-brand);
+  outline-offset: 2px;
+  transform: scale(1.05);
+}
+
+.swatch:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+}

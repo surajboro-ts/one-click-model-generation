@@ -154,6 +154,48 @@ const ROUTES = {
   typography: '/radiant/typography',
   // Component documentation - Utilities
   icongallery: '/radiant/components/icongallery',
+  // Layout Primitives
+  horizontal: '/radiant/components/horizontal',
+  vertical: '/radiant/components/vertical',
+  view: '/radiant/components/view',
+  grid: '/radiant/components/grid',
+  splitpane: '/radiant/components/splitpane',
+  // Display & Content
+  nodata: '/radiant/components/nodata',
+  explainercard: '/radiant/components/explainercard',
+  image: '/radiant/components/image',
+  illustration: '/radiant/components/illustration',
+  legend: '/radiant/components/legend',
+  safehtml: '/radiant/components/safehtml',
+  overlayloading: '/radiant/components/overlayloading',
+  // Form Extensions
+  formcontrol: '/radiant/components/formcontrol',
+  searchbar: '/radiant/components/searchbar',
+  numericfilterinput: '/radiant/components/numericfilterinput',
+  directioncontrol: '/radiant/components/directioncontrol',
+  colorpicker: '/radiant/components/colorpicker',
+  inputmentions: '/radiant/components/inputmentions',
+  filtermodal: '/radiant/components/filtermodal',
+  // Interaction
+  actionmenu: '/radiant/components/actionmenu',
+  verticalstepper: '/radiant/components/verticalstepper',
+  list: '/radiant/components/list',
+  slider: '/radiant/components/slider',
+  managedlist: '/radiant/components/managedlist',
+  trending: '/radiant/components/trending',
+  nestedcheckbox: '/radiant/components/nestedcheckbox',
+  managetags: '/radiant/components/managetags',
+  // Data Visualization
+  tree: '/radiant/components/tree',
+  treetable: '/radiant/components/treetable',
+  formatters: '/radiant/components/formatters',
+  // Advanced
+  tour: '/radiant/components/tour',
+  richtexteditor: '/radiant/components/richtexteditor',
+  dragdrop: '/radiant/components/dragdrop',
+  formbuilder: '/radiant/components/formbuilder',
+  dynamicform: '/radiant/components/dynamicform',
+  facetsortbar: '/radiant/components/facetsortbar',
   // Playground routes
   playground: '/playground',
 } as const;
@@ -240,6 +282,48 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'divider': '/radiant/components/divider',
       // Typography Component (redirects to typography page)
       'typography': '/radiant/typography',
+      // Layout Primitives
+      'horizontal': '/radiant/components/horizontal',
+      'vertical': '/radiant/components/vertical',
+      'view': '/radiant/components/view',
+      'grid': '/radiant/components/grid',
+      'splitpane': '/radiant/components/splitpane',
+      // Display & Content
+      'nodata': '/radiant/components/nodata',
+      'explainercard': '/radiant/components/explainercard',
+      'image': '/radiant/components/image',
+      'illustration': '/radiant/components/illustration',
+      'legend': '/radiant/components/legend',
+      'safehtml': '/radiant/components/safehtml',
+      'overlayloading': '/radiant/components/overlayloading',
+      // Form Extensions
+      'formcontrol': '/radiant/components/formcontrol',
+      'searchbar': '/radiant/components/searchbar',
+      'numericfilterinput': '/radiant/components/numericfilterinput',
+      'directioncontrol': '/radiant/components/directioncontrol',
+      'colorpicker': '/radiant/components/colorpicker',
+      'inputmentions': '/radiant/components/inputmentions',
+      'filtermodal': '/radiant/components/filtermodal',
+      // Interaction
+      'actionmenu': '/radiant/components/actionmenu',
+      'verticalstepper': '/radiant/components/verticalstepper',
+      'list': '/radiant/components/list',
+      'slider': '/radiant/components/slider',
+      'managedlist': '/radiant/components/managedlist',
+      'trending': '/radiant/components/trending',
+      'nestedcheckbox': '/radiant/components/nestedcheckbox',
+      'managetags': '/radiant/components/managetags',
+      // Data Visualization
+      'tree': '/radiant/components/tree',
+      'treetable': '/radiant/components/treetable',
+      'formatters': '/radiant/components/formatters',
+      // Advanced
+      'tour': '/radiant/components/tour',
+      'richtexteditor': '/radiant/components/richtexteditor',
+      'dragdrop': '/radiant/components/dragdrop',
+      'formbuilder': '/radiant/components/formbuilder',
+      'dynamicform': '/radiant/components/dynamicform',
+      'facetsortbar': '/radiant/components/facetsortbar',
     };
 
     const route = routeMap[id] || '/radiant';
@@ -302,6 +386,59 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'accordion', label: 'Accordion', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'divider', label: 'Divider', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'divider7', label: '', type: 'divider' },
+    // ── Layout Primitives ─────────────────────────────────────────────────
+    { id: 'layout-primitives-section', label: 'Layout Primitives', type: 'section' },
+    { id: 'horizontal', label: 'Horizontal', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'vertical', label: 'Vertical', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'view', label: 'View', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'grid', label: 'Grid / RdGrid', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'splitpane', label: 'SplitPane', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider8', label: '', type: 'divider' },
+    // ── Display & Content ─────────────────────────────────────────────────
+    { id: 'display-section', label: 'Display & Content', type: 'section' },
+    { id: 'nodata', label: 'NoData', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'explainercard', label: 'ExplainerCard', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'image', label: 'Image', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'illustration', label: 'Illustration', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'legend', label: 'Legend', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'safehtml', label: 'SafeHTML', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'overlayloading', label: 'OverlayLoading', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider9', label: '', type: 'divider' },
+    // ── Form Extensions ───────────────────────────────────────────────────
+    { id: 'form-extensions-section', label: 'Form Extensions', type: 'section' },
+    { id: 'formcontrol', label: 'FormControl', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'searchbar', label: 'SearchBar', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'numericfilterinput', label: 'NumericFilterInput', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'directioncontrol', label: 'DirectionControl', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'colorpicker', label: 'ColorPicker', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'inputmentions', label: 'InputMentions', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'filtermodal', label: 'FilterModal', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider10', label: '', type: 'divider' },
+    // ── Interaction ───────────────────────────────────────────────────────
+    { id: 'interaction-section', label: 'Interaction', type: 'section' },
+    { id: 'actionmenu', label: 'ActionMenu', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'verticalstepper', label: 'VerticalStepper', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'list', label: 'List', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'slider', label: 'Slider', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'managedlist', label: 'ManagedList', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'trending', label: 'Trending', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'nestedcheckbox', label: 'NestedCheckbox', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'managetags', label: 'ManageTags', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider11', label: '', type: 'divider' },
+    // ── Data Visualization ────────────────────────────────────────────────
+    { id: 'dataviz-section', label: 'Data Visualization', type: 'section' },
+    { id: 'tree', label: 'Tree', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'treetable', label: 'TreeTable', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'formatters', label: 'Formatters', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'divider12', label: '', type: 'divider' },
+    // ── Advanced ──────────────────────────────────────────────────────────
+    { id: 'advanced-section', label: 'Advanced', type: 'section' },
+    { id: 'tour', label: 'Tour', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'richtexteditor', label: 'RichTextEditor', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'dragdrop', label: 'DragDrop', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'formbuilder', label: 'FormBuilder', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'dynamicform', label: 'DynamicForm', icon: <ComponentIcon />, type: 'item', badge: 'New' },
+    { id: 'facetsortbar', label: 'FacetSortBar', icon: <ComponentIcon />, type: 'item', badge: 'New' },
   ];
 
   const SidebarHeader = () => (
@@ -458,7 +595,55 @@ const App: React.FC = () => {
       <Route path="/radiant/components/card" element={<RadiantLayout><ComponentDocPage componentId="card" /></RadiantLayout>} />
       <Route path="/radiant/components/accordion" element={<RadiantLayout><ComponentDocPage componentId="accordion" /></RadiantLayout>} />
       <Route path="/radiant/components/divider" element={<RadiantLayout><ComponentDocPage componentId="divider" /></RadiantLayout>} />
-      
+
+      {/* Component documentation pages - Layout Primitives */}
+      <Route path="/radiant/components/horizontal" element={<RadiantLayout><ComponentDocPage componentId="horizontal" /></RadiantLayout>} />
+      <Route path="/radiant/components/vertical" element={<RadiantLayout><ComponentDocPage componentId="vertical" /></RadiantLayout>} />
+      <Route path="/radiant/components/view" element={<RadiantLayout><ComponentDocPage componentId="view" /></RadiantLayout>} />
+      <Route path="/radiant/components/grid" element={<RadiantLayout><ComponentDocPage componentId="grid" /></RadiantLayout>} />
+      <Route path="/radiant/components/splitpane" element={<RadiantLayout><ComponentDocPage componentId="splitpane" /></RadiantLayout>} />
+
+      {/* Component documentation pages - Display & Content */}
+      <Route path="/radiant/components/nodata" element={<RadiantLayout><ComponentDocPage componentId="nodata" /></RadiantLayout>} />
+      <Route path="/radiant/components/explainercard" element={<RadiantLayout><ComponentDocPage componentId="explainercard" /></RadiantLayout>} />
+      <Route path="/radiant/components/image" element={<RadiantLayout><ComponentDocPage componentId="image" /></RadiantLayout>} />
+      <Route path="/radiant/components/illustration" element={<RadiantLayout><ComponentDocPage componentId="illustration" /></RadiantLayout>} />
+      <Route path="/radiant/components/legend" element={<RadiantLayout><ComponentDocPage componentId="legend" /></RadiantLayout>} />
+      <Route path="/radiant/components/safehtml" element={<RadiantLayout><ComponentDocPage componentId="safehtml" /></RadiantLayout>} />
+      <Route path="/radiant/components/overlayloading" element={<RadiantLayout><ComponentDocPage componentId="overlayloading" /></RadiantLayout>} />
+
+      {/* Component documentation pages - Form Extensions */}
+      <Route path="/radiant/components/formcontrol" element={<RadiantLayout><ComponentDocPage componentId="formcontrol" /></RadiantLayout>} />
+      <Route path="/radiant/components/searchbar" element={<RadiantLayout><ComponentDocPage componentId="searchbar" /></RadiantLayout>} />
+      <Route path="/radiant/components/numericfilterinput" element={<RadiantLayout><ComponentDocPage componentId="numericfilterinput" /></RadiantLayout>} />
+      <Route path="/radiant/components/directioncontrol" element={<RadiantLayout><ComponentDocPage componentId="directioncontrol" /></RadiantLayout>} />
+      <Route path="/radiant/components/colorpicker" element={<RadiantLayout><ComponentDocPage componentId="colorpicker" /></RadiantLayout>} />
+      <Route path="/radiant/components/inputmentions" element={<RadiantLayout><ComponentDocPage componentId="inputmentions" /></RadiantLayout>} />
+      <Route path="/radiant/components/filtermodal" element={<RadiantLayout><ComponentDocPage componentId="filtermodal" /></RadiantLayout>} />
+
+      {/* Component documentation pages - Interaction */}
+      <Route path="/radiant/components/actionmenu" element={<RadiantLayout><ComponentDocPage componentId="actionmenu" /></RadiantLayout>} />
+      <Route path="/radiant/components/verticalstepper" element={<RadiantLayout><ComponentDocPage componentId="verticalstepper" /></RadiantLayout>} />
+      <Route path="/radiant/components/list" element={<RadiantLayout><ComponentDocPage componentId="list" /></RadiantLayout>} />
+      <Route path="/radiant/components/slider" element={<RadiantLayout><ComponentDocPage componentId="slider" /></RadiantLayout>} />
+      <Route path="/radiant/components/managedlist" element={<RadiantLayout><ComponentDocPage componentId="managedlist" /></RadiantLayout>} />
+      <Route path="/radiant/components/trending" element={<RadiantLayout><ComponentDocPage componentId="trending" /></RadiantLayout>} />
+      <Route path="/radiant/components/nestedcheckbox" element={<RadiantLayout><ComponentDocPage componentId="nestedcheckbox" /></RadiantLayout>} />
+      <Route path="/radiant/components/managetags" element={<RadiantLayout><ComponentDocPage componentId="managetags" /></RadiantLayout>} />
+
+      {/* Component documentation pages - Data Visualization */}
+      <Route path="/radiant/components/tree" element={<RadiantLayout><ComponentDocPage componentId="tree" /></RadiantLayout>} />
+      <Route path="/radiant/components/treetable" element={<RadiantLayout><ComponentDocPage componentId="treetable" /></RadiantLayout>} />
+      <Route path="/radiant/components/formatters" element={<RadiantLayout><ComponentDocPage componentId="formatters" /></RadiantLayout>} />
+
+      {/* Component documentation pages - Advanced */}
+      <Route path="/radiant/components/tour" element={<RadiantLayout><ComponentDocPage componentId="tour" /></RadiantLayout>} />
+      <Route path="/radiant/components/richtexteditor" element={<RadiantLayout><ComponentDocPage componentId="richtexteditor" /></RadiantLayout>} />
+      <Route path="/radiant/components/dragdrop" element={<RadiantLayout><ComponentDocPage componentId="dragdrop" /></RadiantLayout>} />
+      <Route path="/radiant/components/formbuilder" element={<RadiantLayout><ComponentDocPage componentId="formbuilder" /></RadiantLayout>} />
+      <Route path="/radiant/components/dynamicform" element={<RadiantLayout><ComponentDocPage componentId="dynamicform" /></RadiantLayout>} />
+      <Route path="/radiant/components/facetsortbar" element={<RadiantLayout><ComponentDocPage componentId="facetsortbar" /></RadiantLayout>} />
+
       {/* Redirect typography component to typography page */}
       <Route path="/radiant/components/typography" element={<Navigate to="/radiant/typography" replace />} />
       

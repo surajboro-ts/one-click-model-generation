@@ -1,0 +1,119 @@
+/* VerticalStepper Component Styles */
+
+.stepper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Individual step row */
+.step {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-3);
+  min-height: 40px;
+}
+
+.step.clickable {
+  cursor: pointer;
+}
+
+/* Left column holds the circle + connector line */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 24px;
+}
+
+/* Circle indicator */
+.circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  transition: background-color var(--duration-fast, 120ms) ease,
+    border-color var(--duration-fast, 120ms) ease;
+}
+
+.circle.pending {
+  background: transparent;
+  border: 2px solid var(--rd-sys-color-border-default);
+  color: var(--rd-sys-color-content-subtle);
+}
+
+.circle.active {
+  background: var(--rd-sys-color-background-brand);
+  border: 2px solid var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-on-brand, #fff);
+}
+
+.circle.completed {
+  background: var(--rd-sys-color-background-brand);
+  border: 2px solid var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-on-brand, #fff);
+}
+
+.circle.error {
+  background: var(--rd-sys-color-background-negative);
+  border: 2px solid var(--rd-sys-color-background-negative);
+  color: #fff;
+}
+
+.circleIndex {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+}
+
+/* Connector line between steps */
+.connector {
+  width: 2px;
+  flex: 1;
+  margin: var(--spacing-1) 0;
+  min-height: 16px;
+  border-radius: 1px;
+  transition: background-color var(--duration-fast, 120ms) ease;
+}
+
+.connectorPending {
+  background: var(--rd-sys-color-border-default);
+}
+
+.connectorCompleted {
+  background: var(--rd-sys-color-background-brand);
+}
+
+/* Right column: text content */
+.rightColumn {
+  flex: 1;
+  padding-bottom: var(--spacing-4);
+  min-width: 0;
+}
+
+.stepTitle {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-primary);
+  line-height: var(--line-height-md);
+  padding-top: 2px; /* Visually align with circle center */
+}
+
+.stepDescription {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--rd-sys-color-content-secondary);
+  line-height: var(--line-height-md);
+  margin-top: var(--spacing-1);
+}
+
+.stepContent {
+  margin-top: var(--spacing-3);
+}

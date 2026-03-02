@@ -1,0 +1,103 @@
+/* Tour Component Styles */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9000;
+  pointer-events: none;
+}
+
+.spotlight {
+  position: absolute;
+  border-radius: var(--radius-md);
+  z-index: 9001;
+  pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
+}
+
+.popover {
+  position: absolute;
+  z-index: 9002;
+  width: 320px;
+  max-width: calc(100vw - 16px);
+  background-color: var(--rd-sys-color-background-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-5);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.16);
+  font-family: var(--font-family-primary);
+}
+
+.popoverTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--rd-sys-color-content-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.popoverContent {
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-4);
+}
+
+.popoverFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+}
+
+.stepCount {
+  font-size: var(--font-size-xs);
+  color: var(--rd-sys-color-content-tertiary);
+  flex-shrink: 0;
+}
+
+.footerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.skipButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-secondary);
+  padding: 0;
+  text-decoration: underline;
+  transition: color var(--duration-fast) var(--easing-standard);
+}
+
+.skipButton:hover {
+  color: var(--rd-sys-color-content-primary);
+}
+
+.nextButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-on-brand);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.nextButton:hover {
+  opacity: 0.9;
+}
+
+.nextButton:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+}

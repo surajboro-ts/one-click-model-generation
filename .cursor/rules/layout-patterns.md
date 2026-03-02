@@ -9,6 +9,67 @@ Standard layouts for building prototypes. Use these patterns as starting points.
 
 ---
 
+## Layout Primitives — ALWAYS Use These
+
+> **RULE:** Never write `display: flex` or `display: grid` inline. Always use `Horizontal`, `Vertical`, `View`, or `Grid`.
+
+### Horizontal (flex row)
+```tsx
+import { Horizontal } from '../../components';
+
+// Instead of: <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+<Horizontal gap={8} align="center">
+  <Icon name="plus" size="s" />
+  <span>Add item</span>
+</Horizontal>
+```
+
+### Vertical (flex column)
+```tsx
+import { Vertical } from '../../components';
+
+// Instead of: <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+<Vertical gap={16}>
+  <TextInput label="Name" />
+  <TextInput label="Email" />
+</Vertical>
+```
+
+### View (custom flex)
+```tsx
+import { View } from '../../components';
+
+<View flexDirection="row-reverse" gap={12} align="flex-end">
+  <Button variant="primary">Save</Button>
+  <Button variant="secondary">Cancel</Button>
+</View>
+```
+
+### Grid / RdGrid (CSS grid)
+```tsx
+import { Grid, RdGridItem } from '../../components';
+
+<Grid columns={3} gap={16}>
+  <RdGridItem colSpan={2}><MainContent /></RdGridItem>
+  <RdGridItem><Sidebar /></RdGridItem>
+</Grid>
+```
+
+### SplitPane (resizable two panels)
+```tsx
+import { SplitPane } from '../../components';
+
+<SplitPane
+  left={<Tree nodes={nodes} />}
+  right={<TableView data={selected} />}
+  defaultSize={30}
+  minSize={20}
+  maxSize={50}
+/>
+```
+
+---
+
 ## Full Page Layout (Admin/Settings)
 
 ```
@@ -48,7 +109,7 @@ const FullPageLayout: React.FC = () => (
 );
 ```
 
-If you cannot use `AppShell` (e.g. embedding inside an existing shell), use the manual layout below — but replace all `brandColors` with `systemColors` / `referenceColors`:
+If you cannot use `AppShell` (e.g. embedding inside an existing shell), use the manual layout below:
 
 ```tsx
 import { systemColors } from '../../tokens/colors';
@@ -154,7 +215,7 @@ const DashboardLayout: React.FC = () => {
 const styles = {
   container: {
     padding: `${spacing.F}px`,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     minHeight: '100vh',
   },
   metricsGrid: {
@@ -170,15 +231,15 @@ const styles = {
     marginBottom: `${spacing.F}px`,
   },
   chartCard: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '8px',
     padding: `${spacing.F}px`,
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['border-subtle']}`,
   },
   tableSection: {
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '8px',
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['border-subtle']}`,
     overflow: 'hidden',
   },
 };
@@ -249,36 +310,36 @@ const styles = {
   container: {
     display: 'flex',
     minHeight: '100vh',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   },
   sidebar: {
     width: '200px',
-    backgroundColor: brandColors.white,
-    borderRight: `1px solid ${brandColors.gray[20]}`,
+    backgroundColor: systemColors.light['background-base'],
+    borderRight: `1px solid ${systemColors.light['border-subtle']}`,
     padding: `${spacing.D}px 0`,
   },
   sectionItem: {
     padding: `${spacing.B}px ${spacing.D}px`,
     cursor: 'pointer',
     fontSize: '14px',
-    color: brandColors.gray[70],
+    color: systemColors.light['content-secondary'],
     borderLeft: '3px solid transparent',
   },
   sectionItemActive: {
-    color: brandColors.blue[60],
-    backgroundColor: `${brandColors.blue[60]}08`,
-    borderLeftColor: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
+    backgroundColor: `${systemColors.light['content-brand']}08`,
+    borderLeftColor: systemColors.light['content-brand'],
     fontWeight: 500,
   },
   formContainer: {
     flex: 1,
     padding: `${spacing.F}px`,
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
   },
   sectionTitle: {
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     marginBottom: `${spacing.F}px`,
   },
   formFields: {
@@ -293,7 +354,7 @@ const styles = {
     gap: `${spacing.D}px`,
     marginTop: `${spacing.H}px`,  // 32px
     paddingTop: `${spacing.D}px`,
-    borderTop: `1px solid ${brandColors.gray[20]}`,
+    borderTop: `1px solid ${systemColors.light['border-subtle']}`,
   },
 };
 ```
@@ -381,7 +442,7 @@ const styles = {
   modal: {
     width: '600px',
     maxHeight: '90vh',
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
     borderRadius: '6px',
     boxShadow: '0px 24px 32px rgba(25, 35, 49, 0.16)',
     display: 'flex',
@@ -390,17 +451,17 @@ const styles = {
   },
   header: {
     padding: `${spacing.E}px ${spacing.F}px`,  // 20px 24px
-    borderBottom: `1px solid ${brandColors.gray[20]}`,
+    borderBottom: `1px solid ${systemColors.light['border-subtle']}`,
   },
   contextLabel: {
     fontSize: '14px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     marginBottom: `${spacing.A}px`,
   },
   stepTitle: {
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
   },
   content: {
@@ -418,22 +479,22 @@ const styles = {
     flex: 1,
     height: '4px',
     borderRadius: '2px',
-    backgroundColor: brandColors.gray[20],
+    backgroundColor: systemColors.light['border-subtle'],
   },
   progressActive: {
-    backgroundColor: brandColors.blue[60],
+    backgroundColor: systemColors.light['content-brand'],
   },
   footer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: `${spacing.E}px ${spacing.F}px`,  // 20px 24px
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   },
   cancelButton: {
     background: 'none',
     border: 'none',
-    color: brandColors.blue[60],
+    color: systemColors.light['content-brand'],
     fontSize: '14px',
     cursor: 'pointer',
     padding: `6px ${spacing.A}px`,
@@ -480,7 +541,7 @@ const DataTablePageLayout: React.FC = () => {
           <Icon name="chevron-right" size="xs" />
           <span>Section</span>
           <Icon name="chevron-right" size="xs" />
-          <span style={{ color: brandColors.gray[90] }}>Page</span>
+          <span style={{ color: systemColors.light['content-primary'] }}>Page</span>
         </div>
 
         <h1 style={styles.title}>Page Title</h1>
@@ -529,7 +590,7 @@ const DataTablePageLayout: React.FC = () => {
 const styles = {
   container: {
     padding: `${spacing.F}px ${spacing.H}px`,
-    backgroundColor: brandColors.white,
+    backgroundColor: systemColors.light['background-base'],
   },
   pageHeader: {
     marginBottom: `${spacing.D}px`,
@@ -539,13 +600,13 @@ const styles = {
     alignItems: 'center',
     gap: `${spacing.B}px`,
     fontSize: '13px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     marginBottom: `${spacing.B}px`,
   },
   title: {
     fontSize: '24px',
     fontWeight: 600,
-    color: brandColors.gray[90],
+    color: systemColors.light['content-primary'],
     margin: 0,
     marginBottom: `${spacing.D}px`,
   },
@@ -563,7 +624,7 @@ const styles = {
     gap: `${spacing.C}px`,
   },
   tableContainer: {
-    border: `1px solid ${brandColors.gray[20]}`,
+    border: `1px solid ${systemColors.light['border-subtle']}`,
     borderRadius: '8px',
     overflow: 'hidden',
   },
@@ -702,4 +763,20 @@ const Z_INDEX = {
   modal: 1000,
   toast: 1100,
 };
+```
+
+---
+
+## Card Grid Layout (using Grid)
+
+```tsx
+import { Grid, RdGridItem } from '../../components';
+
+<Grid columns="repeat(auto-fill, minmax(220px, 1fr))" gap={16}>
+  {items.map(item => (
+    <RdGridItem key={item.id}>
+      <Card>{item.content}</Card>
+    </RdGridItem>
+  ))}
+</Grid>
 ```

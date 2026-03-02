@@ -631,3 +631,151 @@ Persistent sidebar for section-level navigation within a surface.
 | Explainer card (hover trigger) | 500ms | For text string and disabled element triggers |
 | Toast auto-dismiss | 5 seconds | From appearance |
 | Banner | Persistent | Does not auto-dismiss |
+
+---
+
+## ActionMenu Pattern
+
+### Standard 3-dot overflow menu
+```tsx
+import { ActionMenu, Button, Icon } from '../../components';
+
+<ActionMenu
+  trigger={<Button variant="tertiary" icon="more" />}
+  placement="bottom-end"
+>
+  <ActionMenu.Item
+    label="Edit"
+    icon={<Icon name="pencil" size="s" />}
+    onClick={handleEdit}
+  />
+  <ActionMenu.Item label="Duplicate" onClick={handleDuplicate} />
+  <ActionMenu.Item label="Share" onClick={handleShare} />
+  <ActionMenu.Group label="Danger zone">
+    <ActionMenu.Item
+      label="Delete"
+      icon={<Icon name="trash-can" size="s" />}
+      destructive
+      onClick={handleDelete}
+    />
+  </ActionMenu.Group>
+</ActionMenu>
+```
+
+**Rules:**
+- Destructive actions (Delete, Remove) always go in a group at the bottom
+- Keyboard shortcut display: use `shortcut` prop e.g. `shortcut="⌘D"` for delete
+- Max 8 items without grouping; use groups for 8+
+
+---
+
+## DragDrop Pattern
+
+### Sortable list using List component
+```tsx
+import { List } from '../../components';
+
+const [items, setItems] = useState([
+  { id: '1', label: 'First item' },
+  { id: '2', label: 'Second item' },
+]);
+
+<List
+  items={items}
+  draggable
+  onReorder={setItems}
+  renderItem={(item) => (
+    <div style={{ padding: '8px 12px' }}>{item.label}</div>
+  )}
+  emptyState={<NoData title="No items" />}
+/>
+```
+
+### Using DragDrop hooks for custom layouts
+```tsx
+import { DragDropProvider, useDraggable, useDroppable } from '../../components';
+
+<DragDropProvider onDragEnd={handleDragEnd}>
+  <DraggableItem id="item-1" />
+  <DroppableZone id="zone-1" />
+</DragDropProvider>
+```
+
+---
+
+## Tree Pattern
+
+### Basic expandable tree
+```tsx
+import { Tree } from '../../components';
+
+const nodes = [
+  {
+    id: 'root',
+    label: 'Root folder',
+    children: [
+      { id: 'child-1', label: 'File 1.txt' },
+      { id: 'child-2', label: 'File 2.txt' },
+    ],
+  },
+];
+
+<Tree
+  nodes={nodes}
+  selectedIds={[selectedId]}
+  onSelect={setSelectedId}
+  onExpand={(id) => console.log('expanded', id)}
+/>
+```
+
+### Checkable tree (multi-select)
+```tsx
+<Tree
+  nodes={nodes}
+  checkable
+  selectedIds={selectedIds}
+  onSelect={(id) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  }}
+/>
+```
+
+---
+
+## Tour Pattern
+
+### Guided onboarding walkthrough
+```tsx
+import { Tour } from '../../components';
+
+const steps = [
+  {
+    target: '#search-bar',
+    title: 'Search anything',
+    content: 'Type a question in natural language to explore your data.',
+    placement: 'bottom' as const,
+  },
+  {
+    target: '#data-panel',
+    title: 'Your data sources',
+    content: 'Connect your data here. We support 50+ sources.',
+    placement: 'right' as const,
+  },
+];
+
+const [tourRunning, setTourRunning] = useState(false);
+
+<Tour
+  steps={steps}
+  isRunning={tourRunning}
+  onFinish={() => setTourRunning(false)}
+  onSkip={() => setTourRunning(false)}
+/>
+
+// Trigger:
+<Button variant="tertiary" onClick={() => setTourRunning(true)}>
+  Take a tour
+</Button>
+```

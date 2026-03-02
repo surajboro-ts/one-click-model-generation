@@ -1,0 +1,187 @@
+/* FormBuilder Component Styles */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  font-family: var(--font-family-primary);
+}
+
+/* ─── Field wrapper ─────────────────────────────────────────────────────── */
+
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.fieldLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.required {
+  color: var(--rd-sys-color-content-negative);
+  font-size: var(--font-size-sm);
+}
+
+/* ─── Text inputs ───────────────────────────────────────────────────────── */
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  background-color: var(--rd-sys-color-background-surface);
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color var(--duration-fast) var(--easing-standard);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: var(--rd-sys-color-border-focus);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--rd-sys-color-content-placeholder);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.inputError {
+  border-color: var(--rd-sys-color-border-negative);
+}
+
+.inputError:focus {
+  border-color: var(--rd-sys-color-border-negative);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
+}
+
+/* ─── Options (radio/checkbox) ──────────────────────────────────────────── */
+
+.optionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  cursor: pointer;
+}
+
+.optionInput {
+  accent-color: var(--rd-sys-color-background-brand);
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ─── Toggle ────────────────────────────────────────────────────────────── */
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggleInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggleTrack {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 20px;
+  background-color: var(--rd-sys-color-background-muted);
+  border-radius: var(--radius-2xl);
+  transition: background-color var(--duration-fast) var(--easing-standard);
+  flex-shrink: 0;
+}
+
+.toggleTrackOn {
+  background-color: var(--rd-sys-color-background-brand);
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--rd-sys-color-content-on-brand);
+  border-radius: 50%;
+  transition: transform var(--duration-fast) var(--easing-standard);
+}
+
+/* ─── Error text ────────────────────────────────────────────────────────── */
+
+.errorText {
+  font-size: var(--font-size-xs);
+  color: var(--rd-sys-color-content-negative);
+}
+
+/* ─── Submit button ─────────────────────────────────────────────────────── */
+
+.submitRow {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--spacing-2);
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2) var(--spacing-5);
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-on-brand);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.submitButton:hover {
+  opacity: 0.9;
+}
+
+.submitButton:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+}

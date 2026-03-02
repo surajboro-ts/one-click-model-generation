@@ -1,0 +1,75 @@
+/* DirectionControl Component Styles */
+
+.container {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.label {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-primary);
+  line-height: var(--line-height-md);
+}
+
+.group {
+  display: inline-flex;
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-1);
+  height: 32px;
+  padding: 0 var(--spacing-3);
+  border: none;
+  border-left: 1px solid var(--rd-sys-color-border-default);
+  background: var(--rd-sys-color-background-subtle);
+  color: var(--rd-sys-color-content-primary);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+  outline: none;
+  white-space: nowrap;
+}
+
+/* First button has no left border (group border provides it) */
+.button.first {
+  border-left: none;
+}
+
+/* Selected state */
+.button.selected {
+  background: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-alternate);
+}
+
+.button:not(.selected):hover {
+  background: var(--rd-sys-color-background-inset);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: -2px;
+  position: relative;
+  z-index: 1;
+}
+
+.btnLabel {
+  line-height: 1;
+}

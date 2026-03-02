@@ -1,0 +1,119 @@
+/* Trending Component Styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* Section */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.sectionTitle {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--rd-sys-color-content-primary);
+  line-height: var(--line-height-md);
+}
+
+/* Item list */
+.itemList {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Item row */
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  min-height: 36px;
+  transition: background-color var(--duration-fast, 120ms) ease;
+}
+
+.item.clickable {
+  cursor: pointer;
+}
+
+.item.clickable:hover {
+  background: var(--rd-sys-color-background-subtle);
+}
+
+.item.clickable:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 1px;
+}
+
+/* Prefix: icon or number */
+.itemPrefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.itemIcon {
+  display: flex;
+  align-items: center;
+  color: var(--rd-sys-color-content-secondary);
+}
+
+.itemIndex {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-subtle);
+  min-width: 16px;
+  text-align: right;
+}
+
+/* Label */
+.itemLabel {
+  flex: 1;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Count badge */
+.countBadge {
+  flex-shrink: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-subtle);
+  background: var(--rd-sys-color-background-subtle);
+  padding: 1px var(--spacing-2);
+  border-radius: var(--radius-full);
+  line-height: 18px;
+}
+
+/* Trend icons */
+.trendIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.trendUp {
+  color: var(--rd-sys-color-content-positive, #16a34a);
+}
+
+.trendDown {
+  color: var(--rd-sys-color-content-negative);
+}
+
+.trendNeutral {
+  color: var(--rd-sys-color-content-subtle);
+}

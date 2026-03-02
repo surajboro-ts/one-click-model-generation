@@ -1,6 +1,7 @@
 ---
 description: Master orchestration guide for AI — determines which rule files to consult and in what order
 globs: ["src/**/*.tsx", "src/**/*.ts", "src/**/*.css"]
+alwaysApply: true
 ---
 
 # Radiant Rules Orchestration
@@ -18,8 +19,10 @@ When a designer asks you to create or modify a prototype (files in `src/prototyp
 | 1 | `prototype-generation.md` | **Always** — core workflow, code structure, and import patterns |
 | 2 | `component-inventory.md` | **Always** — find the right component via decision tree |
 | 3 | `widget-patterns.md` | When building alerts, toasts, tables, menus, tooltips, empty states, delete confirmations, or any multi-component interaction pattern |
+| 3b | `interaction-patterns.md` | When building loading states, error handling, empty states, disabled states, or transitions |
 | 4 | `layout-patterns.md` | When building a full page — pick a layout template (dashboard, admin, form, table page, wizard) |
-| 5 | `figma-component-mapping.md` | When the input is a Figma screenshot or Figma layer names |
+| 5a | `figma-mcp-workflow.md` | When the input is a Figma URL — MCP tool-call sequence and adaptation |
+| 5b | `figma-component-mapping.md` | When the input is a Figma screenshot or Figma layer names |
 | 6 | `modal-patterns.md` | When building modals or dialogs — size selection (M1-M4), type (simple/wizard/subnav/splash), footer button placement |
 | 7 | `token-usage.md` | **Always** — styling reference, never hard-code values |
 | 8 | `content-guidelines.md` | **Always** — all UI text must follow ThoughtSpot content rules |
@@ -32,10 +35,14 @@ When a designer asks you to create or modify a prototype (files in `src/prototyp
 What is the input?
 ├── "Create a new prototype" (via chat or screenshot)
 │   → Create folder in src/prototypes/, auto-register in registry.ts, then follow prototype-generation.md
-├── Figma screenshot or URL
-│   → Start with figma-component-mapping.md to map layers/colors/icons, then prototype-generation.md
+├── Figma URL (figma.com/design/...)
+│   → Start with figma-mcp-workflow.md for the MCP tool-call sequence
+│   → Use figma-component-mapping.md to map Figma values to Radiant tokens
+│   → Then prototype-generation.md for the build workflow
 │   → MUST drill into Figma sub-nodes when design is too large (see prototype-generation.md §10)
 │   → MUST visually verify output against Figma before declaring done (see prototype-generation.md §9)
+├── Figma screenshot (pasted image, no URL)
+│   → Start with figma-component-mapping.md to map layers/colors/icons, then prototype-generation.md
 ├── Text description of a UI
 │   → Start with prototype-generation.md + component-inventory.md
 ├── "Build a dashboard / admin panel / settings page"
@@ -75,10 +82,11 @@ For any user-facing text (buttons, titles, errors, descriptions):
 ## Key Rules (Always Apply)
 
 1. **Never hard-code colors, spacing, or typography** — use design tokens (see `token-usage.md`)
-2. **Always prefer existing components** — check `component-inventory.md` before creating custom elements
+2. **Always prefer existing components** — check `component-inventory.md` before creating custom elements. The library now has **72 components** (was 37).
 3. **Follow ThoughtSpot content rules** — sentence case, imperative verbs, no periods in buttons (see `content-guidelines.md`)
 4. **Use mock data** — import from `../../mocks` for realistic content
 5. **Use the component decision tree** in `component-inventory.md` to pick the right component
 6. **Follow widget interaction rules** in `widget-patterns.md` for correct behavior (alert types, menu ordering, tooltip timing, empty states)
 7. **Reuse existing components** — Always search `component-inventory.md` first. Only create a new component if no existing Radiant component can serve the purpose. If a close match exists, prefer using it with props/styling over creating something new.
 8. **Local components only** — When a new component IS needed during prototype generation, create it inside the prototype's own folder (`src/prototypes/MyPrototype/components/`), NOT in the shared `src/components/` directory. Follow `design-system.md` for structure even for local components (forwardRef, TypeScript types, design tokens).
+9. **Use layout primitives** — Always use `Horizontal`/`Vertical`/`View` instead of inline `display: flex` styles. Use `Grid`/`RdGrid` instead of inline `display: grid` styles. See `layout-patterns.md` for the Layout Primitives section.

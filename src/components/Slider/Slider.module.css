@@ -1,0 +1,135 @@
+/* Slider Component Styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  width: 100%;
+}
+
+.container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Label row */
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.valueDisplay {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-primary);
+}
+
+/* Track wrapper */
+.trackWrapper {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+/* Range input — cross-browser custom styling */
+.input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--rd-sys-color-background-brand) 0%,
+    var(--rd-sys-color-background-brand) var(--fill-percent, 50%),
+    var(--rd-sys-color-border-default) var(--fill-percent, 50%),
+    var(--rd-sys-color-border-default) 100%
+  );
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Webkit thumb */
+.input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--rd-sys-color-background-brand);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: transform var(--duration-fast, 120ms) ease,
+    box-shadow var(--duration-fast, 120ms) ease;
+}
+
+.input::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Firefox thumb */
+.input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--rd-sys-color-background-brand);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  border: none;
+  transition: transform var(--duration-fast, 120ms) ease;
+}
+
+.input::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Marks */
+.marks {
+  position: relative;
+  width: 100%;
+  height: 20px;
+}
+
+.markItem {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.markDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--rd-sys-color-border-default);
+}
+
+.markLabel {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xs);
+  color: var(--rd-sys-color-content-subtle);
+  white-space: nowrap;
+}

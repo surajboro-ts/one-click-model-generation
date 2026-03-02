@@ -41,6 +41,33 @@ When recreating a Figma design, use this guide to map Figma elements to Radiant 
 | `Pagination` | `<Pagination>` | |
 | `Menu`, `Dropdown menu` | `<Menu>` | |
 | `Popover`, `Floating panel` | `<Popover>` | |
+| `Empty state`, `No results`, `Zero state` | `NoData` | |
+| `Skeleton loader`, `Empty content`, `No data illustration` | `Illustration` | Use with NoData |
+| `Split view`, `Dual panel`, `Side-by-side` | `SplitPane` | |
+| `Context menu`, `Right-click menu`, `More actions`, `Overflow menu` | `ActionMenu` | Compound: ActionMenu.Item, ActionMenu.Group |
+| `Sortable list`, `Drag list`, `Reorder list` | `List` with `draggable={true}` | |
+| `Tag input`, `Multi-tag`, `Tag manager` | `ManageTags` | |
+| `Range slider`, `Value slider` | `Slider` | |
+| `Card grid`, `Masonry grid`, `4-column grid` | `Grid` or `RdGrid` + `RdGridItem` | |
+| `Horizontal group`, `Row layout`, `Flex row` | `Horizontal` | PREFERRED over inline flex |
+| `Vertical stack`, `Column layout`, `Flex column` | `Vertical` | PREFERRED over inline flex |
+| `Stepper (vertical)`, `Progress steps (side)`, `Setup wizard` | `VerticalStepper` | |
+| `Legend`, `Color key`, `Chart legend` | `Legend` | |
+| `Trending`, `Popular searches`, `Hot topics` | `Trending` | |
+| `Tree`, `File tree`, `Hierarchy list` | `Tree` | |
+| `Tree table`, `Hierarchical table` | `TreeTable` | |
+| `Color picker`, `Color swatch` | `ColorPicker` | |
+| `Mention input`, `@mention` | `InputMentions` | |
+| `Nested checkboxes`, `Checkbox tree` | `NestedCheckbox` | |
+| `Filter bar`, `Facet bar`, `Category filters` | `FacetSortBar` | |
+| `Rich text`, `WYSIWYG editor`, `Text editor` | `RichTextEditor` | |
+| `Guided tour`, `Walkthrough`, `Onboarding steps` | `Tour` | |
+| `Form builder`, `Dynamic form` | `FormBuilder` | Or `DynamicForm` for validation |
+| `Loading overlay`, `Blocking loader` | `OverlayLoading` | Parent must be position: relative |
+| `Search bar` (full-featured with clear+enter) | `SearchBar` | Distinct from SearchInput (simpler) |
+| `Explain card`, `Help card`, `Info card` | `ExplainerCard` | |
+| `Image with fallback` | `Image` | Handles loading/error states |
+| `Illustration`, `Empty state art` | `Illustration` | ids: no-data, error, success, welcome, etc. |
 
 ---
 
@@ -132,35 +159,35 @@ When recreating a Figma design, use this guide to map Figma elements to Radiant 
 
 | Figma Color | Radiant Token |
 |-------------|---------------|
-| #1D232F | `brandColors.gray[90]` (default text) |
-| #777E8B | `brandColors.gray[60]` (secondary text) |
-| #A5ACB9 | `brandColors.gray[50]` (disabled/placeholder) |
-| #2770EF | `brandColors.blue[60]` (link/primary) |
+| #1D232F | `systemColors.light['content-primary']` (default text) |
+| #777E8B | `systemColors.light['content-secondary']` (secondary text) |
+| #A5ACB9 | `systemColors.light['content-tertiary']` (disabled/placeholder) |
+| #2770EF | `systemColors.light['content-brand']` (link/primary) |
 
 ### Background Colors
 
 | Figma Color | Radiant Token |
 |-------------|---------------|
-| #FFFFFF | `brandColors.white` (surface) |
-| #F6F8FA | `brandColors.gray[10]` (page background) |
-| #EAEDF2 | `brandColors.gray[20]` (subtle background) |
+| #FFFFFF | `systemColors.light['background-base']` (surface) |
+| #F6F8FA | `systemColors.light['background-sunken']` (page background) |
+| #EAEDF2 | `systemColors.light['background-muted']` (subtle background) |
 
 ### Border Colors
 
 | Figma Color | Radiant Token |
 |-------------|---------------|
-| #EAEDF2 | `brandColors.gray[20]` (default border) |
-| #C0C6CF | `brandColors.gray[40]` (input border) |
-| #2770EF | `brandColors.blue[60]` (focus/active border) |
+| #EAEDF2 | `systemColors.light['border-subtle']` (default border) |
+| #C0C6CF | `systemColors.light['border-default']` (input border) |
+| #2770EF | `systemColors.light['border-brand']` (focus/active border) |
 
 ### Status Colors
 
 | Figma Color | Radiant Token |
 |-------------|---------------|
-| #06BF7F (green) | `brandColors.green[60]` (success) |
-| #E22B3D (red) | `brandColors.red[60]` (error) |
-| #FCC838 (yellow) | `brandColors.yellow[60]` (warning) |
-| #2770EF (blue) | `brandColors.blue[60]` (info) |
+| #06BF7F (green) | `systemColors.light['content-success']` (success) |
+| #E22B3D (red) | `systemColors.light['content-failure']` (error) |
+| #FCC838 (yellow) | `systemColors.light['content-warning']` (warning) |
+| #2770EF (blue) | `systemColors.light['content-brand']` (info) |
 
 ---
 
@@ -327,4 +354,50 @@ When recreating a Figma design, use this guide to map Figma elements to Radiant 
 />
 {active === 'tab1' && <FirstTabContent />}
 {active === 'tab2' && <SecondTabContent />}
+```
+
+### When you see a flex row / horizontal group
+```tsx
+// Figma: Auto Layout → Horizontal
+// OLD (bad): <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
+// NEW (good): <Horizontal gap={8} align="center">
+//               {children}
+//             </Horizontal>
+```
+
+### When you see an empty state / no results screen
+```tsx
+// Figma: Empty state with illustration, title, description, CTA
+<NoData
+  illustration={<Illustration id="no-results" size="md" />}
+  title="No results found"
+  description="Try a different search term"
+  action={<Button variant="secondary" onClick={clearSearch}>Clear search</Button>}
+/>
+```
+
+### When you see a context/overflow menu (3-dot button)
+```tsx
+// Figma: Icon button + dropdown menu
+<ActionMenu
+  trigger={<Button variant="tertiary" icon="more" />}
+  placement="bottom-end"
+>
+  <ActionMenu.Item label="Edit" icon={<Icon name="pencil" size="s" />} onClick={handleEdit} />
+  <ActionMenu.Item label="Duplicate" onClick={handleDuplicate} />
+  <ActionMenu.Group label="Danger zone">
+    <ActionMenu.Item label="Delete" destructive onClick={handleDelete} />
+  </ActionMenu.Group>
+</ActionMenu>
+```
+
+### When you see a sortable / draggable list
+```tsx
+// Figma: List with drag handles
+<List
+  items={items}
+  draggable
+  onReorder={setItems}
+  renderItem={(item) => <div>{item.label}</div>}
+/>
 ```

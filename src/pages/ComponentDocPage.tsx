@@ -33,6 +33,40 @@ import { SegmentedControl } from '../components/SegmentedControl';
 import { GlobalHeader } from '../components/GlobalHeader';
 import { AppSidebar } from '../components/AppSidebar';
 import { AppShell } from '../components/AppShell';
+// Phase 1-4 new components
+import { Horizontal, Vertical, View } from '../components/Layout';
+import { Grid, RdGridItem } from '../components/Grid';
+import { SplitPane } from '../components/SplitPane';
+import { NoData } from '../components/NoData';
+import { ExplainerCard } from '../components/ExplainerCard';
+import { Image } from '../components/Image';
+import { Illustration } from '../components/Illustration';
+import { Legend } from '../components/Legend';
+import { SafeHTML } from '../components/SafeHTML';
+import { OverlayLoading } from '../components/OverlayLoading';
+import { FormControl } from '../components/FormControl';
+import { SearchBar } from '../components/SearchBar';
+import { ActionMenu } from '../components/ActionMenu';
+import { VerticalStepper } from '../components/VerticalStepper';
+import { List } from '../components/List';
+import { Slider } from '../components/Slider';
+import { ManagedList } from '../components/ManagedList';
+import { Trending } from '../components/Trending';
+import { NestedCheckbox } from '../components/NestedCheckbox';
+import { ManageTags } from '../components/ManageTags';
+import { NumericFilterInput } from '../components/NumericFilterInput';
+import { DirectionControl } from '../components/DirectionControl';
+import { ColorPicker } from '../components/ColorPicker';
+import { InputMentions } from '../components/InputMentions';
+import { FilterModal } from '../components/FilterModal';
+import { Tree } from '../components/Tree';
+import { TreeTable } from '../components/TreeTable';
+import { Formatters } from '../components/Formatters';
+import { Tour } from '../components/Tour';
+import { RichTextEditor } from '../components/RichTextEditor';
+import { FormBuilder } from '../components/FormBuilder';
+import { DynamicForm } from '../components/DynamicForm';
+import { FacetSortBar } from '../components/FacetSortBar';
 import { systemColors, referenceColors } from '../tokens/colors';
 
 interface PropDefinition {
@@ -505,6 +539,405 @@ const componentDocs: Record<string, {
       { name: 'children', type: 'ReactNode', description: 'Main content rendered in the content area' },
     ],
   },
+  // ── Layout Primitives ────────────────────────────────────────────────────
+  horizontal: {
+    name: 'Horizontal',
+    description: 'Flex-row layout primitive. Always prefer this over writing inline display:flex styles. Accepts gap, align, justify, and wrap props.',
+    props: [
+      { name: 'gap', type: 'number | string', description: 'Gap between children (px number or CSS string)' },
+      { name: 'align', type: "'start' | 'center' | 'end' | 'stretch' | 'baseline'", default: "'center'", description: 'align-items value' },
+      { name: 'justify', type: "'start' | 'center' | 'end' | 'space-between' | 'space-around'", default: "'start'", description: 'justify-content value' },
+      { name: 'wrap', type: 'boolean', default: 'false', description: 'Allow children to wrap' },
+    ],
+  },
+  vertical: {
+    name: 'Vertical',
+    description: 'Flex-column layout primitive. Always prefer this over writing inline display:flex column styles.',
+    props: [
+      { name: 'gap', type: 'number | string', description: 'Gap between children' },
+      { name: 'align', type: "'start' | 'center' | 'end' | 'stretch' | 'baseline'", default: "'stretch'", description: 'align-items value' },
+      { name: 'justify', type: "'start' | 'center' | 'end' | 'space-between' | 'space-around'", default: "'start'", description: 'justify-content value' },
+    ],
+  },
+  view: {
+    name: 'View',
+    description: 'Generic flex container with all flex properties configurable including direction.',
+    props: [
+      { name: 'flexDirection', type: "'row' | 'column' | 'row-reverse' | 'column-reverse'", description: 'Flex direction' },
+      { name: 'gap', type: 'number | string', description: 'Gap between children' },
+      { name: 'align', type: "'start' | 'center' | 'end' | 'stretch' | 'baseline'", description: 'align-items value' },
+      { name: 'justify', type: "'start' | 'center' | 'end' | 'space-between' | 'space-around'", description: 'justify-content value' },
+    ],
+  },
+  grid: {
+    name: 'Grid / RdGrid',
+    description: 'CSS grid layout component. RdGrid is a Scaligent-compatible alias. Use RdGridItem for child spanning.',
+    props: [
+      { name: 'columns', type: 'number | string', description: 'Number of columns (number = repeat(n, 1fr)) or full grid-template-columns string' },
+      { name: 'gap', type: 'number | string', description: 'Both row and column gap' },
+      { name: 'rowGap', type: 'number | string', description: 'Row gap only' },
+      { name: 'colGap', type: 'number | string', description: 'Column gap only' },
+      { name: 'autoRows', type: 'string', description: 'grid-auto-rows value' },
+      { name: 'RdGridItem.colSpan', type: 'number', description: 'How many columns this item spans' },
+      { name: 'RdGridItem.rowSpan', type: 'number', description: 'How many rows this item spans' },
+      { name: 'RdGridItem.colStart', type: 'number', description: 'Which column line to start at' },
+    ],
+  },
+  splitpane: {
+    name: 'SplitPane',
+    description: 'Resizable two-panel layout. Drag the divider to resize. Works with pointer events — no external library.',
+    props: [
+      { name: 'left', type: 'ReactNode', description: 'Content for the left/top panel' },
+      { name: 'right', type: 'ReactNode', description: 'Content for the right/bottom panel' },
+      { name: 'defaultSize', type: 'number', default: '50', description: 'Initial size of left panel as a percentage' },
+      { name: 'minSize', type: 'number', default: '20', description: 'Minimum size of left panel (%)' },
+      { name: 'maxSize', type: 'number', default: '80', description: 'Maximum size of left panel (%)' },
+      { name: 'direction', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Split direction' },
+    ],
+  },
+  // ── Display & Content ────────────────────────────────────────────────────
+  nodata: {
+    name: 'NoData',
+    description: 'Empty-state component with slots for illustration, title, description, and a call-to-action.',
+    props: [
+      { name: 'title', type: 'string', default: "'No data available'", description: 'Primary heading' },
+      { name: 'description', type: 'string', description: 'Explanatory text below the title' },
+      { name: 'illustration', type: 'ReactNode', description: 'Illustration or icon above the title' },
+      { name: 'action', type: 'ReactNode', description: 'CTA button or link below the description' },
+    ],
+  },
+  explainercard: {
+    name: 'ExplainerCard',
+    description: 'Educational card with an icon, title, description body, and optional CTA. Use to explain features or onboard users.',
+    props: [
+      { name: 'title', type: 'string', description: 'Card heading (required)' },
+      { name: 'description', type: 'string', description: 'Body text (required)' },
+      { name: 'icon', type: 'ReactNode', description: 'Leading icon element' },
+      { name: 'action', type: 'ReactNode', description: 'CTA button or link' },
+      { name: 'variant', type: "'default' | 'highlighted'", default: "'default'", description: 'Background style' },
+    ],
+  },
+  image: {
+    name: 'Image',
+    description: 'Image component with graceful error fallback and aspect-ratio control.',
+    props: [
+      { name: 'src', type: 'string', description: 'Image URL' },
+      { name: 'alt', type: 'string', description: 'Alt text' },
+      { name: 'fallback', type: 'ReactNode', description: 'Content to show on load error' },
+      { name: 'aspectRatio', type: 'string', description: "Aspect ratio e.g. '16/9'" },
+      { name: 'objectFit', type: "'cover' | 'contain' | 'fill'", default: "'cover'", description: 'CSS object-fit' },
+      { name: 'rounded', type: 'boolean', default: 'false', description: 'Apply border radius' },
+    ],
+  },
+  illustration: {
+    name: 'Illustration',
+    description: 'ThoughtSpot illustration wrapper. Use in empty states, error pages, and onboarding.',
+    props: [
+      { name: 'id', type: "'no-data' | 'error' | 'no-results' | 'welcome' | 'no-access' | 'loading' | 'success' | 'empty-search' | string", description: 'Illustration identifier' },
+      { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Size: sm=80px md=120px lg=160px xl=240px' },
+    ],
+  },
+  legend: {
+    name: 'Legend',
+    description: 'Color-keyed label list for chart legends, data series, and status keys.',
+    props: [
+      { name: 'items', type: 'LegendItem[]', description: 'Array of { color, label, value? }' },
+      { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Layout direction' },
+      { name: 'dotShape', type: "'circle' | 'square' | 'line'", default: "'circle'", description: 'Shape of the color indicator' },
+    ],
+  },
+  safehtml: {
+    name: 'SafeHTML',
+    description: 'Renders an HTML string safely — strips <script> tags, event handlers, and javascript: hrefs before injecting.',
+    props: [
+      { name: 'html', type: 'string', description: 'HTML string to render (required)' },
+      { name: 'as', type: 'string', default: "'div'", description: 'Wrapper element tag name' },
+    ],
+  },
+  overlayloading: {
+    name: 'OverlayLoading',
+    description: 'Absolute-positioned loading overlay that blocks its parent container. The parent must be position: relative.',
+    props: [
+      { name: 'isVisible', type: 'boolean', description: 'Whether the overlay is shown (required)' },
+      { name: 'text', type: 'string', description: 'Loading label text' },
+      { name: 'transparent', type: 'boolean', default: 'false', description: 'Semi-transparent background instead of opaque' },
+    ],
+  },
+  // ── Form Extensions ──────────────────────────────────────────────────────
+  formcontrol: {
+    name: 'FormControl',
+    description: 'Wraps any form field with a label, helper text, and error message. The htmlFor prop wires the label to the input.',
+    props: [
+      { name: 'label', type: 'string', description: 'Label text' },
+      { name: 'helperText', type: 'string', description: 'Helper text below the field' },
+      { name: 'error', type: 'boolean', default: 'false', description: 'Whether the field is in an error state' },
+      { name: 'errorMessage', type: 'string', description: 'Error message shown when error=true' },
+      { name: 'required', type: 'boolean', default: 'false', description: 'Show required asterisk' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable the wrapper' },
+      { name: 'htmlFor', type: 'string', description: "Links the label's for attribute to an input id" },
+      { name: 'children', type: 'ReactNode', description: 'The form field to wrap (required)' },
+    ],
+  },
+  searchbar: {
+    name: 'SearchBar',
+    description: 'Full-featured search bar with leading icon, clear button, and loading state. Distinct from SearchInput (simpler).',
+    props: [
+      { name: 'value', type: 'string', description: 'Controlled value' },
+      { name: 'placeholder', type: 'string', default: "'Search'", description: 'Placeholder text' },
+      { name: 'onChange', type: '(value: string) => void', description: 'Change handler — receives the string value directly' },
+      { name: 'onSearch', type: '(value: string) => void', description: 'Called when Enter is pressed' },
+      { name: 'onClear', type: '() => void', description: 'Called when clear button is clicked' },
+      { name: 'loading', type: 'boolean', default: 'false', description: 'Show spinner instead of search icon' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height: sm=28px md=32px lg=40px' },
+    ],
+  },
+  numericfilterinput: {
+    name: 'NumericFilterInput',
+    description: 'Numeric filter with operator selection (=, ≠, >, ≥, <, ≤, between). When between is selected, a second value input appears.',
+    props: [
+      { name: 'value', type: 'NumericFilterValue', description: '{ operator, value, value2? }' },
+      { name: 'onChange', type: '(v: NumericFilterValue) => void', description: 'Change handler' },
+      { name: 'label', type: 'string', description: 'Label above the control' },
+      { name: 'placeholder', type: 'string', description: 'Input placeholder' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+    ],
+  },
+  directioncontrol: {
+    name: 'DirectionControl',
+    description: 'LTR / Auto / RTL text-direction selector rendered as connected toggle buttons with directional icons.',
+    props: [
+      { name: 'value', type: "'ltr' | 'rtl' | 'auto'", description: 'Selected direction (required)' },
+      { name: 'onChange', type: "(v: 'ltr' | 'rtl' | 'auto') => void", description: 'Change handler' },
+      { name: 'label', type: 'string', description: 'Label above the control' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+    ],
+  },
+  colorpicker: {
+    name: 'ColorPicker',
+    description: 'Color picker with three selector modes: hex (native browser input), rgb (R/G/B sliders), and palette (swatch grid).',
+    props: [
+      { name: 'value', type: 'string', description: 'Current CSS color string' },
+      { name: 'onChange', type: '(color: string) => void', description: 'Change handler' },
+      { name: 'selectorType', type: "'hex' | 'rgb' | 'palette'", default: "'hex'", description: 'Which mode to show' },
+      { name: 'palette', type: 'string[]', description: 'Swatch colors for palette mode (defaults to 12 common colors)' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+    ],
+  },
+  inputmentions: {
+    name: 'InputMentions',
+    description: '@mention autocomplete textarea. Detects @ trigger, filters suggestions, supports keyboard navigation (↑↓ Enter Esc).',
+    props: [
+      { name: 'value', type: 'string', description: 'Controlled value' },
+      { name: 'onChange', type: '(value: string) => void', description: 'Change handler' },
+      { name: 'suggestions', type: 'MentionSuggestion[]', description: '{ id, label, avatar? }[]' },
+      { name: 'onMention', type: '(query: string) => void', description: 'Called on every @ query change (for async loading)' },
+      { name: 'placeholder', type: 'string', description: 'Textarea placeholder' },
+    ],
+  },
+  filtermodal: {
+    name: 'FilterModal',
+    description: 'Self-contained filter modal with multiple section types. Tracks local state and calls onApply when confirmed.',
+    props: [
+      { name: 'isOpen', type: 'boolean', description: 'Whether the modal is open (required)' },
+      { name: 'onClose', type: '() => void', description: 'Close handler (required)' },
+      { name: 'sections', type: 'FilterSection[]', description: '{ id, label, type: checkbox|radio|range|search, options? }[]' },
+      { name: 'value', type: 'Record<string, unknown>', description: 'Controlled filter values' },
+      { name: 'onChange', type: '(value) => void', description: 'Called on every section change' },
+      { name: 'onApply', type: '(value) => void', description: 'Called when Apply Filters is clicked' },
+      { name: 'onReset', type: '() => void', description: 'Called when Reset is clicked' },
+      { name: 'title', type: 'string', default: "'Filters'", description: 'Modal title' },
+    ],
+  },
+  // ── Interaction ──────────────────────────────────────────────────────────
+  actionmenu: {
+    name: 'ActionMenu',
+    description: 'Compound contextual menu. Attach to any trigger element. Supports keyboard navigation, grouping, and destructive items.',
+    props: [
+      { name: 'trigger', type: 'ReactElement', description: 'Element that opens the menu on click (required)' },
+      { name: 'placement', type: "'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'", default: "'bottom-start'", description: 'Menu placement relative to trigger' },
+      { name: 'onOpen', type: '() => void', description: 'Called when menu opens' },
+      { name: 'onClose', type: '() => void', description: 'Called when menu closes' },
+      { name: 'ActionMenu.Item.label', type: 'string', description: 'Item label text (required)' },
+      { name: 'ActionMenu.Item.icon', type: 'ReactNode', description: 'Leading icon' },
+      { name: 'ActionMenu.Item.destructive', type: 'boolean', default: 'false', description: 'Red tint for destructive actions' },
+      { name: 'ActionMenu.Item.shortcut', type: 'string', description: 'Keyboard shortcut display (e.g. "⌘D")' },
+      { name: 'ActionMenu.Group.label', type: 'string', description: 'Optional group header label' },
+    ],
+  },
+  verticalstepper: {
+    name: 'VerticalStepper',
+    description: 'Vertical step-by-step progression with connector lines, status indicators, and expandable content per step.',
+    props: [
+      { name: 'steps', type: 'VerticalStepItem[]', description: '{ title, description?, status?, content? }[]' },
+      { name: 'currentStep', type: 'number', description: 'Index of the currently active step (overrides per-step status)' },
+      { name: 'onStepClick', type: '(index: number) => void', description: 'Called when a step is clicked' },
+    ],
+  },
+  list: {
+    name: 'List',
+    description: 'Generic list with optional HTML5 drag-and-drop reordering. Accepts a renderItem render prop for full customisation.',
+    props: [
+      { name: 'items', type: 'T[]', description: 'Array of items (must have id: string)' },
+      { name: 'renderItem', type: '(item: T, index: number) => ReactNode', description: 'Render function for each item (required)' },
+      { name: 'draggable', type: 'boolean', default: 'false', description: 'Enable drag-and-drop reordering' },
+      { name: 'onReorder', type: '(items: T[]) => void', description: 'Called after a drag-drop reorder' },
+      { name: 'emptyState', type: 'ReactNode', description: 'Content to show when items is empty' },
+    ],
+  },
+  slider: {
+    name: 'Slider',
+    description: 'Styled range slider with CSS fill gradient, label, value display, and optional tick marks.',
+    props: [
+      { name: 'value', type: 'number', description: 'Current value (required)' },
+      { name: 'min', type: 'number', default: '0', description: 'Minimum value' },
+      { name: 'max', type: 'number', default: '100', description: 'Maximum value' },
+      { name: 'step', type: 'number', default: '1', description: 'Step increment' },
+      { name: 'onChange', type: '(value: number) => void', description: 'Change handler' },
+      { name: 'showValue', type: 'boolean', default: 'false', description: 'Show numeric value label' },
+      { name: 'label', type: 'string', description: 'Label above the slider' },
+      { name: 'marks', type: '{ value: number; label?: string }[]', description: 'Tick mark positions' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disabled state' },
+    ],
+  },
+  managedlist: {
+    name: 'ManagedList',
+    description: 'List with built-in add, remove, and edit controls. Optional search filtering.',
+    props: [
+      { name: 'items', type: 'ManagedListItem[]', description: '{ id, label }[] (required)' },
+      { name: 'onAdd', type: '() => void', description: 'Called when Add button is clicked' },
+      { name: 'onRemove', type: '(id: string) => void', description: 'Called when trash icon is clicked' },
+      { name: 'onEdit', type: '(id: string) => void', description: 'Called when pencil icon is clicked' },
+      { name: 'addLabel', type: 'string', default: "'Add item'", description: 'Add button label' },
+      { name: 'searchable', type: 'boolean', default: 'false', description: 'Show search input' },
+      { name: 'renderItem', type: '(item) => ReactNode', description: 'Custom item renderer' },
+    ],
+  },
+  trending: {
+    name: 'Trending',
+    description: 'Trending / popular items with count badges and trend direction arrows. Supports flat list or sectioned layout.',
+    props: [
+      { name: 'items', type: 'TrendingItem[]', description: 'Flat list of items — { id, label, count?, trend?, icon?, onClick? }' },
+      { name: 'sections', type: 'TrendingSectionData[]', description: 'Sectioned layout — { title, items }[]' },
+      { name: 'maxItems', type: 'number', description: 'Limit items shown per section' },
+    ],
+  },
+  nestedcheckbox: {
+    name: 'NestedCheckbox',
+    description: 'Checkbox tree with automatic indeterminate parent state. When some (not all) children are checked, the parent shows indeterminate.',
+    props: [
+      { name: 'items', type: 'NestedCheckboxItem[]', description: '{ id, label, checked?, children? }[] (required)' },
+      { name: 'onChange', type: '(items: NestedCheckboxItem[]) => void', description: 'Called with updated items on every toggle' },
+    ],
+  },
+  managetags: {
+    name: 'ManageTags',
+    description: 'Tag creation (Enter or comma) and removal. Optional suggestions dropdown appears as you type.',
+    props: [
+      { name: 'tags', type: 'string[]', description: 'Current tags (required)' },
+      { name: 'onChange', type: '(tags: string[]) => void', description: 'Change handler' },
+      { name: 'maxTags', type: 'number', description: 'Maximum number of tags' },
+      { name: 'placeholder', type: 'string', default: "'Add a tag'", description: 'Input placeholder' },
+      { name: 'suggestions', type: 'string[]', description: 'Autocomplete suggestions shown on focus' },
+    ],
+  },
+  // ── Data Visualization ───────────────────────────────────────────────────
+  tree: {
+    name: 'Tree',
+    description: 'Recursive hierarchical list with expand/collapse, click selection, and optional checkbox mode.',
+    props: [
+      { name: 'nodes', type: 'TreeNode[]', description: '{ id, label, icon?, children?, disabled? }[] (required)' },
+      { name: 'selectedIds', type: 'string[]', description: 'Selected node IDs' },
+      { name: 'expandedIds', type: 'string[]', description: 'Controlled expanded IDs' },
+      { name: 'onSelect', type: '(id: string) => void', description: 'Called when a node is selected' },
+      { name: 'onExpand', type: '(id: string) => void', description: 'Called when a node is expanded/collapsed' },
+      { name: 'checkable', type: 'boolean', default: 'false', description: 'Show checkboxes instead of highlight selection' },
+    ],
+  },
+  treetable: {
+    name: 'TreeTable',
+    description: 'Tree structure with columnar data. Tree labels in the first column, additional columns show node.data values.',
+    props: [
+      { name: 'nodes', type: 'TreeTableNode[]', description: 'Tree nodes with optional data: Record<string, unknown>' },
+      { name: 'columns', type: 'TreeTableColumn[]', description: '{ id, label, width?, render? }[] (required)' },
+      { name: 'selectedIds', type: 'string[]', description: 'Selected node IDs' },
+      { name: 'onSelect', type: '(id: string) => void', description: 'Selection handler' },
+      { name: 'onExpand', type: '(id: string) => void', description: 'Expand handler' },
+    ],
+  },
+  formatters: {
+    name: 'Formatters',
+    description: 'Data formatter namespace. Formatters.Text, .Number (Intl), .Line (SVG sparkline), .Interval, .Background, .Marker.',
+    props: [
+      { name: 'Formatters.Text.value', type: 'string | number', description: 'Text value to display' },
+      { name: 'Formatters.Text.bold', type: 'boolean', default: 'false', description: 'Bold weight' },
+      { name: 'Formatters.Number.value', type: 'number', description: 'Numeric value' },
+      { name: 'Formatters.Number.format', type: "'currency' | 'percent' | 'decimal' | 'integer' | 'compact'", default: "'decimal'", description: 'Number format' },
+      { name: 'Formatters.Number.currency', type: 'string', default: "'USD'", description: 'Currency code for currency format' },
+      { name: 'Formatters.Line.data', type: 'number[]', description: 'Series data for sparkline' },
+      { name: 'Formatters.Interval.start', type: 'Date | string', description: 'Start date/time' },
+      { name: 'Formatters.Interval.format', type: "'duration' | 'range'", default: "'range'", description: 'Duration or date range display' },
+      { name: 'Formatters.Marker.color', type: 'string', description: 'Dot color' },
+      { name: 'Formatters.Marker.size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Dot size' },
+    ],
+  },
+  // ── Advanced ─────────────────────────────────────────────────────────────
+  tour: {
+    name: 'Tour',
+    description: 'Guided walkthrough with spotlight overlay. Positions popovers using getBoundingClientRect on CSS selectors. No external library.',
+    props: [
+      { name: 'steps', type: 'TourStep[]', description: '{ target: string (CSS selector), title?, content, placement? }[]' },
+      { name: 'isRunning', type: 'boolean', description: 'Whether the tour is active (required)' },
+      { name: 'onFinish', type: '() => void', description: 'Called after the last step' },
+      { name: 'onSkip', type: '() => void', description: 'Called when Skip is clicked' },
+      { name: 'startIndex', type: 'number', default: '0', description: 'Step to start from' },
+    ],
+  },
+  richtexteditor: {
+    name: 'RichTextEditor',
+    description: 'WYSIWYG rich text editor using contenteditable and document.execCommand. No external library required.',
+    props: [
+      { name: 'value', type: 'string', description: 'HTML string initial content' },
+      { name: 'onChange', type: '(html: string) => void', description: 'Called on every edit with the current innerHTML' },
+      { name: 'placeholder', type: 'string', description: 'Placeholder text when empty' },
+      { name: 'toolbar', type: "('bold' | 'italic' | 'underline' | 'link' | 'list' | 'heading' | 'blockquote')[]", description: 'Toolbar items to show (defaults to bold, italic, underline, list)' },
+      { name: 'readOnly', type: 'boolean', default: 'false', description: 'Disables editing and hides toolbar' },
+      { name: 'minHeight', type: 'number', default: '120', description: 'Minimum editor height in px' },
+    ],
+  },
+  formbuilder: {
+    name: 'FormBuilder',
+    description: 'Config-driven form renderer. Pass a fields array and it renders the correct input type with validation.',
+    props: [
+      { name: 'fields', type: 'FormField[]', description: '{ id, type, label, required?, options?, validation? }[]' },
+      { name: 'value', type: 'Record<string, unknown>', description: 'Controlled form values' },
+      { name: 'onChange', type: '(value) => void', description: 'Called on every field change' },
+      { name: 'onSubmit', type: '(value) => void', description: 'Called on valid form submission' },
+      { name: 'submitLabel', type: 'string', default: "'Submit'", description: 'Submit button label' },
+    ],
+  },
+  dynamicform: {
+    name: 'DynamicForm',
+    description: 'FormBuilder with managed internal state and error utilities. Export hasDynamicFormError(fields, value) for validation.',
+    props: [
+      { name: 'fields', type: 'FormField[]', description: 'Form field definitions (required)' },
+      { name: 'initialValue', type: 'Record<string, unknown>', description: 'Initial form values' },
+      { name: 'onChange', type: '(value) => void', description: 'Called on every change' },
+      { name: 'onSubmit', type: '(value) => void', description: 'Called on valid submission' },
+      { name: 'submitLabel', type: 'string', default: "'Submit'", description: 'Submit button label' },
+    ],
+  },
+  facetsortbar: {
+    name: 'FacetSortBar',
+    description: 'Horizontal bar with facet pill toggles on the left (filter by category) and sort selector on the right.',
+    props: [
+      { name: 'facets', type: 'FacetOption[]', description: '{ id, label, count? }[]' },
+      { name: 'selectedFacet', type: 'string', description: 'Currently active facet ID' },
+      { name: 'onFacetChange', type: '(id: string) => void', description: 'Facet change handler' },
+      { name: 'sortOptions', type: 'SortOption[]', description: '{ id, label }[]' },
+      { name: 'selectedSort', type: 'string', description: 'Currently selected sort ID' },
+      { name: 'onSortChange', type: '(id: string) => void', description: 'Sort change handler' },
+    ],
+  },
 };
 
 export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId }) => {
@@ -526,6 +959,39 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
   const [stepperStep, setStepperStep] = useState(1);
   const [progressValue, setProgressValue] = useState(45);
   const [segmentedValue, setSegmentedValue] = useState('day');
+  // New component states (Phase 1-4)
+  const [searchBarValue, setSearchBarValue] = useState('');
+  const [sliderValue, setSliderValue] = useState(40);
+  const [managedItems, setManagedItems] = useState([
+    { id: '1', label: 'Item one' },
+    { id: '2', label: 'Item two' },
+    { id: '3', label: 'Item three' },
+  ]);
+  const [trendingTags, setTrendingTags] = useState(['design', 'react']);
+  const [directionValue, setDirectionValue] = useState<'ltr' | 'rtl' | 'auto'>('ltr');
+  const [colorValue, setColorValue] = useState('#2770EF');
+  const [numericFilter, setNumericFilter] = useState({ operator: 'gt' as const, value: 100 });
+  const [listItems, setListItems] = useState([
+    { id: 'a', label: 'Alpha' },
+    { id: 'b', label: 'Beta' },
+    { id: 'c', label: 'Gamma' },
+  ]);
+  const [nestedItems, setNestedItems] = useState([
+    { id: 'parent1', label: 'Category A', checked: false, children: [
+      { id: 'child1', label: 'Item 1', checked: false },
+      { id: 'child2', label: 'Item 2', checked: false },
+    ]},
+    { id: 'parent2', label: 'Category B', checked: true, children: [
+      { id: 'child3', label: 'Item 3', checked: true },
+      { id: 'child4', label: 'Item 4', checked: true },
+    ]},
+  ]);
+  const [selectedTreeIds, setSelectedTreeIds] = useState<string[]>([]);
+  const [richText, setRichText] = useState('<p>Start typing <strong>rich</strong> text here…</p>');
+  const [isTourRunning, setIsTourRunning] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [selectedFacet, setSelectedFacet] = useState('all');
+  const [selectedSort, setSelectedSort] = useState('newest');
 
   if (!doc) {
     return (
@@ -1547,7 +2013,492 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
             </div>
           </div>
         );
-      
+
+      // ── Layout Primitives ──────────────────────────────────────────────
+      case 'horizontal':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <Horizontal gap={8} align="center">
+              <Button variant="primary" size="small">Save</Button>
+              <Button variant="secondary" size="small">Cancel</Button>
+            </Horizontal>
+            <Horizontal gap={16} justify="space-between">
+              <span style={{ fontSize: 14, color: systemColors.light['content-primary'] }}>Left content</span>
+              <span style={{ fontSize: 14, color: systemColors.light['content-secondary'] }}>Right content</span>
+            </Horizontal>
+            <Horizontal gap={8} wrap>
+              {['React', 'TypeScript', 'Vite', 'CSS Modules', 'Radiant'].map(t => (
+                <span key={t} style={{ padding: '4px 10px', background: systemColors.light['background-subtle'], borderRadius: 99, fontSize: 12 }}>{t}</span>
+              ))}
+            </Horizontal>
+          </div>
+        );
+
+      case 'vertical':
+        return (
+          <Vertical gap={12} style={{ maxWidth: 320 }}>
+            <TextInput label="First name" placeholder="Enter first name" value="" onChange={() => {}} />
+            <TextInput label="Last name" placeholder="Enter last name" value="" onChange={() => {}} />
+            <Toggle label="Subscribe to updates" checked={false} onChange={() => {}} />
+          </Vertical>
+        );
+
+      case 'view':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <View flexDirection="row" gap={8} align="center" justify="space-between">
+              <span style={{ fontSize: 14 }}>row / space-between</span>
+              <Button variant="secondary" size="small">Action</Button>
+            </View>
+            <View flexDirection="column" gap={8}>
+              <span style={{ fontSize: 14 }}>column layout</span>
+              <Button variant="primary" size="small">Submit</Button>
+            </View>
+          </div>
+        );
+
+      case 'grid':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <Grid columns={3} gap={12}>
+              {['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta'].map(n => (
+                <div key={n} style={{ background: systemColors.light['background-subtle'], borderRadius: 8, padding: '12px 16px', fontSize: 13, textAlign: 'center' }}>{n}</div>
+              ))}
+            </Grid>
+            <Grid columns={3} gap={12}>
+              <RdGridItem colSpan={2} style={{ background: systemColors.light['background-information'], borderRadius: 8, padding: '12px 16px', fontSize: 13 }}>Spans 2 columns</RdGridItem>
+              <div style={{ background: systemColors.light['background-subtle'], borderRadius: 8, padding: '12px 16px', fontSize: 13 }}>1 column</div>
+            </Grid>
+          </div>
+        );
+
+      case 'splitpane':
+        return (
+          <div style={{ height: 200, border: `1px solid ${systemColors.light['border-default']}`, borderRadius: 8, overflow: 'hidden' }}>
+            <SplitPane
+              left={<div style={{ padding: 16, height: '100%', background: systemColors.light['background-subtle'], fontSize: 13 }}>Left panel — drag the divider to resize</div>}
+              right={<div style={{ padding: 16, height: '100%', fontSize: 13 }}>Right panel content</div>}
+              defaultSize={35}
+            />
+          </div>
+        );
+
+      // ── Display & Content ──────────────────────────────────────────────
+      case 'nodata':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            <NoData
+              illustration={<Illustration id="no-results" size="md" />}
+              title="No results found"
+              description="Try adjusting your search or filter to find what you're looking for."
+              action={<Button variant="secondary" size="small">Clear filters</Button>}
+            />
+            <NoData title="No data available" description="Connect a data source to get started." />
+          </div>
+        );
+
+      case 'explainercard':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 480 }}>
+            <ExplainerCard
+              icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#2770EF" strokeWidth="1.5"/><path d="M10 6v4l2.5 2.5" stroke="#2770EF" strokeWidth="1.5" strokeLinecap="round"/></svg>}
+              title="Schedule your first report"
+              description="Reports can be scheduled to run automatically and delivered to your inbox."
+              action={<Button variant="primary" size="small">Set up schedule</Button>}
+            />
+            <ExplainerCard
+              title="Pro tip"
+              description="You can pin answers to a Liveboard for quick access."
+              variant="highlighted"
+            />
+          </div>
+        );
+
+      case 'image':
+        return (
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <Image src="https://picsum.photos/seed/radiant/240/160" alt="Sample image" style={{ width: 240 }} rounded />
+            <Image src="broken-url" alt="Fallback demo" style={{ width: 240, height: 160 }} fallback={<div style={{ width: 240, height: 160, background: systemColors.light['background-subtle'], display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, fontSize: 13, color: systemColors.light['content-tertiary'] }}>Image failed to load</div>} />
+          </div>
+        );
+
+      case 'illustration':
+        return (
+          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-end' }}>
+            {(['no-data', 'error', 'success', 'welcome', 'no-access', 'loading'] as const).map(id => (
+              <div key={id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <Illustration id={id} size="sm" />
+                <span style={{ fontSize: 11, color: systemColors.light['content-tertiary'] }}>{id}</span>
+              </div>
+            ))}
+          </div>
+        );
+
+      case 'legend':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <Legend items={[{ color: '#2770EF', label: 'Revenue', value: '$1.2M' }, { color: '#06BF7F', label: 'Profit', value: '$340K' }, { color: '#F5A623', label: 'Expenses', value: '$860K' }]} orientation="horizontal" />
+            <Legend items={[{ color: '#2770EF', label: 'Completed' }, { color: '#F5A623', label: 'In progress' }, { color: '#E22B3D', label: 'Blocked' }]} orientation="vertical" dotShape="square" />
+          </div>
+        );
+
+      case 'safehtml':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontSize: 14 }}>
+            <SafeHTML html="<p>This is <strong>safe HTML</strong> with a <a href='#'>link</a>.</p>" />
+            <SafeHTML html="<p>Script injection attempt: &lt;script&gt;alert('xss')&lt;/script&gt; — stripped automatically.</p>" />
+          </div>
+        );
+
+      case 'overlayloading':
+        return (
+          <div style={{ position: 'relative', height: 140, border: `1px solid ${systemColors.light['border-default']}`, borderRadius: 8, padding: 16 }}>
+            <p style={{ fontSize: 14 }}>Content underneath the overlay — set isVisible to true to block it.</p>
+            <OverlayLoading isVisible={true} text="Loading data…" transparent />
+          </div>
+        );
+
+      // ── Form Extensions ────────────────────────────────────────────────
+      case 'formcontrol':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 400 }}>
+            <FormControl label="Email address" helperText="We'll never share your email." htmlFor="fc-email">
+              <TextInput id="fc-email" placeholder="you@example.com" value="" onChange={() => {}} />
+            </FormControl>
+            <FormControl label="Password" error errorMessage="Password must be at least 8 characters." required htmlFor="fc-pass">
+              <TextInput id="fc-pass" placeholder="Enter password" value="short" onChange={() => {}} />
+            </FormControl>
+            <FormControl label="Notes" disabled>
+              <TextArea placeholder="Disabled field" disabled rows={2} />
+            </FormControl>
+          </div>
+        );
+
+      case 'searchbar':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 380 }}>
+            <SearchBar placeholder="Search components…" value={searchBarValue} onChange={setSearchBarValue} onClear={() => setSearchBarValue('')} size="lg" />
+            <SearchBar placeholder="Loading state" loading size="md" />
+            <SearchBar placeholder="Small size" size="sm" />
+          </div>
+        );
+
+      case 'numericfilterinput':
+        return (
+          <div style={{ maxWidth: 400 }}>
+            <NumericFilterInput
+              label="Revenue filter"
+              value={numericFilter as any}
+              onChange={setNumericFilter as any}
+              placeholder="Enter value"
+            />
+          </div>
+        );
+
+      case 'directioncontrol':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 300 }}>
+            <DirectionControl label="Text direction" value={directionValue} onChange={setDirectionValue} />
+            <span style={{ fontSize: 13, color: systemColors.light['content-secondary'] }}>Selected: {directionValue}</span>
+            <DirectionControl label="Disabled" value="ltr" disabled />
+          </div>
+        );
+
+      case 'colorpicker':
+        return (
+          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+            <div>
+              <p style={{ fontSize: 12, marginBottom: 8, color: systemColors.light['content-secondary'] }}>Hex mode</p>
+              <ColorPicker value={colorValue} onChange={setColorValue} selectorType="hex" />
+            </div>
+            <div>
+              <p style={{ fontSize: 12, marginBottom: 8, color: systemColors.light['content-secondary'] }}>Palette mode</p>
+              <ColorPicker value={colorValue} onChange={setColorValue} selectorType="palette" />
+            </div>
+          </div>
+        );
+
+      case 'inputmentions':
+        return (
+          <div style={{ maxWidth: 420 }}>
+            <InputMentions
+              placeholder="Type @ to mention a user…"
+              suggestions={[
+                { id: '1', label: 'Alice Johnson' },
+                { id: '2', label: 'Bob Smith' },
+                { id: '3', label: 'Carol White' },
+                { id: '4', label: 'David Brown' },
+              ]}
+            />
+          </div>
+        );
+
+      case 'filtermodal':
+        return (
+          <div>
+            <Button variant="secondary" onClick={() => setIsFilterModalOpen(true)}>Open filter modal</Button>
+            <FilterModal
+              isOpen={isFilterModalOpen}
+              onClose={() => setIsFilterModalOpen(false)}
+              title="Filter results"
+              sections={[
+                { id: 'status', label: 'Status', type: 'checkbox', options: [{ id: 'active', label: 'Active' }, { id: 'inactive', label: 'Inactive' }, { id: 'pending', label: 'Pending' }] },
+                { id: 'type', label: 'Type', type: 'radio', options: [{ id: 'all', label: 'All types' }, { id: 'answer', label: 'Answers' }, { id: 'liveboard', label: 'Liveboards' }] },
+                { id: 'search', label: 'Search', type: 'search' },
+              ]}
+              onApply={() => setIsFilterModalOpen(false)}
+            />
+          </div>
+        );
+
+      // ── Interaction ────────────────────────────────────────────────────
+      case 'actionmenu':
+        return (
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <ActionMenu
+              trigger={<Button variant="secondary" size="small">Actions ▾</Button>}
+              placement="bottom-start"
+            >
+              <ActionMenu.Item label="Edit" onClick={() => {}} />
+              <ActionMenu.Item label="Duplicate" onClick={() => {}} />
+              <ActionMenu.Item label="Share" onClick={() => {}} />
+              <ActionMenu.Group label="Danger zone">
+                <ActionMenu.Item label="Delete" destructive onClick={() => {}} />
+              </ActionMenu.Group>
+            </ActionMenu>
+            <ActionMenu
+              trigger={<Button variant="tertiary" size="small">⋯</Button>}
+              placement="bottom-end"
+            >
+              <ActionMenu.Item label="Copy link" shortcut="⌘C" onClick={() => {}} />
+              <ActionMenu.Item label="Move to folder" onClick={() => {}} />
+              <ActionMenu.Item label="Remove" destructive onClick={() => {}} />
+            </ActionMenu>
+          </div>
+        );
+
+      case 'verticalstepper':
+        return (
+          <div style={{ maxWidth: 420 }}>
+            <VerticalStepper
+              steps={[
+                { title: 'Connect data source', description: 'Link your database or cloud service', status: 'completed' },
+                { title: 'Configure schema', description: 'Map tables and relationships', status: 'active', content: <Alert status="info" message="Select the tables you want to include in your workspace." /> },
+                { title: 'Set permissions', description: 'Control who can access this data', status: 'pending' },
+                { title: 'Deploy', status: 'pending' },
+              ]}
+            />
+          </div>
+        );
+
+      case 'list':
+        return (
+          <div style={{ maxWidth: 360 }}>
+            <List
+              items={listItems}
+              draggable
+              onReorder={setListItems}
+              renderItem={(item) => (
+                <div style={{ padding: '10px 12px', fontSize: 14 }}>{item.label}</div>
+              )}
+            />
+          </div>
+        );
+
+      case 'slider':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 380 }}>
+            <Slider label="Volume" value={sliderValue} onChange={setSliderValue} showValue />
+            <Slider label="Opacity" value={70} onChange={() => {}} min={0} max={100} marks={[{ value: 0, label: '0%' }, { value: 50, label: '50%' }, { value: 100, label: '100%' }]} />
+            <Slider label="Disabled" value={30} disabled />
+          </div>
+        );
+
+      case 'managedlist':
+        return (
+          <div style={{ maxWidth: 360 }}>
+            <ManagedList
+              items={managedItems}
+              searchable
+              onAdd={() => setManagedItems(prev => [...prev, { id: String(Date.now()), label: `Item ${prev.length + 1}` }])}
+              onRemove={(id) => setManagedItems(prev => prev.filter(i => i.id !== id))}
+            />
+          </div>
+        );
+
+      case 'trending':
+        return (
+          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+            <div style={{ minWidth: 200 }}>
+              <Trending
+                items={[
+                  { id: '1', label: 'Revenue by region', count: 142, trend: 'up' },
+                  { id: '2', label: 'Monthly active users', count: 89, trend: 'up' },
+                  { id: '3', label: 'Churn rate', count: 34, trend: 'down' },
+                  { id: '4', label: 'NPS score', count: 21, trend: 'neutral' },
+                ]}
+                maxItems={4}
+              />
+            </div>
+          </div>
+        );
+
+      case 'nestedcheckbox':
+        return (
+          <div style={{ maxWidth: 320 }}>
+            <NestedCheckbox items={nestedItems as any} onChange={setNestedItems as any} />
+          </div>
+        );
+
+      case 'managetags':
+        return (
+          <div style={{ maxWidth: 420 }}>
+            <ManageTags
+              tags={trendingTags}
+              onChange={setTrendingTags}
+              placeholder="Add a tag…"
+              suggestions={['react', 'typescript', 'design-system', 'dashboard', 'analytics', 'charts']}
+            />
+          </div>
+        );
+
+      // ── Data Visualization ─────────────────────────────────────────────
+      case 'tree':
+        return (
+          <div style={{ maxWidth: 320, border: `1px solid ${systemColors.light['border-default']}`, borderRadius: 8, overflow: 'hidden' }}>
+            <Tree
+              nodes={[
+                { id: 'src', label: 'src', children: [
+                  { id: 'components', label: 'components', children: [
+                    { id: 'Button', label: 'Button.tsx' },
+                    { id: 'Modal', label: 'Modal.tsx' },
+                  ]},
+                  { id: 'pages', label: 'pages', children: [
+                    { id: 'Home', label: 'HomePage.tsx' },
+                  ]},
+                ]},
+                { id: 'public', label: 'public' },
+              ]}
+              selectedIds={selectedTreeIds}
+              onSelect={(id) => setSelectedTreeIds([id])}
+            />
+          </div>
+        );
+
+      case 'treetable':
+        return (
+          <div style={{ border: `1px solid ${systemColors.light['border-default']}`, borderRadius: 8, overflow: 'hidden' }}>
+            <TreeTable
+              nodes={[
+                { id: 'q1', label: 'Q1 2026', data: { revenue: '$1.2M', growth: '+12%' }, children: [
+                  { id: 'jan', label: 'January', data: { revenue: '$380K', growth: '+8%' } },
+                  { id: 'feb', label: 'February', data: { revenue: '$400K', growth: '+11%' } },
+                  { id: 'mar', label: 'March', data: { revenue: '$420K', growth: '+18%' } },
+                ]},
+                { id: 'q2', label: 'Q2 2026', data: { revenue: '$980K', growth: '+4%' } },
+              ]}
+              columns={[
+                { id: 'revenue', label: 'Revenue', width: 120 },
+                { id: 'growth', label: 'Growth', width: 100 },
+              ]}
+            />
+          </div>
+        );
+
+      case 'formatters':
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Text</p><Formatters.Text value="Sample text" bold /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Currency</p><Formatters.Number value={1234567} format="currency" /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Percent</p><Formatters.Number value={0.724} format="percent" /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Compact</p><Formatters.Number value={48200} format="compact" /></div>
+            </div>
+            <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Sparkline</p><Formatters.Line data={[10, 25, 18, 40, 35, 55, 48, 62]} width={100} height={28} /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Interval</p><Formatters.Interval start="2026-01-01" end="2026-03-31" format="range" /></div>
+              <div style={{ display: 'flex', gap: 8 }}><Formatters.Marker color="#06BF7F" /><Formatters.Marker color="#2770EF" /><Formatters.Marker color="#E22B3D" size="lg" /></div>
+            </div>
+          </div>
+        );
+
+      // ── Advanced ───────────────────────────────────────────────────────
+      case 'tour':
+        return (
+          <div>
+            <div id="tour-target-search" style={{ display: 'inline-block', marginBottom: 16 }}>
+              <SearchBar placeholder="Search…" size="md" />
+            </div>
+            <div>
+              <Button variant="secondary" size="small" onClick={() => setIsTourRunning(true)}>Start tour</Button>
+            </div>
+            <Tour
+              steps={[{ target: '#tour-target-search', title: 'Search bar', content: 'Use this to search for any content in ThoughtSpot.', placement: 'bottom' }]}
+              isRunning={isTourRunning}
+              onFinish={() => setIsTourRunning(false)}
+              onSkip={() => setIsTourRunning(false)}
+            />
+          </div>
+        );
+
+      case 'richtexteditor':
+        return (
+          <div style={{ maxWidth: 560 }}>
+            <RichTextEditor
+              value={richText}
+              onChange={setRichText}
+              placeholder="Start typing…"
+              toolbar={['bold', 'italic', 'underline', 'list', 'heading']}
+              minHeight={140}
+            />
+          </div>
+        );
+
+      case 'formbuilder':
+        return (
+          <div style={{ maxWidth: 420 }}>
+            <FormBuilder
+              fields={[
+                { id: 'name', type: 'text', label: 'Full name', required: true, placeholder: 'Enter your name' },
+                { id: 'role', type: 'select', label: 'Role', options: [{ id: 'admin', label: 'Admin' }, { id: 'editor', label: 'Editor' }, { id: 'viewer', label: 'Viewer' }] },
+                { id: 'notify', type: 'toggle', label: 'Email notifications' },
+              ]}
+              onSubmit={(v) => console.log('submitted', v)}
+              submitLabel="Save settings"
+            />
+          </div>
+        );
+
+      case 'dynamicform':
+        return (
+          <div style={{ maxWidth: 420 }}>
+            <DynamicForm
+              fields={[
+                { id: 'title', type: 'text', label: 'Report title', required: true },
+                { id: 'description', type: 'textarea', label: 'Description' },
+                { id: 'schedule', type: 'radio', label: 'Schedule', options: [{ id: 'daily', label: 'Daily' }, { id: 'weekly', label: 'Weekly' }, { id: 'monthly', label: 'Monthly' }] },
+              ]}
+              initialValue={{ schedule: 'weekly' }}
+              onSubmit={(v) => console.log('submitted', v)}
+              submitLabel="Create report"
+            />
+          </div>
+        );
+
+      case 'facetsortbar':
+        return (
+          <div>
+            <FacetSortBar
+              facets={[{ id: 'all', label: 'All', count: 148 }, { id: 'answers', label: 'Answers', count: 82 }, { id: 'liveboards', label: 'Liveboards', count: 41 }, { id: 'worksheets', label: 'Worksheets', count: 25 }]}
+              selectedFacet={selectedFacet}
+              onFacetChange={setSelectedFacet}
+              sortOptions={[{ id: 'newest', label: 'Newest first' }, { id: 'oldest', label: 'Oldest first' }, { id: 'az', label: 'A → Z' }]}
+              selectedSort={selectedSort}
+              onSortChange={setSelectedSort}
+            />
+          </div>
+        );
+
       default:
         return null;
     }

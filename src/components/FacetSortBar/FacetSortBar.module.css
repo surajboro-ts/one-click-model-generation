@@ -1,0 +1,98 @@
+/* FacetSortBar Component Styles */
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  font-family: var(--font-family-primary);
+  flex-wrap: wrap;
+}
+
+/* ─── Facet pills ───────────────────────────────────────────────────────── */
+
+.facets {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+}
+
+.facetPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  height: 28px;
+  padding: 0 var(--spacing-3);
+  background-color: var(--rd-sys-color-background-subtle);
+  color: var(--rd-sys-color-content-secondary);
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-2xl);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard);
+}
+
+.facetPill:hover {
+  background-color: var(--rd-sys-color-background-muted);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.facetPillSelected {
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-on-brand);
+  border-color: var(--rd-sys-color-background-brand);
+}
+
+.facetPillSelected:hover {
+  background-color: var(--rd-sys-color-background-brand);
+  color: var(--rd-sys-color-content-on-brand);
+  opacity: 0.9;
+}
+
+.facetPill:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+}
+
+.facetCount {
+  font-size: var(--font-size-xs);
+  opacity: 0.75;
+}
+
+/* ─── Sort selector ─────────────────────────────────────────────────────── */
+
+.sortGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-shrink: 0;
+}
+
+.sortLabel {
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-secondary);
+  white-space: nowrap;
+}
+
+.sortSelect {
+  height: 28px;
+  padding: 0 var(--spacing-2);
+  background-color: var(--rd-sys-color-background-surface);
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--duration-fast) var(--easing-standard);
+}
+
+.sortSelect:focus {
+  border-color: var(--rd-sys-color-border-focus);
+}

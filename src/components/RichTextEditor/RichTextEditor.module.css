@@ -1,0 +1,120 @@
+/* RichTextEditor Component Styles */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-family: var(--font-family-primary);
+  background-color: var(--rd-sys-color-background-surface);
+  transition: border-color var(--duration-fast) var(--easing-standard);
+}
+
+.wrapper:focus-within {
+  border-color: var(--rd-sys-color-border-focus);
+  box-shadow: 0 0 0 2px rgba(var(--rd-sys-color-background-brand-rgb, 59, 130, 246), 0.15);
+}
+
+/* ─── Toolbar ─────────────────────────────────────────────────────────── */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-2) var(--spacing-2);
+  border-bottom: 1px solid var(--rd-sys-color-border-divider);
+  background-color: var(--rd-sys-color-background-subtle);
+  flex-wrap: wrap;
+}
+
+.toolbarButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  cursor: pointer;
+  color: var(--rd-sys-color-content-secondary);
+  transition: background-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+
+.toolbarButton:hover {
+  background-color: var(--rd-sys-color-background-muted);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.toolbarButtonActive {
+  background-color: var(--rd-sys-color-background-information);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.toolbarButton:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 1px;
+}
+
+/* ─── Editor area ──────────────────────────────────────────────────────── */
+
+.editor {
+  flex: 1;
+  padding: var(--spacing-3) var(--spacing-4);
+  outline: none;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--rd-sys-color-content-primary);
+  overflow-y: auto;
+  word-break: break-word;
+}
+
+.editor:empty::before {
+  content: attr(data-placeholder);
+  color: var(--rd-sys-color-content-placeholder);
+  pointer-events: none;
+}
+
+.editor h2 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--rd-sys-color-content-primary);
+  margin: var(--spacing-3) 0 var(--spacing-2);
+}
+
+.editor blockquote {
+  border-left: 3px solid var(--rd-sys-color-border-default);
+  margin: var(--spacing-2) 0;
+  padding-left: var(--spacing-3);
+  color: var(--rd-sys-color-content-secondary);
+  font-style: italic;
+}
+
+.editor ul {
+  padding-left: var(--spacing-5);
+  margin: var(--spacing-2) 0;
+}
+
+.editor li {
+  margin-bottom: var(--spacing-1);
+}
+
+.editor a {
+  color: var(--rd-sys-color-content-link);
+  text-decoration: underline;
+}
+
+.editor strong {
+  font-weight: var(--font-weight-bold);
+}
+
+.editor em {
+  font-style: italic;
+}
+
+.editor u {
+  text-decoration: underline;
+}

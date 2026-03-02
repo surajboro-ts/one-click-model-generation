@@ -1,0 +1,5 @@
+.container {
+  color: var(--rd-sys-color-content-primary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal, 1.5);
+}

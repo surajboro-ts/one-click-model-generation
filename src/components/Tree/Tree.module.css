@@ -1,0 +1,95 @@
+/* Tree Component Styles */
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  height: 32px;
+  padding-right: var(--spacing-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--easing-standard);
+}
+
+.row:hover {
+  background-color: var(--rd-sys-color-background-subtle);
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: -2px;
+}
+
+.selected {
+  background-color: var(--rd-sys-color-background-information);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.selected:hover {
+  background-color: var(--rd-sys-color-background-information);
+}
+
+.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--rd-sys-color-content-secondary);
+  transition: transform var(--duration-fast) var(--easing-standard);
+  border-radius: var(--radius-sm);
+}
+
+.chevron:hover {
+  background-color: var(--rd-sys-color-background-muted);
+}
+
+.chevronExpanded {
+  transform: rotate(90deg);
+}
+
+.leafSpacer {
+  display: inline-block;
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--rd-sys-color-background-brand);
+  cursor: pointer;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--rd-sys-color-content-secondary);
+}
+
+.label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}

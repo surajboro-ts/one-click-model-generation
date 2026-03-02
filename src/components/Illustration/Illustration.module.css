@@ -1,0 +1,7 @@
+.illustration {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rd-sys-color-content-subtle);
+  flex-shrink: 0;
+}

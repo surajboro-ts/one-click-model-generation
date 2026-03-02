@@ -1,0 +1,104 @@
+/* NumericFilterInput Component Styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  width: 100%;
+}
+
+.container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.label {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-primary);
+  line-height: var(--line-height-md);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+}
+
+.operatorSelect {
+  height: 32px;
+  padding: 0 var(--spacing-2);
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  background: var(--rd-sys-color-background-raised);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  /* chevron via background image using border color */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23777E8B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: var(--spacing-6);
+  min-width: 140px;
+  transition: border-color var(--duration-fast) ease;
+}
+
+.operatorSelect:hover {
+  border-color: var(--rd-sys-color-border-hover);
+}
+
+.operatorSelect:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+  border-color: var(--rd-sys-color-border-brand);
+}
+
+.numberInput {
+  height: 32px;
+  padding: 0 var(--spacing-2);
+  border: 1px solid var(--rd-sys-color-border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-primary);
+  background: var(--rd-sys-color-background-raised);
+  outline: none;
+  width: 96px;
+  transition: border-color var(--duration-fast) ease;
+  /* Remove default number input spinners */
+  -moz-appearance: textfield;
+}
+
+.numberInput::-webkit-outer-spin-button,
+.numberInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.numberInput:hover {
+  border-color: var(--rd-sys-color-border-hover);
+}
+
+.numberInput:focus-visible {
+  outline: 2px solid var(--rd-sys-color-border-focus);
+  outline-offset: 2px;
+  border-color: var(--rd-sys-color-border-brand);
+}
+
+.numberInput::placeholder {
+  color: var(--rd-sys-color-content-tertiary);
+}
+
+.andLabel {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--rd-sys-color-content-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
