@@ -124,6 +124,32 @@ export const HomePage: React.FC = () => {
           </button>
         </div>
 
+        {/* Getting Started Slide Deck link */}
+        <a
+          href="/guide.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={styles.guideLink}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.background = systemColors.light['background-subtle'];
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = systemColors.light['border-default'];
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.background = systemColors.light['background-base'];
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = systemColors.light['background-subtle'];
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span>New to Radiant Play? Watch the getting started guide</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ opacity: 0.45 }}>
+            <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+
         {/* Getting Started Guide */}
         <section style={styles.guideSection}>
           <div style={styles.guideSectionHeader}>
@@ -524,6 +550,25 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
     border: `1px solid ${systemColors.light['background-information']}`,
     transition: 'all 150ms ease',
+  },
+
+  // Getting Started guide link
+  guideLink: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: `${spacing.B}px`,
+    fontSize: '14px',
+    fontWeight: 500,
+    color: systemColors.light['content-secondary'],
+    background: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
+    borderRadius: '99px',
+    padding: `${spacing.B}px ${spacing.E}px`,
+    textDecoration: 'none',
+    transition: 'all 150ms ease',
+    marginBottom: `${spacing.J}px`,
+    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+    cursor: 'pointer',
   },
 
   // Overview Grid (4-step summary)
