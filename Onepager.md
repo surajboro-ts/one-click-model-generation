@@ -36,8 +36,8 @@ The **Radiant Prototyping Kit** — a fork-ready repository where designers crea
 
 | Layer | Details |
 |-------|---------|
-| **Component Library** | 40+ Radiant components (Buttons, Forms, Feedback, Data Display, Navigation, Layout, Typography, 46 Icons) |
-| **Design Token System** | 3-tier architecture (Brand → Alias → Mapped) synced from Figma. No hard-coded values. |
+| **Component Library** | 74 Radiant components (Layout Primitives, Forms, Feedback, Data Display, Navigation, Interaction, Data Viz, Advanced, 46 Icons) |
+| **Design Token System** | 3-tier architecture (Reference → System → Component) with CSS custom properties. No hard-coded values. |
 | **Prototype Infrastructure** | Template system (`npm run new-prototype`), example prototypes, structured patterns |
 | **Mock Data** | Realistic sample data (users, analytics, navigation, forms) ready to import |
 | **AI Rules** | Comprehensive `.cursor/rules/` ensuring AI generates consistent, token-compliant code |

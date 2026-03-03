@@ -95,11 +95,12 @@ export const MyPrototype: React.FC = () => {
 All components use the Radiant design token system. For custom styling:
 
 ```tsx
-import { brandColors, spacing } from '../../tokens';
+import { systemColors } from '../../tokens/colors';
+import { spacing } from '../../tokens/spacing';
 
 const style = {
-  backgroundColor: brandColors.blue[60],
-  padding: spacing.scale.md,
+  backgroundColor: systemColors.light['content-brand'],
+  padding: `${spacing.D}px`,
 };
 ```
 

@@ -92,7 +92,7 @@ This creates a starter file at `src/prototypes/MyPrototypeName/index.tsx`.
 
 > "Recreate this UI using Radiant components" *(paste a Figma screenshot)*
 
-The AI already knows all 30+ Radiant components, design tokens, and patterns thanks to the built-in `.cursor/rules/`.
+The AI already knows all 74 Radiant components, design tokens, and patterns thanks to the built-in `.cursor/rules/`.
 
 ### Step 8: Preview in browser
 
@@ -139,18 +139,24 @@ npm run dev
 
 ---
 
-## Available Components
+## Available Components (74 total)
 
 | Category | Components |
 |----------|------------|
-| **Buttons** | Button (primary, secondary, tertiary) |
-| **Forms** | TextInput, SearchInput, Select, Checkbox, Radio, Toggle, DatePicker |
-| **Feedback** | Alert, Modal, Toast, Tooltip, Popover |
-| **Data Display** | Table, Chip, Card, Accordion, ProgressBar, LoadingIndicator |
-| **Navigation** | Tabs, Sidebar, Pagination, Stepper |
-| **Overlays** | Modal, WizardModal, FilterDialog |
-| **Icons** | Icon component with 46 built-in icons |
-| **Showcase** | IconGallery |
+| **Layout Primitives** | Horizontal, Vertical, View, Grid, RdGrid, SplitPane |
+| **Selection Controls** | Button, Checkbox, Radio, Toggle, SegmentedControl |
+| **Inputs** | TextInput, TextArea, SearchInput, SearchBar, Select, DatePicker |
+| **Form Extensions** | FormControl, NumericFilterInput, DirectionControl, ColorPicker, InputMentions, FilterModal |
+| **Feedback** | Alert, Modal, Toast, Tooltip, Popover, LoadingIndicator, ProgressBar, OverlayLoading |
+| **Overlays** | ConfirmDialog, WizardModal, FilterDialog, FormModal, ActionMenu |
+| **Data Display** | Table, Chip, Card, Avatar, Tree, TreeTable, Legend, Formatters |
+| **Display & Content** | NoData, ExplainerCard, Image, Illustration, SafeHTML |
+| **Navigation** | Tabs, Sidebar, Pagination, Stepper, VerticalStepper, Link, Menu |
+| **Interaction** | List, Slider, ManagedList, ManageTags, NestedCheckbox, Trending |
+| **Advanced** | Tour, RichTextEditor, DragDrop, FormBuilder, DynamicForm, FacetSortBar |
+| **Layout** | Accordion, Divider, Separator |
+| **Widgets** | GlobalHeader, AppSidebar, AppShell |
+| **Icons** | Icon component with 46 built-in icons, IconGallery |
 
 All components are imported from `../../components`:
 
@@ -202,7 +208,7 @@ The kit includes several example prototypes you can study and reference:
 ```
 figmaradiant/
 ├── src/
-│   ├── components/        ← 30+ Radiant UI components
+│   ├── components/        ← 74 Radiant UI components
 │   ├── prototypes/        ← YOUR prototypes go here
 │   │   ├── _template/     ← Starter template
 │   │   ├── _examples/     ← Reference implementations
@@ -237,11 +243,10 @@ figmaradiant/
 
 ## Further Reading
 
-- [Your First Prototype](getting-started/your-first-prototype.md) — Step-by-step beginner walkthrough
-- [Prototyping Guide](docs/prototyping-guide.md) — Comprehensive guide with patterns and best practices
-- [Component Patterns](docs/component-patterns.md) — React component patterns used in the kit
-- [Content Guidelines](docs/content-guidelines-detailed.md) — UI text and copy rules
-- [Design Token Structure](design-token-structure.md) — Token architecture overview
+- [Getting Started Guide](GETTING_STARTED.md) — Detailed designer's guide with step-by-step instructions
+- [Fork Workflow](FORK-WORKFLOW.md) — How to fork, branch, and submit changes
+- [Component Registry](/radiant/registry) — Browse all 74 components with props and live previews
+- [Changelog](/radiant/changelog) — Version history and what's new
 
 ---
 

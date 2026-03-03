@@ -12,13 +12,21 @@ import {
 import { referenceColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
 type SidebarTabId = 'insights' | 'data' | 'develop' | 'admin';
+
+// ---------------------------------------------------------------------------
+// Sidebar configuration
+// ---------------------------------------------------------------------------
 
 const SIDEBAR_TABS: SidebarTab[] = [
   { id: 'insights', label: 'Insights', headerTitle: 'Insights' },
-  { id: 'data', label: 'Data', headerTitle: 'Data Workspace' },
-  { id: 'develop', label: 'Develop', headerTitle: 'Develop' },
-  { id: 'admin', label: 'Admin', headerTitle: 'Admin' },
+  { id: 'data',     label: 'Data',     headerTitle: 'Data Workspace' },
+  { id: 'develop',  label: 'Develop',  headerTitle: 'Develop' },
+  { id: 'admin',    label: 'Admin',    headerTitle: 'Admin' },
 ];
 
 const SIDEBAR_CATEGORIES: Record<SidebarTabId, SidebarCategory[]> = {
@@ -26,8 +34,8 @@ const SIDEBAR_CATEGORIES: Record<SidebarTabId, SidebarCategory[]> = {
     {
       title: 'Navigation',
       items: [
-        { id: 'home', label: 'Home' },
-        { id: 'spotter', label: 'Spotter' },
+        { id: 'home',        label: 'Home' },
+        { id: 'spotter',     label: 'Spotter' },
         { id: 'search-data', label: 'Search data' },
       ],
     },
@@ -35,24 +43,23 @@ const SIDEBAR_CATEGORIES: Record<SidebarTabId, SidebarCategory[]> = {
       title: 'Library',
       items: [
         { id: 'liveboards', label: 'Liveboards' },
-        { id: 'answers', label: 'Answers' },
+        { id: 'answers',    label: 'Answers' },
       ],
     },
     {
       title: 'Analysis & Alerts',
       items: [
-        { id: 'subscriptions', label: 'Subscriptions' },
+        { id: 'subscriptions',  label: 'Subscriptions' },
         { id: 'spotiq-analysis', label: 'SpotIQ analysis' },
       ],
     },
     {
       title: 'Favourites',
       items: [
-        { id: 'retails-sales', label: 'Retails Sales' },
-        { id: 'total-sales', label: 'Total sales, Total quantity pu...' },
-        { id: 'cloud-clusters', label: 'Cloud Clusters' },
+        { id: 'retails-sales',      label: 'Retails Sales' },
+        { id: 'total-sales',        label: 'Total sales, Total quantity pu...' },
+        { id: 'cloud-clusters',     label: 'Cloud Clusters' },
         { id: 'sales-state-region', label: 'Sales by state and region' },
-        { id: 'retails-sales-2', label: 'Retails Sales' },
       ],
     },
   ],
@@ -61,7 +68,7 @@ const SIDEBAR_CATEGORIES: Record<SidebarTabId, SidebarCategory[]> = {
       title: 'Data Workspace',
       items: [
         { id: 'data-objects', label: 'Data objects' },
-        { id: 'connections', label: 'Connections' },
+        { id: 'connections',  label: 'Connections' },
       ],
     },
   ],
@@ -78,54 +85,82 @@ const SIDEBAR_CATEGORIES: Record<SidebarTabId, SidebarCategory[]> = {
     {
       title: 'Admin Settings',
       items: [
-        { id: 'users', label: 'Users' },
-        { id: 'groups', label: 'Groups' },
-        { id: 'orgs', label: 'Orgs' },
+        { id: 'users',    label: 'Users' },
+        { id: 'groups',   label: 'Groups' },
+        { id: 'orgs',     label: 'Orgs' },
         { id: 'security', label: 'Security' },
       ],
     },
   ],
 };
 
-// Custom SVG icon — no matching icon in the 46-icon Radiant library
+// ---------------------------------------------------------------------------
+// Custom impersonation icon — no matching icon in the 46-icon Radiant library
+// ---------------------------------------------------------------------------
+
 const ImpersonateIcon: React.FC<{ color?: string }> = ({ color = 'currentColor' }) => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="2" y="4" width="16" height="12" rx="2" stroke={color} strokeWidth="1.5" />
     <circle cx="10" cy="9" r="2" stroke={color} strokeWidth="1.5" />
-    <path d="M7 14C7 12.3431 8.34315 11 10 11C11.6569 11 13 12.3431 13 14" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M7 14C7 12.3431 8.34315 11 10 11C11.6569 11 13 12.3431 13 14"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
-function useImpersonationTimer(startTime: Date) {
+// ---------------------------------------------------------------------------
+// Session timer hook
+// ---------------------------------------------------------------------------
+
+function useSessionTimer(startTime: Date): string {
   const [elapsed, setElapsed] = useState('00:00:00');
 
   useEffect(() => {
-    const update = () => {
-      const diff = Math.floor((Date.now() - startTime.getTime()) / 1000);
-      const hours = String(Math.floor(diff / 3600)).padStart(2, '0');
-      const mins  = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-      const secs  = String(diff % 60).padStart(2, '0');
-      setElapsed(`${hours}:${mins}:${secs}`);
+    const tick = () => {
+      const totalSeconds = Math.floor((Date.now() - startTime.getTime()) / 1000);
+      const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+      const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+      const s = String(totalSeconds % 60).padStart(2, '0');
+      setElapsed(`${h}:${m}:${s}`);
     };
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
   }, [startTime]);
 
   return elapsed;
 }
 
-export const AdminImpersonation: React.FC = () => {
+// ---------------------------------------------------------------------------
+// Main prototype component
+// ---------------------------------------------------------------------------
+
+/**
+ * ImpersonationV2
+ *
+ * Admin palette impersonation prototype (Figma node 2935-65873).
+ * Shows a full-page Spotter experience with:
+ *   - Blue viewport border while impersonating
+ *   - Impersonation icon in GlobalHeader with Popover popup
+ *   - Session timer inside the popup
+ *   - Toast notification at the bottom
+ *   - "Exit session" to end impersonation
+ */
+export const ImpersonationV2: React.FC = () => {
   const [isImpersonating, setIsImpersonating] = useState(true);
-  const [showToast, setShowToast]     = useState(true);
-  const [showPopup, setShowPopup]     = useState(false);
-  const [startTime]                   = useState(() => new Date(Date.now() - 24 * 60 * 1000 + 55 * 1000));
+  const [showPopup,       setShowPopup]       = useState(false);
+  const [showToast,       setShowToast]       = useState(true);
+  const [sidebarTab,      setSidebarTab]      = useState<SidebarTabId>('insights');
+  const [sidebarNav,      setSidebarNav]      = useState('home');
 
-  const [sidebarTab, setSidebarTab] = useState<SidebarTabId>('insights');
-  const [sidebarNav, setSidebarNav] = useState('home');
+  // Pre-seeded start time so timer reads ~24 minutes on first render
+  const [sessionStart] = useState(() => new Date(Date.now() - 24 * 60 * 1000 + 55 * 1000));
+  const elapsedTime = useSessionTimer(sessionStart);
 
-  const userName    = 'Simran Pandit';
-  const elapsedTime = useImpersonationTimer(startTime);
+  const impersonatedUser = 'Simran Pandit';
 
   const handleExitSession = () => {
     setIsImpersonating(false);
@@ -133,18 +168,15 @@ export const AdminImpersonation: React.FC = () => {
     setShowToast(false);
   };
 
-  const handleDismissToast = () => {
-    setShowToast(false);
-  };
-
-  // The impersonation icon sits in the GlobalHeader's rightSlot.
-  // <Popover> manages the popup container, click-outside closing, and positioning.
+  // Impersonation icon in GlobalHeader's rightSlot.
+  // Raw <button> is intentional — an icon-only circular trigger where Button
+  // would apply unwanted text padding and styling.
   const impersonationSlot = isImpersonating ? (
     <Tooltip content="Impersonation active" placement="bottom">
       <Popover
         content={
           <ImpersonationPopup
-            userName={userName}
+            userName={impersonatedUser}
             elapsedTime={elapsedTime}
             onExitSession={handleExitSession}
           />
@@ -158,9 +190,10 @@ export const AdminImpersonation: React.FC = () => {
         offset={spacing.B}
       >
         <button
-          style={styles.impersonateButton}
+          style={styles.impersonationTrigger}
           aria-label="Impersonation settings"
           aria-expanded={showPopup}
+          aria-haspopup="dialog"
         >
           <ImpersonateIcon color={referenceColors.brand['60']} />
         </button>
@@ -174,8 +207,8 @@ export const AdminImpersonation: React.FC = () => {
         <AppShell
           headerProps={{
             searchPlaceholder: 'Search in your library',
-            userName,
-            notificationCount: 1,
+            userName: impersonatedUser,
+            notificationCount: 3,
             rightSlot: impersonationSlot,
           }}
           sidebarProps={{
@@ -194,15 +227,16 @@ export const AdminImpersonation: React.FC = () => {
           <SpotterHomePage />
         </AppShell>
 
+        {/* Persistent toast — shown until admin exits or dismisses */}
         {isImpersonating && showToast && (
           <div style={styles.toastContainer}>
             <Toast
-              message={`You are now acting as <${userName}>.`}
+              message={`You are now acting as <${impersonatedUser}>.`}
               type="info"
               duration={0}
               actionText="End session"
               onAction={handleExitSession}
-              onDismiss={handleDismissToast}
+              onDismiss={() => setShowToast(false)}
               position="bottom"
             />
           </div>
@@ -211,6 +245,10 @@ export const AdminImpersonation: React.FC = () => {
     </ImpersonationBorder>
   );
 };
+
+// ---------------------------------------------------------------------------
+// Styles — tokens only
+// ---------------------------------------------------------------------------
 
 const styles: Record<string, React.CSSProperties> = {
   shellWrapper: {
@@ -225,7 +263,7 @@ const styles: Record<string, React.CSSProperties> = {
     transform: 'translateX(-50%)',
     zIndex: 9998,
   },
-  impersonateButton: {
+  impersonationTrigger: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -239,4 +277,4 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-export default AdminImpersonation;
+export default ImpersonationV2;

@@ -63,9 +63,27 @@ Only proceed to step 1 after confirming all four checklist items.
 
 | Input | Action |
 |-------|--------|
-| Figma screenshot or URL | Consult **`figma-component-mapping.md`** to translate Figma layers to Radiant components |
+| Figma URL (`figma.com/design/...`) | Follow **`figma-mcp-workflow.md`** for the MCP tool-call sequence, then adapt output |
+| Figma screenshot (pasted image) | See **Screenshot Input** below, then consult **`figma-component-mapping.md`** |
 | Text description | Identify UI patterns below, then pick components from **`component-inventory.md`** |
 | Existing prototype to modify | Read the current file, apply changes using the same patterns |
+
+#### Screenshot Input
+
+When the designer pastes a screenshot (no Figma URL), apply these rules:
+
+**Fidelity expectations are lower than MCP.** You are interpreting visual appearance, not structured data. Approximations are acceptable — document them.
+
+1. **Identify layout pattern** — Match the screenshot to a layout template from `layout-patterns.md` (dashboard, admin, form, table, wizard)
+2. **Map components visually** — For each UI element, find the closest Radiant component from `component-inventory.md`. Prefer semantic matches over pixel-perfect recreation.
+3. **Approximate colors** — Use `figma-component-mapping.md` hex → token tables. When a color doesn't match exactly, choose the semantically closest token (e.g. "this looks like secondary text" → `systemColors.light['content-secondary']`).
+4. **Approximate spacing** — Round to the nearest spacing scale value (`spacing.A` through `spacing.H`). Don't try to match 13px or 17px exactly.
+5. **Flag unknowns** — If a UI element doesn't map to any Radiant component, add a TODO comment: `{/* TODO: No Radiant component for [description] — using placeholder */}`
+
+**Do NOT:**
+- Ask more than 2 clarifying questions — make reasonable assumptions and proceed
+- Attempt pixel-perfect reproduction from a screenshot
+- Hardcode hex values extracted from the image — always map to tokens
 
 ### 2. Pick a layout template
 
@@ -234,7 +252,28 @@ gap: spacing.B                             // 8px
 - Is the data table wrapped in a `div` with `overflowX: 'auto'`? ✓
 - Are fixed pixel column counts (`gridTemplateColumns: 'repeat(4, 1fr)'`) avoided in content grids? ✓
 
-Declare done only after all five checks pass.
+### 10f. Accessibility compliance
+
+- [ ] All interactive elements are keyboard-reachable (`tabIndex`, native focusable elements, or `Button`)
+- [ ] Images have `alt` text (use `alt=""` for decorative images)
+- [ ] Form inputs have visible `<label>` elements or `aria-label` props
+- [ ] Color is not the only indicator of state (e.g. error fields also have text/icon, not just red border)
+- [ ] Modals trap focus and restore focus on close (built-in for the `Modal` component)
+- [ ] Icon-only buttons have `aria-label` describing the action
+
+```tsx
+// FAIL — icon button with no accessible label:
+<button onClick={handleEdit}>
+  <Icon name="edit" size="sm" />
+</button>
+
+// PASS — accessible icon button:
+<button onClick={handleEdit} aria-label="Edit item">
+  <Icon name="edit" size="sm" />
+</button>
+```
+
+Declare done only after all six checks (10a–10f) pass.
 
 ---
 
@@ -324,15 +363,15 @@ Use these token-based patterns for consistent styling:
 ```tsx
 // Card container
 container: {
-  backgroundColor: brandColors.white,
-  border: `1px solid ${brandColors.gray[20]}`,
+  backgroundColor: systemColors.light['background-base'],
+  border: `1px solid ${systemColors.light['border-subtle']}`,
   borderRadius: '8px',
   padding: `${spacing.F}px`,  // 24px
 }
 
 // Section with border
 section: {
-  borderBottom: `1px solid ${brandColors.gray[20]}`,
+  borderBottom: `1px solid ${systemColors.light['border-subtle']}`,
   paddingBottom: `${spacing.F}px`,
   marginBottom: `${spacing.F}px`,
 }

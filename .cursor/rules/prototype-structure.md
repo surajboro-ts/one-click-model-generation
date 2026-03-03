@@ -32,7 +32,7 @@ src/prototypes/
 // MyPrototype.tsx
 import React, { useState } from 'react';
 import { Button, Modal, TextInput } from '../components';
-import { brandColors } from '../tokens/colors/brand';
+import { systemColors } from '../tokens/colors';
 import { spacing } from '../tokens/spacing';
 
 /**
@@ -53,7 +53,7 @@ export const MyPrototype: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     padding: `${spacing.F}px`,
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
     minHeight: '100vh',
   },
 };
@@ -108,7 +108,7 @@ export default Dashboard;
 ### styles.ts
 ```tsx
 import { CSSProperties } from 'react';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 
 export const styles: Record<string, CSSProperties> = {
@@ -116,7 +116,7 @@ export const styles: Record<string, CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    backgroundColor: brandColors.gray[10],
+    backgroundColor: systemColors.light['background-sunken'],
   },
   // More styles...
 };
@@ -319,7 +319,7 @@ const styles: Record<string, React.CSSProperties> = {
 ```tsx
 // styles.ts
 import { CSSProperties } from 'react';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors } from '../../tokens/colors';
 
 export const styles: Record<string, CSSProperties> = {
   layout: { ... },
@@ -427,7 +427,7 @@ A prototype component should be promoted to `src/components/` when:
 import { Button, Modal, TextInput } from '../../../components';
 
 // Design tokens
-import { brandColors } from '../../../tokens/colors/brand';
+import { systemColors, referenceColors } from '../../../tokens/colors';
 import { spacing } from '../../../tokens/spacing';
 
 // Prototype-local components

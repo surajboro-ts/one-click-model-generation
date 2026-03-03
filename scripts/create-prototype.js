@@ -46,7 +46,8 @@ fs.mkdirSync(prototypeDir, { recursive: true });
 // Component template
 const componentTemplate = `import React, { useState } from 'react';
 import { Button, Modal, TextInput, Alert } from '../../components';
-import { brandColors } from '../../tokens/colors/brand';
+import { systemColors } from '../../tokens/colors';
+import { spacing } from '../../tokens/spacing';
 import { users, analytics } from '../../mocks';
 
 /**
@@ -114,7 +115,7 @@ export const ${prototypeName}: React.FC = () => {
           </>
         }
       >
-        <p style={{ margin: 0, color: brandColors.gray[60] }}>
+        <p style={{ margin: 0, color: systemColors.light['content-secondary'] }}>
           This is an example modal. Replace with your content.
         </p>
       </Modal>
@@ -125,47 +126,47 @@ export const ${prototypeName}: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
-    backgroundColor: brandColors.gray[10],
-    padding: '32px',
+    backgroundColor: systemColors.light['background-sunken'],
+    padding: \`\${spacing.H}px\`,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, sans-serif',
   },
   header: {
-    marginBottom: '32px',
+    marginBottom: \`\${spacing.H}px\`,
   },
   title: {
     fontSize: '32px',
     fontWeight: 600,
-    color: brandColors.gray[90],
-    marginBottom: '8px',
+    color: systemColors.light['content-primary'],
+    marginBottom: \`\${spacing.B}px\`,
   },
   subtitle: {
     fontSize: '16px',
-    color: brandColors.gray[50],
+    color: systemColors.light['content-tertiary'],
     margin: 0,
   },
   main: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '24px',
+    gap: \`\${spacing.F}px\`,
     maxWidth: '800px',
   },
   card: {
-    backgroundColor: brandColors.white,
-    borderRadius: '12px',
-    padding: '32px',
+    backgroundColor: systemColors.light['background-base'],
+    borderRadius: \`\${spacing.C}px\`,
+    padding: \`\${spacing.H}px\`,
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
   },
   cardTitle: {
     fontSize: '20px',
     fontWeight: 600,
-    color: brandColors.gray[90],
-    marginBottom: '12px',
+    color: systemColors.light['content-primary'],
+    marginBottom: \`\${spacing.C}px\`,
   },
   cardText: {
     fontSize: '14px',
     lineHeight: 1.6,
-    color: brandColors.gray[60],
-    marginBottom: '24px',
+    color: systemColors.light['content-secondary'],
+    marginBottom: \`\${spacing.F}px\`,
   },
   actions: {
     display: 'flex',

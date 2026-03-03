@@ -1,61 +1,49 @@
-# Radiant Prototyping Kit — To-Do List
-
-> **Reference:** See [CLAUDE_RECOMMENDATIONS.md](CLAUDE_RECOMMENDATIONS.md) for the full improvement roadmap covering Handoff Quality, Discovery & Speed, and Quality & Maintenance phases.
+# Radiant Prototyping Kit — To-Do
 
 ---
 
-## Documentation Updates
+## Documentation
 
-### General Documentation
-
-- [ ] **Update README and getting-started guide**  
-  Ensure README reflects current component count, setup steps, and project structure
-
-- [x] **Update SETUP-GUIDE.md**  
-  Step-by-step guide for designers receiving the zip
-
-- [ ] **Update CLAUDE.md with current component list**  
-  Sync CLAUDE.md with the component registry as single source of truth
+- [ ] Update `SETUP-GUIDE.md` example prototypes table — some listed prototypes have been removed or renamed
+- [ ] `FORK-WORKFLOW.md` — add section on syncing a fork with upstream after a major update
 
 ---
 
-## AI Instructions
+## AI Orchestration (.cursor/rules/)
 
-### Core Cursor Guidelines
-
-- [x] **Orchestrating between guidelines**  
-  Created `_orchestration.md` with priority routing, rewrote `prototype-generation.md` as a cross-referencing hub, fixed `modal-patterns.md` frontmatter
-
-### Design System Guidelines
-
-- [ ] **Check through Notion guidelines**  
-  Audit Notion design docs and port relevant rules into `.cursor/rules/`
-
-- [ ] **Component importing guidelines**  
-  Standardize import paths, barrel exports, and alias usage rules
-
-- [ ] **Prototyping modal behaviour guidelines**  
-  Document modal stacking, dismiss patterns, and wizard flows for AI
-
-- [ ] **Component usage guidelines**  
-  When to use which component, common combinations, anti-patterns
-
-### Product Knowledge Guidelines
-
-- [x] **TS product knowledge** *(in progress)*  
-  ThoughtSpot platform overview, features, terminology
-
-- [ ] **Track-level knowledge**  
-  Specific track/team context for targeted prototype generation
-
-- [ ] **AI product fluency**  
-  Teach AI about Spotter, Answers, Liveboards, and user journeys
+- [ ] `product-knowledge.md` — expand Spotter section with AI search journey and user flows
+- [ ] `token-usage.md` — add dark mode token usage examples
+- [ ] `prototype-generation.md` — add accessibility checklist to Step 10
 
 ---
 
-## Notes
+## Component System
 
-- Items marked with `[x]` are completed
-- Items marked with `[ ]` are pending
-- Edit this file directly to track your progress
-- For detailed implementation plans, see [CLAUDE_RECOMMENDATIONS.md](CLAUDE_RECOMMENDATIONS.md)
+- [ ] Promote `StatusBadge` local component (used in 3+ prototypes) to `src/components/`
+- [ ] Add `Breadcrumb` component (frequently needed, not yet in library)
+- [ ] Review dark mode support across the 35 new Phase 1-4 components
+
+---
+
+## Prototypes & Registry
+
+- [ ] Add thumbnail images to ImpersonationV2, MuseChat, SpotterModel in the registry
+- [ ] Archive or remove the `_examples/FilterDialog` example (superseded by FilterModal component)
+
+---
+
+## Infrastructure
+
+- [ ] Investigate the large chunk warning from Vite build (`index-Djd8lWv0.js` at 787KB) — consider code splitting
+- [ ] Set up Dependabot auto-merge for patch-level dev dependency updates
+
+---
+
+## Completed (recent)
+
+- [x] 35 new Scaligent-parity components added (38 → 74 total) — 2026-03-02
+- [x] Component registry updated with all new entries, source set to scaligent — 2026-03-02
+- [x] AI orchestration layer refreshed (6 rule files updated) — 2026-03-02
+- [x] Changelog v2.1.0 entry added — 2026-03-02
+- [x] Rollup path traversal vulnerability patched (GHSA-mw96-cpmx-2vgc) — 2026-03-02
+- [x] Stale planning docs and completed .cursor/plans/ cleaned up — 2026-03-03

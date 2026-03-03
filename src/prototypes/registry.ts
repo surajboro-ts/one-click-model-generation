@@ -49,9 +49,9 @@ const Liveboard = React.lazy(() => import('./Liveboard'));
 const Cmdk = React.lazy(() => import('./Cmdk'));
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
-const ChartEditorAI = React.lazy(() => import('./ChartEditorAI'));
-const AdminImpersonation = React.lazy(() => import('./AdminImpersonation'));
 const ImpersonationV2 = React.lazy(() => import('./ImpersonationV2'));
+const MuseChat = React.lazy(() => import('./MuseChat'));
+const SpotterModelProto = React.lazy(() => import('./SpotterModel'));
 
 /**
  * All registered projects
@@ -98,31 +98,31 @@ export const projectRegistry: ProjectMeta[] = [
     customComponents: 10,
   },
   {
-    id: 'ChartEditorAI',
-    name: 'Chart Editor AI',
-    description: 'Chart editor with Spotter AI assistant for intelligent chart suggestions, conditional formatting, and data insights.',
-    author: 'Design Team',
-    component: ChartEditorAI,
-    dsComponents: 2,
-    customComponents: 0,
-  },
-  {
-    id: 'AdminImpersonation',
-    name: 'Admin Impersonation',
-    description: 'Admin impersonating a user with blue border highlight, impersonation icon in global nav, popup with session timer, and exit controls.',
-    author: 'Design Team',
-    component: AdminImpersonation,
-    dsComponents: 4,
-    customComponents: 4,
-  },
-  {
     id: 'ImpersonationV2',
-    name: 'Impersonation V2',
-    description: 'Admin palette impersonation — blue viewport border, GlobalHeader icon, session timer popup, and Toast notification. Clean rewrite from Figma node 2935-65873.',
+    name: 'Admin Impersonation',
+    description: 'Admin palette impersonation — blue viewport border, GlobalHeader icon, session timer popup, and Toast notification.',
     author: 'Design Team',
     component: ImpersonationV2,
     dsComponents: 11,
     customComponents: 3,
+  },
+  {
+    id: 'MuseChat',
+    name: 'MuseChat',
+    description: 'Spotter AI chat interface with conversational data exploration, embedded charts, and animated typing indicators.',
+    author: 'Design Team',
+    component: MuseChat,
+    dsComponents: 4,
+    customComponents: 6,
+  },
+  {
+    id: 'SpotterModel',
+    name: 'Spotter Model',
+    description: 'SpotterModel agent edit flow — onboarding, table/join recommendations, columns editing, and impact-aware delete.',
+    author: 'Design Team',
+    component: SpotterModelProto,
+    dsComponents: 5,
+    customComponents: 14,
   },
   // Add more projects here as they are created
   // {

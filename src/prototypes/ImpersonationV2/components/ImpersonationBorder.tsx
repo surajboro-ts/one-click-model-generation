@@ -9,16 +9,23 @@ interface ImpersonationBorderProps {
 const BORDER_COLOR = referenceColors.brand['60'];
 const BORDER_WIDTH = 3;
 
+/**
+ * ImpersonationBorder
+ *
+ * Renders a fixed 3px blue border around the entire viewport when
+ * impersonation is active. Uses pointer-events: none so underlying
+ * content remains fully interactive.
+ */
 export const ImpersonationBorder: React.FC<ImpersonationBorderProps> = ({ active, children }) => {
   if (!active) return <>{children}</>;
 
   return (
     <div style={styles.wrapper}>
-      <div style={styles.borderOverlay}>
-        <div style={styles.borderTop} />
-        <div style={styles.borderRight} />
-        <div style={styles.borderBottom} />
-        <div style={styles.borderLeft} />
+      <div style={styles.overlay} aria-hidden="true">
+        <div style={styles.top} />
+        <div style={styles.right} />
+        <div style={styles.bottom} />
+        <div style={styles.left} />
       </div>
       {children}
     </div>
@@ -31,7 +38,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     height: '100%',
   },
-  borderOverlay: {
+  overlay: {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -40,7 +47,7 @@ const styles: Record<string, React.CSSProperties> = {
     pointerEvents: 'none',
     zIndex: 9999,
   },
-  borderTop: {
+  top: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -48,7 +55,7 @@ const styles: Record<string, React.CSSProperties> = {
     height: BORDER_WIDTH,
     backgroundColor: BORDER_COLOR,
   },
-  borderRight: {
+  right: {
     position: 'absolute',
     top: 0,
     right: 0,
@@ -56,7 +63,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: BORDER_WIDTH,
     backgroundColor: BORDER_COLOR,
   },
-  borderBottom: {
+  bottom: {
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -64,7 +71,7 @@ const styles: Record<string, React.CSSProperties> = {
     height: BORDER_WIDTH,
     backgroundColor: BORDER_COLOR,
   },
-  borderLeft: {
+  left: {
     position: 'absolute',
     top: 0,
     left: 0,

@@ -132,7 +132,7 @@ Always use Radiant tokens for styling:
 ```typescript
 // Import tokens
 import { spacing, componentSpacing } from '@/tokens';
-import { brandColors, backgroundColors, textColors } from '@/tokens';
+import { systemColors } from '../../tokens/colors';
 import { v2TextStyles } from '@/tokens';
 import { componentShadows } from '@/tokens';
 
@@ -171,8 +171,8 @@ Follow Figma spec for footer button arrangement:
 ## Wizard Progress Bar
 
 - Supports 2-4 steps
-- Active steps: Primary blue (`brandColors.blue[60]`)
-- Inactive steps: Gray (`brandColors.gray[30]`)
+- Active steps: Primary blue (`systemColors.light['content-brand']`)
+- Inactive steps: Gray (`systemColors.light['border-subtle']`)
 - Height: 4px with 6px gaps
 
 ## Accessibility

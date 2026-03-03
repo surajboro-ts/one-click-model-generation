@@ -27,6 +27,7 @@ The **Radiant Prototyping Kit** is a fork-ready repository for ThoughtSpot desig
 ## Quick Start
 
 ### New to this project? Read the full setup guide first:
+- [GETTING_STARTED.md](GETTING_STARTED.md) — **start here** if you're new to Git and code (visual explainers with diagrams)
 - [FORK-WORKFLOW.md](FORK-WORKFLOW.md) — fork-based setup for designers (recommended)
 - [SETUP-GUIDE.md](SETUP-GUIDE.md) — detailed step-by-step guide
 
