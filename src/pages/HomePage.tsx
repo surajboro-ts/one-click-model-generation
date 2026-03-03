@@ -3,21 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { systemColors, referenceColors } from '../tokens/colors';
 import { spacing } from '../tokens/spacing';
 import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
-import { Icon } from '../components/icons';
 import { Button } from '../components/Button';
 import { Link } from '../components/Link';
 
 /**
- * HomePage - Simple split landing page
- * 
- * Two large cards for navigating to:
- * - Radiant: Design system preview (components, tokens, icons)
- * - Playground: Project gallery for designer prototypes
+ * HomePage - Landing page for RadiantPlay
+ *
+ * Hero with eyebrow + title + subtitle + stat chips,
+ * two navigation cards, a prominent guide banner, and footer.
  */
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
-  // Random footer messages that cycle on each page load
   const footerMessages = [
     'Made with coffee and tokens by Faris',
     'Scrapped together by Faris',
@@ -28,34 +25,54 @@ export const HomePage: React.FC = () => {
     'Made with borderRadius and box-shadow',
   ];
 
-  const [footerMessage] = React.useState(() => 
+  const [footerMessage] = React.useState(() =>
     footerMessages[Math.floor(Math.random() * footerMessages.length)]
   );
 
   return (
     <div style={styles.container}>
-      {/* Main Content */}
+      <style>{`
+        @keyframes hintPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.4; }
+        }
+      `}</style>
       <main style={styles.main}>
+        {/* Hero */}
         <div style={styles.heroText}>
-          <h1 style={styles.title}>Radiant Playground</h1>
+          <span style={styles.eyebrow}>ThoughtSpot Design System</span>
+          <h1 style={styles.title}>
+            Radiant<span style={styles.titleAccent}>Play</span>
+          </h1>
           <p style={styles.subtitle}>
-            Explore the design system or build your own prototypes using ThoughtSpot's component library.
+            A playground for building interactive prototypes with real Radiant components — so every screen stays consistent with the design system.
           </p>
+          <div style={styles.statChips}>
+            <span style={styles.statChip}>{getComponentCount()} components</span>
+            <span style={styles.statChip}>{getIconCount()} icons</span>
+            <span style={styles.statChip}>{getTokenCountLabel()} tokens</span>
+            <span style={styles.statChip}>AI-powered</span>
+          </div>
         </div>
 
-        {/* Split Cards */}
+        {/* Cards */}
         <div style={styles.cardsContainer}>
           {/* Radiant Card */}
+          <div style={styles.cardWrapper}>
+            <div style={styles.cardHint}>
+              <span style={styles.cardHintDot} />
+              <span>You already know this</span>
+            </div>
           <button
             style={styles.card}
             onClick={() => navigate('/radiant')}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 12px 40px rgba(39, 112, 239, 0.2)';
+              e.currentTarget.style.transform = 'translateY(-6px)';
+              e.currentTarget.style.boxShadow = '0 20px 48px rgba(39, 112, 239, 0.18), 0 0 0 1px rgba(39, 112, 239, 0.08)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+              e.currentTarget.style.boxShadow = '0 4px 24px rgba(0, 0, 0, 0.06)';
             }}
           >
             <div style={styles.cardIconWrapper}>
@@ -84,18 +101,19 @@ export const HomePage: React.FC = () => {
               </svg>
             </div>
           </button>
+          </div>
 
           {/* Playground Card */}
           <button
             style={styles.card}
             onClick={() => navigate('/playground')}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 12px 40px rgba(6, 191, 127, 0.2)';
+              e.currentTarget.style.transform = 'translateY(-6px)';
+              e.currentTarget.style.boxShadow = '0 20px 48px rgba(6, 191, 127, 0.18), 0 0 0 1px rgba(6, 191, 127, 0.08)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+              e.currentTarget.style.boxShadow = '0 4px 24px rgba(0, 0, 0, 0.06)';
             }}
           >
             <div style={styles.cardIconWrapper}>
@@ -124,271 +142,45 @@ export const HomePage: React.FC = () => {
           </button>
         </div>
 
-        {/* Getting Started Slide Deck link */}
+        {/* Guide Banner */}
         <a
           href="/guide.html"
           target="_blank"
           rel="noopener noreferrer"
-          style={styles.guideLink}
+          style={styles.guideBanner}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = systemColors.light['background-subtle'];
-            (e.currentTarget as HTMLAnchorElement).style.borderColor = systemColors.light['border-default'];
+            const el = e.currentTarget as HTMLAnchorElement;
+            el.style.background = referenceColors.blue['20'];
+            el.style.borderColor = referenceColors.blue['30'];
+            el.style.transform = 'translateY(-3px)';
+            el.style.boxShadow = '0 12px 40px rgba(39, 112, 239, 0.16)';
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = systemColors.light['background-base'];
-            (e.currentTarget as HTMLAnchorElement).style.borderColor = systemColors.light['background-subtle'];
+            const el = e.currentTarget as HTMLAnchorElement;
+            el.style.background = referenceColors.blue['10'];
+            el.style.borderColor = referenceColors.blue['20'];
+            el.style.transform = 'translateY(0)';
+            el.style.boxShadow = '0 4px 20px rgba(39, 112, 239, 0.08)';
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span>New to Radiant Play? Watch the getting started guide</span>
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ opacity: 0.45 }}>
-            <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <div style={styles.guideBannerIcon}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 3H8C9.06087 3 10.0783 3.42143 10.8284 4.17157C11.5786 4.92172 12 5.93913 12 7V21C12 20.2044 11.6839 19.4413 11.1213 18.8787C10.5587 18.3161 9.79565 18 9 18H2V3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M22 3H16C14.9391 3 13.9217 3.42143 13.1716 4.17157C12.4214 4.92172 12 5.93913 12 7V21C12 20.2044 12.3161 19.4413 12.8787 18.8787C13.4413 18.3161 14.2044 18 15 18H22V3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div style={styles.guideBannerText}>
+            <span style={styles.guideBannerTitle}>Getting started guide</span>
+            <span style={styles.guideBannerDesc}>New to RadiantPlay? Walk through setup, scaffolding your first prototype, and building with AI — step by step.</span>
+          </div>
+          <div style={styles.guideBannerArrow}>
+            <span>View guide</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
         </a>
-
-        {/* Getting Started Guide */}
-        <section style={styles.guideSection}>
-          <div style={styles.guideSectionHeader}>
-            <h2 style={styles.guideTitle}>Getting started</h2>
-            <p style={styles.guideSubtitle}>
-              Set up your environment and start building prototypes in minutes.
-            </p>
-          </div>
-
-          {/* Overview Steps */}
-          <div style={styles.overviewGrid}>
-            <div style={styles.overviewCard}>
-              <span style={styles.overviewBadge}>1</span>
-              <h3 style={styles.overviewTitle}>Fork &amp; Setup</h3>
-              <p style={styles.overviewDesc}>Clone the repo, install deps, start the dev server.</p>
-            </div>
-            <div style={styles.overviewCard}>
-              <span style={styles.overviewBadge}>2</span>
-              <h3 style={styles.overviewTitle}>Scaffold</h3>
-              <p style={styles.overviewDesc}>Run one command to create a new prototype file.</p>
-            </div>
-            <div style={styles.overviewCard}>
-              <span style={styles.overviewBadge}>3</span>
-              <h3 style={styles.overviewTitle}>Describe &amp; Build</h3>
-              <p style={styles.overviewDesc}>Tell Cursor AI what to build — paste screenshots or type prompts.</p>
-            </div>
-            <div style={styles.overviewCard}>
-              <span style={styles.overviewBadge}>4</span>
-              <h3 style={styles.overviewTitle}>Preview &amp; Iterate</h3>
-              <p style={styles.overviewDesc}>See live changes in the Playground and refine with AI.</p>
-            </div>
-          </div>
-
-          {/* Step 1: Fork and start the project */}
-          <div style={styles.stepCard}>
-            <div style={styles.stepHeader}>
-              <div style={styles.stepBadge}>
-                <span style={styles.stepNumber}>1</span>
-              </div>
-              <div style={{ flex: 1 }}>
-                <h3 style={styles.stepTitle}>Fork and start the project</h3>
-                <p style={styles.stepDescription}>
-                  Get the Radiant Prototyping Kit running locally in under 5 minutes.
-                </p>
-              </div>
-            </div>
-            <div style={styles.stepBody}>
-              <div style={styles.stepPrereqs}>
-                <span style={styles.prereqLabel}>Prerequisites</span>
-                <span style={styles.prereqItem}>Node.js 18+</span>
-                <span style={styles.prereqDot}>&middot;</span>
-                <span style={styles.prereqItem}>Cursor IDE</span>
-                <span style={styles.prereqDot}>&middot;</span>
-                <span style={styles.prereqItem}>GitHub access (invite required)</span>
-              </div>
-              <div style={styles.stepInstructions}>
-                <div style={styles.instructionItem}>
-                  <span style={styles.instructionMarker}>a.</span>
-                  <span style={styles.instructionText}>
-                    Get access to the{' '}
-                    <a
-                      href="https://github.com/faris-ts/figmaradiant"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={styles.inlineLink}
-                    >
-                      figmaradiant GitHub repository
-                    </a>
-                    {' '}(private — request an invite from the design systems team)
-                  </span>
-                </div>
-                <div style={styles.instructionItem}>
-                  <span style={styles.instructionMarker}>b.</span>
-                  <span style={styles.instructionText}>
-                    Fork the repository, then clone your fork locally
-                  </span>
-                </div>
-                <div style={styles.instructionItem}>
-                  <span style={styles.instructionMarker}>c.</span>
-                  <span style={styles.instructionText}>
-                    Open the folder in <strong>Cursor IDE</strong> — AI rules load automatically from{' '}
-                    <code style={styles.inlineCode}>.cursor/rules/</code>
-                  </span>
-                </div>
-                <div style={styles.instructionItem}>
-                  <span style={styles.instructionMarker}>d.</span>
-                  <span style={styles.instructionText}>
-                    Install dependencies and start the dev server
-                  </span>
-                </div>
-              </div>
-              <div style={styles.codeBlock}>
-                <div style={styles.codeBlockHeader}>Terminal</div>
-                <pre style={styles.codePre}>
-                  <code style={styles.code}>
-{`git clone https://github.com/YOUR-USERNAME/figmaradiant.git
-cd figmaradiant
-npm install
-npm run dev`}
-                  </code>
-                </pre>
-              </div>
-            </div>
-          </div>
-
-          {/* Step 2: Create your first prototype */}
-          <div style={styles.stepCard}>
-            <div style={styles.stepHeader}>
-              <div style={{ ...styles.stepBadge, background: 'linear-gradient(135deg, #06BF7F 0%, #059669 100%)', boxShadow: '0 4px 12px rgba(6, 191, 127, 0.3)' }}>
-                <span style={styles.stepNumber}>2</span>
-              </div>
-              <div style={{ flex: 1 }}>
-                <h3 style={styles.stepTitle}>Create your first prototype</h3>
-                <p style={styles.stepDescription}>
-                  Use the CLI to scaffold a prototype, then describe your UI to Cursor AI.
-                </p>
-              </div>
-            </div>
-            <div style={styles.stepBody}>
-              <div style={styles.stepInstructions}>
-                <div style={styles.instructionItem}>
-                  <span style={styles.instructionMarker}>a.</span>
-                  <span style={styles.instructionText}>
-                    Open a second terminal and run the scaffold command
-                  </span>
-                </div>
-              </div>
-              <div style={styles.codeBlock}>
-                <div style={styles.codeBlockHeader}>Terminal</div>
-                <pre style={styles.codePre}>
-                  <code style={styles.code}>
-{`npm run new-prototype MyPrototype`}
-                  </code>
-                </pre>
-              </div>
-              <div style={styles.stepInstructions}>
-                <div style={styles.instructionItem}>
-                  <span style={styles.instructionMarker}>b.</span>
-                  <span style={styles.instructionText}>
-                    Open the generated file and use <code style={styles.inlineCode}>Cmd+K</code> (inline edit) or the <strong>Chat panel</strong> to describe your UI
-                  </span>
-                </div>
-              </div>
-              <div style={styles.promptExamples}>
-                <div style={styles.promptLabel}>Example prompts</div>
-                <div style={styles.promptItem}>
-                  <span style={styles.promptQuote}>"</span>
-                  Create a user onboarding wizard with 3 steps: welcome screen, profile form, and notification preferences with toggles
-                  <span style={styles.promptQuote}>"</span>
-                </div>
-                <div style={styles.promptItem}>
-                  <span style={styles.promptQuote}>"</span>
-                  Build a data dashboard with 4 KPI cards, a tab bar, and a data table with search and filters
-                  <span style={styles.promptQuote}>"</span>
-                </div>
-                <div style={styles.promptItem}>
-                  <span style={styles.promptQuote}>"</span>
-                  Recreate this UI using Radiant components
-                  <span style={styles.promptQuote}>"</span>
-                  <span style={styles.promptHint}> — paste a Figma screenshot</span>
-                </div>
-              </div>
-              <div style={styles.stepInstructions}>
-                <div style={styles.instructionItem}>
-                  <span style={styles.instructionMarker}>c.</span>
-                  <span style={styles.instructionText}>
-                    Preview at <code style={styles.inlineCode}>localhost:5173</code> — navigate to the Playground to see your prototype listed
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Step 3: Give context to Cursor */}
-          <div style={styles.stepCard}>
-            <div style={styles.stepHeader}>
-              <div style={{ ...styles.stepBadge, background: 'linear-gradient(135deg, #F0A92B 0%, #D4910E 100%)', boxShadow: '0 4px 12px rgba(240, 169, 43, 0.3)' }}>
-                <span style={styles.stepNumber}>3</span>
-              </div>
-              <div style={{ flex: 1 }}>
-                <h3 style={styles.stepTitle}>Give context to Cursor</h3>
-                <p style={styles.stepDescription}>
-                  Help Cursor understand your designs, product requirements, and project context for better code generation.
-                </p>
-              </div>
-            </div>
-            <div style={styles.stepBody}>
-              <div style={styles.contextGrid}>
-                <div style={styles.contextCard}>
-                  <div style={styles.contextIconWrapper}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 17H4C3.46957 17 2.96086 16.7893 2.58579 16.4142C2.21071 16.0391 2 15.5304 2 15V5C2 4.46957 2.21071 3.96086 2.58579 3.58579C2.96086 3.21071 3.46957 3 4 3H20C20.5304 3 21.0391 3.21071 21.4142 3.58579C21.7893 3.96086 22 4.46957 22 5V15C22 15.5304 21.7893 16.0391 21.4142 16.4142C21.0391 16.7893 20.5304 17 20 17H19" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 15L17 21H7L12 15Z" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <h4 style={styles.contextTitle}>Figma MCP</h4>
-                  <p style={styles.contextDescription}>
-                    Connect Figma to Cursor via the Figma MCP server. Paste design URLs directly in chat for AI to reference your live designs.
-                  </p>
-                </div>
-                <div style={styles.contextCard}>
-                  <div style={styles.contextIconWrapper}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <circle cx="8.5" cy="8.5" r="1.5" stroke={systemColors.light['content-brand']} strokeWidth="2"/>
-                      <path d="M21 15L16 10L5 21" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <h4 style={styles.contextTitle}>Screenshots</h4>
-                  <p style={styles.contextDescription}>
-                    Paste Figma screenshots directly into Cursor chat and say "Recreate this using Radiant components" for instant prototypes.
-                  </p>
-                </div>
-                <div style={styles.contextCard}>
-                  <div style={styles.contextIconWrapper}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M14 2V8H20" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M16 13H8" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M16 17H8" stroke={systemColors.light['content-brand']} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <h4 style={styles.contextTitle}>Product knowledge</h4>
-                  <p style={styles.contextDescription}>
-                    Add feature specs, user stories, and design decisions to <code style={styles.inlineCode}>project.config.ts</code> so AI understands the "why" behind your prototypes.
-                  </p>
-                </div>
-              </div>
-              <div style={styles.contextTip}>
-                <div style={{ flexShrink: 0, marginTop: '1px', color: systemColors.light['content-brand'] }}>
-                  <Icon name="info-circle" size="s" />
-                </div>
-                <span style={styles.contextTipText}>
-                  The <code style={styles.inlineCode}>.cursor/rules/</code> directory already contains Radiant design system rules that Cursor loads automatically — no setup needed.
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Footer Links */}
         <div style={styles.footer}>
@@ -437,70 +229,125 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
 
-  // Main
   main: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: `${spacing.M}px ${spacing.H}px ${spacing.L}px`, // 80px 32px 64px
+    padding: `96px ${spacing.H}px ${spacing.L}px`,
     maxWidth: '960px',
     margin: '0 auto',
     width: '100%',
   },
 
-  // Hero Text
+  // Hero
   heroText: {
     textAlign: 'center',
-    marginBottom: `${spacing.J}px`, // 48px
+    marginBottom: `${spacing.K}px`,
+  },
+  eyebrow: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    fontSize: '12px',
+    fontWeight: 700,
+    color: systemColors.light['content-brand'],
+    background: referenceColors.blue['10'],
+    border: `1px solid ${referenceColors.blue['20']}`,
+    borderRadius: '99px',
+    padding: `${spacing.A}px ${spacing.D}px`,
+    textTransform: 'uppercase',
+    letterSpacing: '0.06em',
+    marginBottom: `${spacing.E}px`,
   },
   title: {
-    fontSize: '42px',
-    fontWeight: 700,
+    fontSize: '56px',
+    fontWeight: 800,
     color: systemColors.light['content-primary'],
-    marginBottom: `${spacing.D}px`, // 16px
-    letterSpacing: '-1px',
-    lineHeight: 1.2,
+    marginBottom: `${spacing.D}px`,
+    letterSpacing: '-.03em',
+    lineHeight: 1.1,
+  },
+  titleAccent: {
+    color: systemColors.light['content-brand'],
   },
   subtitle: {
     fontSize: '18px',
     fontWeight: 400,
     color: systemColors.light['content-secondary'],
     lineHeight: 1.6,
-    maxWidth: '560px',
+    maxWidth: '520px',
     margin: '0 auto',
+    marginBottom: `${spacing.F}px`,
+  },
+  statChips: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: `${spacing.B}px`,
+    flexWrap: 'wrap',
+  },
+  statChip: {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: systemColors.light['content-secondary'],
+    background: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
+    borderRadius: '99px',
+    padding: `${spacing.A}px ${spacing.C}px`,
   },
 
-  // Cards Container
+  // Cards
   cardsContainer: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: `${spacing.F}px`, // 24px
+    gap: `${spacing.F}px`,
     width: '100%',
-    marginBottom: `${spacing.J}px`, // 48px
+    marginBottom: `${spacing.F}px`,
   },
 
-  // Card
+  cardWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: `${spacing.B}px`,
+  },
+  cardHint: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    alignSelf: 'center',
+    gap: '6px',
+    fontSize: '12px',
+    fontWeight: 600,
+    color: systemColors.light['content-tertiary'],
+    letterSpacing: '0.02em',
+  },
+  cardHintDot: {
+    width: '6px',
+    height: '6px',
+    borderRadius: '50%',
+    background: systemColors.light['content-brand'],
+    animation: 'hintPulse 2s ease-in-out infinite',
+  },
+
   card: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
-    padding: `${spacing.I}px ${spacing.H}px`, // 40px 32px
+    padding: `${spacing.J}px ${spacing.H}px`,
     background: systemColors.light['background-base'],
     border: `1px solid ${systemColors.light['background-subtle']}`,
-    borderRadius: `${spacing.E}px`, // 20px
+    borderRadius: '24px',
     cursor: 'pointer',
-    transition: 'all 200ms ease',
-    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+    transition: 'all 250ms cubic-bezier(0.23, 1, 0.32, 1)',
+    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)',
   },
   cardIconWrapper: {
-    marginBottom: `${spacing.F}px`, // 24px
+    marginBottom: `${spacing.F}px`,
   },
   cardIcon: {
     width: '72px',
     height: '72px',
-    borderRadius: `${spacing.E}px`, // 20px
+    borderRadius: '20px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -508,9 +355,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
   cardTitle: {
     fontSize: '24px',
-    fontWeight: 600,
+    fontWeight: 700,
     color: systemColors.light['content-primary'],
-    marginBottom: `${spacing.C}px`, // 12px
+    marginBottom: `${spacing.C}px`,
     letterSpacing: '-0.5px',
   },
   cardDescription: {
@@ -518,15 +365,15 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 400,
     color: systemColors.light['content-secondary'],
     lineHeight: 1.6,
-    marginBottom: `${spacing.E}px`, // 20px
+    marginBottom: `${spacing.E}px`,
     maxWidth: '280px',
   },
   cardStats: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: `${spacing.B}px`, // 8px
-    marginBottom: `${spacing.F}px`, // 24px
+    gap: `${spacing.B}px`,
+    marginBottom: `${spacing.F}px`,
     flexWrap: 'wrap',
   },
   cardStatPill: {
@@ -534,355 +381,85 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 500,
     color: systemColors.light['content-secondary'],
     background: systemColors.light['background-sunken'],
-    padding: `${spacing.A}px ${spacing.C}px`, // 4px 12px
-    borderRadius: `${spacing.A}px`, // 4px (using 6px originally but rounding to token)
+    padding: `${spacing.A}px ${spacing.C}px`,
+    borderRadius: '6px',
     border: `1px solid ${systemColors.light['background-subtle']}`,
   },
   cardCtaButton: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: `${spacing.B}px`, // 8px
+    gap: `${spacing.B}px`,
     fontSize: '14px',
     fontWeight: 600,
     color: systemColors.light['content-brand'],
     background: referenceColors.blue['10'],
-    padding: `${spacing.B}px ${spacing.E}px`, // 8px 20px (using 10px → 8px)
-    borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
+    padding: `${spacing.B}px ${spacing.E}px`,
+    borderRadius: `${spacing.B}px`,
     border: `1px solid ${systemColors.light['background-information']}`,
     transition: 'all 150ms ease',
   },
 
-  // Getting Started guide link
-  guideLink: {
-    display: 'inline-flex',
+  // Guide Banner
+  guideBanner: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: `${spacing.E}px`,
+    width: '100%',
+    padding: `${spacing.F}px ${spacing.H}px`,
+    background: referenceColors.blue['10'],
+    border: `1px solid ${referenceColors.blue['20']}`,
+    borderRadius: '20px',
+    textDecoration: 'none',
+    color: systemColors.light['content-brand'],
+    transition: 'all 250ms cubic-bezier(0.23, 1, 0.32, 1)',
+    marginBottom: `${spacing.L}px`,
+    boxShadow: '0 4px 20px rgba(39, 112, 239, 0.08)',
+    cursor: 'pointer',
+  },
+  guideBannerIcon: {
+    width: '52px',
+    height: '52px',
+    minWidth: '52px',
+    borderRadius: '14px',
+    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#ffffff',
+    boxShadow: '0 4px 12px rgba(39, 112, 239, 0.3)',
+  },
+  guideBannerText: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '3px',
+    flex: 1,
+    minWidth: 0,
+  },
+  guideBannerTitle: {
+    fontSize: '16px',
+    fontWeight: 700,
+    color: systemColors.light['content-primary'],
+    letterSpacing: '-0.3px',
+  },
+  guideBannerDesc: {
+    fontSize: '14px',
+    fontWeight: 400,
+    color: systemColors.light['content-secondary'],
+    lineHeight: 1.5,
+  },
+  guideBannerArrow: {
+    display: 'flex',
     alignItems: 'center',
     gap: `${spacing.B}px`,
     fontSize: '14px',
-    fontWeight: 500,
-    color: systemColors.light['content-secondary'],
-    background: systemColors.light['background-base'],
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-    borderRadius: '99px',
-    padding: `${spacing.B}px ${spacing.E}px`,
-    textDecoration: 'none',
-    transition: 'all 150ms ease',
-    marginBottom: `${spacing.J}px`,
-    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-    cursor: 'pointer',
-  },
-
-  // Overview Grid (4-step summary)
-  overviewGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: `${spacing.D}px`,
-    marginBottom: `${spacing.F}px`,
-    width: '100%',
-  },
-  overviewCard: {
-    background: systemColors.light['background-base'],
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-    borderRadius: `${spacing.C}px`,
-    padding: `${spacing.E}px ${spacing.D}px`,
-    textAlign: 'center' as const,
-  },
-  overviewBadge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '32px',
-    height: '32px',
-    borderRadius: '8px',
-    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
-    color: '#fff',
-    fontSize: '14px',
-    fontWeight: 700,
-    marginBottom: `${spacing.C}px`,
-    boxShadow: '0 2px 8px rgba(39, 112, 239, 0.3)',
-  },
-  overviewTitle: {
-    fontSize: '14px',
     fontWeight: 600,
-    color: systemColors.light['content-primary'],
-    marginBottom: `${spacing.A}px`,
-  },
-  overviewDesc: {
-    fontSize: '12px',
-    fontWeight: 400,
-    color: systemColors.light['content-secondary'],
-    lineHeight: 1.5,
-    margin: 0,
-  },
-
-  // Guide Section
-  guideSection: {
-    width: '100%',
-    marginBottom: `${spacing.J}px`, // 48px
-  },
-  guideSectionHeader: {
-    textAlign: 'center',
-    marginBottom: `${spacing.H}px`, // 32px
-  },
-  guideTitle: {
-    fontSize: '32px',
-    fontWeight: 700,
-    color: systemColors.light['content-primary'],
-    marginBottom: `${spacing.C}px`, // 12px
-    letterSpacing: '-0.5px',
-    lineHeight: 1.2,
-  },
-  guideSubtitle: {
-    fontSize: '16px',
-    fontWeight: 400,
-    color: systemColors.light['content-secondary'],
-    lineHeight: 1.6,
-    maxWidth: '480px',
-    margin: '0 auto',
-  },
-
-  // Step Card
-  stepCard: {
-    background: systemColors.light['background-base'],
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-    borderRadius: `${spacing.D}px`, // 16px
-    padding: `${spacing.H}px`, // 32px
-    marginBottom: `${spacing.E}px`, // 20px
-    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.04)',
-  },
-  stepHeader: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: `${spacing.D}px`, // 16px
-    marginBottom: `${spacing.F}px`, // 24px
-  },
-  stepBadge: {
-    width: '40px',
-    height: '40px',
-    minWidth: '40px',
-    borderRadius: `${spacing.C}px`, // 12px
-    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: '0 4px 12px rgba(39, 112, 239, 0.3)',
-  },
-  stepNumber: {
-    fontSize: '18px',
-    fontWeight: 700,
-    color: '#ffffff',
-    lineHeight: 1,
-  },
-  stepTitle: {
-    fontSize: '20px',
-    fontWeight: 600,
-    color: systemColors.light['content-primary'],
-    marginBottom: `${spacing.A}px`, // 4px (snapped from 6px)
-    letterSpacing: '-0.3px',
-    lineHeight: 1.3,
-  },
-  stepDescription: {
-    fontSize: '14px',
-    fontWeight: 400,
-    color: systemColors.light['content-secondary'],
-    lineHeight: 1.5,
-    margin: 0,
-  },
-  stepBody: {
-    paddingLeft: `${spacing.K}px`, // 56px
-  },
-
-  // Prerequisites
-  stepPrereqs: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: `${spacing.B}px`, // 8px
-    marginBottom: `${spacing.E}px`, // 20px
-    flexWrap: 'wrap' as const,
-  },
-  prereqLabel: {
-    fontSize: '12px',
-    fontWeight: 600,
-    color: systemColors.light['content-tertiary'],
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.5px',
-    marginRight: `${spacing.A}px`, // 4px
-  },
-  prereqItem: {
-    fontSize: '13px',
-    fontWeight: 500,
-    color: systemColors.light['content-secondary'],
-    background: systemColors.light['background-sunken'],
-    padding: `${spacing.A-1}px ${spacing.B}px`, // 3px 8px (using B for horizontal)
-    borderRadius: `${spacing.A}px`, // 4px (using 6px → 4px)
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-  },
-  prereqDot: {
-    color: referenceColors.gray['30'],
-    fontSize: '12px',
-  },
-
-  // Instructions
-  stepInstructions: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: `${spacing.C}px`, // 12px
-    marginBottom: `${spacing.D}px`, // 16px
-  },
-  instructionItem: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: `${spacing.B}px`, // 8px (using 10px → 8px)
-  },
-  instructionMarker: {
-    fontSize: '13px',
-    fontWeight: 600,
-    color: systemColors.light['content-tertiary'],
-    minWidth: '20px',
-    lineHeight: '22px',
-  },
-  instructionText: {
-    fontSize: '14px',
-    fontWeight: 400,
-    color: systemColors.light['background-raised-inverse'],
-    lineHeight: '22px',
-  },
-
-  // Code Block
-  codeBlock: {
-    background: '#1E1E2E',
-    borderRadius: `${spacing.C}px`, // 12px
-    overflow: 'hidden',
-    marginBottom: `${spacing.D}px`, // 16px
-  },
-  codeBlockHeader: {
-    fontSize: '11px',
-    fontWeight: 600,
-    color: 'rgba(255, 255, 255, 0.4)',
-    padding: `${spacing.B}px ${spacing.D}px 0`, // 8px 16px 0 (using 10px → 8px)
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.5px',
-  },
-  codePre: {
-    margin: 0,
-    padding: `${spacing.C}px ${spacing.D}px ${spacing.C}px`, // 12px 16px 12px (using 14px → 12px)
-    overflow: 'auto',
-  },
-  code: {
-    fontFamily: '"SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace',
-    fontSize: '13px',
-    lineHeight: 1.7,
-    color: '#CDD6F4',
-    whiteSpace: 'pre' as const,
-  },
-
-  // Inline Code
-  inlineCode: {
-    fontFamily: '"SF Mono", "Fira Code", Consolas, monospace',
-    fontSize: '12.5px',
-    fontWeight: 500,
     color: systemColors.light['content-brand'],
-    background: `${referenceColors.blue['10']}`,
-    padding: `2px ${spacing.A}px`, // 2px 4px (using 6px → 4px)
-    borderRadius: `${spacing.A}px`, // 4px
-    border: `1px solid ${systemColors.light['background-information']}`,
-  },
-
-  // Inline Link
-  inlineLink: {
-    color: systemColors.light['content-brand'],
-    textDecoration: 'none',
-    fontWeight: 500,
-    borderBottom: `1px solid ${referenceColors.brand['30']}`,
-  },
-
-  // Prompt Examples
-  promptExamples: {
-    background: systemColors.light['background-sunken'],
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-    borderRadius: `${spacing.C}px`, // 12px
-    padding: `${spacing.D}px ${spacing.E}px`, // 16px 20px
-    marginBottom: `${spacing.D}px`, // 16px
-  },
-  promptLabel: {
-    fontSize: '11px',
-    fontWeight: 600,
-    color: systemColors.light['content-tertiary'],
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.5px',
-    marginBottom: `${spacing.C}px`, // 12px
-  },
-  promptItem: {
-    fontSize: '13px',
-    fontWeight: 400,
-    color: referenceColors.gray['70'],
-    lineHeight: 1.6,
-    fontStyle: 'italic',
-    marginBottom: `${spacing.B}px`, // 8px
-    paddingLeft: `${spacing.B}px`, // 8px
-    borderLeft: `2px solid ${systemColors.light['background-subtle']}`,
-  },
-  promptQuote: {
-    color: referenceColors.gray['30'],
-    fontStyle: 'normal',
-  },
-  promptHint: {
-    fontStyle: 'normal',
-    color: systemColors.light['content-tertiary'],
-    fontSize: '12px',
-  },
-
-  // Context Grid (Step 3)
-  contextGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: `${spacing.D}px`, // 16px
-    marginBottom: `${spacing.D}px`, // 16px
-  },
-  contextCard: {
-    background: systemColors.light['background-sunken'],
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-    borderRadius: `${spacing.C}px`, // 12px
-    padding: `${spacing.E}px`, // 20px
-  },
-  contextIconWrapper: {
-    width: '36px',
-    height: '36px',
-    borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
-    background: referenceColors.blue['10'],
-    border: `1px solid ${systemColors.light['background-information']}`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: `${spacing.C}px`, // 12px
-  },
-  contextTitle: {
-    fontSize: '14px',
-    fontWeight: 600,
-    color: systemColors.light['content-primary'],
-    marginBottom: `${spacing.A}px`, // 4px (using 6px → 4px)
-    letterSpacing: '-0.2px',
-  },
-  contextDescription: {
-    fontSize: '13px',
-    fontWeight: 400,
-    color: systemColors.light['content-secondary'],
-    lineHeight: 1.5,
-    margin: 0,
-  },
-  contextTip: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: `${spacing.B}px`, // 8px (using 10px → 8px)
-    background: referenceColors.blue['10'],
-    border: `1px solid ${systemColors.light['background-information']}`,
-    borderRadius: `${spacing.B}px`, // 8px (using 10px → 8px)
-    padding: `${spacing.C}px ${spacing.D}px`, // 12px 16px (using 14px → 12px)
-  },
-  contextTipText: {
-    fontSize: '13px',
-    fontWeight: 400,
-    color: systemColors.light['content-secondary'],
-    lineHeight: 1.5,
+    background: systemColors.light['background-base'],
+    border: `1px solid ${referenceColors.blue['20']}`,
+    borderRadius: '10px',
+    padding: `${spacing.B}px ${spacing.D}px`,
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
   },
 
   // Footer
@@ -890,25 +467,13 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: `${spacing.C}px`, // 12px
-  },
-  footerLink: {
-    fontSize: '14px',
-    fontWeight: 400,
-    color: systemColors.light['content-secondary'],
-    textDecoration: 'none',
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: 0,
-    transition: 'color 150ms ease',
-    fontFamily: 'inherit',
+    gap: `${spacing.C}px`,
   },
   footerDivider: {
     color: referenceColors.gray['30'],
   },
   funFooter: {
-    marginTop: `${spacing.F}px`, // 24px
+    marginTop: `${spacing.F}px`,
     fontSize: '13px',
     fontWeight: 400,
     color: systemColors.light['content-tertiary'],

@@ -34,6 +34,19 @@ body { font-family:var(--font); background:var(--gray-90); color:#fff; height:10
   display:flex;align-items:center;gap:10px;
   text-decoration:none;
 }
+.back-btn {
+  position:fixed;top:18px;left:160px;z-index:200;
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--font);font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.4);
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:100px;padding:6px 16px 6px 12px;
+  text-decoration:none;cursor:pointer;
+  transition:all .18s;backdrop-filter:blur(10px);
+}
+.back-btn:hover { background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2); }
+.back-btn svg { flex-shrink:0; }
 .wordmark-icon {
   width:30px;height:30px;border-radius:9px;
   background:linear-gradient(135deg,var(--blue-60) 0%,var(--blue-80) 100%);
@@ -225,7 +238,7 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
 
 /* ════ SLIDE 5 — PREREQUISITES ════ */
 .s-prereqs { background:radial-gradient(ellipse at 20% 80%,#0a1a12 0%,var(--gray-90) 55%); }
-.prereq-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px; }
+.prereq-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px;max-width:640px;margin-left:auto;margin-right:auto; }
 .prereq-card { background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-xl);padding:28px 26px;position:relative;overflow:hidden;transition:all .22s; }
 .prereq-card::after { content:'';position:absolute;top:0;left:0;right:0;height:2.5px;border-radius:2px 2px 0 0; }
 .pc-blue::after  { background:var(--blue-60); }
@@ -321,9 +334,17 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
 .bubble strong { font-weight:700;color:#fff; }
 
 /* ════ SLIDE 9 — RESOURCES ════ */
-.s-res { background:radial-gradient(ellipse at 50% 45%,#071428 0%,var(--gray-90) 60%); }
-.res-inner { max-width:780px;width:100%;text-align:center; }
-.celebrate { font-size:52px;display:block;margin-bottom:14px; }
+.s-res { background:radial-gradient(ellipse at 50% 40%,#0a1f4d 0%,var(--gray-90) 65%); }
+.s-res::before { content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(39,112,239,.08) 0%,transparent 60%);pointer-events:none; }
+.res-inner { max-width:780px;width:100%;text-align:center;position:relative; }
+.celebrate { font-size:72px;display:block;margin-bottom:8px;animation:celebrateBounce 1.5s ease-in-out infinite; }
+@keyframes celebrateBounce { 0%,100%{transform:scale(1) rotate(0deg)} 25%{transform:scale(1.1) rotate(-5deg)} 50%{transform:scale(1) rotate(0deg)} 75%{transform:scale(1.1) rotate(5deg)} }
+.fin-title { font-size:clamp(38px,4.5vw,56px);font-weight:900;letter-spacing:-.04em;line-height:1.08;margin-bottom:16px;background:linear-gradient(135deg,#fff 30%,var(--blue-40) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.fin-sub { font-size:18px;color:rgba(255,255,255,.5);line-height:1.65;max-width:480px;margin:0 auto 36px; }
+.fin-cta { display:inline-flex;align-items:center;gap:10px;font-family:var(--font);font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--blue-60) 0%,var(--blue-80) 100%);border:none;border-radius:14px;padding:16px 36px;cursor:pointer;transition:all .22s;box-shadow:0 6px 24px rgba(39,112,239,.4);text-decoration:none; }
+.fin-cta:hover { transform:translateY(-3px);box-shadow:0 12px 36px rgba(39,112,239,.5); }
+.fin-cta svg { transition:transform .2s; }
+.fin-cta:hover svg { transform:translateX(3px); }
 .res-grid { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:36px;text-align:left; }
 .res-card { background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-xl);padding:22px 24px;transition:all .22s;cursor:pointer;text-decoration:none;color:inherit;display:block; }
 .res-card:hover { background:rgba(255,255,255,.08);border-color:rgba(39,112,239,.3);transform:translateY(-2px); }
@@ -341,6 +362,10 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
   <div class="wordmark-icon">R</div>
   <div class="wordmark-text">Radiant<span>Play</span></div>
 </div>
+<a href="/" class="back-btn">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M12.6667 8H3.33334" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 3.33334L3.33334 8L8 12.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  Back to home
+</a>
 
 <div class="slides">
 
@@ -353,8 +378,8 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
     <h1 class="h1 hero-title" style="margin-bottom:22px">
       Radiant<em>Play</em>
     </h1>
-    <p class="hero-sub">Figma handoffs lose context in translation. Radiant Play closes the gap — designers build interactive prototypes using real Radiant components that developers can actually use.</p>
-    <div style="font-size:14px;color:rgba(255,255,255,.4);margin-bottom:32px;line-height:1.6">No coding experience needed. Describe your UI, Cursor builds it.</div>
+    <p class="hero-sub">A playground for building interactive prototypes with real Radiant components — so every screen stays consistent with the design system. Describe what you want, AI builds it, and you iterate in real time.</p>
+    <div style="font-size:14px;color:rgba(255,255,255,.4);margin-bottom:32px;line-height:1.6">No coding experience needed. This guide walks you through setup, scaffolding, and your first prototype.</div>
     <div class="hero-chips">
       <div class="hero-chip">74 Radiant components</div>
       <div class="hero-chip">AI-powered in Cursor</div>
@@ -510,7 +535,7 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
 <div class="slide s-prereqs" data-index="4">
   <div style="max-width:860px;width:100%;text-align:center">
     <div class="label">Before you start</div>
-    <h2 class="h2" style="margin-bottom:10px">Three things to set up</h2>
+    <h2 class="h2" style="margin-bottom:10px">Two things to set up</h2>
     <p class="sub">One-time setup. Takes about 5 minutes total.</p>
     <div class="prereq-grid">
       <div class="prereq-card pc-blue">
@@ -521,14 +546,8 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
       </div>
       <div class="prereq-card pc-green">
         <div class="pnum" style="background:var(--green-bg);color:var(--green)">2</div>
-        <h3>Git</h3>
-        <p>Lets you clone the repo to your machine. <strong style="color:rgba(255,255,255,.6)">Mac users:</strong> you may already have it — open Terminal and type <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.1);padding:1px 5px;border-radius:4px">git --version</code>. If it shows a version, skip this.</p>
-        <span class="prereq-link">git-scm.com</span>
-      </div>
-      <div class="prereq-card pc-orange">
-        <div class="pnum" style="background:var(--orange-bg);color:var(--orange)">3</div>
         <h3>Cursor IDE</h3>
-        <p>The AI editor where you build prototypes. Download it, then <strong style="color:rgba(255,255,255,.6)">create a free account</strong> at cursor.so to activate it. Handles npm automatically. Mac and Windows.</p>
+        <p>The AI editor where you build prototypes. Download it, then <strong style="color:rgba(255,255,255,.6)">create a free account</strong> at cursor.so to activate it. Handles git and npm automatically. Mac and Windows.</p>
         <span class="prereq-link">cursor.so</span>
       </div>
     </div>
@@ -747,17 +766,14 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
 ══════════════════════════════ -->
 <div class="slide s-res" data-index="8">
   <div class="res-inner">
-    <span class="celebrate">🎉</span>
-    <div class="label">You're all set</div>
-    <h2 class="h2" style="margin-bottom:10px">Start prototyping</h2>
-    <p class="sub">Everything you need — in one place.</p>
+    <span class="celebrate">🚀</span>
+    <h1 class="fin-title">You're ready. Let's build.</h1>
+    <p class="fin-sub">You've got the tools, the components, and AI on your side. Open Cursor, describe what you want, and watch it come to life.</p>
+    <a class="fin-cta" href="https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay" target="_blank">
+      Fork the repo and start
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    </a>
     <div class="res-grid">
-      <a class="res-card" href="https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay" target="_blank">
-        <div class="res-icon">⑂</div>
-        <h4>Radiant Play on Galaxy</h4>
-        <p>Fork this to get started</p>
-        <code>galaxy.corp.thoughtspot.com/<br>mohammed-faris/radiantplay</code>
-      </a>
       <div class="res-card">
         <div class="res-icon">🧩</div>
         <h4>Component Registry</h4>
@@ -773,8 +789,14 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
       <div class="res-card">
         <div class="res-icon">🙋</div>
         <h4>Get help</h4>
-        <p>Stuck on setup, getting an error, or want a walkthrough? Reach out directly.</p>
-        <code>@faris on Slack</code>
+        <p>Stuck? Ask Cursor first — it knows the Radiant codebase. If that doesn't work, reach out.</p>
+        <code>Cmd+L → describe the issue</code>
+      </div>
+      <div class="res-card">
+        <div class="res-icon">💙</div>
+        <h4>Thank you</h4>
+        <p>For trying RadiantPlay. Every prototype you build makes the design system better for everyone.</p>
+        <code>Happy building!</code>
       </div>
     </div>
   </div>
