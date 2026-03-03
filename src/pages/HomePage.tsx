@@ -58,11 +58,6 @@ export const HomePage: React.FC = () => {
         {/* Cards */}
         <div style={styles.cardsContainer}>
           {/* Radiant Card */}
-          <div style={styles.cardWrapper}>
-            <div style={styles.cardHint}>
-              <span style={styles.cardHintDot} />
-              <span>You already know this</span>
-            </div>
           <button
             style={styles.card}
             onClick={() => navigate('/radiant')}
@@ -101,7 +96,6 @@ export const HomePage: React.FC = () => {
               </svg>
             </div>
           </button>
-          </div>
 
           {/* Playground Card */}
           <button
@@ -142,44 +136,31 @@ export const HomePage: React.FC = () => {
           </button>
         </div>
 
-        {/* Guide Banner */}
+        {/* Guide Strip */}
         <a
           href="/guide.html"
           target="_blank"
           rel="noopener noreferrer"
-          style={styles.guideBanner}
+          style={styles.guideStrip}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLAnchorElement;
-            el.style.background = referenceColors.blue['20'];
-            el.style.borderColor = referenceColors.blue['30'];
-            el.style.transform = 'translateY(-3px)';
-            el.style.boxShadow = '0 12px 40px rgba(39, 112, 239, 0.16)';
+            el.style.background = 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)';
+            el.style.transform = 'translateY(-2px)';
+            el.style.boxShadow = '0 8px 28px rgba(39, 112, 239, 0.3)';
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget as HTMLAnchorElement;
-            el.style.background = referenceColors.blue['10'];
-            el.style.borderColor = referenceColors.blue['20'];
+            el.style.background = 'linear-gradient(135deg, #2770EF 0%, #1a4fa0 100%)';
             el.style.transform = 'translateY(0)';
-            el.style.boxShadow = '0 4px 20px rgba(39, 112, 239, 0.08)';
+            el.style.boxShadow = '0 4px 16px rgba(39, 112, 239, 0.2)';
           }}
         >
-          <div style={styles.guideBannerIcon}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 3H8C9.06087 3 10.0783 3.42143 10.8284 4.17157C11.5786 4.92172 12 5.93913 12 7V21C12 20.2044 11.6839 19.4413 11.1213 18.8787C10.5587 18.3161 9.79565 18 9 18H2V3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M22 3H16C14.9391 3 13.9217 3.42143 13.1716 4.17157C12.4214 4.92172 12 5.93913 12 7V21C12 20.2044 12.3161 19.4413 12.8787 18.8787C13.4413 18.3161 14.2044 18 15 18H22V3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <div style={styles.guideBannerText}>
-            <span style={styles.guideBannerTitle}>Getting started guide</span>
-            <span style={styles.guideBannerDesc}>New to RadiantPlay? Walk through setup, scaffolding your first prototype, and building with AI — step by step.</span>
-          </div>
-          <div style={styles.guideBannerArrow}>
-            <span>View guide</span>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
+          <span style={styles.guideStripDot} />
+          <span style={styles.guideStripText}>New here? Read the getting started guide</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+            <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </a>
 
         {/* Footer Links */}
@@ -305,29 +286,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: `${spacing.F}px`,
   },
 
-  cardWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: `${spacing.B}px`,
-  },
-  cardHint: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    alignSelf: 'center',
-    gap: '6px',
-    fontSize: '12px',
-    fontWeight: 600,
-    color: systemColors.light['content-tertiary'],
-    letterSpacing: '0.02em',
-  },
-  cardHintDot: {
-    width: '6px',
-    height: '6px',
-    borderRadius: '50%',
-    background: systemColors.light['content-brand'],
-    animation: 'hintPulse 2s ease-in-out infinite',
-  },
-
   card: {
     display: 'flex',
     flexDirection: 'column',
@@ -399,67 +357,34 @@ const styles: Record<string, React.CSSProperties> = {
     transition: 'all 150ms ease',
   },
 
-  // Guide Banner
-  guideBanner: {
-    display: 'flex',
+  // Guide Strip
+  guideStrip: {
+    display: 'inline-flex',
     alignItems: 'center',
-    gap: `${spacing.E}px`,
-    width: '100%',
-    padding: `${spacing.F}px ${spacing.H}px`,
-    background: referenceColors.blue['10'],
-    border: `1px solid ${referenceColors.blue['20']}`,
-    borderRadius: '20px',
+    gap: '10px',
+    padding: '12px 28px 12px 22px',
+    background: 'linear-gradient(135deg, #2770EF 0%, #1a4fa0 100%)',
+    borderRadius: '99px',
     textDecoration: 'none',
-    color: systemColors.light['content-brand'],
+    color: '#ffffff',
+    fontSize: '15px',
+    fontWeight: 600,
+    letterSpacing: '0.01em',
     transition: 'all 250ms cubic-bezier(0.23, 1, 0.32, 1)',
     marginBottom: `${spacing.L}px`,
-    boxShadow: '0 4px 20px rgba(39, 112, 239, 0.08)',
+    boxShadow: '0 4px 16px rgba(39, 112, 239, 0.2)',
     cursor: 'pointer',
   },
-  guideBannerIcon: {
-    width: '52px',
-    height: '52px',
-    minWidth: '52px',
-    borderRadius: '14px',
-    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#ffffff',
-    boxShadow: '0 4px 12px rgba(39, 112, 239, 0.3)',
-  },
-  guideBannerText: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '3px',
-    flex: 1,
-    minWidth: 0,
-  },
-  guideBannerTitle: {
-    fontSize: '16px',
-    fontWeight: 700,
-    color: systemColors.light['content-primary'],
-    letterSpacing: '-0.3px',
-  },
-  guideBannerDesc: {
-    fontSize: '14px',
-    fontWeight: 400,
-    color: systemColors.light['content-secondary'],
-    lineHeight: 1.5,
-  },
-  guideBannerArrow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: `${spacing.B}px`,
-    fontSize: '14px',
-    fontWeight: 600,
-    color: systemColors.light['content-brand'],
-    background: systemColors.light['background-base'],
-    border: `1px solid ${referenceColors.blue['20']}`,
-    borderRadius: '10px',
-    padding: `${spacing.B}px ${spacing.D}px`,
-    whiteSpace: 'nowrap',
+  guideStripDot: {
+    width: '7px',
+    height: '7px',
+    borderRadius: '50%',
+    background: '#ffffff',
+    animation: 'hintPulse 2s ease-in-out infinite',
     flexShrink: 0,
+  },
+  guideStripText: {
+    lineHeight: 1,
   },
 
   // Footer
