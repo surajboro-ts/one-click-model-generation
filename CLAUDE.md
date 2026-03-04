@@ -1,6 +1,14 @@
 # RadiantPlay — Claude Code Guide
 
-AI-assisted interactive prototype builder using ThoughtSpot's **Radiant** design system.
+## What This Project Is
+
+**Radiant Play** is a designer-developer handoff tool for ThoughtSpot's **Radiant** design system. It lets designers and developers explore, prototype, and validate UI patterns using production-quality Radiant components. It is NOT a code learning platform, tutorial site, or generic React starter.
+
+## Behavior Rules
+
+- When asked to save or write content, write directly to the file. Do NOT create sub-tasks, todo items, or intermediate plans unless explicitly asked.
+- Do NOT add unsolicited UI elements, features, badges, or enhancements not in the request. Build exactly what was asked.
+- The project is branded as **Radiant Play** — not figmaradiant, RadiantPlay, or other legacy names in user-facing content.
 
 ## Stack
 
@@ -117,6 +125,47 @@ The `.cursor/rules/` directory contains 14 detailed rule files (~4,860 lines). T
 4. Content follows sentence case + imperative verb rules
 5. Responsive grids use auto-fill + minmax
 6. `npm run build` passes
+
+## Workflow
+
+### Branching Model
+
+| Branch | Purpose | Deploys to |
+|--------|---------|------------|
+| `main` | Production | radiantplay.vercel.app |
+| `staging` | Preview / QA | staging-radiantplay.vercel.app |
+| `feat/*`, `fix/*`, `chore/*` | Work branches | — |
+
+### Remotes
+
+Both remotes must stay in sync for `main` and `staging`:
+- `origin` — GitHub (`https://github.com/faris-ts/radiantplay.git`)
+- `galaxy` — ThoughtSpot (`https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay.git`)
+
+### Skills (Slash Commands)
+
+| Command | What it does |
+|---------|-------------|
+| `/start <description>` | Create a work branch from main |
+| `/ship [message]` | Build, commit, push to staging |
+| `/release [version]` | Write changelog, prep production merge |
+| `/status` | Branch, commits, uncommitted changes |
+
+### Typical Session Flow
+
+```
+/start Add filter panel to dashboard
+  ... write code ...
+/status                    # check progress
+/ship                      # push to staging for preview
+  ... iterate ...
+/ship "fix: alignment"     # ship again with custom message
+/release                   # prep changelog + production merge instructions
+```
+
+### Changelog
+
+Maintained at `docs/CHANGELOG.md` using [Keep a Changelog](https://keepachangelog.com/) format. Updated via `/release`.
 
 ## Active Task Tracker
 
