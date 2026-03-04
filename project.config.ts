@@ -59,6 +59,34 @@ export const projectConfig = {
       figmaFrame: '',
       priority: 'medium' as 'high' | 'medium' | 'low',
     },
+    {
+      id: 'impersonation-v2',
+      name: 'Admin Impersonation',
+      status: 'in-progress' as 'planning' | 'in-progress' | 'ready-for-dev' | 'handed-off',
+      figmaFrame: '',
+      priority: 'medium' as 'high' | 'medium' | 'low',
+    },
+    {
+      id: 'modal-patterns',
+      name: 'Modal Patterns',
+      status: 'in-progress' as 'planning' | 'in-progress' | 'ready-for-dev' | 'handed-off',
+      figmaFrame: '',
+      priority: 'low' as 'high' | 'medium' | 'low',
+    },
+    {
+      id: 'muse-chat',
+      name: 'MuseChat',
+      status: 'in-progress' as 'planning' | 'in-progress' | 'ready-for-dev' | 'handed-off',
+      figmaFrame: '',
+      priority: 'high' as 'high' | 'medium' | 'low',
+    },
+    {
+      id: 'spotter-model',
+      name: 'Spotter Model',
+      status: 'in-progress' as 'planning' | 'in-progress' | 'ready-for-dev' | 'handed-off',
+      figmaFrame: '',
+      priority: 'high' as 'high' | 'medium' | 'low',
+    },
   ],
 };
 

@@ -198,8 +198,10 @@ The kit includes several example prototypes you can study and reference:
 | **Cmdk** | Command palette with search and filters | `src/prototypes/Cmdk/` |
 | **Liveboard** | Dashboard with charts, KPIs, and filters | `src/prototypes/Liveboard/` |
 | **SpotterMemory** | Data table with toolbar and navigation | `src/prototypes/SpotterMemory/` |
+| **ImpersonationV2** | Admin impersonation with viewport border and session timer | `src/prototypes/ImpersonationV2/` |
 | **ModalPatterns** | Modal dialog patterns and variations | `src/prototypes/ModalPatterns/` |
-| **FilterDialog** | Modal with search and multi-select | `src/prototypes/_examples/` |
+| **MuseChat** | Spotter AI chat with conversational data exploration | `src/prototypes/MuseChat/` |
+| **SpotterModel** | SpotterModel agent edit flow with onboarding and columns editing | `src/prototypes/SpotterModel/` |
 
 ---
 
@@ -211,7 +213,6 @@ radiantplay/
 │   ├── components/        ← 74 Radiant UI components
 │   ├── prototypes/        ← YOUR prototypes go here
 │   │   ├── _template/     ← Starter template
-│   │   ├── _examples/     ← Reference implementations
 │   │   ├── AdminGroups/   ← Example: admin panel
 │   │   ├── Cmdk/          ← Example: command palette
 │   │   ├── Liveboard/     ← Example: dashboard

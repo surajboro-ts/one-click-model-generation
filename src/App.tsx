@@ -17,9 +17,6 @@ import { TypographyPage } from './pages/TypographyPage';
 import { HowItWorksPage } from './pages/HowItWorksPage';
 import { systemColors } from './tokens/colors';
 
-// Prototype examples
-import { FilterDialogExample } from './prototypes/_examples/FilterDialog';
-
 // Navigation icons
 const HomeIcon = () => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -110,8 +107,6 @@ const ROUTES = {
   surfaces: '/radiant/surfaces',
   registry: '/radiant/registry',
   changelog: '/radiant/changelog',
-  // Example prototypes
-  'example-filter-dialog': '/radiant/examples/filter-dialog',
   // Widgets
   globalheader: '/radiant/components/globalheader',
   appsidebar: '/radiant/components/appsidebar',
@@ -220,12 +215,6 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       return componentId;
     }
     
-    // Check if it's an example page
-    if (path.startsWith('/radiant/examples/')) {
-      const exampleId = path.replace('/radiant/examples/', '');
-      return `example-${exampleId}`;
-    }
-    
     return 'radiant';
   };
 
@@ -241,7 +230,6 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'registry': '/radiant/registry',
       'changelog': '/radiant/changelog',
       // 'roadmap': '/radiant/roadmap',
-      'example-filter-dialog': '/radiant/examples/filter-dialog',
       // Widgets
       'globalheader': '/radiant/components/globalheader',
       'appsidebar': '/radiant/components/appsidebar',
@@ -344,7 +332,6 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     { id: 'globalheader', label: 'GlobalHeader', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'appsidebar', label: 'AppSidebar', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'appshell', label: 'AppShell', icon: <ComponentIcon />, type: 'item', badge: 'New' },
-    { id: 'example-filter-dialog', label: 'Filter Dialog', icon: <ComponentIcon />, type: 'item' },
     { id: 'divider1', label: '', type: 'divider' },
     { id: 'components-section', label: 'Selection Controls', type: 'section' },
     { id: 'button', label: 'Button', icon: <ComponentIcon />, type: 'item', badge: '3' },
@@ -552,9 +539,6 @@ const App: React.FC = () => {
       <Route path="/radiant/components/globalheader" element={<RadiantLayout><ComponentDocPage componentId="globalheader" /></RadiantLayout>} />
       <Route path="/radiant/components/appsidebar" element={<RadiantLayout><ComponentDocPage componentId="appsidebar" /></RadiantLayout>} />
       <Route path="/radiant/components/appshell" element={<RadiantLayout><ComponentDocPage componentId="appshell" /></RadiantLayout>} />
-      
-      {/* Example prototypes */}
-      <Route path="/radiant/examples/filter-dialog" element={<RadiantLayout><FilterDialogExample /></RadiantLayout>} />
       
       {/* Component documentation pages - Selection Controls */}
       <Route path="/radiant/components/button" element={<RadiantLayout><ComponentDocPage componentId="button" /></RadiantLayout>} />

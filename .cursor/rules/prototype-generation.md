@@ -415,7 +415,6 @@ When you see these patterns in a screenshot or description, use these component 
 ## Examples Reference
 
 Study these existing prototypes for patterns:
-- `src/prototypes/_examples/FilterDialog.tsx` — Modal with search and selection
 - `src/prototypes/AdminGroups/` — Complex prototype with wizard modal and table
 - `src/prototypes/Liveboard/` — Dashboard with charts and KPIs
 - `src/prototypes/Cmdk/` — Command palette with search
