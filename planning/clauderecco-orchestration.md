@@ -1,5 +1,5 @@
 # Orchestration & Instruction Set — Recommendation Plan
-_Evaluation of the AI design-to-code pipeline in figmaradiant_
+_Evaluation of the AI design-to-code pipeline in radiantplay_
 _Date: 2026-02-25_
 
 ---

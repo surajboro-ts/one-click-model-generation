@@ -1,6 +1,6 @@
 # Contributing Back
 
-How to contribute your improvements back to the main Radiant Prototyping Kit.
+How to contribute your improvements back to the main Radiant Play.
 
 ## Why Contribute?
 

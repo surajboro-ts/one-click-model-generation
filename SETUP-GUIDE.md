@@ -1,4 +1,4 @@
-# Radiant Prototyping Kit — Setup & Usage Guide
+# Radiant Play — Setup & Usage Guide
 
 Build interactive prototypes with AI assistance using ThoughtSpot's Radiant design system.
 
@@ -31,14 +31,14 @@ You should see `v18.x.x` or higher.
 
 ### Step 1: Unzip the file
 
-- Unzip `figmaradiant.zip` to a location you'll remember (e.g., Desktop or Documents)
-- You'll get a folder called `figmaradiant/`
+- Unzip `radiantplay.zip` to a location you'll remember (e.g., Desktop or Documents)
+- You'll get a folder called `radiantplay/`
 
 ### Step 2: Open in Cursor
 
 - Open Cursor IDE
 - Go to **File > Open Folder**
-- Select the `figmaradiant` folder
+- Select the `radiantplay` folder
 - Cursor will load the project and automatically pick up the AI rules
 
 ### Step 3: Open the terminal
@@ -62,7 +62,7 @@ npm run dev
 
 - You'll see a message like: `Local: http://localhost:5173`
 - Open that URL in your browser (Chrome recommended)
-- You should see the Radiant Prototyping Kit welcome page
+- You should see the Radiant Play welcome page
 
 > **Leave this terminal running** — it watches for changes and updates the browser automatically.
 
@@ -114,7 +114,7 @@ Each change appears instantly in the browser.
 
 Each time you come back to work:
 
-1. Open the `figmaradiant` folder in Cursor
+1. Open the `radiantplay` folder in Cursor
 2. Open terminal and run:
 
 ```bash
@@ -206,7 +206,7 @@ The kit includes several example prototypes you can study and reference:
 ## Project Structure
 
 ```
-figmaradiant/
+radiantplay/
 ├── src/
 │   ├── components/        ← 74 Radiant UI components
 │   ├── prototypes/        ← YOUR prototypes go here
@@ -235,7 +235,7 @@ figmaradiant/
 | `npm install` fails | Make sure Node.js is installed: run `node --version` |
 | `npm run dev` fails | Delete the `node_modules` folder, then run `npm install` again |
 | Browser shows blank page | Check the terminal for errors — usually a typo in code |
-| AI doesn't know components | Make sure you opened the `figmaradiant` folder (not a parent folder) so Cursor loads the rules |
+| AI doesn't know components | Make sure you opened the `radiantplay` folder (not a parent folder) so Cursor loads the rules |
 | Port 5173 already in use | Close other dev servers, or the terminal will show an alternate port |
 | Changes not showing in browser | Make sure `npm run dev` is still running in the terminal |
 

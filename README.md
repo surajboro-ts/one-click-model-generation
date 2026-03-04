@@ -1,4 +1,4 @@
-# Radiant Prototyping Kit
+# Radiant Play
 
 AI-assisted interactive prototype builder using ThoughtSpot's Radiant design system.
 
@@ -11,7 +11,7 @@ AI-assisted interactive prototype builder using ThoughtSpot's Radiant design sys
 
 ## What is This?
 
-The **Radiant Prototyping Kit** is a fork-ready repository for ThoughtSpot designers to build interactive prototypes that look and feel like the real product. It ships with 35+ Radiant UI components, design tokens, mock data, and Cursor AI rules — so you can describe a UI and get working code in seconds.
+**Radiant Play** is a fork-ready repository for ThoughtSpot designers to build interactive prototypes that look and feel like the real product. It ships with 35+ Radiant UI components, design tokens, mock data, and Cursor AI rules — so you can describe a UI and get working code in seconds.
 
 **Live site:** [radiantplay.vercel.app](https://radiantplay.vercel.app) *(ThoughtSpot internal)*
 
@@ -35,8 +35,8 @@ The **Radiant Prototyping Kit** is a fork-ready repository for ThoughtSpot desig
 
 ```bash
 # Fork this repo on GitHub or Galaxy, then clone your fork:
-git clone https://github.com/YOUR-USERNAME/figmaradiant.git
-cd figmaradiant
+git clone https://github.com/YOUR-USERNAME/radiantplay.git
+cd radiantplay
 npm install
 npm run dev
 ```
@@ -99,7 +99,7 @@ Browse them at `http://localhost:5173/playground` or study the code in `src/prot
 ## Project Structure
 
 ```
-figmaradiant/
+radiantplay/
 ├── src/
 │   ├── components/        # 35+ Radiant UI components
 │   │   ├── Button/
@@ -151,7 +151,7 @@ This project is hosted on two remotes:
 
 | Remote | URL | Purpose |
 |--------|-----|---------|
-| `origin` | `github.com/faris-ts/figmaradiant` | Primary — Vercel deploys from here |
+| `origin` | `github.com/faris-ts/radiantplay` | Primary — Vercel deploys from here |
 | `galaxy` | `galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay` | Internal ThoughtSpot access |
 
 To push to both after making changes:
@@ -169,7 +169,7 @@ git push galaxy main
 
 1. **Fork** the repo (Galaxy or GitHub) — see [FORK-WORKFLOW.md](FORK-WORKFLOW.md)
 2. **Clone** your fork and run `npm install && npm run dev`
-3. **Open** the `figmaradiant` folder in Cursor — AI rules load automatically
+3. **Open** the `radiantplay` folder in Cursor — AI rules load automatically
 4. **Create** a prototype: `npm run new-prototype MyPrototype`
 5. **Describe** your UI to Cursor AI in the Chat panel or with Cmd+K
 6. **Browse** existing prototypes at `/playground` for reference

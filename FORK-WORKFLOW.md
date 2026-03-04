@@ -1,6 +1,6 @@
 # Fork Workflow — Designer Onboarding Guide
 
-How to get started with the Radiant Prototyping Kit as a designer.
+How to get started with the Radiant Play as a designer.
 
 ---
 
@@ -9,10 +9,10 @@ How to get started with the Radiant Prototyping Kit as a designer.
 Each designer works on their own **fork** (personal copy) of the project. This keeps the main repo safe — no one can accidentally overwrite production code. Changes flow back only through Pull Requests that are reviewed and approved.
 
 ```
-Main repo (faris-ts/figmaradiant)       ← source of truth, deployed to Vercel
+Main repo (faris-ts/radiantplay)       ← source of truth, deployed to Vercel
     ↑ Pull Requests (reviewed by maintainer)
     |
-Your fork (your-username/figmaradiant)  ← your personal copy, full control
+Your fork (your-username/radiantplay)  ← your personal copy, full control
 ```
 
 ---
@@ -33,18 +33,18 @@ You'll receive a GitHub collaborator invite via email or at [github.com/notifica
 
 ## Step 2: Fork the repo
 
-1. Go to [github.com/faris-ts/figmaradiant](https://github.com/faris-ts/figmaradiant)
+1. Go to [github.com/faris-ts/radiantplay](https://github.com/faris-ts/radiantplay)
 2. Click the **Fork** button (top right)
 3. Select your personal account as the destination
-4. You now have `your-username/figmaradiant` — your own private copy
+4. You now have `your-username/radiantplay` — your own private copy
 
 ## Step 3: Clone your fork
 
 Open a terminal and run:
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/figmaradiant.git
-cd figmaradiant
+git clone https://github.com/YOUR-USERNAME/radiantplay.git
+cd radiantplay
 ```
 
 Replace `YOUR-USERNAME` with your actual GitHub username.
@@ -54,7 +54,7 @@ Replace `YOUR-USERNAME` with your actual GitHub username.
 This connects your fork to the original repo so you can pull updates:
 
 ```bash
-git remote add upstream https://github.com/faris-ts/figmaradiant.git
+git remote add upstream https://github.com/faris-ts/radiantplay.git
 ```
 
 Verify with:
@@ -66,8 +66,8 @@ git remote -v
 You should see:
 
 ```
-origin    https://github.com/YOUR-USERNAME/figmaradiant.git  (your fork)
-upstream  https://github.com/faris-ts/figmaradiant.git       (main repo)
+origin    https://github.com/YOUR-USERNAME/radiantplay.git  (your fork)
+upstream  https://github.com/faris-ts/radiantplay.git       (main repo)
 ```
 
 ## Step 5: Install and run
@@ -140,7 +140,7 @@ If you've built something that should be in the main repo:
 1. Push your changes to your fork
 2. Go to your fork on GitHub
 3. Click **Contribute** → **Open pull request**
-4. Set the base to `faris-ts/figmaradiant` branch `staging`
+4. Set the base to `faris-ts/radiantplay` branch `staging`
 5. Describe your changes and submit
 6. The maintainer reviews and merges (or requests changes)
 
@@ -178,7 +178,7 @@ If you've built something that should be in the main repo:
 |---------|----------|
 | Can't fork the repo | Make sure you've accepted the collaborator invite first |
 | `npm install` fails | Verify Node.js is installed: `node --version` (need 18+) |
-| AI doesn't know components | Make sure you opened the `figmaradiant` folder in Cursor (not a parent folder) |
+| AI doesn't know components | Make sure you opened the `radiantplay` folder in Cursor (not a parent folder) |
 | "Upstream" merge conflicts | Run `git merge upstream/main`, resolve conflicts in Cursor, then commit |
 | Changes not showing in browser | Make sure `npm run dev` is still running |
 

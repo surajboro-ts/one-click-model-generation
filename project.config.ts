@@ -1,7 +1,7 @@
 /**
  * Project Configuration
  *
- * Fill this out when you fork the Radiant Prototyping Kit.
+ * Fill this out when you fork Radiant Play.
  * This metadata provides context for AI tools and developer handoff.
  *
  * Usage:
@@ -10,7 +10,7 @@
 
 export const projectConfig = {
   // --- Project Info ---
-  name: 'Radiant Prototyping Kit',
+  name: 'Radiant Play',
   description: 'AI-assisted interactive prototype builder using ThoughtSpot\'s Radiant design system',
 
   // --- Team ---

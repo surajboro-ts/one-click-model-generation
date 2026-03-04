@@ -166,7 +166,7 @@ export const HomePage: React.FC = () => {
         {/* Footer Links */}
         <div style={styles.footer}>
           <Link
-            href="https://github.com/faris-ts/figmaradiant"
+            href="https://github.com/faris-ts/radiantplay"
             target="_blank"
             color="gray"
             size="small"

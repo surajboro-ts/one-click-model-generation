@@ -1,11 +1,11 @@
-# Claude Recommendations — Figmaradiant Project Evaluation
+# Claude Recommendations — RadiantPlay Project Evaluation
 _Generated: 2026-02-20_
 
 ---
 
 ## Project Summary
 
-Figmaradiant is a designer-facing prototyping playground built on React 19, TypeScript, and Vite. It wraps ThoughtSpot's Radiant design system into a fork-ready repo so designers can build interactive prototypes using real components — aided by Cursor AI rules — and share them with developers for handoff.
+RadiantPlay is a designer-facing prototyping playground built on React 19, TypeScript, and Vite. It wraps ThoughtSpot's Radiant design system into a fork-ready repo so designers can build interactive prototypes using real components — aided by Cursor AI rules — and share them with developers for handoff.
 
 The foundation is strong. The gaps are mostly around the _output_ side: there's no NPM package, no Figma sync pipeline, no Storybook, and the tool-agnostic goal is partially realized. Below are detailed recommendations ordered by priority.
 

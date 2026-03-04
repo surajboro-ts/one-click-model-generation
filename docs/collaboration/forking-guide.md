@@ -1,6 +1,6 @@
 # Forking Guide
 
-How to fork and set up the Radiant Prototyping Kit for your own use.
+How to fork and set up the Radiant Play for your own use.
 
 ## Overview
 
@@ -22,13 +22,13 @@ Each designer should work in their own fork of the repository. This allows:
 
 ```bash
 # Clone your fork (replace YOUR-USERNAME)
-git clone https://github.com/YOUR-USERNAME/figmaradiant.git
+git clone https://github.com/YOUR-USERNAME/radiantplay.git
 
 # Navigate to the project
-cd figmaradiant
+cd radiantplay
 
 # Add upstream remote for syncing
-git remote add upstream https://github.com/faris-ts/figmaradiant.git
+git remote add upstream https://github.com/faris-ts/radiantplay.git
 ```
 
 ### 3. Install Dependencies
@@ -197,8 +197,8 @@ If multiple designers are working on related features, coordinate to avoid confl
 
 ```bash
 # Start fresh
-git clone https://github.com/YOUR-USERNAME/figmaradiant.git
-cd figmaradiant
+git clone https://github.com/YOUR-USERNAME/radiantplay.git
+cd radiantplay
 npm install
 npm run dev
 
