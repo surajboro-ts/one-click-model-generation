@@ -18,14 +18,14 @@ When a designer asks you to create or modify a prototype (files in `src/prototyp
 |----------|------|-----------------|
 | 1 | `prototype-generation.md` | **Always** — core workflow, code structure, and import patterns |
 | 2 | `component-inventory.md` | **Always** — find the right component via decision tree |
-| 3 | `widget-patterns.md` | When building alerts, toasts, tables, menus, tooltips, empty states, delete confirmations, or any multi-component interaction pattern |
-| 3b | `interaction-patterns.md` | When building loading states, error handling, empty states, disabled states, or transitions |
-| 4 | `layout-patterns.md` | When building a full page — pick a layout template (dashboard, admin, form, table page, wizard) |
-| 5a | `figma-mcp-workflow.md` | When the input is a Figma URL — MCP tool-call sequence and adaptation |
-| 5b | `figma-component-mapping.md` | When the input is a Figma screenshot or Figma layer names |
-| 6 | `modal-patterns.md` | When building modals or dialogs — size selection (M1-M4), type (simple/wizard/subnav/splash), footer button placement |
-| 7 | `token-usage.md` | **Always** — styling reference, never hard-code values |
-| 8 | `content-guidelines.md` | **Always** — all UI text must follow ThoughtSpot content rules |
+| 3 | `content-guidelines.md` | **Always** — UX writing constraints for ALL user-facing text (Spotter Writer rules). Identify element type, apply matching constraints, validate word counts and approved verbs. Full ruleset: `docs/ux-writing-rules.md` |
+| 4 | `widget-patterns.md` | When building alerts, toasts, tables, menus, tooltips, empty states, delete confirmations, or any multi-component interaction pattern |
+| 4b | `interaction-patterns.md` | When building loading states, error handling, empty states, disabled states, or transitions |
+| 5 | `layout-patterns.md` | When building a full page — pick a layout template (dashboard, admin, form, table page, wizard) |
+| 6a | `figma-mcp-workflow.md` | When the input is a Figma URL — MCP tool-call sequence and adaptation |
+| 6b | `figma-component-mapping.md` | When the input is a Figma screenshot or Figma layer names |
+| 7 | `modal-patterns.md` | When building modals or dialogs — size selection (M1-M4), type (simple/wizard/subnav/splash), footer button placement |
+| 8 | `token-usage.md` | **Always** — styling reference, never hard-code values |
 | 9 | `product-knowledge.md` | When the prototype references ThoughtSpot features (Answers, Liveboards, Spotter, Connections, SpotIQ, Monitors) |
 | 10 | `prototype-structure.md` | When organizing files, creating thumbnails, or registering a prototype |
 
@@ -70,11 +70,12 @@ When creating or modifying a component in `src/components/`, consult these files
 
 ## Task: Writing UI Text or Labels
 
-For any user-facing text (buttons, titles, errors, descriptions):
+For any user-facing text (buttons, titles, errors, descriptions, toasts, tooltips, empty states):
 
 | Priority | File | Scope |
 |----------|------|-------|
-| 1 | `content-guidelines.md` | Quick rules for buttons, labels, titles, errors |
+| 1 | `content-guidelines.md` | Hard constraints by element type — word counts, approved verbs, casing, punctuation. Apply the Rule Application Process: identify element type, match constraints, validate. |
+| 1b | `docs/ux-writing-rules.md` | Full 79-rule source of truth in "When writing..." format — consult for edge cases or element types not covered in the quick reference |
 | 2 | `product-knowledge.md` | Capitalized ThoughtSpot terms (Answer, Liveboard, SpotIQ, etc.) |
 
 ---
@@ -83,7 +84,7 @@ For any user-facing text (buttons, titles, errors, descriptions):
 
 1. **Never hard-code colors, spacing, or typography** — use design tokens (see `token-usage.md`)
 2. **Always prefer existing components** — check `component-inventory.md` before creating custom elements. The library now has **72 components** (was 37).
-3. **Follow ThoughtSpot content rules** — sentence case, imperative verbs, no periods in buttons (see `content-guidelines.md`)
+3. **Follow ThoughtSpot UX writing rules** — every UI string must pass through the Rule Application Process in `content-guidelines.md`: identify element type, apply matching constraints (word counts, approved verbs, casing), validate. Full ruleset: `docs/ux-writing-rules.md`
 4. **Use mock data** — import from `../../mocks` for realistic content
 5. **Use the component decision tree** in `component-inventory.md` to pick the right component
 6. **Follow widget interaction rules** in `widget-patterns.md` for correct behavior (alert types, menu ordering, tooltip timing, empty states)
