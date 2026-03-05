@@ -2,7 +2,7 @@
 
 ## What This Project Is
 
-**Radiant Play** is a designer-developer handoff tool for ThoughtSpot's **Radiant** design system. It lets designers and developers explore, prototype, and validate UI patterns using production-quality Radiant components. It is NOT a code learning platform, tutorial site, or generic React starter.
+**Radiant Play** is a prototyping playground built on ThoughtSpot's **Radiant** design system. It uses Radiant components to create interactive prototypes with realistic data and interactions. It is NOT a designer-developer handoff tool, NOT a code learning platform, NOT a tutorial site, and NOT a generic React starter.
 
 ## Behavior Rules
 
@@ -10,7 +10,21 @@
 - Do NOT add unsolicited UI elements, features, badges, or enhancements not in the request. Build exactly what was asked.
 - The project is branded as **Radiant Play** — not figmaradiant, RadiantPlay, or other legacy names in user-facing content.
 
-## Stack
+## Workflow Preferences
+
+When asked to save or write recommendations/analysis, write directly to files. Do NOT create Task agents or sub-tasks unless explicitly asked to. Prefer simple file writes for document deliverables.
+
+## Code Changes
+
+Do NOT add unsolicited UI elements, badges, tooltips, or visual embellishments that weren't requested. Make only the changes explicitly asked for.
+
+## Git & Deployment
+
+This project uses two git remotes. After committing, always push to BOTH remotes unless told otherwise. Verify remote URLs are current before pushing. Default deploy target is **staging**, not main — do not push to main unless explicitly asked.
+
+## Tech Stack
+
+Primary stack: TypeScript, HTML, Markdown, JSON. Deployment target: Vercel. When building or modifying pages, verify the build succeeds before considering the task complete.
 
 React 19 + TypeScript + Vite 7, deployed on Vercel.
 
