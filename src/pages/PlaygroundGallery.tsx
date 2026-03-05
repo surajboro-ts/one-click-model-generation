@@ -48,7 +48,7 @@ export const PlaygroundGallery: React.FC = () => {
             size="small"
             icon="info-circle"
             iconPosition="leading"
-            onClick={() => navigate('/how-it-works')}
+            onClick={() => window.location.href = '/how-it-works.html'}
           >
             How prototyping works
           </Button>

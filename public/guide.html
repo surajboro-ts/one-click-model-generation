@@ -69,6 +69,27 @@ body { font-family:var(--font); background:var(--gray-90); color:#fff; height:10
 .kbd-hint { position:fixed;bottom:28px;right:32px;font-size:11px;color:rgba(255,255,255,.2);display:flex;align-items:center;gap:5px; }
 kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:2px 5px;font-family:var(--mono);font-size:10px; }
 
+/* ── tab pills ── */
+.tab-pills {
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:200;
+  display:flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:100px;padding:3px;
+  backdrop-filter:blur(10px);
+}
+.tab-pill {
+  font-family:var(--font);font-size:12px;font-weight:600;
+  color:rgba(255,255,255,.4);
+  background:transparent;
+  border:none;border-radius:100px;
+  padding:6px 18px;
+  cursor:pointer;transition:all .18s;
+  text-decoration:none;white-space:nowrap;
+}
+.tab-pill:hover { color:rgba(255,255,255,.7);background:rgba(255,255,255,.06); }
+.tab-pill.active { color:#fff;background:rgba(39,112,239,.3);box-shadow:0 1px 4px rgba(0,0,0,.2); }
+
 /* ── slides ── */
 .slides { width:100%;height:100vh;position:relative; }
 .slide { position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:52px 72px;opacity:0;transform:translateX(48px);transition:opacity .42s cubic-bezier(.4,0,.2,1),transform .42s cubic-bezier(.4,0,.2,1);pointer-events:none; }
@@ -367,24 +388,29 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
   Back to home
 </a>
 
+<!-- Tab pills -->
+<div class="tab-pills">
+  <a class="tab-pill active" href="/guide.html">Getting started</a>
+  <a class="tab-pill" href="/how-it-works.html">How it works</a>
+</div>
+
 <div class="slides">
 
 <!-- ══════════════════════════════
      SLIDE 1 — HERO
 ══════════════════════════════ -->
 <div class="slide s-hero active" data-index="0">
-  <div style="max-width:780px">
+  <div style="max-width:780px;width:100%">
     <div class="hero-eyebrow"><div class="hero-dot"></div>ThoughtSpot Design · Getting Started</div>
     <h1 class="h1 hero-title" style="margin-bottom:22px">
       Radiant<em>Play</em>
     </h1>
     <p class="hero-sub">A playground for building interactive prototypes with real Radiant components — so every screen stays consistent with the design system. Describe what you want, AI builds it, and you iterate in real time.</p>
-    <div style="font-size:14px;color:rgba(255,255,255,.4);margin-bottom:32px;line-height:1.6">No coding experience needed. This guide walks you through setup, scaffolding, and your first prototype.</div>
+    <div style="font-size:14px;color:rgba(255,255,255,.4);margin-bottom:32px;line-height:1.6">This guide walks you through setup and building your first prototype.</div>
     <div class="hero-chips">
-      <div class="hero-chip">74 Radiant components</div>
-      <div class="hero-chip">AI-powered in Cursor</div>
+      <div class="hero-chip">73+ Radiant components</div>
+      <div class="hero-chip">AI-assisted in Cursor</div>
       <div class="hero-chip">Interactive in the browser</div>
-      <div class="hero-chip">No code required</div>
     </div>
   </div>
 </div>
@@ -420,7 +446,7 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
         <div class="cc-ico" style="background:var(--green-bg)">🎨</div>
         <div>
           <h4>Radiant Play — the kit</h4>
-          <p>74 components, design tokens, AI rules, and mock data — all pre-configured. You just describe the UI.</p>
+          <p>73+ components, design tokens, AI rules, and mock data — all pre-configured. You describe the UI.</p>
           <span class="cc-tag" style="background:var(--green-bg);color:var(--green)">What you prototype with</span>
         </div>
       </div>
@@ -496,13 +522,13 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
 <div class="slide s-git" data-index="3">
   <div class="git-inner">
     <div class="git-header">
-      <div class="label">Git in Figma terms</div>
+      <div class="label">Git basics</div>
       <h2 class="h2" style="margin-bottom:8px">You already know this — different names</h2>
-      <p class="sub" style="margin:0 auto">Hover each card to see the Git equivalent of something you already do in Figma.</p>
+      <p class="sub" style="margin:0 auto">Hover each card to see the Git equivalent of something you already do with design files.</p>
     </div>
     <div class="flip-grid">
       <div class="flip-card"><div class="flip-inner">
-        <div class="flip-front"><div class="flip-emoji">📄</div><div class="flip-term">Duplicate a file</div><div class="flip-sub">Make your own copy of a shared Figma file</div><div class="flip-hint">↻ hover to reveal</div></div>
+        <div class="flip-front"><div class="flip-emoji">📄</div><div class="flip-term">Duplicate a file</div><div class="flip-sub">Make your own copy of a shared file</div><div class="flip-hint">↻ hover to reveal</div></div>
         <div class="flip-back"><div class="flip-bl">In Git</div><div class="flip-bt">Fork</div><div class="flip-bd">Your personal copy of the Radiant Play repo — what you do first on Galaxy.</div></div>
       </div></div>
       <div class="flip-card"><div class="flip-inner">
@@ -568,7 +594,7 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
           <div class="sn">1</div>
           <div>
             <h4>Go to Radiant Play on Galaxy</h4>
-            <p>Find the RadiantPlay repository on Galaxy</p>
+            <p>Find the Radiant Play repository on Galaxy</p>
           </div>
         </div>
         <div class="step-item">
@@ -701,7 +727,7 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
     <div>
       <div class="label">Step 3</div>
       <h2 class="h2" style="margin-bottom:12px">Build your first prototype</h2>
-      <p class="sub" style="margin-bottom:22px">Just describe what you want. Cursor knows all 74 components and ThoughtSpot patterns.</p>
+      <p class="sub" style="margin-bottom:22px">Describe what you want. Cursor knows all 73+ components and ThoughtSpot patterns.</p>
       <div class="tips">
         <div class="tip">
           <div class="tip-ico">⌨️</div>
@@ -723,7 +749,7 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
           <div class="tip-ico">💬</div>
           <div>
             <h4>Open AI chat and describe your UI</h4>
-            <p><code>Cmd+L</code> (Mac) / <code>Ctrl+L</code> (Windows) — type a description, or <strong style="color:rgba(255,255,255,.6)">drag a Figma screenshot</strong> into the chat and say "Recreate this using Radiant components"</p>
+            <p><code>Cmd+L</code> (Mac) / <code>Ctrl+L</code> (Windows) — type a description, or <strong style="color:rgba(255,255,255,.6)">drag a screenshot</strong> into the chat and say "Recreate this using Radiant components"</p>
           </div>
         </div>
         <div class="tip">
@@ -796,8 +822,8 @@ kbd { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);bor
       <div class="res-card">
         <div class="res-icon">💙</div>
         <h4>Thank you</h4>
-        <p>For trying RadiantPlay. Every prototype you build makes the design system better for everyone.</p>
-        <code>Happy building!</code>
+        <p>For trying Radiant Play. Every prototype you build makes the design system better for everyone.</p>
+        <span style="font-size:12px;color:rgba(255,255,255,.35)">Happy building!</span>
       </div>
     </div>
   </div>

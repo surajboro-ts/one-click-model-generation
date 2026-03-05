@@ -14,7 +14,7 @@ import { VersionHistoryPage } from './pages/VersionHistoryPage';
 import { ColorSystemPage } from './pages/ColorSystemPage';
 import { TypographyPage } from './pages/TypographyPage';
 // import { RoadmapPage } from './pages/RoadmapPage';
-import { HowItWorksPage } from './pages/HowItWorksPage';
+
 import { systemColors } from './tokens/colors';
 
 // Navigation icons
@@ -520,7 +520,7 @@ const App: React.FC = () => {
     <Routes>
       {/* Home - Simple split page */}
       <Route path="/" element={<HomePage />} />
-      <Route path="/how-it-works" element={<HowItWorksPage />} />
+      {/* How it works is now a static HTML page at /how-it-works.html */}
       
       {/* Radiant Section - With sidebar */}
       <Route path="/radiant" element={<RadiantLayout><RadiantHomePageWrapper /></RadiantLayout>} />

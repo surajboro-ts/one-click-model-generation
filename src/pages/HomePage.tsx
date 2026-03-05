@@ -3,25 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { systemColors, referenceColors } from '../tokens/colors';
 import { spacing } from '../tokens/spacing';
 import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
-import { Button } from '../components/Button';
 import { Link } from '../components/Link';
 
 /**
- * HomePage - Landing page for RadiantPlay
+ * HomePage - Landing page for Radiant Play
  *
- * Hero with eyebrow + title + subtitle + stat chips,
- * two navigation cards, a prominent guide banner, and footer.
+ * Hero with buttons → Navigation cards → Guide CTA → Footer
  */
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   const footerMessages = [
-    'Made with coffee and tokens by Faris',
-    'Scrapped together by Faris',
-    'Built between meetings by Faris',
+    'Made with coffee and tokens',
+    'Scrapped together with care',
+    'Built between meetings',
     'Fueled by design tokens and caffeine',
-    'Assembled with love (and AI) by Faris',
-    'Crafted pixel by pixel by Faris',
+    'Assembled with love and AI',
+    'Crafted pixel by pixel',
     'Made with borderRadius and box-shadow',
   ];
 
@@ -31,31 +29,54 @@ export const HomePage: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      <style>{`
-        @keyframes hintPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-      `}</style>
       <main style={styles.main}>
-        {/* Hero */}
+        {/* ── Hero ──────────────────────────────────────────────── */}
         <div style={styles.heroText}>
           <span style={styles.eyebrow}>ThoughtSpot Design System</span>
           <h1 style={styles.title}>
             Radiant<span style={styles.titleAccent}>Play</span>
           </h1>
           <p style={styles.subtitle}>
-            A playground for building interactive prototypes with real Radiant components — so every screen stays consistent with the design system.
+            Build interactive prototypes with real Radiant components.
+            Every screen stays consistent with the design system.
           </p>
-          <div style={styles.statChips}>
-            <span style={styles.statChip}>{getComponentCount()} components</span>
-            <span style={styles.statChip}>{getIconCount()} icons</span>
-            <span style={styles.statChip}>{getTokenCountLabel()} tokens</span>
-            <span style={styles.statChip}>AI-powered</span>
+          <div style={styles.heroActions}>
+            <a
+              href="/guide.html"
+              style={styles.primaryBtn}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(39, 112, 239, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(39, 112, 239, 0.25)';
+              }}
+            >
+              Getting started
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+            <a
+              href="/how-it-works.html"
+              style={styles.secondaryBtn}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = systemColors.light['background-subtle'];
+                e.currentTarget.style.borderColor = systemColors.light['border-default'];
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = systemColors.light['background-base'];
+                e.currentTarget.style.borderColor = systemColors.light['background-subtle'];
+              }}
+            >
+              How prototyping works
+            </a>
           </div>
         </div>
 
-        {/* Cards */}
+        {/* ── Navigation Cards ─────────────────────────────────── */}
         <div style={styles.cardsContainer}>
           {/* Radiant Card */}
           <button
@@ -136,63 +157,19 @@ export const HomePage: React.FC = () => {
           </button>
         </div>
 
-        {/* Guide Strip */}
-        <a
-          href="/guide.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={styles.guideStrip}
-          onMouseEnter={(e) => {
-            const el = e.currentTarget as HTMLAnchorElement;
-            el.style.background = 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)';
-            el.style.transform = 'translateY(-2px)';
-            el.style.boxShadow = '0 8px 28px rgba(39, 112, 239, 0.3)';
-          }}
-          onMouseLeave={(e) => {
-            const el = e.currentTarget as HTMLAnchorElement;
-            el.style.background = 'linear-gradient(135deg, #2770EF 0%, #1a4fa0 100%)';
-            el.style.transform = 'translateY(0)';
-            el.style.boxShadow = '0 4px 16px rgba(39, 112, 239, 0.2)';
-          }}
-        >
-          <span style={styles.guideStripDot} />
-          <span style={styles.guideStripText}>New here? Read the getting started guide</span>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-            <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </a>
-
-        {/* Footer Links */}
+        {/* ── Footer ───────────────────────────────────────────── */}
         <div style={styles.footer}>
           <Link
-            href="https://github.com/faris-ts/radiantplay"
+            href="https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay"
             target="_blank"
             color="gray"
             size="small"
             external
           >
-            GitHub
+            Galaxy
           </Link>
-          <span style={styles.footerDivider}>&middot;</span>
-          <Button
-            variant="tertiary"
-            size="small"
-            onClick={() => navigate('/radiant/architecture')}
-          >
-            Documentation
-          </Button>
-          <span style={styles.footerDivider}>&middot;</span>
-          <Button
-            variant="tertiary"
-            size="small"
-            onClick={() => navigate('/radiant/icons')}
-          >
-            Icons
-          </Button>
         </div>
 
-        {/* Fun Footer Message */}
         <div style={styles.funFooter}>
           {footerMessage}
         </div>
@@ -209,7 +186,6 @@ const styles: Record<string, React.CSSProperties> = {
     background: `linear-gradient(180deg, ${systemColors.light['background-sunken']} 0%, ${systemColors.light['background-base']} 100%)`,
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
-
   main: {
     flex: 1,
     display: 'flex',
@@ -258,23 +234,51 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.6,
     maxWidth: '520px',
     margin: '0 auto',
-    marginBottom: `${spacing.F}px`,
+    marginBottom: `${spacing.H}px`,
   },
-  statChips: {
+  heroActions: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: `${spacing.B}px`,
-    flexWrap: 'wrap',
+    gap: `${spacing.C}px`,
   },
-  statChip: {
-    fontSize: '13px',
-    fontWeight: 500,
-    color: systemColors.light['content-secondary'],
+  primaryBtn: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    padding: '14px 32px',
+    fontSize: '15px',
+    fontWeight: 600,
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    color: '#ffffff',
+    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
+    border: 'none',
+    borderRadius: '12px',
+    cursor: 'pointer',
+    transition: 'all 200ms cubic-bezier(0.23, 1, 0.32, 1)',
+    boxShadow: '0 4px 16px rgba(39, 112, 239, 0.25)',
+    textDecoration: 'none',
+    minWidth: '200px',
+  },
+  secondaryBtn: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    padding: '14px 32px',
+    fontSize: '15px',
+    fontWeight: 600,
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    color: systemColors.light['content-primary'],
     background: systemColors.light['background-base'],
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-    borderRadius: '99px',
-    padding: `${spacing.A}px ${spacing.C}px`,
+    border: `1.5px solid ${systemColors.light['background-subtle']}`,
+    borderRadius: '12px',
+    cursor: 'pointer',
+    transition: 'all 200ms cubic-bezier(0.23, 1, 0.32, 1)',
+    textDecoration: 'none',
+    minWidth: '200px',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
   },
 
   // Cards
@@ -283,9 +287,8 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: 'repeat(2, 1fr)',
     gap: `${spacing.F}px`,
     width: '100%',
-    marginBottom: `${spacing.F}px`,
+    marginBottom: `${spacing.L}px`,
   },
-
   card: {
     display: 'flex',
     flexDirection: 'column',
@@ -357,45 +360,12 @@ const styles: Record<string, React.CSSProperties> = {
     transition: 'all 150ms ease',
   },
 
-  // Guide Strip
-  guideStrip: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '10px',
-    padding: '12px 28px 12px 22px',
-    background: 'linear-gradient(135deg, #2770EF 0%, #1a4fa0 100%)',
-    borderRadius: '99px',
-    textDecoration: 'none',
-    color: '#ffffff',
-    fontSize: '15px',
-    fontWeight: 600,
-    letterSpacing: '0.01em',
-    transition: 'all 250ms cubic-bezier(0.23, 1, 0.32, 1)',
-    marginBottom: `${spacing.L}px`,
-    boxShadow: '0 4px 16px rgba(39, 112, 239, 0.2)',
-    cursor: 'pointer',
-  },
-  guideStripDot: {
-    width: '7px',
-    height: '7px',
-    borderRadius: '50%',
-    background: '#ffffff',
-    animation: 'hintPulse 2s ease-in-out infinite',
-    flexShrink: 0,
-  },
-  guideStripText: {
-    lineHeight: 1,
-  },
-
   // Footer
   footer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     gap: `${spacing.C}px`,
-  },
-  footerDivider: {
-    color: referenceColors.gray['30'],
   },
   funFooter: {
     marginTop: `${spacing.F}px`,
