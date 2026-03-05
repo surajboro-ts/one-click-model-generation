@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { systemColors, referenceColors } from '../tokens/colors';
 import { spacing } from '../tokens/spacing';
 import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
+import { getAllProjects } from '../prototypes/registry';
 import { Link } from '../components/Link';
 
 /**
@@ -27,8 +28,18 @@ export const HomePage: React.FC = () => {
     footerMessages[Math.floor(Math.random() * footerMessages.length)]
   );
 
+  // Get the most recently added prototype (last in registry = newest)
+  const allProjects = getAllProjects();
+  const latestProject = allProjects.length > 0 ? allProjects[allProjects.length - 1] : null;
+
   return (
     <div style={styles.container}>
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
       <main style={styles.main}>
         {/* ── Hero ──────────────────────────────────────────────── */}
         <div style={styles.heroText}>
@@ -156,6 +167,34 @@ export const HomePage: React.FC = () => {
             </div>
           </button>
         </div>
+
+        {/* ── Latest Prototype ─────────────────────────────────── */}
+        {latestProject && (
+          <button
+            style={styles.latestBtn}
+            onClick={() => navigate(`/playground/${latestProject.id}`)}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(6, 191, 127, 0.14)';
+              e.currentTarget.style.borderColor = 'rgba(6, 191, 127, 0.35)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(6, 191, 127, 0.18)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(6, 191, 127, 0.08)';
+              e.currentTarget.style.borderColor = 'rgba(6, 191, 127, 0.2)';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 12px rgba(6, 191, 127, 0.1)';
+            }}
+          >
+            <span style={styles.latestDot} />
+            <span>View latest prototype</span>
+            <span style={styles.latestName}>{latestProject.name}</span>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M3.33334 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8 3.33334L12.6667 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        )}
 
         {/* ── Footer ───────────────────────────────────────────── */}
         <div style={styles.footer}>
@@ -358,6 +397,40 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: `${spacing.B}px`,
     border: `1px solid ${systemColors.light['background-information']}`,
     transition: 'all 150ms ease',
+  },
+
+  // Latest prototype button
+  latestBtn: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: `${spacing.C}px`,
+    padding: `12px ${spacing.F}px`,
+    fontSize: '15px',
+    fontWeight: 400,
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    color: '#059669',
+    background: 'linear-gradient(90deg, rgba(6,191,127,0.08) 0%, rgba(6,191,127,0.08) 40%, rgba(6,191,127,0.18) 50%, rgba(6,191,127,0.08) 60%, rgba(6,191,127,0.08) 100%)',
+    backgroundSize: '200% 100%',
+    animation: 'shimmer 3s ease-in-out infinite',
+    border: '1.5px solid rgba(6, 191, 127, 0.2)',
+    borderRadius: '14px',
+    cursor: 'pointer',
+    transition: 'all .2s cubic-bezier(0.23, 1, 0.32, 1)',
+    marginBottom: `${spacing.L}px`,
+    boxShadow: '0 2px 12px rgba(6, 191, 127, 0.1)',
+  },
+  latestDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    background: '#06BF7F',
+    flexShrink: 0,
+    boxShadow: '0 0 8px rgba(6, 191, 127, 0.5)',
+  },
+  latestName: {
+    color: '#059669',
+    fontWeight: 700,
+    fontSize: '15px',
   },
 
   // Footer

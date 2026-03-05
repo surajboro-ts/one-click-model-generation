@@ -228,7 +228,10 @@ const registryEntry = `  {
     component: ${prototypeName},
   },`;
 
-const entryMarker = "  // Add more projects here as they are created";
+// Support both old and new marker comments for backward compatibility with forks
+const newMarker = "  // Add more projects here. New prototypes default to 'mine' section.";
+const oldMarker = "  // Add more projects here as they are created";
+const entryMarker = registryContent.includes(newMarker) ? newMarker : oldMarker;
 if (registryContent.includes(entryMarker) && !registryContent.includes(`id: '${prototypeName}'`)) {
   registryContent = registryContent.replace(
     entryMarker,

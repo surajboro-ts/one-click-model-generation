@@ -35,6 +35,8 @@ export interface ProjectMeta {
   dsComponents?: number;
   /** Number of custom/local components created for this prototype */
   customComponents?: number;
+  /** Which gallery section: 'sample' for built-in examples, 'mine' for user-created (default) */
+  section?: 'sample' | 'mine';
 }
 
 /**
@@ -50,7 +52,6 @@ const Cmdk = React.lazy(() => import('./Cmdk'));
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
 const ImpersonationV2 = React.lazy(() => import('./ImpersonationV2'));
-const MuseChat = React.lazy(() => import('./MuseChat'));
 const SpotterModelProto = React.lazy(() => import('./SpotterModel'));
 
 /**
@@ -62,78 +63,79 @@ export const projectRegistry: ProjectMeta[] = [
     name: 'Liveboard',
     description: 'TSE Business Overview dashboard with KPIs, charts, and regional data visualization.',
     author: 'Design Team',
+    lastModified: '2026-02-19',
     thumbnail: LiveboardThumbnail,
     component: Liveboard,
     dsComponents: 10,
     customComponents: 10,
+    section: 'sample',
   },
   {
     id: 'Cmdk',
     name: 'Command Palette',
     description: 'Command-K interface for quick navigation and actions with keyboard shortcuts and context-aware filtering.',
     author: 'Design Team',
+    lastModified: '2026-02-19',
     thumbnail: CmdkThumbnail,
     component: Cmdk,
     dsComponents: 12,
     customComponents: 11,
+    section: 'sample',
   },
   {
     id: 'SpotterMemory',
     name: 'Spotter Memory',
     description: 'Memory Sources object table experience with search, filtering, and pagination.',
     author: 'Design Team',
+    lastModified: '2026-02-19',
     thumbnail: SpotterMemoryThumbnail,
     component: SpotterMemory,
     dsComponents: 6,
     customComponents: 5,
+    section: 'sample',
   },
   {
     id: 'AdminGroups',
     name: 'Admin Groups',
     description: 'Group creation wizard with bulk org assignment and role management.',
     author: 'Design Team',
+    lastModified: '2026-02-19',
     thumbnail: AdminGroupsThumbnail,
     component: AdminGroups,
     dsComponents: 9,
     customComponents: 10,
+    section: 'sample',
   },
   {
     id: 'ImpersonationV2',
     name: 'Admin Impersonation',
     description: 'Admin palette impersonation — blue viewport border, GlobalHeader icon, session timer popup, and Toast notification.',
     author: 'Design Team',
+    lastModified: '2026-03-03',
     component: ImpersonationV2,
     dsComponents: 11,
     customComponents: 3,
-  },
-  {
-    id: 'MuseChat',
-    name: 'MuseChat',
-    description: 'Spotter AI chat interface with conversational data exploration, embedded charts, and animated typing indicators.',
-    author: 'Design Team',
-    component: MuseChat,
-    dsComponents: 4,
-    customComponents: 6,
+    section: 'sample',
   },
   {
     id: 'SpotterModel',
     name: 'Spotter Model',
     description: 'SpotterModel agent edit flow — onboarding, table/join recommendations, columns editing, and impact-aware delete.',
     author: 'Design Team',
+    lastModified: '2026-03-03',
     component: SpotterModelProto,
     dsComponents: 5,
     customComponents: 14,
+    section: 'sample',
   },
-  // Add more projects here as they are created
+  // Add more projects here. New prototypes default to 'mine' section.
+  // Set section: 'sample' to show under Sample prototypes instead.
   // {
   //   id: 'my-project',
   //   name: 'My Project',
   //   description: 'Description of my project',
   //   author: 'Designer Name',
-  //   thumbnail: MyProjectThumbnail,
   //   component: React.lazy(() => import('./my-project')),
-  //   dsComponents: 0,
-  //   customComponents: 0,
   // },
 ];
 
