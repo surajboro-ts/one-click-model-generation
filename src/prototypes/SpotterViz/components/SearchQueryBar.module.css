@@ -1,0 +1,132 @@
+.wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--rd-sys-color-background-base, #FFFFFF);
+  border-radius: 4px;
+  padding: 4px 8px 4px 20px;
+  box-shadow: 0px 0px 4px rgba(25, 35, 49, 0.1), 0px 2px 4px rgba(25, 35, 49, 0.04);
+  height: 40px;
+}
+
+.source {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.sourceIcon {
+  color: var(--rd-sys-color-content-secondary, #777E8B);
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--rd-sys-color-border-divider, #EAEDF2);
+  flex-shrink: 0;
+}
+
+.sourceName {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--rd-sys-color-content-primary, #1D232F);
+  white-space: nowrap;
+}
+
+.searchIcon {
+  color: var(--rd-sys-color-content-secondary, #777E8B);
+  flex-shrink: 0;
+}
+
+.tokens {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.token {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 20px;
+  color: var(--rd-sys-color-content-primary, #1D232F);
+  white-space: nowrap;
+}
+
+.tokenBlue {
+  background: #DEE8FA;
+}
+
+.tokenGreen {
+  background: #E0F8EF;
+}
+
+.tokenGray {
+  background: var(--rd-sys-color-background-subtle, #EAEDF2);
+}
+
+.goButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 18px;
+  border: none;
+  background: var(--rd-sys-color-background-subtle, #DBDFE7);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 20px;
+  color: var(--rd-sys-color-content-primary, #1D232F);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.goButton:hover {
+  background: #C0C6CF;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--rd-sys-color-content-secondary, #777E8B);
+  padding: 0;
+}
+
+.actionBtn:hover {
+  background: var(--rd-sys-color-background-ghost-hover, rgba(192, 198, 207, 0.12));
+}
+
+.actionDivider {
+  width: 1px;
+  height: 24px;
+  background: var(--rd-sys-color-border-divider, #EAEDF2);
+  margin: 0 2px;
+}

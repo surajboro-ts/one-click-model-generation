@@ -53,6 +53,7 @@ const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
 const ImpersonationV2 = React.lazy(() => import('./ImpersonationV2'));
 const SpotterModelProto = React.lazy(() => import('./SpotterModel'));
+const SpotterViz = React.lazy(() => import('./SpotterViz'));
 
 /**
  * All registered projects
@@ -126,6 +127,17 @@ export const projectRegistry: ProjectMeta[] = [
     component: SpotterModelProto,
     dsComponents: 5,
     customComponents: 14,
+    section: 'sample',
+  },
+  {
+    id: 'SpotterViz',
+    name: 'SpotterViz Chart Editor',
+    description: 'Chart editor with SpotterViz AI agent — natural language chart modifications, deep-link settings navigation, and interactive Chart.js visualization.',
+    author: 'Design Team',
+    lastModified: '2026-03-05',
+    component: SpotterViz,
+    dsComponents: 8,
+    customComponents: 9,
     section: 'sample',
   },
   // Add more projects here. New prototypes default to 'mine' section.
