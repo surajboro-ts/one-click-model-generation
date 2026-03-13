@@ -108,6 +108,7 @@ const ROUTES = {
   registry: '/radiant/registry',
   changelog: '/radiant/changelog',
   // Widgets
+  liveboardheader: '/radiant/components/liveboardheader',
   globalheader: '/radiant/components/globalheader',
   appsidebar: '/radiant/components/appsidebar',
   appshell: '/radiant/components/appshell',
@@ -231,6 +232,7 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       'changelog': '/radiant/changelog',
       // 'roadmap': '/radiant/roadmap',
       // Widgets
+      'liveboardheader': '/radiant/components/liveboardheader',
       'globalheader': '/radiant/components/globalheader',
       'appsidebar': '/radiant/components/appsidebar',
       'appshell': '/radiant/components/appshell',
@@ -329,6 +331,7 @@ const RadiantLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     // { id: 'roadmap', label: 'Roadmap', icon: <RoadmapIcon />, type: 'item', badge: 'New' },
     { id: 'divider0', label: '', type: 'divider' },
     { id: 'widgets-section', label: 'Widgets', type: 'section' },
+    { id: 'liveboardheader', label: 'LiveboardHeader', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'globalheader', label: 'GlobalHeader', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'appsidebar', label: 'AppSidebar', icon: <ComponentIcon />, type: 'item', badge: 'New' },
     { id: 'appshell', label: 'AppShell', icon: <ComponentIcon />, type: 'item', badge: 'New' },
@@ -476,6 +479,7 @@ const RadiantHomePageWrapper: React.FC = () => {
       'registry': '/radiant/registry',
       'architecture': '/radiant/architecture',
       // Widgets
+      'liveboardheader': '/radiant/components/liveboardheader',
       'globalheader': '/radiant/components/globalheader',
       'appsidebar': '/radiant/components/appsidebar',
       'appshell': '/radiant/components/appshell',
@@ -536,6 +540,7 @@ const App: React.FC = () => {
       <Route path="/radiant/colors" element={<Navigate to="/radiant/colours" replace />} />
       
       {/* Widget documentation pages */}
+      <Route path="/radiant/components/liveboardheader" element={<RadiantLayout><ComponentDocPage componentId="liveboardheader" /></RadiantLayout>} />
       <Route path="/radiant/components/globalheader" element={<RadiantLayout><ComponentDocPage componentId="globalheader" /></RadiantLayout>} />
       <Route path="/radiant/components/appsidebar" element={<RadiantLayout><ComponentDocPage componentId="appsidebar" /></RadiantLayout>} />
       <Route path="/radiant/components/appshell" element={<RadiantLayout><ComponentDocPage componentId="appshell" /></RadiantLayout>} />

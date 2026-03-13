@@ -1,6 +1,6 @@
 ---
-description: ThoughtSpot UX writing rules for all UI text — derived from the Spotter Writer guideline system
-globs: ["src/components/**/*.tsx", "src/pages/**/*.tsx", "src/prototypes/**/*.tsx", "src/mocks/**/*.ts"]
+description: UX writing rules for all UI text including buttons (1-2 words, imperative verbs), titles (4 words max, sentence case), labels (3 words max), error messages (remedy-focused), and approved action words. Covers ThoughtSpot terminology capitalization. Always consult when writing user-facing text.
+globs: ["src/prototypes/**/*.tsx", "src/components/**/*.tsx"]
 ---
 
 # ThoughtSpot UX Writing Rules
