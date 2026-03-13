@@ -18,6 +18,7 @@ Read the designer's request and check EVERY row below. If the condition matches,
 
 | Condition | Rule file to read | Examples that match |
 |-----------|-------------------|---------------------|
+| **Any Liveboard prototype** | `liveboard-ia.md` | **Priority 0** — IA structure, component map, mode scaffolding. Ask user about mode (View/Edit/Both) before starting. |
 | **Any prototype work** | `prototype-generation.md` | Always |
 | **Any prototype work** | `component-inventory.md` | Always — loaded automatically via globs |
 | **Any prototype work** | `compliance-checklist.md` | Always — loaded automatically |
