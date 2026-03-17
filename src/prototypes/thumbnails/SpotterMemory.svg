@@ -3,7 +3,7 @@
   <rect x="0" y="0" width="800" height="56" fill="white"/>
   <rect x="0" y="56" width="240" height="394" fill="white"/>
   <rect x="260" y="80" width="520" height="350" rx="8" fill="white"/>
-  <rect x="280" y="100" width="180" height="28" rx="4" fill="#1D232F"/>
+  <rect x="280" y="100" width="180" height="28" rx="4" fill="#C0C6CF"/>
   <rect x="620" y="100" width="140" height="36" rx="4" fill="#8AAEE8"/>
   <rect x="280" y="150" width="480" height="40" fill="#F6F8FA"/>
   <rect x="280" y="200" width="480" height="40" fill="white" stroke="#EAEDF2"/>
@@ -15,5 +15,5 @@
   <rect x="20" y="140" width="200" height="20" rx="4" fill="#F6F8FA"/>
   <rect x="20" y="170" width="180" height="16" rx="4" fill="#F6F8FA"/>
   <rect x="20" y="196" width="160" height="16" rx="4" fill="#F6F8FA"/>
-  <text x="400" y="430" fill="#1D232F" font-family="system-ui" font-size="18" text-anchor="middle" font-weight="500">Spotter Memory</text>
+  <text x="400" y="430" fill="#64748B" font-family="system-ui" font-size="18" text-anchor="middle" font-weight="500">Spotter Memory</text>
 </svg>
