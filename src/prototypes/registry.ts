@@ -1,22 +1,11 @@
 /**
  * Project Registry
- * 
+ *
  * Central registry for discovering and managing playground projects.
  * Projects are folders in src/prototypes/ that export a default component.
  */
 
 import React from 'react';
-
-// Import thumbnail images
-import CmdkThumbnail from './thumbnails/Cmdk.svg';
-import AdminGroupsThumbnail from './thumbnails/AdminGroups.svg';
-import SpotterMemoryThumbnail from './thumbnails/SpotterMemory.svg';
-import LiveboardThumbnail from './thumbnails/Liveboard.svg';
-import ImpersonationV2Thumbnail from './thumbnails/ImpersonationV2.svg';
-import SpotterModelThumbnail from './thumbnails/SpotterModel.svg';
-import AdminLangThumbnail from './thumbnails/AdminLang.svg';
-import MiniSpottersThumbnail from './thumbnails/MiniSpotters.svg';
-import LiveboardTemplateThumbnail from './thumbnails/LiveboardTemplate.svg';
 
 /**
  * Metadata for a playground project
@@ -46,17 +35,14 @@ export interface ProjectMeta {
 
 /**
  * Project registry
- * 
+ *
  * Projects are auto-registered by `npm run new-prototype`.
- * To add a thumbnail later, import an SVG and add it to the entry.
  */
 
 // Import project components (lazy-loaded for code splitting)
-const Liveboard = React.lazy(() => import('./Liveboard'));
 const Cmdk = React.lazy(() => import('./Cmdk'));
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
-const ImpersonationV2 = React.lazy(() => import('./ImpersonationV2'));
 const SpotterModelProto = React.lazy(() => import('./SpotterModel'));
 const AdminLang = React.lazy(() => import('./AdminLang'));
 const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
@@ -67,24 +53,11 @@ const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
  */
 export const projectRegistry: ProjectMeta[] = [
   {
-    id: 'Liveboard',
-    name: 'Liveboard',
-    description: 'TSE Business Overview dashboard with KPIs, charts, and regional data visualization.',
-    author: 'Design Team',
-    lastModified: '2026-02-19',
-    thumbnail: LiveboardThumbnail,
-    component: Liveboard,
-    dsComponents: 10,
-    customComponents: 10,
-    section: 'sample',
-  },
-  {
     id: 'Cmdk',
     name: 'Command Palette',
     description: 'Command-K interface for quick navigation and actions with keyboard shortcuts and context-aware filtering.',
     author: 'Design Team',
     lastModified: '2026-02-19',
-    thumbnail: CmdkThumbnail,
     component: Cmdk,
     dsComponents: 12,
     customComponents: 11,
@@ -96,7 +69,6 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Memory Sources object table experience with search, filtering, and pagination.',
     author: 'Design Team',
     lastModified: '2026-02-19',
-    thumbnail: SpotterMemoryThumbnail,
     component: SpotterMemory,
     dsComponents: 6,
     customComponents: 5,
@@ -108,22 +80,9 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Group creation wizard with bulk org assignment and role management.',
     author: 'Design Team',
     lastModified: '2026-02-19',
-    thumbnail: AdminGroupsThumbnail,
     component: AdminGroups,
     dsComponents: 9,
     customComponents: 10,
-    section: 'sample',
-  },
-  {
-    id: 'ImpersonationV2',
-    name: 'Admin Impersonation',
-    description: 'Admin palette impersonation — blue viewport border, GlobalHeader icon, session timer popup, and Toast notification.',
-    author: 'Design Team',
-    lastModified: '2026-03-03',
-    thumbnail: ImpersonationV2Thumbnail,
-    component: ImpersonationV2,
-    dsComponents: 11,
-    customComponents: 3,
     section: 'sample',
   },
   {
@@ -132,7 +91,6 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'SpotterModel agent edit flow — onboarding, table/join recommendations, columns editing, and impact-aware delete.',
     author: 'Design Team',
     lastModified: '2026-03-03',
-    thumbnail: SpotterModelThumbnail,
     component: SpotterModelProto,
     dsComponents: 5,
     customComponents: 14,
@@ -144,7 +102,6 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Admin settings for CSV-based translation of Liveboards and Answers with upload, validation, and object picker.',
     author: 'Design Team',
     lastModified: '2026-03-12',
-    thumbnail: AdminLangThumbnail,
     component: AdminLang,
     dsComponents: 10,
     customComponents: 4,
@@ -156,7 +113,6 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Curated, domain-specific Spotter instances with bounded context, prompt libraries, and simulated chat.',
     author: 'Design Team',
     lastModified: '2026-03-12',
-    thumbnail: MiniSpottersThumbnail,
     component: MiniSpotters,
     dsComponents: 8,
     customComponents: 5,
@@ -168,7 +124,6 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Starter template for Liveboard prototypes — includes AnswerTile, KPI tile, bar chart, and SpotterViz panel.',
     author: 'Design Team',
     lastModified: '2026-03-17',
-    thumbnail: LiveboardTemplateThumbnail,
     component: LiveboardTemplate,
     dsComponents: 8,
     customComponents: 4,
