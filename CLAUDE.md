@@ -129,7 +129,25 @@ Import from `@/mocks` or `../../mocks` for realistic content in prototypes.
 
 ## Cursor Rules Reference
 
-The `.cursor/rules/` directory contains 14 detailed rule files (~4,860 lines). The orchestration guide at `.cursor/rules/_orchestration.md` defines priority order for all task types. Consult these for deep reference on any convention above.
+The `.cursor/rules/` directory contains 16 detailed rule files (~5,300 lines). These are not auto-loaded by Claude Code — use the table below to know when to read each one.
+
+### When to read rule files
+
+| Task | Read these files |
+|------|-----------------|
+| Building any prototype | `.cursor/rules/prototype-generation.md` + `.cursor/rules/component-inventory.md` |
+| Styling / design tokens | `.cursor/rules/token-usage.md` |
+| Full-page layouts, dashboards, admin panels | `.cursor/rules/layout-patterns.md` |
+| Tables, alerts, menus, empty states, drag-and-drop | `.cursor/rules/widget-patterns.md` |
+| Modals, wizards, confirmation dialogs | `.cursor/rules/modal-patterns.md` |
+| Loading, error, disabled, transition states | `.cursor/rules/interaction-patterns.md` |
+| Liveboard prototype | `.cursor/rules/liveboard-ia.md` |
+| Writing UI text (buttons, labels, titles, errors) | `.cursor/rules/content-guidelines.md` |
+| Creating or modifying shared components in `src/components/` | `.cursor/rules/design-system.md` |
+| Prototype references ThoughtSpot features (Answer, Liveboard, SpotIQ…) | `.cursor/rules/product-knowledge.md` |
+| Scaffolding a new prototype folder | `.cursor/rules/prototype-structure.md` |
+| Translating Figma layers/screenshots to code | `.cursor/rules/figma-component-mapping.md` |
+| Pre-ship quality check | `.cursor/rules/compliance-checklist.md` |
 
 ## Pre-Flight Checklist (Before Finishing a Prototype)
 
@@ -164,6 +182,7 @@ Both remotes must stay in sync for `main` and `staging`:
 | `/ship [message]` | Build, commit, push to staging |
 | `/release [version]` | Write changelog, prep production merge |
 | `/status` | Branch, commits, uncommitted changes |
+| `/sync-upstream` | Pull latest from upstream, resolve registry.ts conflict, push to fork |
 
 ### Typical Session Flow
 

@@ -22,25 +22,47 @@ export const PlaygroundGallery: React.FC = () => {
   };
 
   const handleBackToHome = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   return (
     <div style={styles.container}>
       {/* Header */}
       <header style={styles.header}>
-        <button style={styles.backBtn} onClick={handleBackToHome}
-          onMouseEnter={(e) => { e.currentTarget.style.background = systemColors.light['background-subtle']; e.currentTarget.style.borderColor = systemColors.light['border-default']; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = systemColors.light['background-base']; e.currentTarget.style.borderColor = systemColors.light['background-subtle']; }}
+        <button style={styles.logoBtn} onClick={handleBackToHome}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.8'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
         >
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M12.6667 8H3.33334" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 3.33334L3.33334 8L8 12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          Back to home
+          <div style={styles.logoMark}>R</div>
+          <span style={styles.logoTitle}>Radiant Play</span>
         </button>
         <div style={styles.headerTitle}>
           <h1 style={styles.title}>Playground</h1>
           <p style={styles.subtitle}>Your prototypes and experiments</p>
         </div>
-        <div style={styles.headerActions} />
+        <div style={styles.headerActions}>
+          {[
+            { label: 'Getting started', href: '/home' },
+            { label: 'How it works', href: '/how-it-works.html' },
+            { label: 'Design system', href: '/radiant' },
+          ].map(({ label, href }) => (
+            <a
+              key={href}
+              href={href}
+              style={styles.navLink}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = systemColors.light['background-subtle'];
+                e.currentTarget.style.borderColor = systemColors.light['border-default'];
+                e.currentTarget.style.color = systemColors.light['content-primary'];
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.borderColor = systemColors.light['border-divider'];
+                e.currentTarget.style.color = systemColors.light['content-secondary'];
+              }}
+            >{label}</a>
+          ))}
+        </div>
       </header>
 
       {/* Main Content */}
@@ -122,6 +144,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
           <p style={styles.cardDescription}>{project.description}</p>
         )}
         <div style={styles.cardMeta}>
+          {project.author && (
+            <span style={styles.cardAuthor}>{project.author}</span>
+          )}
           {project.lastModified && (
             <span style={styles.cardDate}>
               {new Date(project.lastModified).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -159,21 +184,39 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
 
-  // Back button (light-mode version of guide's back-btn)
-  backBtn: {
+  // Logo home button
+  logoBtn: {
     display: 'flex',
     alignItems: 'center',
-    gap: '6px',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13px',
-    fontWeight: 500,
-    color: systemColors.light['content-secondary'],
-    background: systemColors.light['background-base'],
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-    borderRadius: '100px',
-    padding: '6px 16px 6px 12px',
+    gap: '10px',
+    background: 'none',
+    border: 'none',
+    padding: '4px',
     cursor: 'pointer',
-    transition: 'all .18s',
+    transition: 'opacity .18s',
+    minWidth: '220px',
+  },
+  logoMark: {
+    width: '36px',
+    height: '36px',
+    borderRadius: '10px',
+    background: 'linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '18px',
+    fontWeight: 700,
+    color: '#ffffff',
+    boxShadow: '0 2px 8px rgba(39, 112, 239, 0.3)',
+    flexShrink: 0,
+  },
+  logoTitle: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '15px',
+    fontWeight: 600,
+    color: systemColors.light['content-primary'],
+    letterSpacing: '-0.3px',
   },
 
   // Header
@@ -203,9 +246,22 @@ const styles: Record<string, React.CSSProperties> = {
   },
   headerActions: {
     display: 'flex',
-    gap: `${spacing.C}px`, // 12px
+    alignItems: 'center',
+    gap: `${spacing.D}px`, // 16px
     justifyContent: 'flex-end',
     minWidth: '220px',
+  },
+  navLink: {
+    fontSize: '13px',
+    fontWeight: 400,
+    color: systemColors.light['content-secondary'],
+    textDecoration: 'none',
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    padding: '5px 12px',
+    borderRadius: '100px',
+    border: `1px solid ${systemColors.light['border-divider']}`,
+    background: 'transparent',
+    transition: 'all 0.15s',
   },
 
   // Main
@@ -228,7 +284,7 @@ const styles: Record<string, React.CSSProperties> = {
   // Grid
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
     gap: `${spacing.E}px`, // 20px
   },
 
@@ -286,6 +342,11 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: `${spacing.D}px`, // 16px
+  },
+  cardAuthor: {
+    fontSize: '12px',
+    fontWeight: 500,
+    color: systemColors.light['content-secondary'],
   },
   cardDate: {
     fontSize: '12px',

@@ -1,20 +1,21 @@
 import { systemColors } from '@tokens/colors/system';
+import { fontFamily } from '@tokens/typography';
 
 export const colors = {
-  pageBg: '#F6F8FA',
-  headerBg: '#FFFFFF',
-  editHeaderBg: '#1C2029',
-  textPrimary: '#1D232F',
-  textSecondary: '#777E8B',
-  textOnDark: '#FFFFFF',
-  textOnDarkMuted: '#C0C6CF',
-  brand: '#2770EF',
-  border: '#EAEDF2',
-  borderDark: '#C0C6CF',
+  pageBg: systemColors.light['background-sunken'],
+  headerBg: systemColors.light['background-base'],
+  editHeaderBg: systemColors.light['background-base-inverse'],
+  textPrimary: systemColors.light['content-primary'],
+  textSecondary: systemColors.light['content-secondary'],
+  textOnDark: systemColors.light['content-primary-inverse'],
+  textOnDarkMuted: systemColors.light['content-tertiary'],
+  brand: systemColors.light['content-brand'],
+  border: systemColors.light['border-divider'],
+  borderDark: systemColors.light['border-divider-inverse'],
 } as const;
 
 export const typography = {
-  fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  fontFamily: fontFamily.primary,
 } as const;
 
 export const shadows = {

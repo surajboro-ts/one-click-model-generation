@@ -522,8 +522,9 @@ const RadiantHomePageWrapper: React.FC = () => {
 const App: React.FC = () => {
   return (
     <Routes>
-      {/* Home - Simple split page */}
-      <Route path="/" element={<HomePage />} />
+      {/* Prototyping gallery — default landing page */}
+      <Route path="/" element={<PlaygroundGallery />} />
+      <Route path="/home" element={<HomePage />} />
       {/* How it works is now a static HTML page at /how-it-works.html */}
       
       {/* Radiant Section - With sidebar */}
@@ -640,7 +641,7 @@ const App: React.FC = () => {
       <Route path="/radiant/components/icongallery" element={<Navigate to="/radiant/icons" replace />} />
       
       {/* Playground Section - No sidebar */}
-      <Route path="/playground" element={<PlaygroundGallery />} />
+      <Route path="/playground" element={<Navigate to="/" replace />} />
       <Route path="/playground/:projectName" element={<PlaygroundProject />} />
       
       {/* Legacy redirects - redirect old routes to new structure */}
@@ -651,7 +652,7 @@ const App: React.FC = () => {
       <Route path="/examples/*" element={<Navigate to="/radiant" replace />} />
       
       {/* Catch-all redirect */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/playground" replace />} />
     </Routes>
   );
 };

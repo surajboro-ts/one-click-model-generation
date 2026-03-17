@@ -12,6 +12,11 @@ import CmdkThumbnail from './thumbnails/Cmdk.svg';
 import AdminGroupsThumbnail from './thumbnails/AdminGroups.svg';
 import SpotterMemoryThumbnail from './thumbnails/SpotterMemory.svg';
 import LiveboardThumbnail from './thumbnails/Liveboard.svg';
+import ImpersonationV2Thumbnail from './thumbnails/ImpersonationV2.svg';
+import SpotterModelThumbnail from './thumbnails/SpotterModel.svg';
+import AdminLangThumbnail from './thumbnails/AdminLang.svg';
+import MiniSpottersThumbnail from './thumbnails/MiniSpotters.svg';
+import LiveboardTemplateThumbnail from './thumbnails/LiveboardTemplate.svg';
 
 /**
  * Metadata for a playground project
@@ -53,6 +58,9 @@ const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
 const ImpersonationV2 = React.lazy(() => import('./ImpersonationV2'));
 const SpotterModelProto = React.lazy(() => import('./SpotterModel'));
+const AdminLang = React.lazy(() => import('./AdminLang'));
+const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
+const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
 
 /**
  * All registered projects
@@ -112,6 +120,7 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'Admin palette impersonation — blue viewport border, GlobalHeader icon, session timer popup, and Toast notification.',
     author: 'Design Team',
     lastModified: '2026-03-03',
+    thumbnail: ImpersonationV2Thumbnail,
     component: ImpersonationV2,
     dsComponents: 11,
     customComponents: 3,
@@ -123,9 +132,46 @@ export const projectRegistry: ProjectMeta[] = [
     description: 'SpotterModel agent edit flow — onboarding, table/join recommendations, columns editing, and impact-aware delete.',
     author: 'Design Team',
     lastModified: '2026-03-03',
+    thumbnail: SpotterModelThumbnail,
     component: SpotterModelProto,
     dsComponents: 5,
     customComponents: 14,
+    section: 'sample',
+  },
+  {
+    id: 'AdminLang',
+    name: 'Admin language settings',
+    description: 'Admin settings for CSV-based translation of Liveboards and Answers with upload, validation, and object picker.',
+    author: 'Design Team',
+    lastModified: '2026-03-12',
+    thumbnail: AdminLangThumbnail,
+    component: AdminLang,
+    dsComponents: 10,
+    customComponents: 4,
+    section: 'sample',
+  },
+  {
+    id: 'MiniSpotters',
+    name: 'MiniSpotters',
+    description: 'Curated, domain-specific Spotter instances with bounded context, prompt libraries, and simulated chat.',
+    author: 'Design Team',
+    lastModified: '2026-03-12',
+    thumbnail: MiniSpottersThumbnail,
+    component: MiniSpotters,
+    dsComponents: 8,
+    customComponents: 5,
+    section: 'sample',
+  },
+  {
+    id: '_liveboard-template',
+    name: 'Liveboard template',
+    description: 'Starter template for Liveboard prototypes — includes AnswerTile, KPI tile, bar chart, and SpotterViz panel.',
+    author: 'Design Team',
+    lastModified: '2026-03-17',
+    thumbnail: LiveboardTemplateThumbnail,
+    component: LiveboardTemplate,
+    dsComponents: 8,
+    customComponents: 4,
     section: 'sample',
   },
   // Add more projects here. New prototypes default to 'mine' section.
