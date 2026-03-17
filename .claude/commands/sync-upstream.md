@@ -6,17 +6,33 @@ Follow these steps in order. Stop immediately if any step fails and explain what
 
 ---
 
-### 1. Check working tree
+### 1. Check working tree and stashes
+
+**Check the working tree:**
 
 Run `git status`.
 
-- If the output is `nothing to commit, working tree clean` — proceed to step 2.
+- If the output is `nothing to commit, working tree clean` — proceed to the stash check.
 - If there are modified or untracked files — stage and commit them:
   ```
   git add .
   git commit -m "chore: save WIP before syncing with upstream"
   ```
-  Then proceed to step 2.
+
+**Check for stashes:**
+
+Run `git stash list`.
+
+- If there are no stashes — proceed to step 2.
+- If stashes exist — show the user what is in each stash:
+  ```
+  git stash show stash@{0}
+  git stash show stash@{1}
+  ...
+  ```
+  Then ask: **"You have stashed work. Do you want to apply it before syncing, or leave it stashed?"**
+  - If the user wants to apply it: run `git stash pop` and handle any conflicts before continuing.
+  - If the user wants to leave it stashed: proceed to step 2. The stash is safe — merging upstream does not affect stashed work.
 
 ---
 
