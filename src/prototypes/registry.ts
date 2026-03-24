@@ -57,6 +57,7 @@ const AdminLang = React.lazy(() => import('./AdminLang'));
 const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
 const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
 
+
 /**
  * All registered projects
  */

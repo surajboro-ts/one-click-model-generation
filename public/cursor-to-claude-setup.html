@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Moving from Cursor to Claude Code — RadiantPlay</title>
+  <title>Claude setup and skills — RadiantPlay</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
@@ -55,29 +55,52 @@
       top: 0; left: 0;
       display: flex;
       flex-direction: column;
-      padding: 28px 0;
+      padding: 24px 0;
       z-index: 100;
     }
 
     .sidebar-logo {
-      padding: 0 20px 24px;
+      padding: 0 20px 20px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-logo .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-logo .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(39, 112, 239, 0.3);
+      flex-shrink: 0;
+      font-family: 'Inter', -apple-system, sans-serif;
+      letter-spacing: -0.5px;
     }
 
     .sidebar-logo .brand {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
-      color: var(--blue);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
     }
 
     .sidebar-logo .guide-title {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-secondary);
-      margin-top: 3px;
       font-weight: 400;
+      padding-left: 42px;
     }
 
     .sidebar-section-label {
@@ -147,29 +170,32 @@
     .main {
       margin-left: var(--sidebar-width);
       flex: 1;
-      padding: 48px 0 120px;
+      padding: 40px 0 80px;
     }
 
     .main-inner {
-      max-width: 960px;
+      max-width: 1060px;
       margin: 0 auto;
       padding: 0 48px;
     }
 
     /* ── Section spacing ── */
-    .section { margin-bottom: 80px; scroll-margin-top: 32px; }
+    .section { margin-bottom: 56px; scroll-margin-top: 32px; }
 
     /* ── Hero ── */
     .hero {
-      background: linear-gradient(135deg, #1A1F2E 0%, #2770EF 100%);
-      border-radius: 16px;
-      padding: 28px 36px;
-      color: white;
-      margin-bottom: 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 44px;
+      color: var(--text-primary);
+      margin-bottom: 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 32px;
+      position: relative;
+      overflow: hidden;
     }
 
     .hero-left { flex: 1; }
@@ -179,20 +205,22 @@
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
+      color: var(--blue);
       margin-bottom: 6px;
     }
 
     .hero h1 {
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 700;
       line-height: 1.25;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
     }
 
     .hero-subtitle {
       font-size: 13.5px;
-      color: rgba(255,255,255,0.7);
+      color: var(--text-secondary);
       line-height: 1.55;
     }
 
@@ -201,7 +229,7 @@
       flex-direction: column;
       gap: 12px;
       padding-left: 32px;
-      border-left: 1px solid rgba(255,255,255,0.15);
+      border-left: 1px solid var(--border);
       flex-shrink: 0;
     }
 
@@ -216,13 +244,13 @@
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: var(--text-muted);
     }
 
     .hero-meta-item .value {
       font-size: 14px;
       font-weight: 600;
-      color: white;
+      color: var(--text-primary);
     }
 
     /* ── Overview steps grid ── */
@@ -237,9 +265,15 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 18px;
       position: relative;
       overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .overview-card:hover {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      border-color: var(--blue-mid);
     }
 
     .overview-card::before {
@@ -271,33 +305,36 @@
       display: flex;
       align-items: flex-start;
       gap: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .step-number {
-      width: 40px; height: 40px;
+      width: 36px; height: 36px;
       border-radius: 10px;
-      background: var(--blue);
+      background: linear-gradient(135deg, #2770EF 0%, #1E5BBB 100%);
       color: white;
-      font-size: 17px;
+      font-size: 15px;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       margin-top: 2px;
+      box-shadow: 0 2px 8px rgba(39, 112, 239, 0.25);
     }
 
     .section-header-text h2 {
       font-size: 20px;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text-primary);
+      letter-spacing: -0.3px;
     }
 
     .section-header-text .subtitle {
       font-size: 14px;
       color: var(--text-secondary);
-      margin-top: 3px;
+      margin-top: 4px;
+      line-height: 1.5;
     }
 
     /* ── Instruction steps ── */
@@ -449,26 +486,34 @@
 
     /* ── Skills section ── */
     .skills-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
       margin-top: 24px;
     }
 
     .skill-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 13px 16px;
+      border-radius: var(--radius);
+      padding: 20px;
       display: flex;
-      align-items: center;
-      gap: 16px;
-      transition: border-color 0.15s, background 0.15s;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s ease;
     }
 
     .skill-card:hover {
       border-color: var(--blue-mid);
-      background: var(--blue-light);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .skill-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     .skill-card .command {
@@ -478,40 +523,51 @@
       color: var(--blue);
       background: var(--blue-light);
       display: inline-block;
-      padding: 3px 10px;
-      border-radius: 5px;
+      padding: 4px 12px;
+      border-radius: 6px;
       white-space: nowrap;
-      min-width: 160px;
     }
 
     .skill-card .skill-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       color: var(--text-primary);
-      white-space: nowrap;
-      min-width: 180px;
+      margin-top: 2px;
     }
 
     .skill-card .skill-desc {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--text-secondary);
-      line-height: 1.5;
+      line-height: 1.6;
       flex: 1;
+    }
+
+    .skill-card .skill-detail {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-top: 2px;
+    }
+
+    .skill-card .skill-detail strong {
+      color: var(--text-secondary);
+      font-weight: 600;
     }
 
     .skill-card .skill-tag {
       display: inline-block;
-      font-size: 10.5px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 4px;
+      padding: 3px 8px;
+      border-radius: 5px;
       white-space: nowrap;
     }
 
     .skill-tag.new { background: #DCFCE7; color: #15803D; }
     .skill-tag.core { background: var(--blue-light); color: var(--blue); }
+    .skill-tag.sync { background: #FEF3C7; color: #92400E; }
 
     /* ── Quick ref card ── */
     .ref-grid {
@@ -595,7 +651,7 @@
     .divider {
       height: 1px;
       background: var(--border);
-      margin: 48px 0;
+      margin: 40px 0;
     }
 
     /* ── Inline code ── */
@@ -668,8 +724,11 @@
   <!-- ── Sidebar ── -->
   <nav class="sidebar">
     <div class="sidebar-logo">
-      <div class="brand">RadiantPlay</div>
-      <div class="guide-title">Cursor → Claude Code</div>
+      <div class="logo-row">
+        <div class="logo-mark">R</div>
+        <div class="brand">Radiant Play</div>
+      </div>
+      <div class="guide-title">Claude setup and skills</div>
     </div>
 
     <div class="sidebar-section-label">Overview</div>
@@ -698,6 +757,10 @@
       <span class="step-badge">5</span>
       <span>Open RadiantPlay</span>
     </a>
+    <a class="nav-item" href="#library-sync">
+      <span class="step-badge">6</span>
+      <span>Update your library</span>
+    </a>
 
     <div class="sidebar-section-label">Reference</div>
     <a class="nav-item" href="#skills">
@@ -718,8 +781,8 @@
     <div class="hero" id="overview">
       <div class="hero-left">
         <div class="hero-eyebrow">RadiantPlay · Onboarding guide</div>
-        <h1>Moving from Cursor to Claude Code</h1>
-        <div class="hero-subtitle">A one-time setup. After this, your prototyping workflow stays exactly the same — just in a better environment.</div>
+        <h1>Claude setup and skills</h1>
+        <div class="hero-subtitle">A one-time setup to get Claude Code running, plus the skills available to help you build prototypes.</div>
       </div>
       <div class="hero-meta">
         <div class="hero-meta-item">
@@ -728,7 +791,7 @@
         </div>
         <div class="hero-meta-item">
           <span class="label">Steps</span>
-          <span class="value">5 steps</span>
+          <span class="value">6 steps</span>
         </div>
         <div class="hero-meta-item">
           <span class="label">Requires</span>
@@ -737,29 +800,11 @@
       </div>
     </div>
 
-    <!-- Overview cards -->
-    <div class="section-tag">The five-step process</div>
-    <div class="overview-grid">
-      <div class="overview-card">
-        <div class="num">Step 01</div>
-        <div class="title">Install Claude Code</div>
-      </div>
-      <div class="overview-card">
-        <div class="num">Step 02</div>
-        <div class="title">Create account &amp; API key</div>
-      </div>
-      <div class="overview-card">
-        <div class="num">Step 03</div>
-        <div class="title">Configure your API key</div>
-      </div>
-      <div class="overview-card">
-        <div class="num">Step 04</div>
-        <div class="title">Verify it's working</div>
-      </div>
-      <div class="overview-card">
-        <div class="num">Step 05</div>
-        <div class="title">Open RadiantPlay &amp; build</div>
-      </div>
+    <!-- Library update nudge -->
+    <div style="background: var(--blue-light); border: 1px solid var(--blue-mid); border-radius: 10px; padding: 13px 18px; margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 15px; flex-shrink: 0;">↻</span>
+      <span style="font-size: 13.5px; color: #1D4ED8;">Keep your Radiant Play library up to date. New components and skills may be available.</span>
+      <a href="#library-sync" style="flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none; white-space: nowrap; margin-left: auto;">Update library →</a>
     </div>
 
     <div class="divider"></div>
@@ -1001,6 +1046,79 @@
 
     <div class="divider"></div>
 
+    <!-- ── Library sync ── -->
+    <section class="section" id="library-sync">
+      <div class="section-tag">Library updates</div>
+      <div class="section-header">
+        <div class="section-header-text">
+          <h2>Keeping your library current</h2>
+          <div class="subtitle">New components, tokens, and rules are pushed upstream regularly — here's how to stay in sync</div>
+        </div>
+      </div>
+
+      <p>The upstream RadiantPlay library is maintained centrally. Before starting new work — especially if your fork is from an older snapshot — run these steps to make sure you have the latest skills and components.</p>
+
+      <h3 style="font-size:13px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-muted);margin:0 0 16px;">One-time setup</h3>
+
+      <h3>Get the latest skills</h3>
+      <p>The <code>.claude/commands/</code> folder holds all the skills Claude uses. If your fork is outdated, these may be missing or out of date. Run these four commands once to replace only the commands folder — your prototypes and all other files stay untouched.</p>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <div class="code-block-label">Terminal — in your radiantplay folder</div>
+        </div>
+        <pre><span class="comment"># 1. Add the upstream remote (skip if it already exists)</span>
+<span class="prompt">$ </span><span class="cmd">git remote add upstream</span> <span class="string">https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay.git</span>
+
+<span class="comment"># 2. Fetch from upstream</span>
+<span class="prompt">$ </span><span class="cmd">git fetch upstream</span>
+
+<span class="comment"># 3. Pull only the commands folder</span>
+<span class="prompt">$ </span><span class="cmd">git checkout upstream/main</span> <span class="flag">--</span> <span class="string">.claude/commands/</span>
+
+<span class="comment"># 4. Restart Claude so it picks up the updated skills</span>
+<span class="prompt">$ </span><span class="cmd">claude</span></pre>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <span>If you see <code>error: remote upstream already exists</code> on step 1, that's fine — skip it and continue from step 2.</span>
+      </div>
+
+      <div style="height:1px;background:var(--border);margin:32px 0 28px;"></div>
+      <h3 style="font-size:13px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-muted);margin:0 0 16px;">Regular sync</h3>
+
+      <h3>Check what's changed in the library</h3>
+      <p>Run a read-only diff of the upstream library — new components, token changes, rule updates. Nothing merges.</p>
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <div class="code-block-label">Claude Code session</div>
+        </div>
+        <pre><span class="comment">/check-upstream</span>
+<span class="comment"># Shows new components, token updates, and how many commits behind you are</span></pre>
+      </div>
+
+      <h3>Pull in the changes</h3>
+      <p>Fetches, merges, auto-resolves the <code>registry.ts</code> conflict (your prototypes are preserved), verifies the build, and pushes to your fork. Your in-progress work is saved and restored automatically.</p>
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <div class="code-block-label">Claude Code session</div>
+        </div>
+        <pre><span class="comment">/sync-upstream</span>
+<span class="comment"># Saves WIP, merges, resolves conflicts, builds, pushes — all automatic</span></pre>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">💡</span>
+        <span><strong>When to sync:</strong> Run <code>/check-upstream</code> at the start of any new prototype sprint. If new components match what you're building, sync first — it saves you building something that already exists.</span>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
     <!-- ── Skills ── -->
     <section class="section" id="skills">
       <div class="section-tag">Slash commands</div>
@@ -1013,33 +1131,52 @@
 
       <div class="skills-grid">
         <div class="skill-card">
-          <div class="command">/new-prototype</div>
-          <div class="skill-desc">Asks discovery questions, creates the branch, scaffolds all files, and registers it in the gallery automatically.</div>
-          <span class="skill-tag core">Core</span>
+          <div class="skill-card-header">
+            <div class="command">/new-prototype</div>
+            <span class="skill-tag core">Core</span>
+          </div>
+          <div class="skill-title">Start a new prototype</div>
+          <div class="skill-desc">Asks discovery questions (goal, user, layout type), creates the branch, scaffolds files with the right layout template, generates a gallery thumbnail, and registers it automatically.</div>
+          <div class="skill-detail"><strong>Layout-aware:</strong> Picks a dashboard, wizard, or single-page starter based on your answers. Creates <code>styles.ts</code>, <code>mockData.ts</code>, and <code>components/</code> folder ready to go.</div>
         </div>
 
         <div class="skill-card">
-          <div class="command">/radiant-check</div>
-          <div class="skill-desc">Scans your prototype for hardcoded colors, missing tokens, raw HTML, and shows Radiant coverage as a percentage.</div>
-          <span class="skill-tag new">New</span>
+          <div class="skill-card-header">
+            <div class="command">/radiant-check</div>
+            <span class="skill-tag new">New</span>
+          </div>
+          <div class="skill-title">Design system compliance check</div>
+          <div class="skill-desc">Analyses your prototype across five dimensions: component coverage, custom components, token usage, layout patterns, and content guidelines. Shows a health score and easy wins.</div>
+          <div class="skill-detail"><strong>Supports focus:</strong> Run <code>/radiant-check content guidelines</code> or <code>/radiant-check visual styling</code> to get a deep check on a specific area. Defaults to a full check.</div>
         </div>
 
         <div class="skill-card">
-          <div class="command">/sync-upstream</div>
-          <div class="skill-desc">Fetches the latest components and design tokens from the upstream library, resolves registry.ts conflicts automatically.</div>
-          <span class="skill-tag new">New</span>
+          <div class="skill-card-header">
+            <div class="command">/check-upstream</div>
+            <span class="skill-tag sync">Sync</span>
+          </div>
+          <div class="skill-title">Preview library updates</div>
+          <div class="skill-desc">Read-only check of what's new upstream — new components, token changes, rule updates, removed prototypes. Nothing is merged. Shows whether it's safe to sync or if there are conflicts to review.</div>
+          <div class="skill-detail"><strong>When to use:</strong> At the start of a new prototype sprint, or whenever you want to see if new components are available that could help your work.</div>
         </div>
 
         <div class="skill-card">
-          <div class="command">/check-upstream</div>
-          <div class="skill-desc">Read-only diff of what's changed in the library — new components, token updates, rule changes — without merging anything.</div>
-          <span class="skill-tag new">New</span>
+          <div class="skill-card-header">
+            <div class="command">/sync-upstream</div>
+            <span class="skill-tag sync">Sync</span>
+          </div>
+          <div class="skill-title">Pull in library changes</div>
+          <div class="skill-desc">Fetches the latest components and tokens from the upstream library, auto-resolves the registry.ts conflict (your prototypes are preserved), verifies the build, and pushes to your fork.</div>
+          <div class="skill-detail"><strong>Safe for WIP:</strong> Automatically saves and restores your in-progress work. No git knowledge needed — the whole process is handled for you.</div>
         </div>
 
-        <div class="skill-card">
-          <div class="command">/help</div>
-          <div class="skill-desc">Shows every available slash command with a short description. Good starting point if you're not sure what to run.</div>
-          <span class="skill-tag core">Core</span>
+        <div class="skill-card" style="grid-column: span 2;">
+          <div class="skill-card-header">
+            <div class="command">/help</div>
+            <span class="skill-tag core">Core</span>
+          </div>
+          <div class="skill-title">Show all commands</div>
+          <div class="skill-desc">Lists every available slash command with a short description. Good starting point if you're not sure what to run.</div>
         </div>
       </div>
     </section>

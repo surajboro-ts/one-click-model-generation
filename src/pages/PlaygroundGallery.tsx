@@ -45,7 +45,7 @@ export const PlaygroundGallery: React.FC = () => {
             { label: 'Getting started', href: '/home' },
             { label: 'How it works', href: '/how-it-works.html' },
             { label: 'Design system', href: '/radiant' },
-            { label: 'Claude setup', href: '/cursor-to-claude-setup.html' },
+            { label: 'Claude setup & skills', href: '/cursor-to-claude-setup.html' },
           ].map(({ label, href }) => (
             <a
               key={href}
