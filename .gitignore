@@ -27,8 +27,12 @@ npm-debug.log*
 *.local
 .vercel
 
-# Local plans (not for repo)
+# Local plans and reports (not for repo)
 plans/
+docs/*plan*.md
+docs/*report*.md
+docs/*matrix*.md
+docs/what-is-radiant-play.md
 
 # Local articles (not for repo)
 articles/
