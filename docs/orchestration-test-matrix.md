@@ -11,7 +11,8 @@
 |------|-------|-------------|
 | `_orchestration.md` | 6,739 | ~1,685 |
 | `compliance-checklist.md` | 1,615 | ~404 |
-| **Always-loaded total** | **8,354** | **~2,089** |
+| `component-summary.md` (new, Change 9) | ~1,000 | ~250 |
+| **Always-loaded total** | **~9,354** | **~2,339** |
 
 ### Auto-loaded today (Cursor, via globs)
 | File | Bytes | Est. tokens |
@@ -86,7 +87,7 @@
 
 | | Today | After | Savings |
 |--|-------|-------|---------|
-| Rules tokens | ~14,547 | ~2,089 | **85%** |
+| Rules tokens | ~14,547 | ~2,339 | **84%** |
 
 ---
 
@@ -108,7 +109,7 @@
 
 | | Today | After | Savings |
 |--|-------|-------|---------|
-| Rules tokens | ~14,547 | ~2,089 | **85%** |
+| Rules tokens | ~14,547 | ~2,339 | **84%** |
 
 ---
 
@@ -309,22 +310,22 @@ Note: Today, component-inventory, token-usage, and content-guidelines are alread
 
 | Scenario | Tier | Today (tokens) | After (tokens) | Savings |
 |----------|------|---------------|----------------|---------|
-| Fix button color | 0 | 14,547 | 2,089 | **86%** |
-| Swap icon (Liveboard) | 0 | 18,393 | 2,089 | **89%** |
-| Fix TS error | 0 | 14,547 | 2,089 | **86%** |
-| Figma color lookup | 0+F | 19,427 | 6,969 | **64%** |
-| Wrap with Tooltip | 0 | 14,547 | 2,089 | **86%** |
-| Add delete confirm | 1 | 21,686 | 9,228 | **57%** |
-| Add loading skeleton (LB) | 1 | 20,243 | 5,189 | **74%** |
-| Rewrite button labels | 1 | 16,722 | 4,264 | **74%** |
-| Add Figma section | 1 | 30,605 | 17,066 | **44%** |
-| Make grid responsive | 1 | 20,701 | 8,243 | **60%** |
-| Build settings page | 2 | 27,497 | 22,855 | **17%** |
-| Implement full Figma | 2 | 39,830 | 29,599 | **26%** |
-| Build Liveboard | 2 | 25,671 | 20,183 | **21%** |
-| New shared component | 3 | 18,695 | 12,920 | **31%** |
-| Explore (shadcn) | Exp | 14,547 | 2,089 | **86%** |
-| Multi-concern (table+SpotIQ) | 1 | 27,414 | 14,956 | **45%** |
+| Fix button color | 0 | 14,547 | 2,339 | **84%** |
+| Swap icon (Liveboard) | 0 | 18,393 | 2,339 | **87%** |
+| Fix TS error | 0 | 14,547 | 2,339 | **84%** |
+| Figma color lookup | 0+F | 19,427 | 7,219 | **63%** |
+| Wrap with Tooltip | 0 | 14,547 | 2,339 | **84%** |
+| Add delete confirm | 1 | 21,686 | 9,478 | **56%** |
+| Add loading skeleton (LB) | 1 | 20,243 | 5,439 | **73%** |
+| Rewrite button labels | 1 | 16,722 | 4,514 | **73%** |
+| Add Figma section | 1 | 30,605 | 17,316 | **43%** |
+| Make grid responsive | 1 | 20,701 | 8,493 | **59%** |
+| Build settings page | 2 | 27,497 | 23,105 | **16%** |
+| Implement full Figma | 2 | 39,830 | 29,849 | **25%** |
+| Build Liveboard | 2 | 25,671 | 20,433 | **20%** |
+| New shared component | 3 | 18,695 | 13,170 | **30%** |
+| Explore (shadcn) | Exp | 14,547 | 2,339 | **84%** |
+| Multi-concern (table+SpotIQ) | 1 | 27,414 | 15,206 | **45%** |
 
 ### Aggregate savings estimate
 
@@ -332,7 +333,7 @@ Assuming daily task distribution: 60% Tier 0, 25% Tier 1, 10% Tier 2, 5% Tier 3/
 
 | | Avg tokens/task (today) | Avg tokens/task (after) | Savings |
 |--|------------------------|------------------------|---------|
-| Weighted average | ~17,500 | ~5,200 | **~70%** |
+| Weighted average | ~17,500 | ~5,450 | **~69%** |
 
 ---
 

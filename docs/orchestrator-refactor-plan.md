@@ -23,7 +23,7 @@
 
 ---
 
-## Changes (7 total)
+## Changes (9 total)
 
 ### Change 1: Rewrite `_orchestration.md` with tier system
 
@@ -74,9 +74,10 @@ Instead of removing globs entirely (which would break Cursor), **narrow them** s
 **Stays auto-loaded:**
 - `_orchestration.md` — `alwaysApply: true`
 - `compliance-checklist.md` — `alwaysApply: true` (scoped to prototype + component files)
+- `component-summary.md` — `alwaysApply: true` (new, ~1KB — all 77 component names + icons)
 
 **Context savings for Cursor:**
-- Tier 0 (minor edit): ~50KB saved (only orchestrator + checklist load)
+- Tier 0 (minor edit): ~50KB saved (only orchestrator + checklist + summary load = ~3.3K tokens)
 - Tier 1 (moderate): ~30-40KB saved (1-3 targeted files instead of 6)
 - Tier 2 (full build on entry file): same as before (globs still trigger)
 
@@ -183,6 +184,66 @@ A context modifier that relaxes Radiant constraints. When invoked:
 
 ---
 
+### Change 9: Split `component-inventory.md` into summary + full inventory
+
+**Problem:** `component-inventory.md` (18KB / ~4,508 tokens) is the largest auto-loaded file. It loads for every prototype file edit even when the designer just needs to know what components exist, not their full props and code examples.
+
+**Split into:**
+
+| File | Content | Size (est.) | When loaded |
+|------|---------|-------------|-------------|
+| `component-summary.md` (new) | All 77 component names by category + decision tree + 46 icon names. No props, no code examples. | ~1KB (~250 tokens) | Always — either `alwaysApply: true` or embedded in CLAUDE.md |
+| `component-inventory.md` (slimmed) | Full props tables, code examples, combination patterns, promotion criteria | ~14KB (~3,500 tokens) | Tier 1 (component lookup concern) or Tier 2 (mandatory) |
+
+**What goes in the summary:**
+
+```markdown
+# Radiant Component Summary (77 components)
+
+## Quick lookup
+- Text entry → TextInput / TextArea / SearchInput
+- Selection → Select / Checkbox / Radio / Toggle / SegmentedControl
+- Actions → Button / Link
+- Date → DatePicker
+- Feedback → Alert / Toast / Tooltip / LoadingIndicator / ProgressBar
+- Navigation → Tabs / Sidebar / Stepper / Pagination / Menu
+- Data → Table / Card / Chip / Avatar / Tree / TreeTable
+- Layout → Horizontal / Vertical / View / Grid / RdGrid / SplitPane
+- Overlays → Modal / ConfirmDialog / WizardModal / FormModal / FilterDialog / Popover
+- Empty states → NoData / Illustration
+- Advanced → ActionMenu / NestedCheckbox / FacetSortBar / RichTextEditor
+  / ColorPicker / InputMentions / ManageTags / Slider / ManagedList / Tour
+  / DragDrop / FormBuilder / DynamicForm / Legend / Trending / SearchBar
+  / OverlayLoading / ExplainerCard / Image / SafeHTML / FormControl
+  / VerticalStepper / Formatters / DirectionControl / NumericFilterInput
+
+## Icons (46)
+arrow-up/down/left/right, chevron-up/down/left/right, plus, minus,
+cross, checkmark, checkmark-circle, cross-circle, exclamation-point-circle,
+info-circle, question-mark, copy, download, upload, save, refresh, pencil,
+trash-can, share, pin, filter, play, pause, eye, eye-undo, clock, cog,
+folder, funnel, lock, magnifying-glass, profile, sort, star, tag, expand,
+fullscreen, hamburger, more, information
+
+For full props, code examples, and patterns → read component-inventory.md
+```
+
+**Token comparison:**
+
+| Tier | Today | After split | Savings |
+|------|-------|-------------|---------|
+| 0 (always loaded) | ~4,508 | ~250 (summary only) | **~4,258 tokens** |
+| 1 (component concern) | ~4,508 | ~250 + ~3,500 = ~3,750 | Similar |
+| 2 (mandatory) | ~4,508 | ~250 + ~3,500 = ~3,750 | Similar |
+
+**Key benefit:** At Tier 0, the AI still knows all 77 component names and can identify "use NestedCheckbox for this" without carrying 18KB of props/examples. Addresses the accuracy risk of not loading the inventory at all.
+
+**Glob changes:**
+- `component-summary.md`: `alwaysApply: true` (tiny, always useful)
+- `component-inventory.md`: Narrowed to `["src/prototypes/**/index.tsx"]` (per Change 2)
+
+---
+
 ### Change 7: Test matrix
 
 **File:** `docs/orchestration-test-matrix.md`
@@ -200,17 +261,18 @@ Validate all tiers + exploratory mode against 15+ scenarios. Include:
 ## Execution order
 
 ```
-Change 4 (Fix outdated values)   → Do first — fixes errors in existing content
-Change 3 (Fix duplication)       → Remove duplicate content
-Change 8 (Split liveboard-ia)    → Restructure before orchestrator references it
-Change 1 (Rewrite orchestrator)  → Core change — tier system (references split files)
-Change 2 (Slim auto-loading)     → Narrower globs
-Change 5 (Update CLAUDE.md)      → Depends on Change 1
-Change 6 (Create /explore)       → Independent
-Change 7 (Test matrix)           → Validate everything
+Change 4 (Fix outdated values)    → Do first — fixes errors in existing content
+Change 3 (Fix duplication)        → Remove duplicate content
+Change 8 (Split liveboard-ia)     → Restructure before orchestrator references it
+Change 9 (Split component-inv)    → Summary + full inventory before orchestrator references it
+Change 1 (Rewrite orchestrator)   → Core change — tier system (references split files)
+Change 2 (Slim auto-loading)      → Narrower globs + new alwaysApply for summary
+Change 5 (Update CLAUDE.md)       → Depends on Change 1
+Change 6 (Create /explore)        → Independent
+Change 7 (Test matrix)            → Validate everything
 ```
 
-Fix content issues (Changes 3-4), split large files (Change 8), then restructure (Changes 1-2), so the orchestrator references correct and optimized content.
+Fix content issues (Changes 3-4), split large files (Changes 8-9), then restructure (Changes 1-2), so the orchestrator references correct and optimized content.
 
 ---
 
@@ -226,6 +288,7 @@ Fix content issues (Changes 3-4), split large files (Change 8), then restructure
 | 6 (/explore skill) | Low — adds capability, doesn't change existing behavior | Trust-based, visible via markers |
 | 7 (Test matrix) | Zero — documentation only | |
 | 8 (Split liveboard-ia) | Low — creates new file, slims existing | Orchestrator routes to both; old file name preserved |
+| 9 (Split component-inv) | Low — summary is additive, inventory slimmed | Summary always loaded (~250 tokens); old file name preserved |
 
 ---
 
@@ -238,6 +301,7 @@ Fix content issues (Changes 3-4), split large files (Change 8), then restructure
 | 6 (/explore skill) | Yes — forks get new capability. |
 | 7 (test matrix) | No — documentation only. |
 | 8 (split liveboard-ia) | Yes — forks get slimmer liveboard-ia + new scaffolding file. |
+| 9 (split component-inv) | Yes — forks get new component-summary.md + slimmer inventory. |
 
 **No breaking changes.** Rule files keep the same names and locations. Globs narrow but don't disappear. Content becomes more accurate.
 
