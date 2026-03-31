@@ -28,9 +28,13 @@ Remember whether a stash was created — you will need to restore it at the end 
 Run `git remote -v`.
 
 - If `upstream` is listed — proceed to step 3.
-- If `upstream` is missing — add it:
+- If `upstream` is missing — add it using HTTPS first, fall back to SSH if fetch fails:
   ```
   git remote add upstream https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay.git
+  ```
+  Run `git fetch upstream`. If it fails with a 403 or authentication error, switch to SSH:
+  ```
+  git remote set-url upstream git@galaxy.corp.thoughtspot.com:mohammed-faris/radiantplay.git
   ```
 
 ---

@@ -179,7 +179,7 @@ The `.cursor/rules/` directory contains 16 detailed rule files (~5,300 lines). T
 
 **Main maintainer** has two remotes that must stay in sync:
 - `origin` — GitHub (`https://github.com/faris-ts/radiantplay.git`)
-- `galaxy` — ThoughtSpot (`https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay.git`)
+- `galaxy` — ThoughtSpot (HTTPS: `https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay.git` or SSH: `git@galaxy.corp.thoughtspot.com:mohammed-faris/radiantplay.git`)
 
 Always run `git remote -v` to confirm which remotes exist before pushing.
 

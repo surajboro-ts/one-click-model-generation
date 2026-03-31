@@ -11,9 +11,14 @@ Follow these steps in order.
 Run `git remote -v`.
 
 - If `upstream` is listed — proceed to step 2.
-- If missing — add it and fetch:
+- If missing — add it using HTTPS first, fall back to SSH if fetch fails:
   ```
   git remote add upstream https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay.git
+  git fetch upstream
+  ```
+  If fetch fails with a 403 or authentication error, switch to SSH:
+  ```
+  git remote set-url upstream git@galaxy.corp.thoughtspot.com:mohammed-faris/radiantplay.git
   git fetch upstream
   ```
 
