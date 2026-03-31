@@ -34,6 +34,11 @@ Run these checks on every `.tsx` file you create or modify. Do NOT declare done 
 - No values outside the spacing scale (e.g. `17px`, `gap: 7`)
 - Use `spacing.A` through `spacing.N` from `../../tokens/spacing`
 
+## Layout — no inline flex/grid
+
+- No `display: 'flex'` or `display: 'grid'` inline — use `Horizontal`, `Vertical`, `View`, `Grid`
+- Full-page layouts use `AppShell` (not hand-rolled header + sidebar)
+
 ## Responsive — no fixed column counts
 
 - Grids use `repeat(auto-fill, minmax(Xpx, 1fr))`

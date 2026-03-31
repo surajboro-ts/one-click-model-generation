@@ -1,6 +1,6 @@
 ---
-description: Complete inventory of 72+ Radiant components with decision tree for selecting the right component. Use when choosing between Button/TextInput/Table/Select/Modal/Alert/Chip/Avatar/Menu/Tabs/Accordion and other components, or when checking if a component already exists before creating a custom one.
-globs: ["src/prototypes/**/*.tsx", "src/components/**/*.tsx"]
+description: Full Radiant component reference with props, code examples, and patterns. For a quick list of all 77 components, see component-summary.md (always loaded). Load this file when you need props, examples, or to verify a component exists.
+globs: ["src/prototypes/**/index.tsx"]
 ---
 
 # Radiant Component Inventory
@@ -314,15 +314,17 @@ FormControl + FormBuilder + DynamicForm
 
 ### Settings Form Pattern
 ```tsx
-<div style={{ display: 'flex' }}>
+<Horizontal>
   <Sidebar items={sections} activeItem={active} />
-  <div style={{ flex: 1 }}>
+  <Vertical gap={16} style={{ flex: 1 }}>
     <TextInput label="Name" />
     <Toggle label="Enable notifications" />
-    <Button variant="secondary">Cancel</Button>
-    <Button variant="primary">Save</Button>
-  </div>
-</div>
+    <Horizontal gap={8} justify="flex-end">
+      <Button variant="secondary">Cancel</Button>
+      <Button variant="primary">Save</Button>
+    </Horizontal>
+  </Vertical>
+</Horizontal>
 ```
 
 ### Data Table Pattern
