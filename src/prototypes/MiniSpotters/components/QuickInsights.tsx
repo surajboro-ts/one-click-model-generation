@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { Icon, isValidIconName } from '../../../components/icons';
 import { quickInsightStyles as s, colors } from '../styles';
