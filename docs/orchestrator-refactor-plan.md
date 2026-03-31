@@ -154,6 +154,35 @@ A context modifier that relaxes Radiant constraints. When invoked:
 
 ---
 
+### Change 8: Split `liveboard-ia.md` for tiered loading
+
+**Problem:** `liveboard-ia.md` (15.4KB / ~3.8K tokens) loads via glob for every file inside a Liveboard prototype — even a one-line color fix in a chart component. Most of the content isn't needed for minor edits.
+
+**Split into three pieces:**
+
+| New file | Content | Size (est.) | When loaded |
+|----------|---------|-------------|-------------|
+| `liveboard-ia.md` (slimmed) | Component map — what exists, when to use what | ~5KB | Tier 1+ Liveboard work |
+| `liveboard-scaffolding.md` (new) | Full IA tree, mode templates (View/Edit/Both), build-from-scratch guidance | ~7KB | Tier 2 Liveboard builds only |
+| Move to `TODO.md` | Planning notes ("not yet built", lines 249-267) | ~3KB | Never loaded as a rule |
+
+**Orchestrator routing after split:**
+
+| Liveboard task | Files loaded | Tokens |
+|---------------|-------------|--------|
+| Fix a color in Liveboard chart | None (Tier 0) | 0 |
+| Add a filter to existing Liveboard | `liveboard-ia.md` only (Tier 1) | ~1.2K |
+| Build new Liveboard from scratch | `liveboard-ia.md` + `liveboard-scaffolding.md` (Tier 2) | ~3K |
+| **Today (any Liveboard file edit)** | **Full 15.4KB always** | **~3.8K** |
+
+**Glob changes:**
+- `liveboard-ia.md`: Remove glob entirely — orchestrator handles routing
+- `liveboard-scaffolding.md`: No glob — on-demand only via orchestrator
+
+**This pattern can apply to other large files later** if context consumption becomes an issue — split "reference" (what exists) from "scaffolding" (how to build from scratch).
+
+---
+
 ### Change 7: Test matrix
 
 **File:** `docs/orchestration-test-matrix.md`
@@ -173,14 +202,15 @@ Validate all tiers + exploratory mode against 15+ scenarios. Include:
 ```
 Change 4 (Fix outdated values)   → Do first — fixes errors in existing content
 Change 3 (Fix duplication)       → Remove duplicate content
-Change 1 (Rewrite orchestrator)  → Core change — tier system
+Change 8 (Split liveboard-ia)    → Restructure before orchestrator references it
+Change 1 (Rewrite orchestrator)  → Core change — tier system (references split files)
 Change 2 (Slim auto-loading)     → Narrower globs
 Change 5 (Update CLAUDE.md)      → Depends on Change 1
 Change 6 (Create /explore)       → Independent
 Change 7 (Test matrix)           → Validate everything
 ```
 
-Fix content issues (Changes 3-4) before restructuring (Changes 1-2), so the orchestrator references correct content.
+Fix content issues (Changes 3-4), split large files (Change 8), then restructure (Changes 1-2), so the orchestrator references correct and optimized content.
 
 ---
 
@@ -195,6 +225,7 @@ Fix content issues (Changes 3-4) before restructuring (Changes 1-2), so the orch
 | 5 (Update CLAUDE.md) | Low — less content, not different content | Tier table is a summary, not a replacement |
 | 6 (/explore skill) | Low — adds capability, doesn't change existing behavior | Trust-based, visible via markers |
 | 7 (Test matrix) | Zero — documentation only | |
+| 8 (Split liveboard-ia) | Low — creates new file, slims existing | Orchestrator routes to both; old file name preserved |
 
 ---
 
@@ -206,6 +237,7 @@ Fix content issues (Changes 3-4) before restructuring (Changes 1-2), so the orch
 | 5 (CLAUDE.md) | Yes — forks get updated project guide. |
 | 6 (/explore skill) | Yes — forks get new capability. |
 | 7 (test matrix) | No — documentation only. |
+| 8 (split liveboard-ia) | Yes — forks get slimmer liveboard-ia + new scaffolding file. |
 
 **No breaking changes.** Rule files keep the same names and locations. Globs narrow but don't disappear. Content becomes more accurate.
 
@@ -235,7 +267,7 @@ Fix content issues (Changes 3-4) before restructuring (Changes 1-2), so the orch
 | `figma-mcp-workflow.md` | 7/10 | MCP adaptation duplicated |
 | `interaction-patterns.md` | 8/10 | Minor vagueness |
 | `layout-patterns.md` | 6/10 | Missing AppShell example, outdated constants |
-| `liveboard-ia.md` | 6/10 | Mixes planning notes with rules |
+| `liveboard-ia.md` | 6/10 | 15.4KB loads for every Liveboard file edit; mixes planning notes with rules → split in Change 8 |
 | `modal-patterns.md` | 6/10 | Wrong token names |
 | `product-knowledge.md` | 7/10 | Marked as template |
 | `prototype-generation.md` | 7/10 | Duplicate content |
