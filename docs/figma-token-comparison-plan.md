@@ -97,11 +97,21 @@ docs/figma-token-delta-report.md
 
 | Step | Category | Status |
 |------|----------|--------|
-| 1a | Extract Figma — Colors | ✅ Done (primitives + semantic light) |
-| 1b | Extract Figma — Typography | Waiting for Figma URL |
-| 1c | Extract Figma — Elevation | Waiting for Figma URL |
-| 2a | Map — Colors (light) | ✅ Done — see `docs/figma-token-delta-report.md` |
-| 2a-dark | Map — Colors (dark) | Pending — need Figma dark mode values |
-| 2b | Map — Typography | Not started |
-| 2c | Map — Elevation | Not started |
-| 3 | Delta report | In progress — colors section complete |
+| 1a | Extract Figma — Colors | ✅ Done (primitives + semantic light + dark) |
+| 1b | Extract Figma — Typography | ✅ Done (node 16098:18499, 2026-03-31) |
+| 1c | Extract Figma — Elevation | ✅ Done (node 16098:19079, 2026-03-31) |
+| 1d | Extract Figma — Spacing | ✅ Done (same node as elevation) |
+| 1e | Extract Figma — Layout | ✅ Done (node 16098:19214, 2026-03-31) |
+| 2a | Map — Colors (light) | ✅ Done |
+| 2a-dark | Map — Colors (dark) | ✅ Done (bg + content complete, border partial) |
+| 2b | Map — Typography | ✅ Done (weights, letter spacing) |
+| 2c | Map — Elevation | ✅ Done (light + dark shadows) |
+| 2d | Map — Layout | ✅ Done (header, sidebar, content width) |
+| 3 | Delta report | ✅ Complete — `docs/figma-token-delta-report.md` |
+| 4 | Codebase audit | ✅ Done — CSS pipeline, shadow adoption, extra tokens |
+| 5 | Update plan | ✅ Revised — `docs/token-system-update-plan.md` |
+| 6 | Implementation | Not started — Phase 0-5 ready in `feat/token-alignment` worktree |
+
+### Remaining gaps
+- Semantic dark mode border tokens (partial)
+- Component colors (button, chip, toggle) — not compared yet

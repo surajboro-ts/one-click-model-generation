@@ -904,6 +904,58 @@ Figma defines layout specs for two viewport classes, each with 3-4 variants. RP 
 
 ---
 
+## 14. Codebase Audit Findings (2026-03-31)
+
+Audited three areas to validate the update plan before implementation.
+
+### tokens.css is hand-written
+
+`src/styles/tokens.css` (14.7KB, 350+ CSS variables) is manually maintained and committed to git. It is NOT auto-generated from TypeScript token files. `generateCSSStylesheet()` exists in `css-variables.ts` but isn't wired to any build step. **Every token source change requires a matching manual update to tokens.css** — or we wire up the generation script first (see Phase 0 in update plan).
+
+### Shadow tokens are not adopted
+
+| Consumption method | Component count |
+|-------------------|----------------|
+| Custom inline CSS in `.module.css` | ~50 |
+| CSS variables (`--shadow-*`) | ~15 |
+| TypeScript style objects (prototypes) | 4 |
+| Direct JS import from `shadows.ts` | 0 |
+
+Most components define their own shadow values inline. Changing `shadows.ts` alone won't cascade. Components with notable custom shadows: Modal (`0px 0px 4px ... 0px 24px 32px` — already close to Figma spec), Menu (`--shadow-lg`), Popover/Select/ActionMenu/Toast (custom inline), Card (`--shadow-sm` on hover).
+
+### Extra RP token usage audit
+
+| Token | Used? | Files | Keep? |
+|-------|-------|-------|-------|
+| `background-inset` | Yes (5 refs) | Toggle, Pagination, Divider, DirectionControl, Avatar | Keep |
+| `background-raised-inverse` | Yes (6+ refs) | Menu, Context, 4 pages | Keep |
+| `content-primary-inverse` | Yes (1 ref) | LiveboardHeader | Keep |
+| `content-brand-inverse` | Yes (1 ref) | AppSidebar | Keep |
+| `content-link` | Yes (1 ref) | RichTextEditor | Keep |
+| `border-default-inverse` | Yes (1 ref) | Menu | Keep |
+| `border-divider-inverse` | Yes (1 ref) | LiveboardHeader | Keep |
+| `content-alternate-inverse` | No | — | Deprecate |
+| `content-link-inverse` | No | — | Deprecate |
+| `content-link-inverse-hover` | No | — | Deprecate |
+| `border-hover-inverse` | No | — | Deprecate |
+| `border-brand-inverse` | No | — | Deprecate |
+| Reference `'00'` stops | Yes (1 ref) | AppSidebar | Keep |
+| Reference `'85'` stops | No | — | Deprecate |
+
+### Figma equivalents for kept RP tokens
+
+| RP Token | Figma equivalent | Match? |
+|----------|-----------------|--------|
+| `background-inset` (#C0C6CF) | No direct equivalent | RP extension |
+| `background-raised-inverse` (#323946) | `Background/Inverse` (#323946) | Value match |
+| `content-primary-inverse` (#FFFFFF) | `Content/Inverse` (#FFFFFF) | Value match |
+| `content-brand-inverse` (#71A1F4) | No direct equivalent | RP extension |
+| `content-link` (#2770EF) | `Content/Brand` (#2770EF) | Value match |
+| `border-default-inverse` (#4A515E) | No direct equivalent | RP extension |
+| `border-divider-inverse` (#4A515E) | No direct equivalent | RP extension |
+
+---
+
 ## Status
 
 - [x] Primitives extracted and compared
@@ -915,4 +967,9 @@ Figma defines layout specs for two viewport classes, each with 3-4 variants. RP 
 - [x] Elevation/shadows compared
 - [x] Spacing compared (bonus)
 - [x] Layout constants compared (header, sidebar, content max width, viewports)
+- [x] Codebase audit — CSS pipeline, shadow adoption, extra token usage
 - [ ] Component colors compared against Figma (button, chip, toggle)
+
+## Implementation
+
+See `docs/token-system-update-plan.md` for the revised 6-phase execution plan (Phase 0-5), including the token generation script prerequisite, conflict risk matrix, and per-phase test checklists.
