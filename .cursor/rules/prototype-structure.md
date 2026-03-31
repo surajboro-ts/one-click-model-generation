@@ -241,18 +241,20 @@ export const roles = [
 
 ```svg
 <svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
+  <!-- Background: systemColors.light['background-sunken'] -->
   <rect width="800" height="450" fill="#F6F8FA"/>
-  
-  <!-- UI representation (customize for your prototype) -->
-  <rect x="100" y="80" width="600" height="300" rx="12" fill="white"/>
-  
-  <!-- Title at bottom -->
+
+  <!-- UI representation: systemColors.light['background-base'] -->
+  <rect x="100" y="80" width="600" height="300" rx="12" fill="#FFFFFF"/>
+
+  <!-- Title: systemColors.light['content-primary'] -->
   <text x="400" y="420" fill="#1D232F" font-family="system-ui" font-size="18" text-anchor="middle" font-weight="500">
     Prototype Name
   </text>
 </svg>
 ```
+
+> Note: SVG thumbnails cannot import tokens directly. Use the hex values but document which token each maps to in comments. Keep colors aligned with the reference values in `token-usage.md`.
 
 ---
 
@@ -409,12 +411,7 @@ Will this pattern be used in OTHER prototypes?
 
 ### When to Promote to Global Components
 
-A prototype component should be promoted to `src/components/` when:
-
-1. It's used in 3+ different prototypes
-2. It has stable, well-defined props
-3. It follows all Radiant component patterns (forwardRef, JSDoc, etc.)
-4. It doesn't have prototype-specific logic
+> See `component-inventory.md` §Promotion Criteria for the full checklist with all 6 criteria.
 
 ---
 

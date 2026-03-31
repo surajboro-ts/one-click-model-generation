@@ -1,120 +1,146 @@
 ---
-description: Master orchestration guide for AI — determines which rule files to read and in what order for every task
+description: Master orchestration — classifies every task by intent and loads only the rule files needed. Keeps context lean for minor work, full for builds.
 globs: ["src/**/*.tsx", "src/**/*.ts", "src/**/*.css"]
 alwaysApply: true
 ---
 
 # Radiant Rules Orchestration
 
-CRITICAL: Before writing ANY code for a prototype, you MUST scan the designer's request and proactively load every relevant rule file listed below. Do NOT wait for the designer to tell you which rules to use. Most prototype requests need multiple rule files loaded simultaneously.
+Classify the task by intent, then load only what's needed. Use semantic meaning, not just keywords — "make the grid responsive" is a layout concern even without the word "dashboard."
 
 ---
 
-## Task: Generating a Prototype
+## Step 0: Exploratory check
 
-### Step 1: Scan the request and load ALL relevant rules
+Before classifying into a tier, check for exploratory mode.
 
-Read the designer's request and check EVERY row below. If the condition matches, you MUST read that rule file BEFORE writing code. Most requests match 3-5 conditions.
+If `/explore` was invoked in this session → suspend Radiant constraints for the specified scope. See the `/explore` skill for details.
 
-| Condition | Rule file to read | Examples that match |
-|-----------|-------------------|---------------------|
-| **Any Liveboard prototype** | `liveboard-ia.md` | **Priority 0** — IA structure, component map, mode scaffolding. Ask user about mode (View/Edit/Both) before starting. |
-| **Any prototype work** | `prototype-generation.md` | Always |
-| **Any prototype work** | `component-inventory.md` | Always — loaded automatically via globs |
-| **Any prototype work** | `compliance-checklist.md` | Always — loaded automatically |
-| Building a full page, dashboard, admin panel, settings page, or any layout with header/sidebar | `layout-patterns.md` | "build a dashboard", "create a settings page", "admin panel", any full-page UI |
-| Building a table, list, alert, toast, menu, tooltip, empty state, date picker, or delete confirmation | `widget-patterns.md` | "data table", "action menu", "empty state", "toast notification", "filter list" |
-| Building a modal, dialog, wizard, or confirmation prompt | `modal-patterns.md` | "settings modal", "delete confirmation", "multi-step wizard", "filter dialog" |
-| Building loading states, error handling, disabled controls, or animations | `interaction-patterns.md` | "loading spinner", "error state", "disabled button with tooltip", "skeleton screen" |
-| Input is a Figma URL (figma.com/design/...) | `figma-mcp-workflow.md` | Any Figma URL |
-| Input is a Figma screenshot or mentions Figma layers | `figma-component-mapping.md` | Pasted screenshot, Figma layer names, "convert this Figma" |
-| Prototype references ThoughtSpot features | `product-knowledge.md` | "Liveboard", "Answer", "SpotIQ", "Worksheet", "Monitor" |
-| Creating a new prototype folder or registering it | `prototype-structure.md` | "create new prototype", "add to registry", organizing files |
+If the file has a `// @explore:` marker but `/explore` was NOT invoked this session → ask the designer: "This file has an @explore marker from a previous session. Continue in exploratory mode or return to Radiant compliance?"
 
-**Common combinations — load ALL listed files:**
-- "Build a dashboard with data table" → `layout-patterns.md` + `widget-patterns.md`
-- "Build a settings page with a filter modal" → `layout-patterns.md` + `modal-patterns.md` + `widget-patterns.md`
-- "Build a table page with action menus and delete confirmation" → `widget-patterns.md` + `modal-patterns.md`
-- "Implement this Figma" → `figma-mcp-workflow.md` + `figma-component-mapping.md` + `layout-patterns.md`
-
-### Step 2: Follow the generation workflow
-
-After loading all relevant rules, follow `prototype-generation.md` for the step-by-step build process.
-
-### Input-type quick reference
-
-```
-Figma URL (figma.com/design/...)
-  → Read figma-mcp-workflow.md + figma-component-mapping.md
-  → Then prototype-generation.md
-  → MUST drill into sub-nodes when design is too large (§10)
-  → MUST visually verify against Figma before declaring done (§9)
-
-Figma screenshot (pasted image, no URL)
-  → Read figma-component-mapping.md
-  → Then prototype-generation.md
-
-Text description
-  → Scan for layout/widget/modal/interaction keywords (see table above)
-  → Load matching rule files
-  → Then prototype-generation.md
-```
+If neither → proceed to Step 1.
 
 ---
 
-## Task: Creating or Modifying a Component
+## Step 1: Classify by intent
 
-When creating or modifying a component in `src/components/`, read these files:
+### Tier 0 — Minor tweak
 
-| File | When |
-|------|------|
-| `design-system.md` | **Always** — forwardRef, TypeScript, CSS Modules, accessibility |
-| `token-usage.md` | **Always** — CSS variables, TypeScript token imports |
-| `content-guidelines.md` | **Always** — default labels, placeholder text, error messages |
-| `component-inventory.md` | **Always** — check if a component already exists before creating |
+**Intent:** Small, scoped change. CLAUDE.md + component summary provide enough context.
 
----
+**Signals:**
+- Fixing a single value (color, spacing, font, icon, label)
+- Renaming, reordering, or removing an existing element
+- Adjusting alignment, padding, or margin
+- Fixing a build error or TypeScript issue
+- Toggling a prop or swapping a variant
+- Wrapping an element with a simple component (Tooltip, Horizontal)
+- Any change touching ≤2 files with no new components
 
-## Task: Writing UI Text or Labels
+**Action:** No additional rule files. Use CLAUDE.md conventions and the component summary (always loaded).
 
-For any user-facing text (buttons, titles, errors, descriptions, toasts, tooltips, empty states):
+**Response style:** For Tier 0 tasks, respond concisely — make the change and confirm what you did in one sentence. No preamble, no explanation of why tokens are better than hardcoded values, no restating what the designer asked for.
 
-| File | Scope |
-|------|-------|
-| `content-guidelines.md` | Hard constraints by element type — word counts, approved verbs, casing, punctuation |
-| `docs/ux-writing-rules.md` | Full 79-rule source of truth — consult for edge cases |
-| `product-knowledge.md` | Capitalized ThoughtSpot terms (Answer, Liveboard, SpotIQ, etc.) |
-
----
-
-## How Rules Load
-
-**Auto-loaded (always in context for prototype files):**
-- `_orchestration.md` — this file (alwaysApply)
-- `compliance-checklist.md` — quality gate (alwaysApply)
-- `prototype-generation.md` — core workflow (globs: prototype files)
-- `component-inventory.md` — 72+ components (globs: prototype + component files)
-- `token-usage.md` — design tokens (globs: prototype + component files)
-- `content-guidelines.md` — UX writing (globs: prototype + component files)
-
-**On-demand (you must proactively read these based on the task — see the condition table above):**
-- `layout-patterns.md` — dashboards, admin panels, AppShell, responsive grids
-- `widget-patterns.md` — alerts, tables, menus, tooltips, empty states, date pickers
-- `modal-patterns.md` — modal sizes M1-M4, wizards, dialogs, confirmation prompts
-- `interaction-patterns.md` — loading, error, disabled, transition states
-- `figma-mcp-workflow.md` — Figma URL → MCP tool-call sequence
-- `figma-component-mapping.md` — Figma layers/colors/icons → Radiant tokens
-- `prototype-structure.md` — folder organization, thumbnails, registry
-- `product-knowledge.md` — ThoughtSpot terminology and domain context
-- `design-system.md` — component creation standards (src/components/ only)
+**Figma at Tier 0:** If a Figma URL or screenshot is provided for a single-value lookup (e.g., "what token is this color?"):
+- Raw hex value or screenshot → load `figma-component-mapping.md` only
+- Figma URL → load `figma-mcp-workflow.md` + `figma-component-mapping.md`
+Do not escalate to Tier 1 — the scope is still a single-value fix.
 
 ---
 
-## Key Rules (Always Apply)
+### Tier 1 — Moderate change
 
-1. **Run compliance checklist** on every file before declaring done — see `compliance-checklist.md`
-2. **Always use Radiant components** — check `component-inventory.md`, never use raw HTML for covered patterns
-3. **Follow UX writing rules** — every UI string through `content-guidelines.md`
-4. **Use mock data** — import from `../../mocks` for realistic content
-5. **Local components only** — prototype-specific components go in `src/prototypes/MyPrototype/components/`, NOT in `src/components/`
-6. **Use layout primitives** — `Horizontal`/`Vertical`/`View` not inline flex; `Grid`/`RdGrid` not inline grid
+**Intent:** Adding or modifying a feature within an existing prototype.
+
+**Signals:**
+- Adding a new section, panel, or interaction
+- Replacing a component with a different one
+- Adding a modal, dialog, or confirmation flow
+- Adding a table, filter, or search
+- Changing layout structure (sidebar, tabs, grid)
+- Writing or rewriting multiple UI strings
+
+**Action:** Load ONLY the rule files matching the specific concern:
+
+| Concern | Rule file | Semantic triggers |
+|---------|-----------|-------------------|
+| **Page structure** | `layout-patterns.md` | Adding/changing layout, sidebar, header, grid, responsive behavior, dashboard, content areas |
+| **Interactive widgets** | `widget-patterns.md` | Tables, alerts, toasts, menus, tooltips, empty states, date pickers, filter lists, action menus, delete flows |
+| **Modals & dialogs** | `modal-patterns.md` | Any overlay — confirmation, wizard, form modal, filter dialog, multi-step flow |
+| **State handling** | `interaction-patterns.md` | Loading spinners, skeletons, error states, disabled controls, transitions |
+| **Component details** | `component-inventory.md` | Need full props, code examples, or checking if a specific component exists |
+| **Token deep-dive** | `token-usage.md` | Need full color scale, component-specific tokens, CSS variable names, or anti-pattern reference |
+| **UX copy** | `content-guidelines.md` | Writing/changing buttons, titles, labels, errors — need approved word list or forbidden words |
+| **ThoughtSpot terms** | `product-knowledge.md` | Prototype references Answer, Liveboard, SpotIQ, Worksheet, Monitor |
+| **Figma URL** | `figma-mcp-workflow.md` + `figma-component-mapping.md` | User provides a `figma.com/design/...` URL |
+| **Figma screenshot** | `figma-component-mapping.md` | User pastes a screenshot or references Figma layers |
+| **Liveboard work** | `liveboard-ia.md` | Editing or adding to an existing Liveboard prototype |
+| **Liveboard build** | `liveboard-ia.md` + `liveboard-scaffolding.md` | Building a new Liveboard from scratch (also Tier 2) |
+
+---
+
+### Tier 2 — Full prototype build
+
+**Intent:** Building a new prototype from scratch, or substantially rebuilding an existing one.
+
+**Signals:**
+- "Build a ...", "Create a ...", "New prototype for ..."
+- Request describes a complete page or multi-view flow
+- Scaffolding a new prototype folder
+- Figma URL or screenshot describing a full page
+
+**Action:** Load mandatory files, then add concern-matched files from the Tier 1 table.
+
+**Mandatory (on top of always-loaded):**
+- `prototype-generation.md` — step-by-step build workflow, visual verification loop
+- `component-inventory.md` — full component reference with props and examples
+
+**Add based on content:**
+- Liveboard → `liveboard-ia.md` + `liveboard-scaffolding.md`
+- New folder needed → `prototype-structure.md`
+- Substantial UI copy → `content-guidelines.md`
+- Complex token usage → `token-usage.md`
+
+---
+
+### Tier 3 — Design system work
+
+**Intent:** Creating or modifying a shared component in `src/components/`.
+
+**Signals:**
+- Target file is in `src/components/`
+- "Add a new component to the design system"
+- Modifying component API, props, or accessibility
+
+**Action:** Load these 4 files:
+- `design-system.md` — forwardRef, TypeScript, CSS Modules, accessibility
+- `component-inventory.md` — check if a component already exists
+- `token-usage.md` — CSS variables and TypeScript token imports
+- `content-guidelines.md` — default labels, placeholder text, error messages
+
+---
+
+## Session memory
+
+If a rule file is already in your context from an earlier message in this session, **do not re-read it.** Track which files you've loaded — only load new files when the concern changes or escalates.
+
+When switching between unrelated tasks in the same session, suggest `/compact` to the designer — it resets accumulated context and reduces token cost for subsequent messages.
+
+---
+
+## Cross-references
+
+When a rule file says "See X.md §Section", read that file if the referenced content is needed for the current task. Do not pre-load referenced files — only read when you actually need the content.
+
+---
+
+## Key rules (always apply, no file needed)
+
+These are in CLAUDE.md and the component summary — follow without loading additional files:
+
+1. **Never hardcode** — colors, spacing, fonts always from tokens
+2. **Use Radiant components** — no raw `<button>`, `<input>`, `<table>`, `<select>`
+3. **Layout primitives** — `Horizontal`/`Vertical`/`View` not inline flex; `Grid`/`RdGrid` not inline grid
+4. **Local components** — prototype-specific components in `src/prototypes/<Name>/components/`, not `src/components/`
+5. **Sentence case** — all UI text, imperative verbs for buttons
+6. **Mock data** — import from `../../mocks` for realistic content

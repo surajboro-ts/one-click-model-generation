@@ -123,35 +123,27 @@ When creating components (even prototype-local ones):
 ## Key Layout Constants
 
 ```
-HEADER_HEIGHT = 56, SIDEBAR_WIDTH = 240, SIDEBAR_COLLAPSED = 64
-CONTENT_MAX_WIDTH = 1200, MODAL_WIDTH = 600
+HEADER_HEIGHT = 60, SIDEBAR_WIDTH = 260, SIDEBAR_COLLAPSED = 64
+CONTENT_MAX_WIDTH = 1280, MODAL_WIDTH = 600
 ```
 
 ## Mock Data
 
 Import from `@/mocks` or `../../mocks` for realistic content in prototypes.
 
-## Cursor Rules Reference
+## Rules Reference
 
-The `.cursor/rules/` directory contains 16 detailed rule files (~5,300 lines). These are not auto-loaded by Claude Code — use the table below to know when to read each one.
+The `.cursor/rules/` directory contains rule files for prototype generation. The orchestrator (`_orchestration.md`) classifies tasks by intent and loads only what's needed:
 
-### When to read rule files
+| Tier | Intent | Rules loaded | Context cost |
+|------|--------|-------------|-------------|
+| Exploratory | Freeform UI, outside Radiant | None — constraints relaxed | ~0KB |
+| 0 — Minor tweak | Fix a value, swap a prop | None — CLAUDE.md sufficient | ~0KB |
+| 1 — Moderate | Add section, modal, table | 1-3 targeted by concern | ~15-45KB |
+| 2 — Full build | New prototype or Figma page | 3-5 mandatory + concerns | ~60-100KB |
+| 3 — Design system | Create/modify shared component | 4 fixed files | ~50KB |
 
-| Task | Read these files |
-|------|-----------------|
-| Building any prototype | `.cursor/rules/prototype-generation.md` + `.cursor/rules/component-inventory.md` |
-| Styling / design tokens | `.cursor/rules/token-usage.md` |
-| Full-page layouts, dashboards, admin panels | `.cursor/rules/layout-patterns.md` |
-| Tables, alerts, menus, empty states, drag-and-drop | `.cursor/rules/widget-patterns.md` |
-| Modals, wizards, confirmation dialogs | `.cursor/rules/modal-patterns.md` |
-| Loading, error, disabled, transition states | `.cursor/rules/interaction-patterns.md` |
-| Liveboard prototype | `.cursor/rules/liveboard-ia.md` |
-| Writing UI text (buttons, labels, titles, errors) | `.cursor/rules/content-guidelines.md` |
-| Creating or modifying shared components in `src/components/` | `.cursor/rules/design-system.md` |
-| Prototype references ThoughtSpot features (Answer, Liveboard, SpotIQ…) | `.cursor/rules/product-knowledge.md` |
-| Scaffolding a new prototype folder | `.cursor/rules/prototype-structure.md` |
-| Translating Figma layers/screenshots to code | `.cursor/rules/figma-component-mapping.md` |
-| Pre-ship quality check | `.cursor/rules/compliance-checklist.md` |
+Read `.cursor/rules/_orchestration.md` for the full tier classification and concern-matching table.
 
 ## Pre-Flight Checklist (Before Finishing a Prototype)
 
@@ -192,6 +184,7 @@ Always run `git remote -v` to confirm which remotes exist before pushing.
 | `/release [version]` | Write changelog, prep production merge |
 | `/status` | Branch, commits, uncommitted changes |
 | `/sync-upstream` | Pull latest from upstream, resolve registry.ts conflict, push to fork |
+| `/explore <description>` | Suspend Radiant constraints for freeform UI exploration |
 
 
 ### Typical Session Flow
