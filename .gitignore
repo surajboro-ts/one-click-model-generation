@@ -32,6 +32,8 @@ plans/
 docs/*plan*.md
 docs/*report*.md
 docs/*matrix*.md
+docs/*delta*.md
+docs/testing/
 docs/what-is-radiant-play.md
 
 # Local articles (not for repo)
