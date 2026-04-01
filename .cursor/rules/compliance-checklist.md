@@ -25,7 +25,7 @@ Run these checks on every `.tsx` file you create or modify. Do NOT declare done 
 
 | Raw element | Use instead |
 |-------------|-------------|
-| `<button>` | `Button` (exception: icon-only triggers, document with comment) |
+| `<button>` | `Button` (exception: non-standard overlay triggers for Popover/Tooltip only — document with comment) |
 | `<input>` | `TextInput` or `SearchInput` |
 | `<table>` | `Table` |
 | `<select>` | `Select` or `Dropdown` |

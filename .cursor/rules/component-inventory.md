@@ -445,7 +445,23 @@ export default StatusBadge;
 import { StatusBadge, MetricCard } from './components';
 ```
 
-### 4. Promotion criteria
+### 4. When a Radiant component doesn't exist for what you need
+
+Before building anything custom, work through this in order:
+
+**Step 1 — Check props first.** Can an existing component achieve the visual with different props?
+- No SplitButton? → Two `Button` components side by side, no custom HTML needed.
+- No circular icon button? → `Button` with `iconOnly` prop (added 2026-04-01).
+- No status dot? → `Toggle` (on/off state) or `Chip` (label state).
+
+**Step 2 — If truly no Radiant equivalent**, build a local component in `src/prototypes/<Name>/components/`.
+- Follow `design-system.md` rules: forwardRef, TypeScript, CSS Modules.
+- Do NOT use raw `<button>`, `<div onClick>`, or `<input>` — wrap in a proper React component.
+- Add a comment: `// Gap: Radiant has no <X> — local implementation`.
+
+**Step 3 — Never inline a component workaround** directly in the main component file. Even a one-off custom element belongs in `components/`.
+
+### 5. Promotion criteria
 
 A local component should be promoted to `src/components/` when ALL of these are true:
 

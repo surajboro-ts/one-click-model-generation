@@ -23,11 +23,15 @@ alwaysApply: true
 - **Advanced display** → Legend / Trending / Formatters (.Text/.Number/.Line/.Interval)
 - **Content** → FormBuilder / DynamicForm / FormControl / ExplainerCard / RichTextEditor / SafeHTML / Image
 - **Interaction** → ActionMenu / VerticalStepper / Tour / DragDrop / OverlayLoading
+- **3-dot / overflow menus** → `ActionMenu` (has trigger prop), NOT `Menu` (no built-in trigger)
 - **Page layout** → AppShell / GlobalHeader / AppSidebar
 
 ## Icons (46 available)
 
 arrow-up, arrow-down, arrow-left, arrow-right, chevron-up, chevron-down, chevron-left, chevron-right, plus, minus, cross, checkmark, checkmark-circle, cross-circle, exclamation-point-circle, info-circle, question-mark, copy, download, upload, save, refresh, pencil, trash-can, share, pin, filter, play, pause, eye, eye-undo, clock, cog, folder, funnel, lock, magnifying-glass, profile, sort, star, tag, expand, fullscreen, hamburger, more, information
+
+**Valid sizes:** `xs` (12px) · `s` (14px) · `m` (16px) · `l` (18px) — no `xl`, no numeric values
+**Button icon rule:** Always pass `iconPosition="leading"` or `"trailing"` when using the `icon` prop — default `"none"` suppresses icon rendering. Use `iconOnly` prop for circular 32×32 icon buttons.
 
 ## Key rules
 

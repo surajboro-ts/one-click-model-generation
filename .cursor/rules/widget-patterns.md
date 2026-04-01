@@ -184,7 +184,7 @@ Descriptive text shown on hover/focus/tap.
 
 ```tsx
 <Tooltip content="Filters">
-  <Button variant="tertiary" icon="filter" aria-label="Filters" />
+  <Button variant="tertiary" icon="filter" iconPosition="leading" aria-label="Filters" />
 </Tooltip>
 ```
 
@@ -348,7 +348,7 @@ Tabular data in read-only and editable modes.
       <div style={styles.batchBar}>
         <span>{selectedRows.length} selected</span>
         <Button variant="secondary" size="small">Edit</Button>
-        <Button variant="secondary" size="small" icon="trash-can">Delete</Button>
+        <Button variant="secondary" size="small" icon="trash-can" iconPosition="leading">Delete</Button>
       </div>
     )
   }
@@ -510,7 +510,7 @@ All action menus MUST follow this category ordering:
 
 ```tsx
 <Menu
-  trigger={<Button variant="tertiary" icon="more" aria-label="More actions" />}
+  trigger={<Button variant="tertiary" icon="more" iconPosition="leading" aria-label="More actions" />}
   items={[
     { label: 'Duplicate', icon: 'copy', onClick: handleDuplicate },
     { type: 'divider' },
@@ -643,7 +643,7 @@ Persistent sidebar for section-level navigation within a surface.
 import { ActionMenu, Button, Icon } from '../../components';
 
 <ActionMenu
-  trigger={<Button variant="tertiary" icon="more" />}
+  trigger={<Button variant="tertiary" icon="more" iconPosition="leading" />}
   placement="bottom-end"
 >
   <ActionMenu.Item

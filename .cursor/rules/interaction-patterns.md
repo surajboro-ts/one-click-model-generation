@@ -141,7 +141,7 @@ Is there no data at all (first-time user)?
   <p style={styles.emptyDescription}>
     Create your first Liveboard to visualize your data.
   </p>
-  <Button variant="primary" icon="plus">
+  <Button variant="primary" icon="plus" iconPosition="leading">
     Create Liveboard
   </Button>
 </div>

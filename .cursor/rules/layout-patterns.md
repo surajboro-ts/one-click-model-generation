@@ -505,8 +505,8 @@ const DataTablePageLayout: React.FC = () => {
           />
         </div>
         <div style={styles.actions}>
-          <Button variant="secondary" icon="filter">Filter</Button>
-          <Button variant="primary" icon="plus">Add item</Button>
+          <Button variant="secondary" icon="filter" iconPosition="leading">Filter</Button>
+          <Button variant="primary" icon="plus" iconPosition="leading">Add item</Button>
         </div>
       </div>
 

@@ -268,6 +268,9 @@ import MyPrototypeThumbnail from './thumbnails/MyPrototype.svg';
 const MyPrototype = React.lazy(() => import('./MyPrototype'));
 
 // Add to projectRegistry array
+// section: 'mine'   → "My prototypes" gallery (default for all new work)
+// section: 'sample' → "Sample prototypes" gallery (built-in examples only — do not use for new prototypes)
+// Omitting section defaults to 'mine'
 export const projectRegistry: ProjectMeta[] = [
   // ... existing prototypes
   {
