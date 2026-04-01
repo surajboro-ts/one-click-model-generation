@@ -70,6 +70,8 @@ const handleSave = () => {
 
 ## Error States
 
+> For Alert variant selection (Banner vs Section Alert vs Toast), see `widget-patterns.md` §Alert Taxonomy.
+
 ### Form validation errors
 
 | Situation | Behavior |

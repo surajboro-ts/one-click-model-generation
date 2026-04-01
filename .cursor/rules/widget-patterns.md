@@ -13,6 +13,8 @@ Widgets are reusable multi-component blocks that compose the ThoughtSpot product
 
 ## Alert Widgets
 
+> For loading, disabled, and transition patterns around alerts, see `interaction-patterns.md`.
+
 ### Alert Taxonomy — Decision Tree
 
 ```

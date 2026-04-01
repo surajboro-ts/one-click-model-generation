@@ -1,6 +1,7 @@
 ---
 description: Mandatory compliance checklist for every prototype file. Catches hardcoded colors, raw HTML, wrong fonts, magic spacing values, and accessibility issues. Runs automatically on all prototype code.
 globs: ["src/prototypes/**/*.tsx", "src/components/**/*.tsx"]
+alwaysApply: true
 ---
 
 # Compliance Checklist

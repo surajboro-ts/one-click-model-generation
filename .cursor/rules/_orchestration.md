@@ -60,7 +60,11 @@ Do not escalate to Tier 1 — the scope is still a single-value fix.
 - Changing layout structure (sidebar, tabs, grid)
 - Writing or rewriting multiple UI strings
 
-**Action:** Load ONLY the rule files matching the specific concern:
+**Action:** Load ALL rule files matching the task's concerns from the table below. Most Tier 1 tasks match 1–2 rows; matching 3+ is expected for compound tasks.
+
+**Shared component audit:** If your implementation imports a component from `src/components/`, read its `.module.css` before proceeding. If it contains `!important`, gradient overrides, or hardcoded hex values, fix it before using the component (apply Tier 3 rules to that file).
+
+**Concern table:**
 
 | Concern | Rule file | Semantic triggers |
 |---------|-----------|-------------------|
@@ -84,10 +88,14 @@ Do not escalate to Tier 1 — the scope is still a single-value fix.
 **Intent:** Building a new prototype from scratch, or substantially rebuilding an existing one.
 
 **Signals:**
-- "Build a ...", "Create a ...", "New prototype for ..."
-- Request describes a complete page or multi-view flow
+- The task requires a new route/page that doesn't exist yet
+- The result will be a standalone prototype (not a section within an existing one)
+- The user references an existing prototype as a template ("similar to", "like X but for")
+- Request describes a complete page, multi-view flow, or full-screen experience
 - Scaffolding a new prototype folder
 - Figma URL or screenshot describing a full page
+
+**Litmus test:** If the end result would be a new file in `src/prototypes/`, it's Tier 2.
 
 **Action:** Load mandatory files, then add concern-matched files from the Tier 1 table.
 

@@ -106,6 +106,7 @@ New components for a prototype go in `src/prototypes/<Name>/components/`, **not*
 
 - **Sentence case** always (titles, buttons, labels, tooltips)
 - **Buttons:** 1-2 words, imperative verbs (Create, Add, Delete, Save, Cancel, Edit, Export)
+- **Forbidden words:** Proceed → use direct verb | Submit → Save | Check → Select | Modify → Edit | Refresh → Reload | Terminate → End
 - **Labels:** max 3 words, no articles, no punctuation
 - **Titles:** max 4 words; modal titles start with a verb
 - **Errors:** Issue + Remedy + CTA pattern
