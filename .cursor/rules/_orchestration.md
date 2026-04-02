@@ -125,6 +125,25 @@ Check CLAUDE.md forbidden words before writing labels, buttons, or titles.
 
 ---
 
+## Iteration loop detection
+
+If the designer sends 3+ sequential single-property change requests ("make it bigger" → "center it" → "change the color"), suggest batching:
+*"If you have other visual tweaks, send them all in one message and I'll apply them together — it's significantly cheaper than one-at-a-time."*
+
+Do not block the current request — apply it, then suggest batching for future tweaks.
+
+---
+
+## MCP tool overhead awareness
+
+Every connected MCP tool adds token overhead to every message, even when idle. Figma MCP alone adds ~4,000 tokens per message.
+
+When classifying a task:
+- If the task has **no Figma concern** and Figma MCP is connected → note the overhead but do not block work.
+- When a Figma URL is provided → use the structured data path (`get_metadata` first for a lightweight map, then `get_design_context` for specific components) rather than pulling entire pages. The structured path is 30-50% more efficient than screenshots.
+
+---
+
 ## Session memory
 
 If a rule file is already in context from an earlier message, **do not re-read it.** Only load new files when the concern changes or escalates. Suggest `/compact` when switching between unrelated tasks.
