@@ -8,6 +8,8 @@ alwaysApply: true
 
 Classify by intent, then load only what's needed. Use semantic meaning — "make the grid responsive" is a layout concern even without the word "dashboard."
 
+> **Claude Code users:** These rules are also available as auto-activating skills in `.claude/skills/`. The skill system handles loading automatically based on file globs — you may not need to manually read rule files.
+
 ---
 
 ## Step 0: Exploratory check
