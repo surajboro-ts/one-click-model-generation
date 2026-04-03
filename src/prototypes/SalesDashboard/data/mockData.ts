@@ -1,18 +1,18 @@
 // ── Tab & filter configuration ──────────────────────────
 // Replace with your Liveboard's tab structure and filter set.
 
-export const liveboardName = 'Business overview';
+export const liveboardName = 'Sales dashboard';
 
 export const tabsData = [
-  { label: 'Overview',   id: 'overview'   },
-  { label: 'Revenue',    id: 'revenue'    },
-  { label: 'Customers',  id: 'customers'  },
-  { label: 'Pipeline',   id: 'pipeline'   },
+  { label: 'Overview',    id: 'overview'    },
+  { label: 'Performance', id: 'performance' },
+  { label: 'Regions',     id: 'regions'     },
 ];
 
 export const filterData = [
   { label: 'Time period', value: 'This quarter' },
   { label: 'Region',      value: 'All regions'  },
+  { label: 'Product',     value: 'All products' },
 ];
 
 // ── SpotterViz sample messages ──────────────────────────

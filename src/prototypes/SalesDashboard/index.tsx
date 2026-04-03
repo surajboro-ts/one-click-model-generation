@@ -102,39 +102,30 @@ function commitPositions(layout: TileItem[], cu: number) {
 // Replace with your prototype's tile definitions and layout.
 
 const TILE_DEFS: TileDef[] = [
-  // KPI row
+  // KPI row (2 KPIs)
   { id: 'kpi-revenue',    tileType: 'answer', title: 'Total revenue',       chartType: 'kpi-simple' },
   { id: 'kpi-customers',  tileType: 'answer', title: 'Active customers',    chartType: 'kpi-simple' },
-  { id: 'kpi-orders',     tileType: 'answer', title: 'Orders this quarter', chartType: 'kpi-simple' },
-  { id: 'kpi-nps',        tileType: 'answer', title: 'NPS score',           chartType: 'kpi-simple' },
-  // Chart row
-  { id: 'chart-revenue',  tileType: 'answer', title: 'Revenue over time',   description: 'Monthly vs prior year', chartType: 'line' },
-  { id: 'chart-segment',  tileType: 'answer', title: 'Revenue by segment',                                        chartType: 'bar'  },
-  // Note + group row
+  // Chart row (bar + donut)
+  { id: 'chart-revenue',  tileType: 'answer', title: 'Revenue over time',   description: 'Monthly vs prior year', chartType: 'bar'   },
+  { id: 'chart-segment',  tileType: 'answer', title: 'Sales by region',     description: 'Current quarter',       chartType: 'donut' },
+  // Notes row (2 notes)
   { id: 'note-summary',   tileType: 'note',   noteVariant: 'weekly-update'  },
-  { id: 'group-products', tileType: 'group',  title: 'Product performance', description: 'By category and region' },
+  { id: 'note-metrics',   tileType: 'note',   noteVariant: 'key-metrics'    },
 ];
 
 const INITIAL_LAYOUT: TileItem[] = [
-  // Row 1: 4 KPI tiles (3 cols × 3 rows each)
-  { i: 'kpi-revenue',    x: 0, y: 0, w: 3, h: 3, minW: 2 },
-  { i: 'kpi-customers',  x: 3, y: 0, w: 3, h: 3, minW: 2 },
-  { i: 'kpi-orders',     x: 6, y: 0, w: 3, h: 3, minW: 2 },
-  { i: 'kpi-nps',        x: 9, y: 0, w: 3, h: 3, minW: 2 },
-  // Row 2: 2 chart tiles (6 cols × 3 rows each)
-  { i: 'chart-revenue',  x: 0, y: 3, w: 6, h: 3, minW: 2 },
-  { i: 'chart-segment',  x: 6, y: 3, w: 6, h: 3, minW: 2 },
-  // Row 3: note (4 cols × 4 rows) + group (8 cols × 4 rows)
-  { i: 'note-summary',   x: 0, y: 6, w: 4, h: 4, minW: 2 },
-  { i: 'group-products', x: 4, y: 6, w: 8, h: 4, minW: 2 },
+  // Row 1: 2 KPI tiles (6 cols x 3 rows each)
+  { i: 'kpi-revenue',    x: 0, y: 0, w: 6, h: 3, minW: 2 },
+  { i: 'kpi-customers',  x: 6, y: 0, w: 6, h: 3, minW: 2 },
+  // Row 2: 2 chart tiles (6 cols x 4 rows each)
+  { i: 'chart-revenue',  x: 0, y: 3, w: 6, h: 4, minW: 2 },
+  { i: 'chart-segment',  x: 6, y: 3, w: 6, h: 4, minW: 2 },
+  // Row 3: 2 note tiles (6 cols x 4 rows each)
+  { i: 'note-summary',   x: 0, y: 7, w: 6, h: 4, minW: 2 },
+  { i: 'note-metrics',   x: 6, y: 7, w: 6, h: 4, minW: 2 },
 ];
 
-const INITIAL_GROUP_LAYOUTS: Record<string, GroupInnerTile[]> = {
-  'group-products': [
-    { i: 'gp-donut', x: 0, y: 0, w: 6, h: 3, minW: 1, tileType: 'answer', chartType: 'donut', title: 'Category mix'  },
-    { i: 'gp-table', x: 6, y: 0, w: 6, h: 3, minW: 1, tileType: 'answer', chartType: 'table', title: 'Top products'  },
-  ],
-};
+const INITIAL_GROUP_LAYOUTS: Record<string, GroupInnerTile[]> = {};
 
 // ─── Drag / resize state shapes ───────────────────────────────────────────────
 
@@ -175,7 +166,7 @@ const IconMore = () => (
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export const LiveboardTemplate: React.FC = () => {
+export const SalesDashboard: React.FC = () => {
   const [mode,           setMode]           = useState<TileMode>('view');
   const [layout,         setLayout]         = useState<TileItem[]>(INITIAL_LAYOUT);
   const [tileDefs,       setTileDefs]       = useState<TileDef[]>(TILE_DEFS);
@@ -716,7 +707,7 @@ export const LiveboardTemplate: React.FC = () => {
   );
 };
 
-export default LiveboardTemplate;
+export default SalesDashboard;
 
 // ─── Shadow style (drag + resize) ─────────────────────────────────────────────
 

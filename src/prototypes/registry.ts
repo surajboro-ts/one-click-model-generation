@@ -58,6 +58,8 @@ const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
 const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
 
 
+const SalesDashboard = React.lazy(() => import('./SalesDashboard'));
+
 /**
  * All registered projects
  */
@@ -145,6 +147,13 @@ export const projectRegistry: ProjectMeta[] = [
     dsComponents: 8,
     customComponents: 4,
     section: 'sample',
+  },
+  {
+    id: 'SalesDashboard',
+    name: 'Sales Dashboard',
+    description: 'Liveboard prototype — view and edit modes with SpotterViz.',
+    author: 'Designer',
+    component: SalesDashboard,
   },
   // Add more projects here. New prototypes default to 'mine' section.
   // Set section: 'sample' to show under Sample prototypes instead.

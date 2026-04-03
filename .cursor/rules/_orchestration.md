@@ -68,7 +68,10 @@ Adding or modifying a feature within an existing prototype.
 | **Figma URL** | `figma-mcp-workflow.md` + `figma-component-mapping.md` | `figma.com/design/...` URL provided |
 | **Figma screenshot** | `figma-component-mapping.md` | Screenshot or Figma layer reference |
 | **Liveboard work** | `liveboard-ia.md` | Editing or adding to an existing Liveboard prototype |
-| **Liveboard build** | `liveboard-ia.md` + `liveboard-scaffolding.md` | Building a new Liveboard from scratch |
+| **Liveboard canvas (view)** | `liveboard-canvas-core.md` | Grid system, tile types, view mode, chart palette |
+| **Liveboard canvas (edit)** | `liveboard-canvas-core.md` + `liveboard-canvas-edit.md` | Drag, resize, selection, toolbars |
+| **Liveboard canvas (full)** | All 3 canvas tiers + `liveboard-canvas-advanced.md` | Groups, multi-select, inline editing |
+| **Liveboard build** | `liveboard-ia.md` + `liveboard-scaffolding.md` + canvas tiers (see Liveboard Requirements Gate below) | Building a new Liveboard from scratch |
 
 ---
 
@@ -89,7 +92,7 @@ New prototype from scratch or substantially rebuilding an existing one.
 - `prototype-generation.md` — step-by-step build workflow, visual verification loop
 - `component-inventory.md` — full component reference with props and examples
 
-**Add based on content:** Liveboard → `liveboard-ia.md` + `liveboard-scaffolding.md` · New folder → `prototype-structure.md` · Substantial copy → `content-guidelines.md` · Complex tokens → `token-usage.md`
+**Add based on content:** Liveboard → run Liveboard Requirements Gate (see below) · New folder → `prototype-structure.md` · Substantial copy → `content-guidelines.md` · Complex tokens → `token-usage.md`
 
 **Post-build:** After completing a Tier 2 build, suggest `/compact` before continuing — full prototype builds saturate context and the next task benefits from a clean slate.
 
@@ -122,6 +125,36 @@ Always pass `iconPosition="leading"` or `"trailing"` when using the `icon` prop 
 
 **4. Any UI text?**
 Check CLAUDE.md forbidden words before writing labels, buttons, or titles.
+
+---
+
+## Liveboard Requirements Gate
+
+When the task is a **new Liveboard prototype** (Tier 2), BEFORE loading any liveboard canvas rules, ask the user:
+
+1. **Mode** — View-only (read-only dashboard), or edit mode with drag/resize?
+2. **Interactions** — Which do you need?
+   - Drag and drop tiles
+   - Resize tiles
+   - Group tiles (mini-liveboard inside a container)
+   - Inline title/description editing
+   - Multi-select and bulk actions (shift+click)
+   - SpotterViz panel
+   - Filter bar
+3. **Tile types** — KPI, charts, notes, groups?
+4. **Data** — Mock data or specific dataset?
+
+Based on answers, load ONLY the needed canvas tiers:
+
+| User needs | Canvas files loaded | Total canvas lines |
+|-----------|--------------------|--------------------|
+| View-only dashboard | `liveboard-canvas-core.md` | ~250 |
+| Edit mode (basic drag/resize) | `canvas-core` + `liveboard-canvas-edit.md` | ~500 |
+| Full canvas with groups/multi-select | `canvas-core` + `canvas-edit` + `liveboard-canvas-advanced.md` | ~570 |
+
+Always load `liveboard-ia.md` + `liveboard-scaffolding.md` alongside the canvas tiers.
+
+**Skip the gate** for Tier 0/1 tasks (minor tweaks, modifications to existing Liveboards). Only gate Tier 2 new builds.
 
 ---
 

@@ -56,7 +56,7 @@ Liveboard (View Mode)
     ├── Insight Tile
     │   ├── AI generated summary
     │   └── Hover actions: Ask Spotter, More actions
-    └── Canvas: react-grid-layout (drag-and-drop)
+    └── Canvas: Custom 12-column absolute-positioning grid (see liveboard-canvas-core.md, canvas-edit.md, canvas-advanced.md)
 ```
 
 ---
@@ -95,15 +95,16 @@ Scaffolds from `src/prototypes/_liveboard-template/`:
 
 ```
 src/prototypes/MyDashboard/
-├── index.tsx                    # Main component with LiveboardHeader (view + edit)
+├── index.tsx                    # Main component with custom canvas + LiveboardHeader
 ├── styles.ts                    # Token-based style constants
 ├── data/
-│   └── mockData.ts              # Sample tabs, filters, KPIs, chart data
+│   └── mockData.ts              # Sample tabs, filters, liveboard name
 ├── components/
-│   ├── AnswerTile.tsx           # Tile container with hover toolbar
-│   ├── SampleBarChart.tsx       # Example bar chart
-│   └── SampleKPITile.tsx        # Example KPI sparkline
+│   └── SpotterVizPanel.tsx      # AI chat side panel
 └── README.md
+
+# Shared tiles (imported from sibling folder, not copied):
+# src/prototypes/_shared/tiles/  → AnswerTile, NoteTile, GroupTile, charts
 ```
 
 ### Using LiveboardHeader
