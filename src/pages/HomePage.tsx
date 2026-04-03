@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { systemColors, referenceColors } from '../tokens/colors';
 import { spacing } from '../tokens/spacing';
 import { getComponentCount, getIconCount, getTokenCountLabel } from '../data/componentRegistry';
+import { getCurrentVersion } from '../data/versionHistory';
 import { getAllProjects } from '../prototypes/registry';
 import { Link } from '../components/Link';
 
@@ -43,10 +44,11 @@ export const HomePage: React.FC = () => {
       <main style={styles.main}>
         {/* ── Hero ──────────────────────────────────────────────── */}
         <div style={styles.heroText}>
-          <span style={styles.eyebrow}>ThoughtSpot Design System</span>
+          <span style={styles.eyebrow}>ThoughtSpot Design</span>
           <h1 style={styles.title}>
             Radiant<span style={styles.titleAccent}>Play</span>
           </h1>
+          <span style={styles.versionBadge}>{getCurrentVersion()}</span>
           <p style={styles.subtitle}>
             Build interactive prototypes with real Radiant components.
             Every screen stays consistent with the design system.
@@ -265,6 +267,17 @@ const styles: Record<string, React.CSSProperties> = {
   },
   titleAccent: {
     color: systemColors.light['content-brand'],
+  },
+  versionBadge: {
+    display: 'inline-block',
+    fontSize: '13px',
+    fontWeight: 500,
+    color: systemColors.light['content-secondary'],
+    backgroundColor: systemColors.light['background-subtle'],
+    padding: `${spacing.A}px ${spacing.B}px`,
+    borderRadius: '20px',
+    marginBottom: `${spacing.D}px`,
+    letterSpacing: '0.01em',
   },
   subtitle: {
     fontSize: '18px',

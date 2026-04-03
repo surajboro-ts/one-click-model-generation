@@ -152,8 +152,12 @@ export const projectRegistry: ProjectMeta[] = [
     id: 'SalesDashboard',
     name: 'Sales Dashboard',
     description: 'Liveboard prototype — view and edit modes with SpotterViz.',
-    author: 'Designer',
+    author: 'Design Team',
+    lastModified: '2026-04-03',
     component: SalesDashboard,
+    dsComponents: 6,
+    customComponents: 3,
+    section: 'mine',
   },
   // Add more projects here. New prototypes default to 'mine' section.
   // Set section: 'sample' to show under Sample prototypes instead.

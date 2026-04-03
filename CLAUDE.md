@@ -9,14 +9,7 @@
 - When asked to save or write content, write directly to the file. Do NOT create sub-tasks, todo items, or intermediate plans unless explicitly asked.
 - Do NOT add unsolicited UI elements, features, badges, or enhancements not in the request. Build exactly what was asked.
 - The project is branded as **Radiant Play** — not figmaradiant, RadiantPlay, or other legacy names in user-facing content.
-
-## Workflow Preferences
-
-When asked to save or write recommendations/analysis, write directly to files. Do NOT create Task agents or sub-tasks unless explicitly asked to. Prefer simple file writes for document deliverables.
-
-## Code Changes
-
-Do NOT add unsolicited UI elements, badges, tooltips, or visual embellishments that weren't requested. Make only the changes explicitly asked for.
+- When asked to save or write recommendations/analysis, prefer simple file writes for document deliverables.
 
 ## Git & Deployment
 
@@ -26,11 +19,11 @@ Do NOT add unsolicited UI elements, badges, tooltips, or visual embellishments t
 
 Run `git remote -v` to determine which applies before pushing. Default deploy target is **staging**, not main — do not push to main unless explicitly asked.
 
+**Before pushing to main**: always ask whether to run `bash scripts/release.sh` first. This updates the platform version and changelog. If the user confirms they've already run it or wants to skip, proceed with the push.
+
 ## Tech Stack
 
-Primary stack: TypeScript, HTML, Markdown, JSON. Deployment target: Vercel. When building or modifying pages, verify the build succeeds before considering the task complete.
-
-React 19 + TypeScript + Vite 7, deployed on Vercel.
+React 19 + TypeScript + Vite 7, deployed on Vercel. When building or modifying pages, verify the build succeeds before considering the task complete.
 
 ## Commands
 
@@ -102,58 +95,25 @@ Responsive grids: always `repeat(auto-fill, minmax(220px, 1fr))` — never fixed
 
 New components for a prototype go in `src/prototypes/<Name>/components/`, **not** in `src/components/`. The shared `src/components/` directory is reserved for the design system.
 
-### 5. Content Guidelines (ThoughtSpot style)
+### 5. Content Guidelines
 
-- **Sentence case** always (titles, buttons, labels, tooltips)
-- **Buttons:** 1-2 words, imperative verbs (Create, Add, Delete, Save, Cancel, Edit, Export)
-- **Forbidden words:** Proceed → use direct verb | Submit → Save | Check → Select | Modify → Edit | Refresh → Reload | Terminate → End
-- **Labels:** max 3 words, no articles, no punctuation
-- **Titles:** max 4 words; modal titles start with a verb
-- **Errors:** Issue + Remedy + CTA pattern
-- Capitalize ThoughtSpot features: Answer, Liveboard, SpotIQ, Worksheet, Monitor
+Sentence case everywhere. Imperative verbs for buttons (Create, Add, Delete, Save, Cancel). See `.cursor/rules/content-guidelines.md` for full rules.
 
 ### 6. Component Creation Standards
 
-When creating components (even prototype-local ones):
-- Use `forwardRef` for interactive components
-- Extend native HTML element props
-- Use CSS Modules (`.module.css`) with camelCase class names
-- Always include focus styles and keyboard navigation
-- Use `Icon` component with `isValidIconName()` validation
-
-## Key Layout Constants
-
-```
-HEADER_HEIGHT = 60, SIDEBAR_WIDTH = 260, SIDEBAR_COLLAPSED = 64
-CONTENT_MAX_WIDTH = 1280, MODAL_WIDTH = 600
-```
+Use forwardRef, CSS Modules with camelCase, focus styles, keyboard navigation. See `.cursor/rules/design-system.md` for full spec.
 
 ## Mock Data
 
-Import from `@/mocks` or `../../mocks` for realistic content in prototypes.
+Import from `@/mocks` for realistic content in prototypes.
 
 ## Rules Reference
 
-The `.cursor/rules/` directory contains rule files for prototype generation. The orchestrator (`_orchestration.md`) classifies tasks by intent and loads only what's needed:
+See `.cursor/rules/_orchestration.md` for tier classification (Tier 0–3) and rule file loading.
 
-| Tier | Intent | Rules loaded | Context cost |
-|------|--------|-------------|-------------|
-| Exploratory | Freeform UI, outside Radiant | None — constraints relaxed | ~0KB |
-| 0 — Minor tweak | Fix a value, swap a prop | None — CLAUDE.md sufficient | ~0KB |
-| 1 — Moderate | Add section, modal, table | 1-3 targeted by concern | ~15-45KB |
-| 2 — Full build | New prototype or Figma page | 3-5 mandatory + concerns | ~60-100KB |
-| 3 — Design system | Create/modify shared component | 4 fixed files | ~50KB |
+## Pre-Flight Checklist
 
-Read `.cursor/rules/_orchestration.md` for the full tier classification and concern-matching table.
-
-## Pre-Flight Checklist (Before Finishing a Prototype)
-
-1. Zero raw HTML for elements covered by Radiant components
-2. All colors/spacing/typography from tokens
-3. Layout uses AppShell + layout primitives
-4. Content follows sentence case + imperative verb rules
-5. Responsive grids use auto-fill + minmax
-6. `npm run build` passes
+Apply the 5 conventions above + verify `npm run build` passes before finishing a prototype.
 
 ## Workflow
 
@@ -175,35 +135,3 @@ Read `.cursor/rules/_orchestration.md` for the full tier classification and conc
 - `galaxy` — ThoughtSpot (HTTPS: `https://galaxy.corp.thoughtspot.com/mohammed-faris/radiantplay.git` or SSH: `git@galaxy.corp.thoughtspot.com:mohammed-faris/radiantplay.git`)
 
 Always run `git remote -v` to confirm which remotes exist before pushing.
-
-### Skills (Slash Commands)
-
-| Command | What it does |
-|---------|-------------|
-| `/start <description>` | Create a work branch from main |
-| `/ship [message]` | Build, commit, push to staging |
-| `/release [version]` | Write changelog, prep production merge |
-| `/status` | Branch, commits, uncommitted changes |
-| `/sync-upstream` | Pull latest from upstream, resolve registry.ts conflict, push to fork |
-| `/explore <description>` | Suspend Radiant constraints for freeform UI exploration |
-
-
-### Typical Session Flow
-
-```
-/start Add filter panel to dashboard
-  ... write code ...
-/status                    # check progress
-/ship                      # push to staging for preview
-  ... iterate ...
-/ship "fix: alignment"     # ship again with custom message
-/release                   # prep changelog + production merge instructions
-```
-
-### Changelog
-
-Maintained at `docs/CHANGELOG.md` using [Keep a Changelog](https://keepachangelog.com/) format. Updated via `/release`.
-
-## Active Task Tracker
-
-See `TODO.md` for in-progress items, known issues, and planned improvements. Check before starting work to avoid conflicts.
