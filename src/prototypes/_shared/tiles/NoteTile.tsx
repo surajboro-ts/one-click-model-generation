@@ -1,12 +1,16 @@
 import React, { forwardRef } from 'react';
 import styles from './NoteTile.module.css';
-import type { NoteContent, NoteBlock, InlineNode, TileMode } from './noteContent';
+import type { NoteContent, NoteBlock, InlineNode } from './noteContent';
+import type { TileMode } from './AnswerTile';
 
 // ─── Props ─────────────────────────────────────────────────────────────────
 
-export interface NoteTileProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface NoteTileProps {
   /** Rich text content — see NoteContent schema in noteContent.ts */
   content: NoteContent;
+  className?: string;
+  style?: React.CSSProperties;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   mode?: TileMode;
   selected?: boolean;
   onSelect?: () => void;

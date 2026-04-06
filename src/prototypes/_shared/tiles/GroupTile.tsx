@@ -117,7 +117,7 @@ function compact(tiles: GroupInnerTile[]): GroupInnerTile[] {
 
 function applyInnerDisplacement(
   base: GroupInnerTile[], active: GroupInnerTile,
-  cu: number, rh: number, bodyEl: HTMLElement
+  _cu: number, rh: number, bodyEl: HTMLElement
 ) {
   const resolved = compact(base.map(t => t.i === active.i ? active : t));
   for (const orig of base) {

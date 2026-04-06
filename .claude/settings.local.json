@@ -49,7 +49,46 @@
       "mcp__plugin_figma_figma__generate_diagram",
       "Bash(chmod:*)",
       "Bash(bash /Users/mohammed.faris/code/radiantplay/.claude/hooks/liveboard-gate.sh)",
-      "Bash(echo \"Exit code: $?\")"
+      "Bash(echo \"Exit code: $?\")",
+      "Bash(gh api:*)",
+      "Bash(curl -s \"https://docs.anthropic.com/en/docs/claude-code/overview\")",
+      "Bash(claude --version)",
+      "Bash(head -5 /Users/mohammed.faris/code/radiantplay/.cursor/rules/*.md)",
+      "WebSearch",
+      "Bash(head:*)",
+      "Bash(grep \"\\\\.md$\")",
+      "WebFetch(domain:www.figma.com)",
+      "WebFetch(domain:arize.com)",
+      "WebFetch(domain:learn.thedesignsystem.guide)",
+      "WebFetch(domain:hackernoon.com)",
+      "WebFetch(domain:martinfowler.com)",
+      "WebFetch(domain:addyosmani.com)",
+      "WebFetch(domain:alexop.dev)",
+      "Bash(claude settings:*)",
+      "Bash(claude hooks:*)",
+      "Bash(cat /Users/mohammed.faris/code/radiantplay/.claude/plans/*.md)",
+      "Bash(wc:*)",
+      "Bash(bash .claude/hooks/post-compact-inject.sh)",
+      "Bash(find /Users/mohammed.faris/code/radiantplay/docs/collaboration -type f -name *.md)",
+      "Bash(find /Users/mohammed.faris/code/radiantplay/docs/archive -type f -name *.md)",
+      "mcp__plugin_figma_figma__get_figjam",
+      "mcp__plugin_figma_figma__use_figma",
+      "Bash(bash scripts/generate-changelog.sh 2026-04-01)",
+      "Bash(lsof -ti:5173)",
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "Bash(bash /Users/mohammed.faris/code/radiantplay/scripts/install-maintainer-hooks.sh)",
+      "Bash(npm audit:*)",
+      "Bash(cat \"src/prototypes/Cmdk/Cmd\\(figmamake\\)/package.json\")",
+      "Bash(git add:*)",
+      "Bash(du -sh /Users/mohammed.faris/code/radiantplay/src/prototypes/_shared/*)",
+      "Bash(ls -lh /Users/mohammed.faris/code/radiantplay/dist/*.js)",
+      "Bash(find /Users/mohammed.faris/code/radiantplay/public /Users/mohammed.faris/code/radiantplay/src -name *.svg -o -name *.png -o -name *.jpg -o -name *.webp)",
+      "Bash(xargs ls:*)",
+      "Bash(du -sh /Users/mohammed.faris/code/radiantplay/src/prototypes/*/)",
+      "Bash(ls /Users/mohammed.faris/code/radiantplay/*.md)",
+      "Bash(sed -i '' \"s/onAction={\\(\\) => console\\\\.log\\(''Undo clicked''\\)}/onAction={\\(\\) => {}}/g\" /Users/mohammed.faris/code/radiantplay/src/pages/ComponentDocPage.tsx)",
+      "Bash(sed -i '' \"s/onSubmit={\\(v\\) => console\\\\.log\\(''submitted'', v\\)}/onSubmit={\\(\\) => {}}/g\" /Users/mohammed.faris/code/radiantplay/src/pages/ComponentDocPage.tsx)"
     ]
   },
   "hooks": {
@@ -59,6 +98,15 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/liveboard-gate.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/post-compact-inject.sh",
             "timeout": 5
           }
         ]

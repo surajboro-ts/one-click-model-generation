@@ -72,7 +72,7 @@ function compactLayout(layout: TileItem[]): TileItem[] {
 
 // ─── Live DOM helpers — no React re-renders during drag ───────────────────────
 
-function applyLiveDisplacement(base: TileItem[], active: TileItem, cu: number) {
+function applyLiveDisplacement(base: TileItem[], active: TileItem, _cu: number) {
   const resolved = compactLayout(base.map(l => l.i === active.i ? active : l));
   for (const orig of base) {
     if (orig.i === active.i) continue;

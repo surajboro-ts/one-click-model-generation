@@ -1212,7 +1212,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                 type="info" 
                 message="Item deleted" 
                 actionText="Undo"
-                onAction={() => console.log('Undo clicked')}
+                onAction={() => {}}
                 duration={0} 
               />
             </div>
@@ -2509,7 +2509,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                 { id: 'role', type: 'select', label: 'Role', options: [{ id: 'admin', label: 'Admin' }, { id: 'editor', label: 'Editor' }, { id: 'viewer', label: 'Viewer' }] },
                 { id: 'notify', type: 'toggle', label: 'Email notifications' },
               ]}
-              onSubmit={(v) => console.log('submitted', v)}
+              onSubmit={() => {}}
               submitLabel="Save settings"
             />
           </div>
@@ -2525,7 +2525,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                 { id: 'schedule', type: 'radio', label: 'Schedule', options: [{ id: 'daily', label: 'Daily' }, { id: 'weekly', label: 'Weekly' }, { id: 'monthly', label: 'Monthly' }] },
               ]}
               initialValue={{ schedule: 'weekly' }}
-              onSubmit={(v) => console.log('submitted', v)}
+              onSubmit={() => {}}
               submitLabel="Create report"
             />
           </div>
