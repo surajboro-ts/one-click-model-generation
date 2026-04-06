@@ -41,3 +41,6 @@ articles/
 
 # Local task tracking (not for repo)
 BACKLOG.md
+
+# Cmdk prototype — large Figma Make export (local only)
+src/prototypes/Cmdk/
