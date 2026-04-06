@@ -27,6 +27,24 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.4.1c',
+    date: '2026-04-06',
+    type: 'minor',
+    changes: [
+      { type: 'modified', component: 'Homepage', description: 'Version badge inline with title, space blue title colour, subtle card icons, footer easter egg with 12 new messages' },
+      { type: 'modified', component: 'Platform Version', description: 'platformVersion.ts as single source of truth — version badge on homepage, playground, and DS sidebar' },
+      { type: 'added', component: 'Component Source Badge', description: 'Figma / Scaligent / Custom badge shown on every component doc page' },
+      { type: 'added', component: 'Release Tooling', description: 'scripts/release.sh, pre-push hook, install-maintainer-hooks.sh for automated release flow' },
+      { type: 'modified', component: 'ECharts Bundle', description: 'Lazy-loaded via React.lazy — 1.18 MB chunk now deferred until a chart prototype opens' },
+      { type: 'removed', component: 'Cmdk Prototype', description: 'Gitignored (11 MB Figma Make export) — reduces designer fork size significantly' },
+      { type: 'removed', component: 'Orphaned Prototypes', description: 'Deleted Homepage_example, ImpersonationV2, Liveboard, ModalPatterns (unregistered dead code)' },
+      { type: 'modified', component: 'TypeScript', description: 'All 6 errors resolved — icon name, TileMode import, NoteTileProps, unused variables' },
+      { type: 'modified', component: 'Security', description: 'Picomatch vulnerability patched, Figma Make package.json removed (0 vulnerabilities)' },
+      { type: 'modified', component: 'Documentation', description: 'README, SETUP-GUIDE, Onepager, prototyping-guide updated with current prototype list and counts' },
+      { type: 'modified', component: 'DS Pages', description: 'All design system pages centred with maxWidth: 1200px in RadiantLayout' },
+    ],
+  },
+  {
     version: '26.4.1b',
     date: '2026-04-03',
     type: 'major',

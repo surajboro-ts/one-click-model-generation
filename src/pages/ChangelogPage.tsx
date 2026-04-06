@@ -14,6 +14,47 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '26.4.1c',
+    date: '2026-04-06',
+    title: 'Platform versioning, bug fixes, performance, cleanup',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        items: [
+          'Platform version system — platformVersion.ts as single source of truth; version badge on homepage, playground, and DS sidebar',
+          'Component source badge (Figma / Scaligent / Custom) on every component doc page',
+          'Release tooling — scripts/release.sh, pre-push hook, and install-maintainer-hooks.sh',
+        ],
+      },
+      {
+        category: 'changed',
+        items: [
+          'Homepage — version badge inline with title, space blue title colour, subtle card icons, footer easter egg',
+          'ECharts lazy-loaded via React.lazy — 1.18 MB chunk deferred until chart prototype opens',
+          'All DS pages centred with maxWidth: 1200px in RadiantLayout',
+          'CalVer versioning applied across versionHistory and ChangelogPage',
+          'Documentation updated — README, SETUP-GUIDE, Onepager, prototyping-guide',
+        ],
+      },
+      {
+        category: 'fixed',
+        items: [
+          '0 TypeScript errors — icon name, TileMode import, NoteTileProps, unused variables all resolved',
+          'Avatar contrast — light background tokens swapped for saturated content tokens',
+          'Picomatch vulnerability patched (0 vulnerabilities remaining)',
+        ],
+      },
+      {
+        category: 'removed',
+        items: [
+          'Cmdk prototype gitignored — 11 MB Figma Make export removed from designer forks',
+          'Orphaned prototypes deleted — Homepage_example, ImpersonationV2, Liveboard, ModalPatterns',
+        ],
+      },
+    ],
+  },
+  {
     version: '26.4.1b',
     date: '2026-04-03',
     title: 'Canvas Split, Skills Migration, Convention Recovery',

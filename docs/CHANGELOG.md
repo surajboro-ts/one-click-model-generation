@@ -1,5 +1,17 @@
 # Changelog
 
+## 26.4.1c — 2026-04-06
+
+- docs: update stale references across README, SETUP-GUIDE, Onepager, prototyping-guide
+- fix: remove Cmdk from registry — fixes Vercel build failure
+- fix: resolve all TypeScript errors, remove orphaned prototypes, clean console logs
+- perf: lazy-load ECharts bundle — deferred from startup to first chart render
+- chore: gitignore Cmdk prototype — too large for designer forks (11 MB)
+- chore: remove stale Figma Make package.json, fix picomatch vulnerability
+- feat: homepage visual polish — version badge, icon colours, footer easter egg
+- chore: add Claude Code skills cross-reference to orchestration rules
+
+
 All notable changes to Radiant Play are documented here.
 
 **Versioning:** `YY.M.Ws` — Year.Month.Week + sub-release letter (a, b, c...).
