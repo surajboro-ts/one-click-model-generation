@@ -8,7 +8,6 @@
 import React from 'react';
 
 // Import thumbnail images
-import CmdkThumbnail from './thumbnails/Cmdk.svg';
 import AdminGroupsThumbnail from './thumbnails/AdminGroups.svg';
 import SpotterMemoryThumbnail from './thumbnails/SpotterMemory.svg';
 import SpotterModelThumbnail from './thumbnails/SpotterModel.svg';
@@ -49,7 +48,6 @@ export interface ProjectMeta {
  */
 
 // Import project components (lazy-loaded for code splitting)
-const Cmdk = React.lazy(() => import('./Cmdk'));
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
 const SpotterModelProto = React.lazy(() => import('./SpotterModel'));
@@ -64,18 +62,6 @@ const SalesDashboard = React.lazy(() => import('./SalesDashboard'));
  * All registered projects
  */
 export const projectRegistry: ProjectMeta[] = [
-  {
-    id: 'Cmdk',
-    name: 'Command Palette',
-    description: 'Command-K interface for quick navigation and actions with keyboard shortcuts and context-aware filtering.',
-    author: 'Design Team',
-    lastModified: '2026-02-19',
-    thumbnail: CmdkThumbnail,
-    component: Cmdk,
-    dsComponents: 12,
-    customComponents: 11,
-    section: 'sample',
-  },
   {
     id: 'SpotterMemory',
     name: 'Spotter Memory',
