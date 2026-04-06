@@ -1,6 +1,11 @@
-import React, { forwardRef, useState, useEffect, useRef } from 'react';
+import React, { forwardRef, useState, useEffect, useRef, Suspense } from 'react';
 import styles from './AnswerTile.module.css';
-import { ChartRenderer } from './charts';
+
+// Lazy-load the entire chart bundle — ECharts (~700 kB) only downloads
+// when an AnswerTile actually mounts, not on app startup.
+const ChartRenderer = React.lazy(() =>
+  import('./charts').then(m => ({ default: m.ChartRenderer }))
+);
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
@@ -456,7 +461,9 @@ export const AnswerTile = forwardRef<HTMLDivElement, AnswerTileProps>(
           {/* Chart area */}
           {/* chart area is the drag handle — large, safe to drag from */}
           <div className={isEdit ? `${styles.chartArea} tile-drag-handle` : styles.chartArea}>
-            <ChartRenderer type={chartType} />
+            <Suspense fallback={<div style={{ width: '100%', height: '100%' }} />}>
+              <ChartRenderer type={chartType} />
+            </Suspense>
           </div>
         </div>
 
