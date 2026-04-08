@@ -260,19 +260,20 @@ export const roles = [
 
 ## Registering Prototypes
 
-All prototypes must be registered in `src/prototypes/registry.ts`.
+All prototypes must be registered in `src/prototypes/registry-mine.ts` (designer-owned file).
+
+> **Never** add entries to `registry-core.ts` (upstream-owned) or `registry.ts` (merger file).
 
 ```tsx
-// Import your prototype and thumbnail
+// In registry-mine.ts:
+import React from 'react';
+import { ProjectMeta } from './registry-core';
 import MyPrototypeThumbnail from './thumbnails/MyPrototype.svg';
 const MyPrototype = React.lazy(() => import('./MyPrototype'));
 
-// Add to projectRegistry array
 // section: 'mine'   → "My prototypes" gallery (default for all new work)
-// section: 'sample' → "Sample prototypes" gallery (built-in examples only — do not use for new prototypes)
 // Omitting section defaults to 'mine'
-export const projectRegistry: ProjectMeta[] = [
-  // ... existing prototypes
+export const myRegistry: ProjectMeta[] = [
   {
     id: 'MyPrototype',
     name: 'My Prototype',
@@ -280,6 +281,7 @@ export const projectRegistry: ProjectMeta[] = [
     author: 'Designer Name',
     thumbnail: MyPrototypeThumbnail,
     component: MyPrototype,
+    section: 'mine',
   },
 ];
 ```
@@ -451,7 +453,7 @@ Before submitting a prototype:
 - [ ] Has `index.tsx` with proper exports and JSDoc
 - [ ] Main component has descriptive JSDoc
 - [ ] **Has thumbnail SVG in `thumbnails/` folder**
-- [ ] Registered in `registry.ts` with thumbnail
+- [ ] Registered in `registry-mine.ts` with thumbnail
 - [ ] Uses Radiant components (not custom HTML where components exist)
 - [ ] Uses design tokens (no hard-coded colors/spacing)
 - [ ] Mock data is typed and realistic
