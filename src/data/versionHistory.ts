@@ -42,6 +42,7 @@ export const versionHistory: VersionEntry[] = [
       { type: 'added', group: 'Liveboard system', component: 'Liveboard Requirements Gate', description: '4-question pre-build gate (mode, interactions, tile types, data)' },
       { type: 'added', group: 'Liveboard system', component: 'Shared Tiles', description: '_shared/tiles/ with AnswerTile, ChartRenderer, and 12 chart types' },
       { type: 'added', group: 'Liveboard system', component: 'SalesDashboard', description: 'Liveboard prototype with view/edit modes and SpotterViz panel' },
+      { type: 'added', group: 'Platform tooling', component: 'Deployment Password Gate', description: 'Edge middleware password-gates Vercel deployments — opt-in per designer via SITE_PASSWORD env var in their Vercel dashboard' },
       { type: 'added', group: 'Platform tooling', component: 'Platform Version', description: 'platformVersion.ts as single source of truth — version badge on homepage, playground, and DS sidebar' },
       { type: 'added', group: 'Platform tooling', component: 'Component Source Badge', description: 'Figma / Scaligent / Custom badge on every component doc page' },
       { type: 'added', group: 'Platform tooling', component: 'Release Tooling', description: 'scripts/release.sh, pre-push hook, install-maintainer-hooks.sh' },
