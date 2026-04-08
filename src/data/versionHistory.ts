@@ -28,61 +28,40 @@ export interface VersionEntry {
 export const versionHistory: VersionEntry[] = [
   {
     version: '26.4.1c',
-    date: '2026-04-06',
-    type: 'minor',
-    changes: [
-      { type: 'modified', component: 'Homepage', description: 'Version badge inline with title, space blue title colour, subtle card icons, footer easter egg with 12 new messages' },
-      { type: 'modified', component: 'Platform Version', description: 'platformVersion.ts as single source of truth — version badge on homepage, playground, and DS sidebar' },
-      { type: 'added', component: 'Component Source Badge', description: 'Figma / Scaligent / Custom badge shown on every component doc page' },
-      { type: 'added', component: 'Release Tooling', description: 'scripts/release.sh, pre-push hook, install-maintainer-hooks.sh for automated release flow' },
-      { type: 'modified', component: 'ECharts Bundle', description: 'Lazy-loaded via React.lazy — 1.18 MB chunk now deferred until a chart prototype opens' },
-      { type: 'removed', component: 'Cmdk Prototype', description: 'Gitignored (11 MB Figma Make export) — reduces designer fork size significantly' },
-      { type: 'removed', component: 'Orphaned Prototypes', description: 'Deleted Homepage_example, ImpersonationV2, Liveboard, ModalPatterns (unregistered dead code)' },
-      { type: 'modified', component: 'TypeScript', description: 'All 6 errors resolved — icon name, TileMode import, NoteTileProps, unused variables' },
-      { type: 'modified', component: 'Security', description: 'Picomatch vulnerability patched, Figma Make package.json removed (0 vulnerabilities)' },
-      { type: 'modified', component: 'Documentation', description: 'README, SETUP-GUIDE, Onepager, prototyping-guide updated with current prototype list and counts' },
-      { type: 'modified', component: 'DS Pages', description: 'All design system pages centred with maxWidth: 1200px in RadiantLayout' },
-    ],
-  },
-  {
-    version: '26.4.1b',
-    date: '2026-04-03',
+    date: '2026-04-08',
     type: 'major',
     changes: [
-      { type: 'added', component: 'Canvas 3-Tier Split', description: 'liveboard-canvas.md (568 lines) split into core (242), edit (238), advanced (100)' },
-      { type: 'added', component: 'Requirements Gate', description: '4-question pre-build gate for Liveboard prototypes (mode, interactions, tiles, data)' },
-      { type: 'added', component: 'UserPromptSubmit Hooks', description: 'Liveboard intent detection + post-compact convention recovery (~200 tokens/msg)' },
-      { type: 'added', component: 'Claude Code Skills', description: '6 auto-activating skills: component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns' },
-      { type: 'added', component: 'Shared Tiles', description: '_shared/tiles/ with AnswerTile, ChartRenderer, and 12 chart types' },
-      { type: 'added', component: 'SalesDashboard', description: 'Liveboard prototype with view/edit modes and SpotterViz panel' },
-      { type: 'modified', component: 'CLAUDE.md', description: 'Trimmed 36% (210 → 135 lines) — guidelines moved to on-demand skills' },
-      { type: 'modified', component: 'Always-loaded context', description: 'Reduced from ~424 lines (~3,200 tokens) to ~385 lines (~2,900 tokens)' },
-      { type: 'removed', component: 'liveboard-canvas.md', description: 'Replaced by 3-tier canvas files (core + edit + advanced)' },
-    ],
-  },
-  {
-    version: '26.4.1a',
-    date: '2026-04-01',
-    type: 'minor',
-    changes: [
+      // Fork architecture
+      { type: 'added', component: 'Registry Split', description: 'registry-core.ts (upstream) + registry-mine.ts (designer) + thin merger — eliminates merge conflicts for all designer forks' },
+      { type: 'modified', component: 'Fork Workflow', description: 'sync-upstream, check-upstream, new-prototype, prototype-structure, FORK-WORKFLOW updated for 3-file registry' },
+      // AI orchestrator
+      { type: 'added', component: 'Orchestrator Tier System', description: 'Intent-based classification (Tier 0–3) with concern-matching — 81% context reduction' },
       { type: 'added', component: 'Pre-Implementation Gate', description: '4 checks before code: component exists, CSS anti-patterns, icon name, forbidden words' },
       { type: 'added', component: 'Iteration Loop Detection', description: 'Suggests batching after 3+ sequential single-property changes' },
-      { type: 'added', component: 'MCP Overhead Awareness', description: 'Flags Figma MCP ~4,000 token overhead when idle' },
-      { type: 'modified', component: 'ConfirmDialog', description: 'Removed non-Radiant gradient override from CSS' },
-      { type: 'modified', component: 'Button Examples', description: 'All examples now include iconPosition prop' },
-    ],
-  },
-  {
-    version: '26.3.5a',
-    date: '2026-03-31',
-    type: 'major',
-    changes: [
-      { type: 'added', component: 'Orchestrator Tier System', description: 'Intent-based classification (Tier 0–3) with concern-matching — 81% context reduction' },
-      { type: 'added', component: 'Context Budget Check', description: 'Proactive /compact suggestion when topic switches detected' },
-      { type: 'added', component: 'Session Memory', description: 'Tracks loaded rule files to prevent redundant reads' },
-      { type: 'added', component: 'Public Landing Page', description: 'Route middleware for unauthenticated access' },
-      { type: 'modified', component: 'component-summary.md', description: 'Split as always-loaded quick reference (43 lines) from component-inventory (477)' },
-      { type: 'modified', component: 'Rule Files', description: 'Reorganized: 21 files with description and globs frontmatter' },
+      // Liveboard system
+      { type: 'added', component: 'Canvas 3-Tier Split', description: 'liveboard-canvas.md (568 lines) → core (242), edit (238), advanced (100) with prerequisite chains' },
+      { type: 'added', component: 'Liveboard Requirements Gate', description: '4-question pre-build gate (mode, interactions, tile types, data)' },
+      { type: 'added', component: 'Shared Tiles', description: '_shared/tiles/ with AnswerTile, ChartRenderer, and 12 chart types' },
+      { type: 'added', component: 'SalesDashboard', description: 'Liveboard prototype with view/edit modes and SpotterViz panel' },
+      // Platform and tooling
+      { type: 'added', component: 'Platform Version', description: 'platformVersion.ts as single source of truth — version badge on homepage, playground, and DS sidebar' },
+      { type: 'added', component: 'Component Source Badge', description: 'Figma / Scaligent / Custom badge on every component doc page' },
+      { type: 'added', component: 'Release Tooling', description: 'scripts/release.sh, pre-push hook, install-maintainer-hooks.sh' },
+      { type: 'added', component: 'Claude Code Skills', description: '6 auto-activating skills with globs (component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns)' },
+      // UI and performance
+      { type: 'modified', component: 'Homepage', description: 'Space blue title, subtle card icons, shortened descriptions, footer easter egg' },
+      { type: 'modified', component: 'ECharts Bundle', description: 'Lazy-loaded via React.lazy — 1.18 MB chunk deferred until first chart render' },
+      { type: 'modified', component: 'CLAUDE.md', description: 'Trimmed 36% (210 → 135 lines) — guidelines moved to on-demand skills' },
+      { type: 'modified', component: 'Documentation', description: 'README, SETUP-GUIDE, Onepager, prototyping-guide refreshed with current counts' },
+      // Bug fixes and security
+      { type: 'modified', component: 'TypeScript', description: 'All 6 errors resolved — icon name, TileMode import, NoteTileProps, unused variables' },
+      { type: 'modified', component: 'Avatar', description: 'Light background tokens swapped for saturated content tokens (contrast fix)' },
+      { type: 'modified', component: 'Vite', description: '7.3.2 — high severity vulnerability patched' },
+      { type: 'modified', component: 'ConfirmDialog', description: 'Non-Radiant gradient override removed' },
+      // Cleanup
+      { type: 'removed', component: 'Cmdk Prototype', description: 'Gitignored (11 MB Figma Make export) — reduces designer fork size' },
+      { type: 'removed', component: 'Orphaned Prototypes', description: 'Deleted Homepage_example, ImpersonationV2, Liveboard, ModalPatterns' },
+      { type: 'removed', component: 'liveboard-canvas.md', description: 'Replaced by 3-tier canvas files (core + edit + advanced)' },
     ],
   },
   {

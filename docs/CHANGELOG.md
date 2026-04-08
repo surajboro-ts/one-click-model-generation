@@ -1,17 +1,5 @@
 # Changelog
 
-## 26.4.1c — 2026-04-06
-
-- docs: update stale references across README, SETUP-GUIDE, Onepager, prototyping-guide
-- fix: remove Cmdk from registry — fixes Vercel build failure
-- fix: resolve all TypeScript errors, remove orphaned prototypes, clean console logs
-- perf: lazy-load ECharts bundle — deferred from startup to first chart render
-- chore: gitignore Cmdk prototype — too large for designer forks (11 MB)
-- chore: remove stale Figma Make package.json, fix picomatch vulnerability
-- feat: homepage visual polish — version badge, icon colours, footer easter egg
-- chore: add Claude Code skills cross-reference to orchestration rules
-
-
 All notable changes to Radiant Play are documented here.
 
 **Versioning:** `YY.M.Ws` — Year.Month.Week + sub-release letter (a, b, c...).
@@ -19,65 +7,59 @@ Example: `26.4.1b` = 2026, April, week 1, second release that week.
 
 ---
 
-## [26.4.1b] - 2026-04-03
+## [26.4.1c] - 2026-04-08
 
-### Added
+### Fork architecture
 
-- **Orchestrator Phase 5–6**: Canvas 3-tier split, requirements gate, liveboard hook, skills migration, CLAUDE.md trim, post-compact hook
-- **Liveboard canvas split**: Monolithic `liveboard-canvas.md` (568 lines) → 3 tiers: core (242), edit (238), advanced (100) with prerequisite chains
-- **Liveboard Requirements Gate**: 4-question pre-build gate (mode, interactions, tile types, data) before loading canvas context
-- **UserPromptSubmit hooks**: Liveboard creation intent detection + post-compact convention recovery (5 conventions, ~200 tokens/msg)
-- **Claude Code skills**: 6 auto-activating skills with `globs` frontmatter (component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns)
-- **Shared tiles system**: `_shared/tiles/` with AnswerTile, ChartRenderer, and 12 chart types (bar, column, stacked-column, line, area, donut, KPI, KPI-simple, table, heatmap, treemap, map)
-- **SalesDashboard prototype**: Liveboard prototype with view/edit modes and SpotterViz panel
+- **Registry split**: Monolith `registry.ts` split into `registry-core.ts` (upstream) + `registry-mine.ts` (designer) + thin merger — eliminates merge conflicts for all designer forks
+- **Skills and docs updated**: `sync-upstream`, `check-upstream`, `new-prototype`, `prototype-structure`, `FORK-WORKFLOW` all reference new 3-file registry architecture
+- **Self-documenting migration**: Migration note in `registry-mine.ts` guides any Claude instance through first-time conflict resolution
 
-### Changed
-
-- **CLAUDE.md trimmed 36%** (210 → 135 lines) — detailed guidelines moved to on-demand skills
-- **Always-loaded context**: ~424 lines (~3,200 tokens) → ~385 lines (~2,900 tokens)
-
-### Removed
-
-- `liveboard-canvas.md` (568 lines) — replaced by 3-tier canvas files
-
----
-
-## [26.4.1a] - 2026-04-01
-
-### Added
-
-- **Orchestrator v2**: Pre-implementation gate (4 checks: component exists? CSS anti-patterns? icon name valid? forbidden words?)
-- **Iteration loop detection**: Suggests batching after 3+ sequential single-property changes
-- **MCP overhead awareness**: Flags Figma MCP ~4,000 token overhead when idle
-
-### Fixed
-
-- ConfirmDialog gradient override removed (non-Radiant)
-- 5 orchestrator classification failures fixed
-- All Button examples now include `iconPosition` prop
-
----
-
-## [26.3.5a] - 2026-03-31
-
-### Added
+### AI orchestrator
 
 - **Orchestrator tier system**: Intent-based classification (Tier 0–3) with concern-matching table — 81% context reduction for median tasks
+- **Pre-implementation gate**: 4 checks before code (component exists, CSS anti-patterns, icon name, forbidden words)
+- **Iteration loop detection**: Suggests batching after 3+ sequential single-property changes
+- **MCP overhead awareness**: Flags Figma MCP ~4,000 token overhead when idle
 - **Context budget check**: Proactive `/compact` suggestion on topic switches
 - **Session memory**: Tracks loaded rule files to prevent redundant reads
-- **Orchestration test matrix**: Token consumption analysis across 5 scenarios
-- **Public landing page**: Route middleware for unauthenticated access
 
-### Changed
+### Liveboard system
 
-- `component-summary.md` split as always-loaded quick reference (43 lines) from `component-inventory.md` (477 lines)
-- Rule files reorganized: 21 files with clear `description` and `globs` frontmatter
-- Galaxy remote now supports both HTTPS and SSH
+- **Canvas 3-tier split**: Monolithic `liveboard-canvas.md` (568 lines) → core (242), edit (238), advanced (100) with prerequisite chains
+- **Requirements gate**: 4-question pre-build gate (mode, interactions, tile types, data) before loading canvas context
+- **UserPromptSubmit hooks**: Liveboard intent detection + post-compact convention recovery (~200 tokens/msg)
+- **Shared tiles**: `_shared/tiles/` with AnswerTile, ChartRenderer, and 12 chart types
+- **SalesDashboard prototype**: Liveboard prototype with view/edit modes and SpotterViz panel
 
-### Fixed
+### Platform and tooling
 
-- All TypeScript errors resolved, public pages sanitized
-- Button sizes and GlobalHeader logo spacing corrected
+- **CalVer versioning**: `platformVersion.ts` as single source of truth; version badge on homepage, playground, and DS sidebar
+- **Component source badges**: Figma / Scaligent / Custom badge on every component doc page
+- **Release tooling**: `scripts/release.sh`, pre-push hook, `install-maintainer-hooks.sh`
+- **6 Claude Code skills**: Auto-activating with `globs` frontmatter (component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns)
+- **CLAUDE.md trimmed 36%** (210 → 135 lines) — detailed guidelines moved to on-demand skills
+
+### UI and performance
+
+- **Homepage polish**: Space blue title, subtle card icons, shortened descriptions, footer easter egg
+- **ECharts lazy-loaded**: 1.18 MB chunk deferred from startup to first chart render
+- **All DS pages centred**: maxWidth 1200px in RadiantLayout
+
+### Bug fixes and security
+
+- **0 TypeScript errors**: Icon name, TileMode import, NoteTileProps, unused variables all resolved
+- **Avatar contrast**: Light background tokens swapped for saturated content tokens
+- **Vite 7.3.2**: High severity vulnerability patched
+- **Picomatch**: Vulnerability patched, Figma Make package.json removed
+- **ConfirmDialog**: Non-Radiant gradient override removed
+- **Button examples**: All now include `iconPosition` prop
+
+### Cleanup
+
+- **Cmdk prototype gitignored**: 11 MB Figma Make export removed from designer forks
+- **Orphaned prototypes deleted**: Homepage_example, ImpersonationV2, Liveboard, ModalPatterns
+- **Documentation updated**: README, SETUP-GUIDE, Onepager, prototyping-guide refreshed with current counts
 
 ---
 

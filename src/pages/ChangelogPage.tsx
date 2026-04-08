@@ -15,34 +15,47 @@ interface ChangelogEntry {
 const CHANGELOG: ChangelogEntry[] = [
   {
     version: '26.4.1c',
-    date: '2026-04-06',
-    title: 'Platform versioning, bug fixes, performance, cleanup',
-    type: 'minor',
+    date: '2026-04-08',
+    title: 'Registry Split, Orchestrator v2, Liveboard System, Platform Tooling',
+    type: 'major',
     changes: [
       {
         category: 'added',
         items: [
-          'Platform version system — platformVersion.ts as single source of truth; version badge on homepage, playground, and DS sidebar',
-          'Component source badge (Figma / Scaligent / Custom) on every component doc page',
-          'Release tooling — scripts/release.sh, pre-push hook, and install-maintainer-hooks.sh',
+          'Registry split — registry-core.ts (upstream) + registry-mine.ts (designer) + thin merger eliminates merge conflicts for all designer forks',
+          'Orchestrator tier system — intent-based classification (Tier 0–3) with 81% context reduction for median tasks',
+          'Pre-implementation gate — 4 checks before code (component exists, CSS anti-patterns, icon name, forbidden words)',
+          'Iteration loop detection — suggests batching after 3+ sequential changes',
+          'Liveboard canvas 3-tier split — core (242), edit (238), advanced (100) with prerequisite chains',
+          'Liveboard requirements gate — 4-question pre-build gate (mode, interactions, tile types, data)',
+          'Shared tiles system — _shared/tiles/ with AnswerTile, ChartRenderer, and 12 chart types',
+          'SalesDashboard prototype — Liveboard with view/edit modes and SpotterViz panel',
+          'Platform version system — platformVersion.ts as single source of truth; version badge on 3 surfaces',
+          'Component source badges — Figma / Scaligent / Custom on every component doc page',
+          'Release tooling — scripts/release.sh, pre-push hook, install-maintainer-hooks.sh',
+          '6 Claude Code skills — auto-activating with globs (component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns)',
+          'UserPromptSubmit hooks — Liveboard intent detection + post-compact convention recovery',
         ],
       },
       {
         category: 'changed',
         items: [
-          'Homepage — version badge inline with title, space blue title colour, subtle card icons, footer easter egg',
-          'ECharts lazy-loaded via React.lazy — 1.18 MB chunk deferred until chart prototype opens',
-          'All DS pages centred with maxWidth: 1200px in RadiantLayout',
-          'CalVer versioning applied across versionHistory and ChangelogPage',
-          'Documentation updated — README, SETUP-GUIDE, Onepager, prototyping-guide',
+          'Skills and docs updated for registry split — sync-upstream, check-upstream, new-prototype, prototype-structure, FORK-WORKFLOW',
+          'Homepage — space blue title, subtle card icons, shortened descriptions, footer easter egg',
+          'ECharts lazy-loaded — 1.18 MB chunk deferred from startup to first chart render',
+          'CLAUDE.md trimmed 36% (210 → 135 lines) — guidelines moved to on-demand skills',
+          'All DS pages centred with maxWidth 1200px in RadiantLayout',
+          'Documentation refreshed — README, SETUP-GUIDE, Onepager, prototyping-guide',
         ],
       },
       {
         category: 'fixed',
         items: [
-          '0 TypeScript errors — icon name, TileMode import, NoteTileProps, unused variables all resolved',
+          '0 TypeScript errors — icon name, TileMode import, NoteTileProps, unused variables resolved',
           'Avatar contrast — light background tokens swapped for saturated content tokens',
-          'Picomatch vulnerability patched (0 vulnerabilities remaining)',
+          'Vite 7.3.2 — high severity vulnerability patched',
+          'Picomatch vulnerability patched, Figma Make package.json removed',
+          'ConfirmDialog gradient override removed (non-Radiant)',
         ],
       },
       {
@@ -50,93 +63,7 @@ const CHANGELOG: ChangelogEntry[] = [
         items: [
           'Cmdk prototype gitignored — 11 MB Figma Make export removed from designer forks',
           'Orphaned prototypes deleted — Homepage_example, ImpersonationV2, Liveboard, ModalPatterns',
-        ],
-      },
-    ],
-  },
-  {
-    version: '26.4.1b',
-    date: '2026-04-03',
-    title: 'Canvas Split, Skills Migration, Convention Recovery',
-    type: 'minor',
-    changes: [
-      {
-        category: 'added',
-        items: [
-          'Liveboard canvas split into 3 tiers: core (242), edit (238), advanced (100) with prerequisite chains',
-          'Liveboard Requirements Gate — 4-question pre-build gate (mode, interactions, tile types, data)',
-          'UserPromptSubmit hooks: Liveboard intent detection + post-compact convention recovery (~200 tokens/msg)',
-          '6 Claude Code skills with globs-based auto-activation (component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns)',
-          'Shared tiles: _shared/tiles/ with AnswerTile, ChartRenderer, and 12 chart types',
-          'SalesDashboard prototype with view/edit modes and SpotterViz',
-        ],
-      },
-      {
-        category: 'changed',
-        items: [
-          'CLAUDE.md trimmed 36% (210 → 135 lines) — detailed guidelines moved to on-demand skills',
-          'Always-loaded context: ~424 lines → ~385 lines (~2,900 tokens)',
-        ],
-      },
-      {
-        category: 'removed',
-        items: [
           'liveboard-canvas.md (568 lines) — replaced by 3-tier canvas files',
-        ],
-      },
-    ],
-  },
-  {
-    version: '26.4.1a',
-    date: '2026-04-01',
-    title: 'Orchestrator v2 — Pre-Implementation Gate',
-    type: 'minor',
-    changes: [
-      {
-        category: 'added',
-        items: [
-          'Pre-implementation gate: 4 checks before code (component exists, CSS anti-patterns, icon name, forbidden words)',
-          'Iteration loop detection — suggests batching after 3+ sequential changes',
-          'MCP overhead awareness — flags Figma MCP ~4,000 token overhead when idle',
-        ],
-      },
-      {
-        category: 'fixed',
-        items: [
-          'ConfirmDialog gradient override removed (non-Radiant)',
-          '5 orchestrator classification failures fixed',
-          'All Button examples now include iconPosition prop',
-        ],
-      },
-    ],
-  },
-  {
-    version: '26.3.5a',
-    date: '2026-03-31',
-    title: 'Orchestrator — Tier-Based Classification',
-    type: 'minor',
-    changes: [
-      {
-        category: 'added',
-        items: [
-          'Intent-based tier classification (Tier 0–3) with concern-matching table — 81% context reduction',
-          'Context budget check — proactive /compact suggestion on topic switches',
-          'Session memory — tracks loaded rule files to prevent redundant reads',
-          'Public landing page with route middleware',
-        ],
-      },
-      {
-        category: 'changed',
-        items: [
-          'component-summary.md split as always-loaded quick reference (43 lines vs 477)',
-          'Rule files reorganized: 21 files with description and globs frontmatter',
-        ],
-      },
-      {
-        category: 'fixed',
-        items: [
-          'All TypeScript errors resolved, public pages sanitized',
-          'Button sizes and GlobalHeader logo spacing corrected',
         ],
       },
     ],
