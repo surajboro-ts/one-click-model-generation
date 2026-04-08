@@ -1,9 +1,10 @@
 /**
  * Version History Data
- * 
+ *
  * Tracks version history for Radiant design system updates.
  * Includes component additions, modifications, Figma syncs, and removals.
  */
+import { PLATFORM_VERSION } from './platformVersion';
 
 export type ChangeType = 'added' | 'modified' | 'removed' | 'synced';
 export type VersionType = 'major' | 'minor' | 'patch' | 'figma-sync';
@@ -26,7 +27,104 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
-    version: '2.0.0',
+    version: '26.4.1c',
+    date: '2026-04-06',
+    type: 'minor',
+    changes: [
+      { type: 'modified', component: 'Homepage', description: 'Version badge inline with title, space blue title colour, subtle card icons, footer easter egg with 12 new messages' },
+      { type: 'modified', component: 'Platform Version', description: 'platformVersion.ts as single source of truth — version badge on homepage, playground, and DS sidebar' },
+      { type: 'added', component: 'Component Source Badge', description: 'Figma / Scaligent / Custom badge shown on every component doc page' },
+      { type: 'added', component: 'Release Tooling', description: 'scripts/release.sh, pre-push hook, install-maintainer-hooks.sh for automated release flow' },
+      { type: 'modified', component: 'ECharts Bundle', description: 'Lazy-loaded via React.lazy — 1.18 MB chunk now deferred until a chart prototype opens' },
+      { type: 'removed', component: 'Cmdk Prototype', description: 'Gitignored (11 MB Figma Make export) — reduces designer fork size significantly' },
+      { type: 'removed', component: 'Orphaned Prototypes', description: 'Deleted Homepage_example, ImpersonationV2, Liveboard, ModalPatterns (unregistered dead code)' },
+      { type: 'modified', component: 'TypeScript', description: 'All 6 errors resolved — icon name, TileMode import, NoteTileProps, unused variables' },
+      { type: 'modified', component: 'Security', description: 'Picomatch vulnerability patched, Figma Make package.json removed (0 vulnerabilities)' },
+      { type: 'modified', component: 'Documentation', description: 'README, SETUP-GUIDE, Onepager, prototyping-guide updated with current prototype list and counts' },
+      { type: 'modified', component: 'DS Pages', description: 'All design system pages centred with maxWidth: 1200px in RadiantLayout' },
+    ],
+  },
+  {
+    version: '26.4.1b',
+    date: '2026-04-03',
+    type: 'major',
+    changes: [
+      { type: 'added', component: 'Canvas 3-Tier Split', description: 'liveboard-canvas.md (568 lines) split into core (242), edit (238), advanced (100)' },
+      { type: 'added', component: 'Requirements Gate', description: '4-question pre-build gate for Liveboard prototypes (mode, interactions, tiles, data)' },
+      { type: 'added', component: 'UserPromptSubmit Hooks', description: 'Liveboard intent detection + post-compact convention recovery (~200 tokens/msg)' },
+      { type: 'added', component: 'Claude Code Skills', description: '6 auto-activating skills: component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns' },
+      { type: 'added', component: 'Shared Tiles', description: '_shared/tiles/ with AnswerTile, ChartRenderer, and 12 chart types' },
+      { type: 'added', component: 'SalesDashboard', description: 'Liveboard prototype with view/edit modes and SpotterViz panel' },
+      { type: 'modified', component: 'CLAUDE.md', description: 'Trimmed 36% (210 → 135 lines) — guidelines moved to on-demand skills' },
+      { type: 'modified', component: 'Always-loaded context', description: 'Reduced from ~424 lines (~3,200 tokens) to ~385 lines (~2,900 tokens)' },
+      { type: 'removed', component: 'liveboard-canvas.md', description: 'Replaced by 3-tier canvas files (core + edit + advanced)' },
+    ],
+  },
+  {
+    version: '26.4.1a',
+    date: '2026-04-01',
+    type: 'minor',
+    changes: [
+      { type: 'added', component: 'Pre-Implementation Gate', description: '4 checks before code: component exists, CSS anti-patterns, icon name, forbidden words' },
+      { type: 'added', component: 'Iteration Loop Detection', description: 'Suggests batching after 3+ sequential single-property changes' },
+      { type: 'added', component: 'MCP Overhead Awareness', description: 'Flags Figma MCP ~4,000 token overhead when idle' },
+      { type: 'modified', component: 'ConfirmDialog', description: 'Removed non-Radiant gradient override from CSS' },
+      { type: 'modified', component: 'Button Examples', description: 'All examples now include iconPosition prop' },
+    ],
+  },
+  {
+    version: '26.3.5a',
+    date: '2026-03-31',
+    type: 'major',
+    changes: [
+      { type: 'added', component: 'Orchestrator Tier System', description: 'Intent-based classification (Tier 0–3) with concern-matching — 81% context reduction' },
+      { type: 'added', component: 'Context Budget Check', description: 'Proactive /compact suggestion when topic switches detected' },
+      { type: 'added', component: 'Session Memory', description: 'Tracks loaded rule files to prevent redundant reads' },
+      { type: 'added', component: 'Public Landing Page', description: 'Route middleware for unauthenticated access' },
+      { type: 'modified', component: 'component-summary.md', description: 'Split as always-loaded quick reference (43 lines) from component-inventory (477)' },
+      { type: 'modified', component: 'Rule Files', description: 'Reorganized: 21 files with description and globs frontmatter' },
+    ],
+  },
+  {
+    version: '26.3.3a',
+    date: '2026-03-17',
+    type: 'major',
+    changes: [
+      { type: 'added', component: 'Liveboard Template', description: 'Starter template with AnswerTile, KPI, bar chart, SpotterViz' },
+      { type: 'added', component: 'AdminLang', description: 'Admin CSV-based translation settings prototype' },
+      { type: 'added', component: 'MiniSpotters', description: 'Domain-specific Spotter instances with bounded context' },
+      { type: 'added', component: 'Liveboard Scaffolding', description: 'liveboard-ia.md and liveboard-scaffolding.md rules' },
+      { type: 'added', component: 'Workflow Skills', description: '/start, /ship, /release, /status, /sync-upstream commands' },
+      { type: 'modified', component: 'Project Name', description: 'Renamed figmaradiant → radiantplay across all config and UI' },
+      { type: 'modified', component: 'Playground Gallery', description: 'Redesigned with component counts and metadata cards' },
+      { type: 'removed', component: 'Liveboard Prototype', description: 'Removed from gallery (replaced by template system)' },
+      { type: 'removed', component: 'Admin Impersonation', description: 'Removed from registry' },
+    ],
+  },
+  {
+    version: '26.2.5a',
+    date: '2026-03-05',
+    type: 'minor',
+    changes: [
+      { type: 'added', component: 'UX Writing Guidelines', description: 'Spotter Writer rules integrated into Cursor agent (PR #1 by Yash Chauhan)' },
+      { type: 'added', component: 'How It Works Page', description: 'Converted to slide-based format with tab navigation' },
+      { type: 'added', component: 'Cursor Model Guide', description: 'Model selection guidance for designers' },
+      { type: 'modified', component: 'Homepage', description: 'Redesigned with getting started guide' },
+    ],
+  },
+  {
+    version: '26.2.4a',
+    date: '2026-03-02',
+    type: 'minor',
+    changes: [
+      { type: 'added', component: '35 New Components', description: 'Horizontal, Vertical, View, Grid, SplitPane, NoData, ExplainerCard, Image, Illustration, Legend, SafeHTML, and 24 more' },
+      { type: 'modified', component: 'Component Count', description: 'Updated from 38 → 73 in registry and all UI displays' },
+      { type: 'modified', component: 'component-inventory.md', description: '6 new decision-tree sections, 4 new combination patterns' },
+      { type: 'modified', component: 'widget-patterns.md', description: 'ActionMenu, DragDrop, Tree, and Tour patterns appended' },
+    ],
+  },
+  {
+    version: '26.2.2a',
     date: '2026-02-18',
     type: 'major',
     changes: [
@@ -42,7 +140,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.6.1',
+    version: '26.2.1b',
     date: '2026-02-03',
     type: 'patch',
     changes: [
@@ -52,7 +150,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.6.0',
+    version: '26.2.1a',
     date: '2026-02-03',
     type: 'minor',
     changes: [
@@ -68,7 +166,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.5.0',
+    version: '26.1.4c',
     date: '2026-01-30',
     type: 'minor',
     changes: [
@@ -84,7 +182,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.4.0',
+    version: '26.1.4b',
     date: '2026-01-30',
     type: 'minor',
     changes: [
@@ -109,7 +207,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.3.0',
+    version: '26.1.4a',
     date: '2026-01-30',
     type: 'minor',
     changes: [
@@ -119,7 +217,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.2.1',
+    version: '26.1.3c',
     date: '2026-01-28',
     type: 'figma-sync',
     changes: [
@@ -128,7 +226,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.2.0',
+    version: '26.1.3b',
     date: '2026-01-25',
     type: 'minor',
     changes: [
@@ -138,7 +236,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.1.0',
+    version: '26.1.3a',
     date: '2026-01-20',
     type: 'minor',
     changes: [
@@ -148,7 +246,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.0.1',
+    version: '26.1.2b',
     date: '2026-01-15',
     type: 'patch',
     changes: [
@@ -157,7 +255,7 @@ export const versionHistory: VersionEntry[] = [
     ],
   },
   {
-    version: '1.0.0',
+    version: '26.1.2a',
     date: '2026-01-10',
     type: 'major',
     changes: [
@@ -176,7 +274,7 @@ export const versionHistory: VersionEntry[] = [
  * Get the current version (latest entry)
  */
 export const getCurrentVersion = (): string => {
-  return versionHistory[0]?.version || '1.0.0';
+  return PLATFORM_VERSION;
 };
 
 /**
@@ -210,15 +308,15 @@ export const getChangeTypeIcon = (type: ChangeType): string => {
 export const getChangeTypeColor = (type: ChangeType): string => {
   switch (type) {
     case 'added':
-      return '#06BF7F'; // green
+      return 'var(--rd-sys-color-content-success, #06BF7F)';
     case 'modified':
-      return '#2770EF'; // blue
+      return 'var(--rd-sys-color-content-brand, #2770EF)';
     case 'removed':
-      return '#E22B3D'; // red
+      return 'var(--rd-sys-color-content-failure, #E22B3D)';
     case 'synced':
-      return '#8B5CF6'; // purple
+      return 'var(--rd-ref-color-purple-60, #8C62F5)';
     default:
-      return '#777E8B'; // gray
+      return 'var(--rd-sys-color-content-secondary, #777E8B)';
   }
 };
 

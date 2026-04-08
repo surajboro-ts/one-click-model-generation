@@ -1,97 +1,302 @@
 # Changelog
 
-All notable changes to the Radiant Play will be documented in this file.
+## 26.4.1c — 2026-04-06
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+- docs: update stale references across README, SETUP-GUIDE, Onepager, prototyping-guide
+- fix: remove Cmdk from registry — fixes Vercel build failure
+- fix: resolve all TypeScript errors, remove orphaned prototypes, clean console logs
+- perf: lazy-load ECharts bundle — deferred from startup to first chart render
+- chore: gitignore Cmdk prototype — too large for designer forks (11 MB)
+- chore: remove stale Figma Make package.json, fix picomatch vulnerability
+- feat: homepage visual polish — version badge, icon colours, footer easter egg
+- chore: add Claude Code skills cross-reference to orchestration rules
 
-## [1.6.0] - 2026-02-03
 
-### Added
+All notable changes to Radiant Play are documented here.
 
-- **Surfaces Showcase** (`/radiant/surfaces`): New dedicated section for Modal patterns with interactive examples
-  - Displays all 4 modal sizes (M1: 394px, M2: 788px, M3: 1182px, M4: Full Screen)
-  - Shows all 4 modal types (Simple, Wizard, Sub-navigation, Splash Screen)
-  - Includes usage code examples with copy functionality
-  - Spacing reference and footer button alignment documentation
-- **Modal Sub-components**: Reusable modal building blocks
-  - `ModalFooter`: Footer with tertiary (left), secondary and primary (right) action slots
-  - `ModalHeader`: Header with title, eyebrow, and close button
-  - `ModalWizardProgress`: Progress bar for wizard modals (2-4 steps)
-  - `ModalNavPanel` & `ModalNavItem`: Left navigation panel for sub-navigation modals
-  - `ModalSplashContent`: Content component for splash screen modals
-
-### Changed
-
-- **Modal Spacing**: Updated to match exact Figma specifications
-  - Header padding: 20px vertical, 24px horizontal
-  - Content padding: 24px
-  - Footer padding: 20px vertical, 24px horizontal
-- **Modal Footer Alignment**: Fixed CTA buttons to be right-aligned
-  - Primary actions now use `margin-left: auto` for proper right alignment
-  - Tertiary actions remain on the left
-  - Footer layout follows Figma spec: `[Tertiary] ... [Secondary] [Primary]`
-
-### Removed
-
-- **ModalPatterns from Playground**: Removed from prototype gallery (now accessible via Surfaces showcase)
-
-### Migration Notes
-
-- Modal patterns are now part of the Radiant design system (Surfaces section) rather than playground prototypes
-- Access modals at `/radiant/surfaces` instead of `/playground/ModalPatterns`
-- Modal sub-components are exported from `@/components/Modal` for custom compositions
+**Versioning:** `YY.M.Ws` — Year.Month.Week + sub-release letter (a, b, c...).
+Example: `26.4.1b` = 2026, April, week 1, second release that week.
 
 ---
 
-## [1.1.0] - 2026-01-30
+## [26.4.1b] - 2026-04-03
 
 ### Added
 
-- **New Home Page**: Simple split landing page with two large cards for navigating to Radiant (design system) and Playground (projects)
-- **Playground Gallery** (`/playground`): Grid view of all registered projects with project cards showing name, description, and author
-- **Full-Page Project View** (`/playground/:projectName`): Distraction-free environment for individual projects with:
-  - Floating back button (top-left)
-  - Project name badge (top-right)
-  - Escape key support to return to gallery
-  - Lazy loading with Suspense
-- **Project Registry** (`src/prototypes/registry.ts`): Central registry for discovering and managing playground projects with metadata support
+- **Orchestrator Phase 5–6**: Canvas 3-tier split, requirements gate, liveboard hook, skills migration, CLAUDE.md trim, post-compact hook
+- **Liveboard canvas split**: Monolithic `liveboard-canvas.md` (568 lines) → 3 tiers: core (242), edit (238), advanced (100) with prerequisite chains
+- **Liveboard Requirements Gate**: 4-question pre-build gate (mode, interactions, tile types, data) before loading canvas context
+- **UserPromptSubmit hooks**: Liveboard creation intent detection + post-compact convention recovery (5 conventions, ~200 tokens/msg)
+- **Claude Code skills**: 6 auto-activating skills with `globs` frontmatter (component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns)
+- **Shared tiles system**: `_shared/tiles/` with AnswerTile, ChartRenderer, and 12 chart types (bar, column, stacked-column, line, area, donut, KPI, KPI-simple, table, heatmap, treemap, map)
+- **SalesDashboard prototype**: Liveboard prototype with view/edit modes and SpotterViz panel
 
 ### Changed
 
-- **URL Structure**: Reorganized routes under `/radiant/*` for design system content:
-  - `/radiant` - Component overview
-  - `/radiant/components/*` - Component documentation pages
-  - `/radiant/architecture` - Token architecture
-  - `/radiant/icons` - Icon gallery
-  - `/radiant/examples/*` - Example prototypes
-- **Renamed `HomePage.tsx` to `RadiantHomePage.tsx`**: The original component overview page is now dedicated to the Radiant section
-- **Updated App.tsx routing**: Complete restructure with new route definitions and legacy redirects
+- **CLAUDE.md trimmed 36%** (210 → 135 lines) — detailed guidelines moved to on-demand skills
+- **Always-loaded context**: ~424 lines (~3,200 tokens) → ~385 lines (~2,900 tokens)
 
 ### Removed
 
-- **`PlaygroundShowcase.tsx`**: Replaced by the new Playground system (Gallery + Project views)
-- **`WelcomePage.tsx`**: Replaced by the new simple split HomePage
-
-### Migration Notes
-
-- Old routes like `/components`, `/architecture`, `/icons` now redirect to their `/radiant/*` equivalents
-- The playground is no longer a component demo; it's now a project workspace
-- To add new projects to the Playground:
-  1. Create a folder in `src/prototypes/`
-  2. Export a default component from `index.tsx`
-  3. Register the project in `src/prototypes/registry.ts`
+- `liveboard-canvas.md` (568 lines) — replaced by 3-tier canvas files
 
 ---
 
-## [1.0.0] - Initial Release
+## [26.4.1a] - 2026-04-01
 
 ### Added
 
-- Core component library (17 components)
-- 3-tier design token system (Brand, Alias, Mapped)
-- Icon library (46 icons)
+- **Orchestrator v2**: Pre-implementation gate (4 checks: component exists? CSS anti-patterns? icon name valid? forbidden words?)
+- **Iteration loop detection**: Suggests batching after 3+ sequential single-property changes
+- **MCP overhead awareness**: Flags Figma MCP ~4,000 token overhead when idle
+
+### Fixed
+
+- ConfirmDialog gradient override removed (non-Radiant)
+- 5 orchestrator classification failures fixed
+- All Button examples now include `iconPosition` prop
+
+---
+
+## [26.3.5a] - 2026-03-31
+
+### Added
+
+- **Orchestrator tier system**: Intent-based classification (Tier 0–3) with concern-matching table — 81% context reduction for median tasks
+- **Context budget check**: Proactive `/compact` suggestion on topic switches
+- **Session memory**: Tracks loaded rule files to prevent redundant reads
+- **Orchestration test matrix**: Token consumption analysis across 5 scenarios
+- **Public landing page**: Route middleware for unauthenticated access
+
+### Changed
+
+- `component-summary.md` split as always-loaded quick reference (43 lines) from `component-inventory.md` (477 lines)
+- Rule files reorganized: 21 files with clear `description` and `globs` frontmatter
+- Galaxy remote now supports both HTTPS and SSH
+
+### Fixed
+
+- All TypeScript errors resolved, public pages sanitized
+- Button sizes and GlobalHeader logo spacing corrected
+
+---
+
+## [26.3.3a] - 2026-03-17
+
+### Added
+
+- **Liveboard template**: Starter template with AnswerTile, KPI tile, bar chart, and SpotterViz panel
+- **AdminLang prototype**: Admin CSV-based translation settings with upload and validation
+- **MiniSpotters prototype**: Domain-specific Spotter instances with bounded context and prompt libraries
+- **Liveboard scaffolding rules**: `liveboard-ia.md` and `liveboard-scaffolding.md` for Liveboard generation
+- **Cursor → Claude Code setup guide**: Migration guide linked from gallery
+
+### Changed
+
+- Thumbnail illustrations: removed dark colors, muted palette
+- Legacy slash commands replaced with skill-based commands (`/start`, `/ship`, `/release`, `/status`)
+- Docs updated to Galaxy URLs
+
+### Removed
+
+- **Liveboard prototype**: Removed from gallery (replaced by Liveboard template system)
+- **Admin Impersonation prototype**: Removed from registry
+
+---
+
+## [26.3.2a] - 2026-03-13
+
+### Added
+
+- **Liveboard scaffolding**: Template, IA guidelines, and scaffolding rules (contributed by Devanshi Behera via PR #4)
+
+---
+
+## [26.3.1a] - 2026-03-10
+
+### Changed
+
+- Cursor rules optimized for progressive disclosure and on-demand loading
+
+### Removed
+
+- SpotterViz chart editor prototype reverted (premature)
+
+---
+
+## [26.2.5a] - 2026-03-05
+
+### Added
+
+- **UX writing guidelines**: Spotter Writer rules integrated into Cursor agent (contributed by Yash Chauhan via PR #1)
+- **How it works page**: Converted to slide-based format with tab navigation
+- **Playground gallery redesign**: New card layout with component counts and latest prototype shortcut
+- **Workflow skills**: `/start`, `/ship`, `/release`, `/status` commands
+- **Cursor model guide**: Model selection guidance for designers
+
+### Changed
+
+- **Project renamed**: figmaradiant → radiantplay across all config, docs, and UI
+- Homepage redesigned with getting started guide
+- `_examples` folder archived, stale docs cleaned up
+
+---
+
+## [26.2.4a] - 2026-03-03
+
+### Added
+
+- Getting started guide link on homepage
+
+### Changed
+
+- Homepage redesigned with split layout and polished guide landing
+
+### Fixed
+
+- Guide CTA moved below cards, floating hint removed
+
+---
+
+## [26.2.3a] - 2026-03-02
+
+### Added
+
+- **35 new components** (38 → 73 total): Horizontal, Vertical, View, Grid/RdGrid/RdGridItem, SplitPane, NoData, ExplainerCard, Image, Illustration, Legend, SafeHTML, OverlayLoading, FormControl, SearchBar, ActionMenu, VerticalStepper, List, Slider, ManagedList, Trending, NestedCheckbox, ManageTags, NumericFilterInput, DirectionControl, ColorPicker, InputMentions, FilterModal, Tree, TreeTable, Formatters, Tour, RichTextEditor, DragDrop, FormBuilder, DynamicForm, FacetSortBar
+
+### Fixed
+
+- Rollup path traversal vulnerability patched (GHSA-mw96-cpmx-2vgc)
+
+---
+
+## [26.2.3a] - 2026-02-25
+
+### Added
+
+- **Admin Impersonation prototype**: GlobalHeader icon, session popup, toast notification
+- Fork-based workflow guide for designer onboarding
+
+---
+
+## [26.2.2a] - 2026-02-19
+
+### Added
+
+- **Vercel Analytics and Speed Insights**: Visitor analytics and Core Web Vitals tracking
+- **AppSidebar integration**: Added to Liveboard, AdminGroups, and ChartEditorAI prototypes
+- **localStorage filter**: Exclude internal visits from analytics
+
+### Changed
+
+- Cmdk simplified to icon-only admin trigger
+- Prototype headers replaced with shared GlobalHeader component
+- Component registry overhauled with roadmap page
+
+---
+
+## [26.2.2a] - 2026-02-18
+
+### Added
+
+- **3-layer color token system**: Reference (9 tonal scales × 12 stops) → System (42 semantic tokens × light/dark) → Component (46 per-component tokens × light/dark)
+- CSS custom properties with `rd-sys-color-*` and `rd-comp-color-*` prefixes
+- Dark mode support via `data-theme` attribute
+
+### Changed
+
+- All 36 CSS modules and 48 TypeScript files migrated from legacy `brandColors.*` to new `systemColors` / `referenceColors`
+- Token count: 150+ → 290+
+
+### Removed
+
+- `brand.ts`, `alias.ts`, `mapped.ts`, `semantic.ts` — replaced by 3-layer system
+- All legacy `--color-brand-*` CSS custom properties
+
+### Fixed
+
+- Dark mode override on macOS — default light theme set in `index.html`
+
+---
+
+## [26.2.1a] - 2026-02-16
+
+### Added
+
+- **ChartEditorAI prototype**: Figma-accurate chart editor layout
+- **Homepage redesign**: Getting started guide with unified page title styles
+- **ThoughtSpot product icons**: Added to Cmdk prototype
+- **TODO.md checklist**: Project task tracking
+
+### Changed
+
+- Playground page overhauled with consolidated AI prototyping rules
+- Hard-coded spacing replaced with design tokens across prototypes
+
+### Fixed
+
+- Typography page crash fixed
+- Vercel 404 on direct URL navigation fixed with rewrites
+- HTTP security headers added to `vercel.json`
+
+---
+
+## [26.2.1a] - 2026-02-04
+
+### Added
+
+- **Surfaces Showcase** (`/radiant/surfaces`): Modal patterns with all 4 sizes (M1–M4) and 4 types
+- **Modal sub-components**: ModalFooter, ModalHeader, ModalWizardProgress, ModalNavPanel, ModalNavItem, ModalSplashContent
+- **Admin Groups prototype**: Group creation wizard with bulk org assignment
+- **SpotterMemory prototype**: Memory Sources object table with search and pagination
+
+### Changed
+
+- Modal spacing updated to Figma spec (header 20/24, content 24, footer 20/24)
+- Modal footer buttons right-aligned per spec
+
+### Removed
+
+- ModalPatterns moved from Playground to Surfaces showcase
+
+---
+
+## [26.1.4a] - 2026-01-30
+
+### Added
+
+- **Playground system**: Gallery grid + full-page project viewer with lazy loading
+- **Project Registry** (`src/prototypes/registry.ts`): Central metadata registry
+- **Navigation sidebar**: Added to Liveboard prototype
+- **Version history page**: Changelog component
+
+### Changed
+
+- URL structure reorganized under `/radiant/*`
+- Renamed HomePage.tsx → RadiantHomePage.tsx
+
+### Removed
+
+- PlaygroundShowcase.tsx, WelcomePage.tsx — replaced by new system
+- Command K prototype experiments cleaned up
+
+---
+
+## [26.1.3a] - 2026-01-28
+
+### Added
+
+- WelcomePage, global Inspector, and 7 new components
+- Quick Setup section on HomePage
+
+---
+
+## [26.1.2a] - 2026-01-21
+
+### Added
+
+- **Initial release**: 17 core components, 3-tier design token system, 46 icons
 - Component documentation pages
 - Example prototypes (Filter Dialog, Data Dashboard, Settings Panel)
 - AI-assisted prototyping workflow
-- Collaboration documentation (forking, branching, contributing)
+- Project renamed from figmamcp → figmaradiant

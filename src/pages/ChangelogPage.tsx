@@ -14,8 +14,195 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
-    version: '2.1.0',
-    date: '2026-02-27',
+    version: '26.4.1c',
+    date: '2026-04-06',
+    title: 'Platform versioning, bug fixes, performance, cleanup',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        items: [
+          'Platform version system — platformVersion.ts as single source of truth; version badge on homepage, playground, and DS sidebar',
+          'Component source badge (Figma / Scaligent / Custom) on every component doc page',
+          'Release tooling — scripts/release.sh, pre-push hook, and install-maintainer-hooks.sh',
+        ],
+      },
+      {
+        category: 'changed',
+        items: [
+          'Homepage — version badge inline with title, space blue title colour, subtle card icons, footer easter egg',
+          'ECharts lazy-loaded via React.lazy — 1.18 MB chunk deferred until chart prototype opens',
+          'All DS pages centred with maxWidth: 1200px in RadiantLayout',
+          'CalVer versioning applied across versionHistory and ChangelogPage',
+          'Documentation updated — README, SETUP-GUIDE, Onepager, prototyping-guide',
+        ],
+      },
+      {
+        category: 'fixed',
+        items: [
+          '0 TypeScript errors — icon name, TileMode import, NoteTileProps, unused variables all resolved',
+          'Avatar contrast — light background tokens swapped for saturated content tokens',
+          'Picomatch vulnerability patched (0 vulnerabilities remaining)',
+        ],
+      },
+      {
+        category: 'removed',
+        items: [
+          'Cmdk prototype gitignored — 11 MB Figma Make export removed from designer forks',
+          'Orphaned prototypes deleted — Homepage_example, ImpersonationV2, Liveboard, ModalPatterns',
+        ],
+      },
+    ],
+  },
+  {
+    version: '26.4.1b',
+    date: '2026-04-03',
+    title: 'Canvas Split, Skills Migration, Convention Recovery',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        items: [
+          'Liveboard canvas split into 3 tiers: core (242), edit (238), advanced (100) with prerequisite chains',
+          'Liveboard Requirements Gate — 4-question pre-build gate (mode, interactions, tile types, data)',
+          'UserPromptSubmit hooks: Liveboard intent detection + post-compact convention recovery (~200 tokens/msg)',
+          '6 Claude Code skills with globs-based auto-activation (component-inventory, content-guidelines, token-usage, layout-patterns, widget-patterns, modal-patterns)',
+          'Shared tiles: _shared/tiles/ with AnswerTile, ChartRenderer, and 12 chart types',
+          'SalesDashboard prototype with view/edit modes and SpotterViz',
+        ],
+      },
+      {
+        category: 'changed',
+        items: [
+          'CLAUDE.md trimmed 36% (210 → 135 lines) — detailed guidelines moved to on-demand skills',
+          'Always-loaded context: ~424 lines → ~385 lines (~2,900 tokens)',
+        ],
+      },
+      {
+        category: 'removed',
+        items: [
+          'liveboard-canvas.md (568 lines) — replaced by 3-tier canvas files',
+        ],
+      },
+    ],
+  },
+  {
+    version: '26.4.1a',
+    date: '2026-04-01',
+    title: 'Orchestrator v2 — Pre-Implementation Gate',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        items: [
+          'Pre-implementation gate: 4 checks before code (component exists, CSS anti-patterns, icon name, forbidden words)',
+          'Iteration loop detection — suggests batching after 3+ sequential changes',
+          'MCP overhead awareness — flags Figma MCP ~4,000 token overhead when idle',
+        ],
+      },
+      {
+        category: 'fixed',
+        items: [
+          'ConfirmDialog gradient override removed (non-Radiant)',
+          '5 orchestrator classification failures fixed',
+          'All Button examples now include iconPosition prop',
+        ],
+      },
+    ],
+  },
+  {
+    version: '26.3.5a',
+    date: '2026-03-31',
+    title: 'Orchestrator — Tier-Based Classification',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        items: [
+          'Intent-based tier classification (Tier 0–3) with concern-matching table — 81% context reduction',
+          'Context budget check — proactive /compact suggestion on topic switches',
+          'Session memory — tracks loaded rule files to prevent redundant reads',
+          'Public landing page with route middleware',
+        ],
+      },
+      {
+        category: 'changed',
+        items: [
+          'component-summary.md split as always-loaded quick reference (43 lines vs 477)',
+          'Rule files reorganized: 21 files with description and globs frontmatter',
+        ],
+      },
+      {
+        category: 'fixed',
+        items: [
+          'All TypeScript errors resolved, public pages sanitized',
+          'Button sizes and GlobalHeader logo spacing corrected',
+        ],
+      },
+    ],
+  },
+  {
+    version: '26.3.3a',
+    date: '2026-03-17',
+    title: 'Liveboard Template, New Prototypes, Project Rename',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        items: [
+          'Liveboard template — starter with AnswerTile, KPI, bar chart, SpotterViz',
+          'AdminLang prototype — admin CSV-based translation settings',
+          'MiniSpotters prototype — domain-specific Spotter instances',
+          'Liveboard scaffolding rules and IA guidelines (PR #4)',
+          'Cursor → Claude Code setup guide',
+          'Workflow skills: /start, /ship, /release, /status, /sync-upstream',
+        ],
+      },
+      {
+        category: 'changed',
+        items: [
+          'Project renamed: figmaradiant → radiantplay',
+          'Playground gallery redesigned with component counts',
+          'How it works → slide-based with tabs',
+          'Homepage redesigned with getting started guide',
+        ],
+      },
+      {
+        category: 'removed',
+        items: [
+          'Liveboard, Admin Impersonation, MuseChat prototypes removed',
+          '_examples folder archived',
+        ],
+      },
+    ],
+  },
+  {
+    version: '26.2.5a',
+    date: '2026-03-05',
+    title: 'UX Writing Rules, Gallery Redesign, Workflow Skills',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        items: [
+          'UX writing guidelines integrated into Cursor agent (PR #1 by Yash Chauhan)',
+          'How it works page converted to slide-based format',
+          'Playground gallery redesign with latest prototype shortcut',
+          'Cursor model guide for designers',
+        ],
+      },
+      {
+        category: 'changed',
+        items: [
+          'Project renamed: figmaradiant → radiantplay',
+          'Stale docs archived, _examples removed',
+        ],
+      },
+    ],
+  },
+  {
+    version: '26.2.4a',
+    date: '2026-03-02',
     title: 'Component Expansion — 35 New Components',
     type: 'minor',
     changes: [
@@ -80,7 +267,7 @@ const CHANGELOG: ChangelogEntry[] = [
     ],
   },
   {
-    version: '2.0.0',
+    version: '26.2.2a',
     date: '2026-02-18',
     title: '3-Layer Color Token Migration',
     type: 'major',
@@ -129,9 +316,9 @@ const CHANGELOG: ChangelogEntry[] = [
     ],
   },
   {
-    version: '1.1.0',
-    date: '2026-01-27',
-    title: 'Modal Components & Navigation',
+    version: '26.1.4a',
+    date: '2026-01-30',
+    title: 'Playground System, Modals, Navigation',
     type: 'minor',
     changes: [
       {
@@ -169,8 +356,8 @@ const CHANGELOG: ChangelogEntry[] = [
     ],
   },
   {
-    version: '1.0.0',
-    date: '2026-01-20',
+    version: '26.1.3a',
+    date: '2026-01-21',
     title: 'Initial Release',
     type: 'major',
     changes: [
@@ -198,8 +385,8 @@ const CHANGELOG: ChangelogEntry[] = [
     ],
   },
   {
-    version: '0.1.0',
-    date: '2026-01-15',
+    version: '26.1.2a',
+    date: '2026-01-20',
     title: 'Project Setup',
     type: 'minor',
     changes: [
@@ -217,10 +404,10 @@ const CHANGELOG: ChangelogEntry[] = [
 ];
 
 const categoryColors = {
-  added: { bg: '#E8F5E9', text: '#2E7D32', label: 'Added' },
-  changed: { bg: '#FFF3E0', text: '#E65100', label: 'Changed' },
-  fixed: { bg: '#E3F2FD', text: '#1565C0', label: 'Fixed' },
-  removed: { bg: '#FFEBEE', text: '#C62828', label: 'Removed' },
+  added: { bg: systemColors.light['background-success'], text: systemColors.light['content-success'], label: 'Added' },
+  changed: { bg: systemColors.light['background-warning'], text: systemColors.light['content-warning'], label: 'Changed' },
+  fixed: { bg: systemColors.light['background-information'], text: systemColors.light['content-information'], label: 'Fixed' },
+  removed: { bg: systemColors.light['background-failure'], text: systemColors.light['content-failure'], label: 'Removed' },
 };
 
 const typeColors = {
