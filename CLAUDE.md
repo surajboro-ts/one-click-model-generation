@@ -10,6 +10,7 @@
 - Do NOT add unsolicited UI elements, features, badges, or enhancements not in the request. Build exactly what was asked.
 - The project is branded as **Radiant Play** — not figmaradiant, RadiantPlay, or other legacy names in user-facing content.
 - When asked to save or write recommendations/analysis, prefer simple file writes for document deliverables.
+- **Registry rule:** Never write prototype entries to `registry-core.ts` or `registry.ts`. Designer prototypes always go in `registry-mine.ts`. If asked to add a prototype to the registry, always use `registry-mine.ts`.
 
 ## Git & Deployment
 
