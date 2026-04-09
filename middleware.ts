@@ -1,5 +1,5 @@
 const COOKIE_NAME = 'rp_auth';
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 14; // 14 days
 
 async function hashPassword(password: string): Promise<string> {
   const data = new TextEncoder().encode('rp_salt_' + password);
