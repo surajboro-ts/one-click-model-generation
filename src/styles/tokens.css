@@ -156,27 +156,36 @@
 
 :root,
 [data-theme="light"] {
-  /* ---- New System Tokens: Background ---- */
+  /* ---- System Tokens: Background ---- */
   --rd-sys-color-background-base: #FFFFFF;
   --rd-sys-color-background-raised: #FFFFFF;
   --rd-sys-color-background-sunken: #F6F8FA;
   --rd-sys-color-background-subtle: #EAEDF2;
   --rd-sys-color-background-inset: #C0C6CF;
   --rd-sys-color-background-brand: #2770EF;
-  --rd-sys-color-background-overlay: rgba(29, 35, 47, 0.5);
-  --rd-sys-color-background-base-inverse: #1D232F;
+  --rd-sys-color-background-overlay: #1F2632CC;             /* Phase 2 fix */
+  --rd-sys-color-background-base-inverse: #323946;          /* Phase 2 fix */
   --rd-sys-color-background-raised-inverse: #323946;
   --rd-sys-color-background-success: #E0F8EF;
   --rd-sys-color-background-warning: #FFF8E5;
   --rd-sys-color-background-failure: #FFEBEC;
   --rd-sys-color-background-information: #DEE8FA;
   --rd-sys-color-background-ghost-hover: rgba(192, 198, 207, 0.12);
-  --rd-sys-color-background-ghost-highlight: #DEE8FA;
+  --rd-sys-color-background-ghost-highlight: #71A1F41F;     /* Phase 2 fix */
+  --rd-sys-color-background-on-base: #F6F8FA;
+  --rd-sys-color-background-active: #FFFFFF;
+  --rd-sys-color-background-accent-green: #E0F8EF;
+  --rd-sys-color-background-accent-yellow: #FFF8E5;
+  --rd-sys-color-background-accent-red: #FFEBEC;
+  --rd-sys-color-background-accent-blue: #DEE8FA;
+  --rd-sys-color-background-accent-gray: #F6F8FA;
+  --rd-sys-color-background-accent-purple-subtle: #F0EBFF;
+  --rd-sys-color-background-accent-purple-bold: #8C62F5;
 
-  /* ---- New System Tokens: Content ---- */
+  /* ---- System Tokens: Content ---- */
   --rd-sys-color-content-primary: #1D232F;
   --rd-sys-color-content-secondary: #777E8B;
-  --rd-sys-color-content-tertiary: #A5ACB9;
+  --rd-sys-color-content-tertiary: #C0C6CF;                 /* Phase 2 fix */
   --rd-sys-color-content-alternate: #FFFFFF;
   --rd-sys-color-content-brand: #2770EF;
   --rd-sys-color-content-primary-inverse: #FFFFFF;
@@ -189,10 +198,16 @@
   --rd-sys-color-content-link: #2770EF;
   --rd-sys-color-content-link-inverse: #FFFFFF;
   --rd-sys-color-content-link-inverse-hover: #EAEDF2;
+  --rd-sys-color-content-accent-yellow: #FCC838;
+  --rd-sys-color-content-accent-red: #E22B3D;
+  --rd-sys-color-content-accent-blue: #2770EF;
+  --rd-sys-color-content-accent-gray: #777E8B;
+  --rd-sys-color-content-accent-green: #06BF7F;
+  --rd-sys-color-content-accent-purple: #8C62F5;
 
-  /* ---- New System Tokens: Border ---- */
+  /* ---- System Tokens: Border ---- */
   --rd-sys-color-border-default: #C0C6CF;
-  --rd-sys-color-border-hover: #777E8B;
+  --rd-sys-color-border-hover: #A5ACB9;                     /* Phase 2 fix */
   --rd-sys-color-border-divider: #EAEDF2;
   --rd-sys-color-border-brand: #2770EF;
   --rd-sys-color-border-warning: #FCC838;
@@ -201,8 +216,15 @@
   --rd-sys-color-border-hover-inverse: #777E8B;
   --rd-sys-color-border-divider-inverse: #4A515E;
   --rd-sys-color-border-brand-inverse: #71A1F4;
-  --rd-sys-color-border-focus: #2770EF;
+  --rd-sys-color-border-focus: #71A1F4;                     /* Phase 2 fix */
   --rd-sys-color-border-gap: #FFFFFF;
+  --rd-sys-color-border-subtle-hover: #DBDFE7;
+  --rd-sys-color-border-accent-green: #06BF7F;
+  --rd-sys-color-border-accent-yellow: #FCC838;
+  --rd-sys-color-border-accent-red: #E22B3D;
+  --rd-sys-color-border-accent-blue: #2770EF;
+  --rd-sys-color-border-accent-gray: #777E8B;
+  --rd-sys-color-border-accent-purple: #8C62F5;
 
   /* ---- New Component Tokens: Button ---- */
   --rd-comp-color-button-primary-default: #2770EF;
