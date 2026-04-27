@@ -119,6 +119,35 @@
   --z-index-toast: 70;
   --z-index-max: 9999;
 
+  /* ============================================
+     REFERENCE (PRIMITIVE) COLOR TOKENS
+     Theme-independent. Mapped to system tokens below.
+     Currently exposing only the new primitives required by Phase 6+;
+     existing primitives still live in src/tokens/colors/reference.ts.
+     ============================================ */
+
+  /* Dark Gray scale (neutral, dark-mode foundation) */
+  --rd-ref-color-dark-gray-00: #131416;
+  --rd-ref-color-dark-gray-05: #1A1B1E;
+  --rd-ref-color-dark-gray-10: #212326;
+  --rd-ref-color-dark-gray-15: #282A2E;
+  --rd-ref-color-dark-gray-20: #303136;
+  --rd-ref-color-dark-gray-30: #43474B;
+  --rd-ref-color-dark-gray-40: #585E64;
+  --rd-ref-color-dark-gray-50: #73767D;
+  --rd-ref-color-dark-gray-60: #8C9196;
+  --rd-ref-color-dark-gray-70: #AAADB1;
+  --rd-ref-color-dark-gray-80: #C4C6CA;
+  --rd-ref-color-dark-gray-90: #DFE0E2;
+
+  /* Alpha variants */
+  --rd-ref-color-gray-70a: #1F2632CC;       /* 80% */
+  --rd-ref-color-gray-60a: #20293A99;       /* 60% */
+  --rd-ref-color-gray-40a: #16223A42;       /* 26% */
+  --rd-ref-color-gray-10a: #C0C6CF1F;       /* 12% */
+  --rd-ref-color-blue-10a: #71A1F41F;       /* 12% */
+  --rd-ref-color-dark-gray-30a: #00030ABA;  /* 73% */
+
 }
 
 /* ============================================
