@@ -28,6 +28,25 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.4.4b',
+    date: '2026-04-28',
+    type: 'minor',
+    changes: [
+      { type: 'added', group: 'Phase 1 — Primitive colors', component: 'darkGray Scale', description: '12 stops added to referenceColors — neutral foundation for Phase 6 dark mode remap' },
+      { type: 'added', group: 'Phase 1 — Primitive colors', component: 'Alpha Variants', description: 'gray-70a/60a/40a/10a, blue-10a, dark-gray-30a for overlays and translucent highlights' },
+      { type: 'modified', group: 'Phase 1 — Primitive colors', component: 'Hex Fixes', description: 'purple/70 #6847BA→#6A4ABA, purple/100 #0D0030→#0E0033, teal/70 #359FAA→#369FAA' },
+      { type: 'modified', group: 'Phase 2 — Light semantic colors', component: '6 Value Fixes', description: 'content-tertiary, border-focus, border-hover, background-overlay, background-ghost-highlight, background-base-inverse' },
+      { type: 'added', group: 'Phase 2 — Light semantic colors', component: '22 Accent Tokens', description: '9 background-accent-*, 6 content-accent-*, 7 border-* (subtle-hover + 6 accents)' },
+      { type: 'modified', group: 'Phase 3 — Typography', component: 'Letter Spacing', description: 'tight -0.01em → -0.4px (Figma absolute), new tighter -0.6px' },
+      { type: 'modified', group: 'Phase 3 — Typography', component: 'Heading Weights', description: '6 v2TextStyles entries medium → semibold (headlineLarge, pageTitle, modalTitle, sectionLabel, contentLabel, contentLabelSubhead)' },
+      { type: 'modified', group: 'Phase 3 — Typography', component: 'Body Weight', description: 'textStyles.body.large/normal light (375) → regular (400)' },
+      { type: 'added', group: 'Phase 4 — Elevation', component: 'shadowPrimitives', description: '3 semantic levels (surface/menu/modal) with light + dark variants matching Figma' },
+      { type: 'added', group: 'Phase 4 — Elevation', component: 'CSS Shadow Variables', description: '--shadow-surface, --shadow-menu, --shadow-modal added to :root and [data-theme="dark"]' },
+      { type: 'modified', group: 'Phase 4 — Elevation', component: 'Component Migration', description: 'Modal, Tooltip, Popover, Card, Menu, DatePicker, FilterModal, InputMentions, AppSidebar overlay now use semantic shadow vars' },
+      { type: 'modified', group: 'Phase 5 — Layout', component: 'Sidebar Width', description: 'AppSidebar/AppShell default 261px → 260px (Figma alignment)' },
+    ],
+  },
+  {
     version: '26.4.4a',
     date: '2026-04-27',
     type: 'minor',

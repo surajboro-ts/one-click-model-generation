@@ -7,6 +7,52 @@ Example: `26.4.1b` = 2026, April, week 1, second release that week.
 
 ---
 
+## [26.4.4b] - 2026-04-28
+
+### Token system Figma alignment (Phases 1–5 of 8, dark mode out of scope)
+
+#### Phase 4 — Elevation / Shadows
+
+- New `shadowPrimitives` with 3 semantic levels matched to Figma: `surface` (Card, Tooltip, Nav), `menu` (Dropdown, Popover, Sidebar overlay), `modal` (Modal, Dialog)
+- Light mode uses colored ink tints (`#192331`); dark mode uses pure black for cool dark base
+- New CSS variables `--shadow-surface`, `--shadow-menu`, `--shadow-modal` with light/dark theme variants
+- Component CSS migrated from legacy `--shadow-xs/sm/md/lg/xl/2xl` (kept as aliases) to semantic vars: Modal, Tooltip, Popover, Card, Menu, DatePicker, FilterModal, InputMentions, AppSidebar overlay
+- Modal hardcoded RGBA box-shadow replaced with `var(--shadow-modal)` (token-only compliance)
+
+#### Phase 5 — Layout constants
+
+- `AppSidebar.tsx` and `AppShell.tsx` default sidebar width `261px → 260px` (Figma rounding alignment)
+- Header height stays `60px`, content max width `1280px` — `CLAUDE.md` and `.cursor/rules/layout-patterns.md` already reflect these (no doc updates needed)
+
+### Token system Figma alignment (Phases 1–3 of 8)
+
+Plan: `plans/2026-04-07-token-system-implementation.md`
+
+#### Phase 1 — Primitive colors
+
+- **darkGray scale** (12 stops) added to `referenceColors` — neutral foundation for Phase 6 dark mode remap
+- **Alpha variants** added: `gray-70a/60a/40a/10a`, `blue-10a`, `dark-gray-30a`
+- **Hex fixes** to match Figma: `purple/70` `#6847BA → #6A4ABA`, `purple/100` `#0D0030 → #0E0033`, `teal/70` `#359FAA → #369FAA`
+- New primitives exposed in `tokens.css` as `--rd-ref-color-dark-gray-*` and `--rd-ref-color-*a`
+
+#### Phase 2 — Light mode semantic colors
+
+- **6 value fixes**: `content-tertiary`, `border-focus`, `border-hover`, `background-overlay`, `background-ghost-highlight`, `background-base-inverse`
+- **22 new tokens**: 9 background-accent-*, 6 content-accent-*, 7 border-* (subtle-hover + 6 accents), `background-on-base`, `background-active`
+- Same keys added to dark object as placeholders (Phase 6 will remap properly)
+- Phase 2.5 (deprecate 25 extra RP tokens) deferred — list not enumerated
+
+#### Phase 3 — Typography
+
+- `letterSpacing.tight`: `-0.01em → -0.4px` (Figma absolute)
+- `letterSpacing.tighter`: new (`-0.6px`)
+- 6 v2TextStyles weights `medium → semibold`: headlineLarge, pageTitle, modalTitle, sectionLabel, contentLabel, contentLabelSubhead
+- pageTitle/modalTitle: `letterSpacing.normal → tight`
+- footnote/caption/overline: `letterSpacing → tighter`
+- `textStyles.body.large/normal`: `light (375) → regular (400)`
+
+---
+
 ## [26.4.4a] - 2026-04-27
 
 ### Modal alignment with Figma (absorbed RdModal PR)
