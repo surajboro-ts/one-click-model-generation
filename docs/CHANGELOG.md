@@ -9,6 +9,21 @@ Example: `26.4.1b` = 2026, April, week 1, second release that week.
 
 ## [26.4.4b] - 2026-04-28
 
+### Token system Figma alignment (Phases 1–5 of 8, dark mode out of scope)
+
+#### Phase 4 — Elevation / Shadows
+
+- New `shadowPrimitives` with 3 semantic levels matched to Figma: `surface` (Card, Tooltip, Nav), `menu` (Dropdown, Popover, Sidebar overlay), `modal` (Modal, Dialog)
+- Light mode uses colored ink tints (`#192331`); dark mode uses pure black for cool dark base
+- New CSS variables `--shadow-surface`, `--shadow-menu`, `--shadow-modal` with light/dark theme variants
+- Component CSS migrated from legacy `--shadow-xs/sm/md/lg/xl/2xl` (kept as aliases) to semantic vars: Modal, Tooltip, Popover, Card, Menu, DatePicker, FilterModal, InputMentions, AppSidebar overlay
+- Modal hardcoded RGBA box-shadow replaced with `var(--shadow-modal)` (token-only compliance)
+
+#### Phase 5 — Layout constants
+
+- `AppSidebar.tsx` and `AppShell.tsx` default sidebar width `261px → 260px` (Figma rounding alignment)
+- Header height stays `60px`, content max width `1280px` — `CLAUDE.md` and `.cursor/rules/layout-patterns.md` already reflect these (no doc updates needed)
+
 ### Token system Figma alignment (Phases 1–3 of 8)
 
 Plan: `plans/2026-04-07-token-system-implementation.md`

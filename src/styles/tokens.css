@@ -83,6 +83,12 @@
   --shadow-focus-ring: 0 0 0 3px rgba(39, 112, 239, 0.4);
   --shadow-focus-ring-error: 0 0 0 3px rgba(226, 43, 61, 0.4);
 
+  /* Phase 4: Semantic shadow primitives (light values; dark override below).
+     surface → Card, Tooltip, Nav. menu → Dropdown, Popover. modal → Modal, Dialog. */
+  --shadow-surface: 0 0 4px #1923311a, 0 2px 4px #1923310a;
+  --shadow-menu: 0 0 4px #19233114, 0 12px 24px #1923311f;
+  --shadow-modal: 0 0 4px #1923311a, 0 24px 32px #19233129;
+
   /* Border Widths */
   --border-width-none: 0px;
   --border-width-thin: 1px;
@@ -253,6 +259,11 @@
    ============================================ */
 
 [data-theme="dark"] {
+  /* Phase 4: Semantic shadow primitives — pure-black tints for cool dark base */
+  --shadow-surface: 0 0 4px rgba(0,0,0,0.24), 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-menu: 0 0 6px rgba(0,0,0,0.16), 0 12px 28px rgba(0,0,0,0.32);
+  --shadow-modal: 0 0 4px rgba(0,0,0,0.4), 0 24px 32px rgba(0,0,0,0.6);
+
   /* ---- New System Tokens: Background ---- */
   --rd-sys-color-background-base: #1D232F;
   --rd-sys-color-background-raised: #323946;

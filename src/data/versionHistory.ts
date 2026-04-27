@@ -40,6 +40,10 @@ export const versionHistory: VersionEntry[] = [
       { type: 'modified', group: 'Phase 3 — Typography', component: 'Letter Spacing', description: 'tight -0.01em → -0.4px (Figma absolute), new tighter -0.6px' },
       { type: 'modified', group: 'Phase 3 — Typography', component: 'Heading Weights', description: '6 v2TextStyles entries medium → semibold (headlineLarge, pageTitle, modalTitle, sectionLabel, contentLabel, contentLabelSubhead)' },
       { type: 'modified', group: 'Phase 3 — Typography', component: 'Body Weight', description: 'textStyles.body.large/normal light (375) → regular (400)' },
+      { type: 'added', group: 'Phase 4 — Elevation', component: 'shadowPrimitives', description: '3 semantic levels (surface/menu/modal) with light + dark variants matching Figma' },
+      { type: 'added', group: 'Phase 4 — Elevation', component: 'CSS Shadow Variables', description: '--shadow-surface, --shadow-menu, --shadow-modal added to :root and [data-theme="dark"]' },
+      { type: 'modified', group: 'Phase 4 — Elevation', component: 'Component Migration', description: 'Modal, Tooltip, Popover, Card, Menu, DatePicker, FilterModal, InputMentions, AppSidebar overlay now use semantic shadow vars' },
+      { type: 'modified', group: 'Phase 5 — Layout', component: 'Sidebar Width', description: 'AppSidebar/AppShell default 261px → 260px (Figma alignment)' },
     ],
   },
   {
