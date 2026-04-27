@@ -7,6 +7,37 @@ Example: `26.4.1b` = 2026, April, week 1, second release that week.
 
 ---
 
+## [26.4.4b] - 2026-04-28
+
+### Token system Figma alignment (Phases 1–3 of 8)
+
+Plan: `plans/2026-04-07-token-system-implementation.md`
+
+#### Phase 1 — Primitive colors
+
+- **darkGray scale** (12 stops) added to `referenceColors` — neutral foundation for Phase 6 dark mode remap
+- **Alpha variants** added: `gray-70a/60a/40a/10a`, `blue-10a`, `dark-gray-30a`
+- **Hex fixes** to match Figma: `purple/70` `#6847BA → #6A4ABA`, `purple/100` `#0D0030 → #0E0033`, `teal/70` `#359FAA → #369FAA`
+- New primitives exposed in `tokens.css` as `--rd-ref-color-dark-gray-*` and `--rd-ref-color-*a`
+
+#### Phase 2 — Light mode semantic colors
+
+- **6 value fixes**: `content-tertiary`, `border-focus`, `border-hover`, `background-overlay`, `background-ghost-highlight`, `background-base-inverse`
+- **22 new tokens**: 9 background-accent-*, 6 content-accent-*, 7 border-* (subtle-hover + 6 accents), `background-on-base`, `background-active`
+- Same keys added to dark object as placeholders (Phase 6 will remap properly)
+- Phase 2.5 (deprecate 25 extra RP tokens) deferred — list not enumerated
+
+#### Phase 3 — Typography
+
+- `letterSpacing.tight`: `-0.01em → -0.4px` (Figma absolute)
+- `letterSpacing.tighter`: new (`-0.6px`)
+- 6 v2TextStyles weights `medium → semibold`: headlineLarge, pageTitle, modalTitle, sectionLabel, contentLabel, contentLabelSubhead
+- pageTitle/modalTitle: `letterSpacing.normal → tight`
+- footnote/caption/overline: `letterSpacing → tighter`
+- `textStyles.body.large/normal`: `light (375) → regular (400)`
+
+---
+
 ## [26.4.4a] - 2026-04-27
 
 ### Modal alignment with Figma (absorbed RdModal PR)
