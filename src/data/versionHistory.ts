@@ -28,6 +28,25 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.4.4a',
+    date: '2026-04-27',
+    type: 'minor',
+    changes: [
+      { type: 'modified', group: 'Modal alignment with Figma', component: 'Modal Header', description: 'Padding restored to 20px 24px (variable height) so wizard variants grow correctly for eyebrow + title' },
+      { type: 'modified', group: 'Modal alignment with Figma', component: 'Modal Footer', description: 'Fixed at 72px with 0 24px padding; tertiary-left / primary-right CTA placement bug fixed (was double-wrapped)' },
+      { type: 'modified', group: 'Modal alignment with Figma', component: 'Wizard Stepper', description: 'Rebuilt as discrete 4px segments with 6px gap and 2px radii; also renders for splashscreen type' },
+      { type: 'removed', group: 'Modal alignment with Figma', component: 'Close Icon', description: 'X icon removed from M1/M2/M3 simple modals — only M4 keeps the "Close" text link, per Figma' },
+      { type: 'modified', group: 'Modal alignment with Figma', component: 'Splash Screen', description: 'Header no longer renders (title lives in body via ModalSplashContent)' },
+      { type: 'modified', group: 'Modal alignment with Figma', component: 'Overlay z-index', description: 'Bumped to 1000 so M4 covers the sidebar' },
+      { type: 'added', group: 'Surfaces showcase', component: 'Eyebrow Variant', description: 'New M2 eyebrow-only modal demo (no stepper)' },
+      { type: 'added', group: 'Surfaces showcase', component: 'Splash Screen Multi', description: 'New 3-step onboarding splash flow with stepper' },
+      { type: 'modified', group: 'Surfaces showcase', component: 'Wizard Footer', description: 'Back kept rendered (disabled on step 1) + primary button minWidth: spacing.I*2 for position consistency' },
+      { type: 'modified', group: 'Surfaces showcase', component: 'Button Demo Tokens', description: 'Secondary uses content-primary, primary uses content-alternate' },
+      { type: 'added', group: 'Platform tooling', component: 'LastUpdated', description: 'Shared component reads lastModified from componentRegistry; added to Surfaces, Icons, Architecture, ComponentDocPage' },
+      { type: 'modified', group: 'Platform tooling', component: 'Modal Registry Entry', description: 'Refreshed with current Figma node ID and 2026-04-27 sync date' },
+    ],
+  },
+  {
     version: '26.4.1c',
     date: '2026-04-08',
     type: 'major',

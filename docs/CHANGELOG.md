@@ -7,6 +7,32 @@ Example: `26.4.1b` = 2026, April, week 1, second release that week.
 
 ---
 
+## [26.4.4a] - 2026-04-27
+
+### Modal alignment with Figma (absorbed RdModal PR)
+
+- **Header**: padding restored to `20px 24px` (variable height) so wizard variants grow correctly for eyebrow + title
+- **Footer**: fixed at 72px height with `0 24px` padding; CTA placement bug fixed (tertiary-left / primary-right now sit at correct edges — was double-wrapped)
+- **Wizard stepper**: rebuilt as discrete 4px segments with 6px gap and 2px radii; also renders for `splashscreen` type to enable onboarding flows
+- **Close button**: removed X icon from M1/M2/M3 simple modals — only M4 keeps the "Close" text link, per Figma
+- **Splash screen**: header no longer renders (title lives in body via `ModalSplashContent`)
+- **Overlay z-index**: bumped to 1000 so M4 covers the sidebar
+
+### Surfaces showcase additions
+
+- New M2 eyebrow-only variant (no stepper)
+- New M2 splash-screen-multi (3-step onboarding flow with stepper)
+- Wizard footer keeps Back rendered (disabled on step 1) + primary button uses `minWidth: spacing.I*2` so position stays consistent across steps
+- Spec card updated to Figma values; secondary/primary demo swatches use `content-primary` / `content-alternate` tokens
+
+### LastUpdated component
+
+- New shared component reads `lastModified` from `componentRegistry` (or accepts a manual date)
+- Added at top of Surfaces, Icons, Architecture, and ComponentDocPage
+- Modal registry entry refreshed with current Figma node ID and `2026-04-27` sync date
+
+---
+
 ## [26.4.1c] - 2026-04-08
 
 ### Fork architecture
