@@ -243,6 +243,8 @@ if $have_gh_galaxy && $IS_MAINTAINER; then
   KNOWN="suraj-boro/radiantplay umesh-indoriya/radiantplay vivek-sahi/radiantplay jason-knight/radiantplay irene-ren/radiantplay jayant-mishra/radiantplay simran-pandit/radiantplay aditya-wadher/radiantplay devanshi-behera/radiantplay akshay-mohankar/radiantplay komal-bains/radiantplay_komal abhinav-gupta/radiantplay yash-chauhan/radiantplay tarun-bhandari/radiantplay kshipra-sharma/radiantplay"
   ALL_FORKS=$(printf '%s\n' $API_FORKS $KNOWN | sort -u)
 
+  # Collect rows into a tempfile keyed by pushed_at so we can sort newest-first.
+  FORK_TMP=$(mktemp -t rp-fork-rows)
   for f in $ALL_FORKS; do
     owner=${f%%/*}
     pushed=$(gh api "repos/$f" --hostname "$HOST" --jq '.pushed_at' 2>/dev/null)
@@ -270,7 +272,10 @@ if $have_gh_galaxy && $IS_MAINTAINER; then
       status="Stale"; cls="muted"
     fi
 
-    FORK_ROWS="${FORK_ROWS}<tr class='${cls}'><td><a href='https://${HOST}/${f}' target='_blank'>${f}</a></td><td>${status}</td><td>${behind}</td><td>${ahead}</td><td>${last_push}</td></tr>"
+    # Sort key first; ISO 8601 sorts lexicographically by date. Unreachable forks sort to the bottom.
+    sort_key="${pushed:-0000-00-00T00:00:00Z}"
+    printf '%s\t<tr class='\''%s'\''><td><a href='\''https://%s/%s'\'' target='\''_blank'\''>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n' \
+      "$sort_key" "$cls" "$HOST" "$f" "$f" "$status" "$behind" "$ahead" "$last_push" >> "$FORK_TMP"
 
     if [ "$ahead" != "?" ] && [ "$ahead" -gt 0 ]; then
       msgs=$(gh api "repos/mohammed-faris/radiantplay/compare/main...$owner:main" --hostname "$HOST" --jq '.commits[].commit.message | split("\n")[0]' 2>/dev/null | grep -iE 'feat|prototype' | head -8 | esc)
@@ -284,6 +289,10 @@ if $have_gh_galaxy && $IS_MAINTAINER; then
       ACTION_LINES="${ACTION_LINES}<li><strong>${f}</strong> — ${behind} behind, ${ahead} ahead → suggest <code>/sync-upstream</code></li>"
     fi
   done
+
+  # Sort by pushed_at descending and strip the sort key.
+  FORK_ROWS=$(sort -r "$FORK_TMP" | sed 's/^[^\t]*\t//' | tr -d '\n')
+  rm -f "$FORK_TMP"
 fi
 
 # ── data: designer upstream sync state ───────────────────────────────────
