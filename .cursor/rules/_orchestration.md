@@ -49,7 +49,7 @@ Single value, prop, or label. CLAUDE.md + component summary are sufficient. No a
 ### Tier 1 — Moderate change
 Adding or modifying a feature within an existing prototype.
 
-**Signals:** New section, panel, or interaction · replacing a component · adding a modal/dialog/confirmation · adding a table/filter/search · layout structure change · rewriting multiple UI strings
+**Signals:** New section, panel, or interaction · replacing a component · adding a modal/dialog/confirmation · adding a table/filter/search · layout structure change · rewriting multiple UI strings · copy review or UX writing task (even with no code changes)
 
 **Action:** Load **ALL** rule files matching the task's concerns below. Matching 3+ rows is expected for compound tasks.
 
@@ -126,7 +126,7 @@ Valid sizes: `xs` · `s` · `m` · `l` — no `xl`, no numeric values.
 Always pass `iconPosition="leading"` or `"trailing"` when using the `icon` prop on Button.
 
 **4. Any UI text?**
-Check CLAUDE.md forbidden words before writing labels, buttons, or titles.
+Load `content-guidelines.md` before writing OR reviewing any labels, buttons, titles, body copy, or error messages. Do not rely on CLAUDE.md alone — the full rules are in the guidelines file.
 
 ---
 
