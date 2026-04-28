@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  versionHistory, 
-  getChangeTypeIcon, 
-  getChangeTypeColor, 
+import {
+  versionHistory,
+  getChangeTypeIcon,
+  getChangeTypeColor,
   getVersionTypeLabel,
   VersionEntry,
   VersionType
 } from '../data/versionHistory';
+import { getVisibleHighlights } from '../data/highlights';
 import { SearchInput } from '../components/SearchInput';
 import styles from './VersionHistoryPage.module.css';
 
@@ -198,6 +199,8 @@ export const VersionHistoryPage: React.FC = () => {
     );
   }, [searchQuery]);
 
+  const highlights = useMemo(() => getVisibleHighlights(), []);
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -206,6 +209,24 @@ export const VersionHistoryPage: React.FC = () => {
           Version history and component updates for Radiant Design System
         </p>
       </header>
+
+      {/* Highlights — curated cherry-picks across recent releases */}
+      {highlights.length > 0 && (
+        <section className={styles.highlights}>
+          <div className={styles.highlightsLabel}>Highlights</div>
+          <ul className={styles.highlightsList}>
+            {highlights.map((h) => (
+              <li key={`${h.version}-${h.title}`} className={styles.highlightItem}>
+                <div className={styles.highlightHead}>
+                  <span className={styles.highlightTitle}>{h.title}</span>
+                  <span className={styles.highlightVersion}>v{h.version}</span>
+                </div>
+                <p className={styles.highlightDescription}>{h.description}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Statistics */}
       <div className={styles.statsRow}>

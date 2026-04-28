@@ -30,6 +30,80 @@
   margin: 0;
 }
 
+/* Highlights — curated cherry-picks across recent releases */
+.highlights {
+  background-color: var(--rd-sys-color-background-subtle);
+  border: 1px solid var(--rd-sys-color-border-divider);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--spacing-6, 24px) var(--spacing-7, 28px);
+  margin-bottom: var(--spacing-8, 32px);
+}
+
+.highlightsLabel {
+  font-family: var(--font-family-mono, 'SF Mono', Monaco, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rd-sys-color-content-brand);
+  margin-bottom: var(--spacing-4, 16px);
+}
+
+.highlightsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-4, 16px);
+}
+
+.highlightItem {
+  background-color: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-divider);
+  border-radius: var(--radius-md, 8px);
+  padding: var(--spacing-3, 12px) var(--spacing-4, 16px) var(--spacing-4, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1, 6px);
+}
+
+.highlightHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3, 12px);
+}
+
+.highlightTitle {
+  font-family: var(--font-family-primary, 'Plain', -apple-system, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--rd-sys-color-content-primary);
+  line-height: 20px;
+}
+
+.highlightVersion {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm, 4px);
+  font-family: var(--font-family-mono, 'SF Mono', Monaco, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background-color: var(--rd-sys-color-background-subtle);
+  color: var(--rd-sys-color-content-secondary);
+}
+
+.highlightDescription {
+  margin: 0;
+  font-family: var(--font-family-primary, 'Plain', -apple-system, sans-serif);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--rd-sys-color-content-secondary);
+  line-height: 19px;
+}
+
 /* Statistics */
 .statsRow {
   display: flex;
