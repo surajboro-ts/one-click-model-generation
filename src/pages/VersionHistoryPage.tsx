@@ -71,8 +71,8 @@ const VersionCard: React.FC<VersionCardProps> = ({
   }
 
   return (
-    <div className={styles.versionCard}>
-      <button 
+    <div className={styles.versionCard} id={`v-${entry.version}`}>
+      <button
         className={styles.versionHeader}
         onClick={onToggle}
         aria-expanded={isExpanded}
@@ -201,6 +201,15 @@ export const VersionHistoryPage: React.FC = () => {
 
   const highlights = useMemo(() => getVisibleHighlights(), []);
 
+  const jumpToVersion = (version: string) => {
+    setExpandedVersions((prev) => new Set([...prev, version]));
+    // Wait for the state update + render before scrolling.
+    setTimeout(() => {
+      const el = document.getElementById(`v-${version}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -213,67 +222,76 @@ export const VersionHistoryPage: React.FC = () => {
       {/* Highlights — curated cherry-picks across recent releases */}
       {highlights.length > 0 && (
         <section className={styles.highlights}>
-          <div className={styles.highlightsLabel}>Highlights</div>
-          <ul className={styles.highlightsList}>
+          <div className={styles.highlightsHeader}>
+            <h2 className={styles.highlightsLabel}>Highlights</h2>
+            <span className={styles.newChip}>New</span>
+          </div>
+          <ol className={styles.highlightsList}>
             {highlights.map((h) => (
               <li key={`${h.version}-${h.title}`} className={styles.highlightItem}>
-                <div className={styles.highlightHead}>
-                  <span className={styles.highlightTitle}>{h.title}</span>
-                  <span className={styles.highlightVersion}>v{h.version}</span>
+                <div className={styles.highlightBody}>
+                  <div className={styles.highlightHead}>
+                    <span className={styles.highlightTitle}>{h.title}</span>
+                    <button
+                      type="button"
+                      className={styles.highlightVersion}
+                      onClick={() => jumpToVersion(h.version)}
+                      aria-label={`Jump to changelog entry for v${h.version}`}
+                    >
+                      v{h.version}
+                    </button>
+                  </div>
+                  <p className={styles.highlightDescription}>{h.description}</p>
                 </div>
-                <p className={styles.highlightDescription}>{h.description}</p>
               </li>
             ))}
-          </ul>
+          </ol>
         </section>
       )}
 
-      {/* Statistics */}
-      <div className={styles.statsRow}>
-        <div className={styles.statCard}>
-          <span className={styles.statValue}>{versionHistory.length}</span>
-          <span className={styles.statLabel}>Versions</span>
+      {/* Detailed changelog — full release history (heading + toolbar + list) */}
+      <h2 className={styles.detailsLabel}>Changelog details</h2>
+
+      {/* Stats + search + controls — all on one row */}
+      <div className={styles.toolbar}>
+        <div className={styles.statsRow}>
+          <div className={styles.statCard}>
+            <span className={styles.statValue}>{versionHistory.length}</span>
+            <span className={styles.statLabel}>Versions</span>
+          </div>
+          <div className={styles.statCard}>
+            <span className={styles.statValue} style={{ color: getChangeTypeColor('added') }}>
+              {stats.added}
+            </span>
+            <span className={styles.statLabel}>Added</span>
+          </div>
+          <div className={styles.statCard}>
+            <span className={styles.statValue} style={{ color: getChangeTypeColor('modified') }}>
+              {stats.modified}
+            </span>
+            <span className={styles.statLabel}>Modified</span>
+          </div>
         </div>
-        <div className={styles.statCard}>
-          <span className={styles.statValue} style={{ color: getChangeTypeColor('added') }}>
-            {stats.added}
-          </span>
-          <span className={styles.statLabel}>Added</span>
-        </div>
-        <div className={styles.statCard}>
-          <span className={styles.statValue} style={{ color: getChangeTypeColor('modified') }}>
-            {stats.modified}
-          </span>
-          <span className={styles.statLabel}>Modified</span>
-        </div>
-        <div className={styles.statCard}>
-          <span className={styles.statValue} style={{ color: getChangeTypeColor('synced') }}>
-            {stats.synced}
-          </span>
-          <span className={styles.statLabel}>Synced</span>
+
+        <div className={styles.controls}>
+          <div className={styles.searchWrapper}>
+            <SearchInput
+              placeholder="Search by component name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className={styles.expandControls}>
+            <button className={styles.controlButton} onClick={expandAll}>
+              Expand All
+            </button>
+            <button className={styles.controlButton} onClick={collapseAll}>
+              Collapse All
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Search and controls */}
-      <div className={styles.controls}>
-        <div className={styles.searchWrapper}>
-          <SearchInput
-            placeholder="Search by component name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        <div className={styles.expandControls}>
-          <button className={styles.controlButton} onClick={expandAll}>
-            Expand All
-          </button>
-          <button className={styles.controlButton} onClick={collapseAll}>
-            Collapse All
-          </button>
-        </div>
-      </div>
-
-      {/* Version list */}
       <div className={styles.versionList}>
         {visibleVersions.length === 0 ? (
           <div className={styles.emptyState}>
