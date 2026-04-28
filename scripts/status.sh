@@ -74,26 +74,89 @@ REMOTES=$(git remote -v | awk '{print $1" "$2}' | sort -u)
 # Recent commits (15)
 RECENT_COMMITS=$(git log -15 --pretty=format:'%h|%cr|%an|%s' | esc)
 
-# All branches with tracking + ahead/behind + last commit + last commit date
+# Helper: ahead/behind of $1 vs $2 (a baseline ref). Outputs "-N/+M", "in sync", or "—".
+diverge_vs() {
+  local branch="$1" base="$2"
+  if ! git rev-parse --verify --quiet "$base" >/dev/null 2>&1; then echo "—"; return; fi
+  if [ "$branch" = "$base" ] || [ "refs/heads/$branch" = "refs/heads/$base" ]; then echo "—"; return; fi
+  local counts behind ahead
+  counts=$(git rev-list --left-right --count "${base}...${branch}" 2>/dev/null)
+  if [ -z "$counts" ]; then echo "—"; return; fi
+  behind=$(echo "$counts" | awk '{print $1}')
+  ahead=$(echo "$counts" | awk '{print $2}')
+  if [ "$behind" = "0" ] && [ "$ahead" = "0" ]; then echo "in sync"
+  else echo "-${behind}/+${ahead}"; fi
+}
+
+# Determine which baselines exist on this checkout.
+BASE_MAIN=""
+BASE_STAGING=""
+BASE_UPSTREAM=""
+git rev-parse --verify --quiet main >/dev/null 2>&1 && BASE_MAIN="main"
+git rev-parse --verify --quiet staging >/dev/null 2>&1 && BASE_STAGING="staging"
+if [ -n "$DESIGNER_UPSTREAM_REMOTE" ]; then
+  git rev-parse --verify --quiet "${DESIGNER_UPSTREAM_REMOTE}/main" >/dev/null 2>&1 && BASE_UPSTREAM="${DESIGNER_UPSTREAM_REMOTE}/main"
+elif $IS_MAINTAINER; then
+  git rev-parse --verify --quiet "galaxy/main" >/dev/null 2>&1 && BASE_UPSTREAM="galaxy/main"
+fi
+
+# All branches with: tracking, last commit subject + age, divergence vs main/staging/upstream.
 BRANCH_ROWS=""
 while IFS= read -r b; do
   [ -z "$b" ] && continue
   short=$(echo "$b" | sed 's|refs/heads/||')
   upstream=$(git for-each-ref --format='%(upstream:short)' "refs/heads/$short")
-  ab="—"
-  if [ -n "$upstream" ]; then
-    counts=$(git rev-list --left-right --count "$upstream...$short" 2>/dev/null)
-    if [ -n "$counts" ]; then
-      behind=$(echo "$counts" | awk '{print $1}')
-      ahead=$(echo "$counts" | awk '{print $2}')
-      ab="-$behind / +$ahead"
-    fi
-  fi
-  last=$(git log -1 --pretty=format:'%h %cr | %s' "$short" 2>/dev/null | esc)
+  vs_main=$([ -n "$BASE_MAIN" ] && diverge_vs "$short" "$BASE_MAIN" || echo "—")
+  vs_staging=$([ -n "$BASE_STAGING" ] && diverge_vs "$short" "$BASE_STAGING" || echo "—")
+  vs_upstream=$([ -n "$BASE_UPSTREAM" ] && diverge_vs "$short" "$BASE_UPSTREAM" || echo "—")
+  last_subj=$(git log -1 --pretty=format:'%s' "$short" 2>/dev/null | esc)
+  last_age=$(git log -1 --pretty=format:'%cr' "$short" 2>/dev/null)
   marker=""
   [ "$short" = "$CUR_BRANCH" ] && marker=" ← current"
-  BRANCH_ROWS="${BRANCH_ROWS}<tr><td><code>${short}</code>${marker}</td><td>${upstream:-—}</td><td>${ab}</td><td>${last}</td></tr>"
+  BRANCH_ROWS="${BRANCH_ROWS}<tr><td><code>${short}</code>${marker}</td><td>${vs_main}</td><td>${vs_staging}</td><td>${vs_upstream}</td><td>${last_age}<br><span class='file-list'>${last_subj}</span></td></tr>"
 done < <(git for-each-ref --format='%(refname)' refs/heads/)
+
+# Worktrees: path, branch, state (clean / N modified), ahead/behind vs main, locked/prunable.
+WORKTREE_ROWS=""
+WT_PATH=""
+WT_BRANCH=""
+WT_LOCKED=""
+WT_PRUNABLE=""
+emit_wt_row() {
+  [ -z "$WT_PATH" ] && return
+  local rel branch_label state divm flags
+  rel=$(echo "$WT_PATH" | sed "s|^$HOME|~|")
+  if [ -n "$WT_BRANCH" ]; then
+    branch_label="<code>$(echo "$WT_BRANCH" | sed 's|refs/heads/||')</code>"
+  else
+    branch_label="<span class='file-list'>(detached)</span>"
+  fi
+  # Modified file count from this worktree (only if it is the current cwd worktree we can run git there cheaply).
+  local modn
+  modn=$(git -C "$WT_PATH" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+  if [ -z "$modn" ] || [ "$modn" = "0" ]; then state="clean"
+  else state="<strong>${modn} modified</strong>"; fi
+  if [ -n "$WT_BRANCH" ] && [ -n "$BASE_MAIN" ]; then
+    divm=$(diverge_vs "$(echo "$WT_BRANCH" | sed 's|refs/heads/||')" "$BASE_MAIN")
+  else
+    divm="—"
+  fi
+  flags=""
+  [ -n "$WT_LOCKED" ] && flags="${flags} <span class='badge'>locked</span>"
+  [ -n "$WT_PRUNABLE" ] && flags="${flags} <span class='badge'>prunable</span>"
+  WORKTREE_ROWS="${WORKTREE_ROWS}<tr><td><code>${rel}</code>${flags}</td><td>${branch_label}</td><td>${state}</td><td>${divm}</td></tr>"
+  WT_PATH=""; WT_BRANCH=""; WT_LOCKED=""; WT_PRUNABLE=""
+}
+while IFS= read -r line; do
+  case "$line" in
+    "worktree "*) emit_wt_row; WT_PATH="${line#worktree }" ;;
+    "branch "*)   WT_BRANCH="${line#branch }" ;;
+    "locked"*)    WT_LOCKED="1" ;;
+    "prunable"*)  WT_PRUNABLE="1" ;;
+    "")           emit_wt_row ;;
+  esac
+done < <(git worktree list --porcelain 2>/dev/null)
+emit_wt_row
 
 # Untracked files list (first 30)
 UNTRACKED_LIST=$(git ls-files --others --exclude-standard | head -30 | esc)
@@ -520,8 +583,10 @@ cat > "$OUT" <<HTML
   }
   .sub-btn:hover { color: var(--ink-90); border-color: var(--amber); }
   .sub-btn.active { color: var(--amber-deep); background: var(--amber-bg); border-color: var(--amber); }
-  .sub-section { display: block; }
+  .sub-section { display: block; margin-bottom: 36px; }
+  .sub-section:last-child { margin-bottom: 0; }
   .sub-section.hidden { display: none; }
+  .sub-section + .sub-section h2 { margin-top: 8px; }
   .md-link {
     background: transparent;
     border: 0;
@@ -670,9 +735,17 @@ cat >> "$OUT" <<HTML
 </section>
 
 <section id="branches">
-  <h2>All local branches</h2>
+  <h2>Worktrees</h2>
+  <p class="file-list">Each worktree is an independent checkout. Modified count, branch divergence vs <code>main</code>, and locked/prunable flags shown.</p>
   <table>
-    <thead><tr><th>Branch</th><th>Tracks</th><th>Behind / ahead</th><th>Last commit</th></tr></thead>
+    <thead><tr><th>Path</th><th>Branch</th><th>State</th><th>vs main</th></tr></thead>
+    <tbody>${WORKTREE_ROWS:-<tr><td colspan='4' class='empty'>No worktrees.</td></tr>}</tbody>
+  </table>
+
+  <h2>All local branches</h2>
+  <p class="file-list">Divergence shown vs <code>main</code>, <code>staging</code>, and upstream${BASE_UPSTREAM:+ (<code>${BASE_UPSTREAM}</code>)}. <code>—</code> means baseline does not exist locally.</p>
+  <table>
+    <thead><tr><th>Branch</th><th>vs main</th><th>vs staging</th><th>vs upstream</th><th>Last commit</th></tr></thead>
     <tbody>${BRANCH_ROWS}</tbody>
   </table>
 </section>
