@@ -240,27 +240,6 @@ if [ -n "$DESIGNER_UPSTREAM_REMOTE" ]; then
   DESIGNER_UPSTREAM_HEAD=$(git log -1 --pretty=format:'%h %cr | %s' "${DESIGNER_UPSTREAM_REMOTE}/main" 2>/dev/null | esc)
 fi
 
-# ── data: my open work on Galaxy ─────────────────────────────────────────
-MY_PRS_ROWS=""
-REVIEW_PRS_ROWS=""
-ASSIGNED_ISSUES_ROWS=""
-if $have_gh_galaxy; then
-  while IFS=$'\t' read -r repo num title updated; do
-    [ -z "$num" ] && continue
-    MY_PRS_ROWS="${MY_PRS_ROWS}<tr><td><a href='https://${HOST}/${repo}/-/merge_requests/${num}' target='_blank'>${repo}#${num}</a></td><td>$(echo "$title"|esc)</td><td>$(days_ago "$updated")</td></tr>"
-  done < <(gh search prs --author=@me --state=open --hostname "$HOST" --json repository,number,title,updatedAt --jq '.[] | [.repository.nameWithOwner, .number, .title, .updatedAt] | @tsv' 2>/dev/null)
-
-  while IFS=$'\t' read -r repo num title updated; do
-    [ -z "$num" ] && continue
-    REVIEW_PRS_ROWS="${REVIEW_PRS_ROWS}<tr><td><a href='https://${HOST}/${repo}/-/merge_requests/${num}' target='_blank'>${repo}#${num}</a></td><td>$(echo "$title"|esc)</td><td>$(days_ago "$updated")</td></tr>"
-  done < <(gh search prs --review-requested=@me --state=open --hostname "$HOST" --json repository,number,title,updatedAt --jq '.[] | [.repository.nameWithOwner, .number, .title, .updatedAt] | @tsv' 2>/dev/null)
-
-  while IFS=$'\t' read -r repo num title updated; do
-    [ -z "$num" ] && continue
-    ASSIGNED_ISSUES_ROWS="${ASSIGNED_ISSUES_ROWS}<tr><td><a href='https://${HOST}/${repo}/-/issues/${num}' target='_blank'>${repo}#${num}</a></td><td>$(echo "$title"|esc)</td><td>$(days_ago "$updated")</td></tr>"
-  done < <(gh search issues --assignee=@me --state=open --hostname "$HOST" --json repository,number,title,updatedAt --jq '.[] | [.repository.nameWithOwner, .number, .title, .updatedAt] | @tsv' 2>/dev/null)
-fi
-
 # ── data: plan files, rules, docs (split into buckets) ───────────────────
 render_row() {
   local p="$1"
@@ -526,6 +505,23 @@ cat > "$OUT" <<HTML
     border-top: 1px solid var(--amber-border);
     background: var(--cream-10);
   }
+  .subtabs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 18px;
+  }
+  .sub-btn {
+    background: transparent;
+    border: 1px solid var(--amber-border);
+    padding: 6px 14px;
+    font: 700 10.5px/1 var(--mono);
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-55);
+    cursor: pointer;
+  }
+  .sub-btn:hover { color: var(--ink-90); border-color: var(--amber); }
+  .sub-btn.active { color: var(--amber-deep); background: var(--amber-bg); border-color: var(--amber); }
+  .sub-section { display: block; }
+  .sub-section.hidden { display: none; }
   .md-link {
     background: transparent;
     border: 0;
@@ -623,10 +619,7 @@ cat > "$OUT" <<HTML
   <button class="tab-btn active" data-tab="overview">Overview</button>
   <button class="tab-btn" data-tab="branches">Branches</button>
   <button class="tab-btn" data-tab="forks">$( $IS_MAINTAINER && echo "Forks" || echo "Upstream" )</button>
-  <button class="tab-btn" data-tab="work">Open work</button>
-  <button class="tab-btn" data-tab="plans">Plans</button>
-  <button class="tab-btn" data-tab="rules">Rules</button>
-  <button class="tab-btn" data-tab="docs">Docs</button>
+  <button class="tab-btn" data-tab="docsplans">Docs and plans</button>
 </nav>
 <main>
 
@@ -734,82 +727,58 @@ fi
 cat >> "$OUT" <<HTML
 </section>
 
-<section id="work">
-  <h2>My open PRs</h2>
-HTML
+<section id="docsplans">
+  <div class="subtabs">
+    <button class="sub-btn active" data-sub="all">All</button>
+    <button class="sub-btn" data-sub="plans">Plans</button>
+    <button class="sub-btn" data-sub="rules">Rules</button>
+    <button class="sub-btn" data-sub="commands">Slash commands</button>
+    <button class="sub-btn" data-sub="docs">Docs</button>
+    <button class="sub-btn" data-sub="articles">Articles</button>
+  </div>
 
-if [ -n "$MY_PRS_ROWS" ]; then
-  cat >> "$OUT" <<HTML
-  <table><thead><tr><th>Repo</th><th>Title</th><th>Updated</th></tr></thead><tbody>${MY_PRS_ROWS}</tbody></table>
-HTML
-else
-  echo "<p class='empty'>None.</p>" >> "$OUT"
-fi
+  <div class="sub-section" data-sub="plans">
+    <h2>Active plans</h2>
+    <p class="file-list">In-flight work: roadmaps, backlog, plan documents.</p>
+    <table>
+      <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
+      <tbody>${ACTIVE_PLAN_ROWS:-<tr><td colspan='3' class='empty'>No active plans found.</td></tr>}</tbody>
+    </table>
+  </div>
 
-cat >> "$OUT" <<HTML
-  <h2>Awaiting my review</h2>
-HTML
+  <div class="sub-section" data-sub="rules">
+    <h2>Orchestrator &amp; system rules</h2>
+    <p class="file-list">Rules that govern how Claude works in this repo — design system, orchestration, prototype generation.</p>
+    <table>
+      <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
+      <tbody>${RULE_ROWS}</tbody>
+    </table>
+  </div>
 
-if [ -n "$REVIEW_PRS_ROWS" ]; then
-  cat >> "$OUT" <<HTML
-  <table><thead><tr><th>Repo</th><th>Title</th><th>Updated</th></tr></thead><tbody>${REVIEW_PRS_ROWS}</tbody></table>
-HTML
-else
-  echo "<p class='empty'>None.</p>" >> "$OUT"
-fi
+  <div class="sub-section" data-sub="commands">
+    <h2>Slash commands</h2>
+    <table>
+      <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
+      <tbody>${COMMAND_ROWS}</tbody>
+    </table>
+  </div>
 
-cat >> "$OUT" <<HTML
-  <h2>Issues assigned to me</h2>
-HTML
+  <div class="sub-section" data-sub="docs">
+    <h2>General docs</h2>
+    <p class="file-list">Reference material — guides, patterns, changelog.</p>
+    <table>
+      <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
+      <tbody>${DOC_ROWS}</tbody>
+    </table>
+  </div>
 
-if [ -n "$ASSIGNED_ISSUES_ROWS" ]; then
-  cat >> "$OUT" <<HTML
-  <table><thead><tr><th>Repo</th><th>Title</th><th>Updated</th></tr></thead><tbody>${ASSIGNED_ISSUES_ROWS}</tbody></table>
-HTML
-else
-  echo "<p class='empty'>None.</p>" >> "$OUT"
-fi
-
-cat >> "$OUT" <<HTML
-</section>
-
-<section id="plans">
-  <h2>Active plans</h2>
-  <p class="file-list">In-flight work: roadmaps, backlog, plan documents.</p>
-  <table>
-    <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
-    <tbody>${ACTIVE_PLAN_ROWS:-<tr><td colspan='3' class='empty'>No active plans found.</td></tr>}</tbody>
-  </table>
-</section>
-
-<section id="rules">
-  <h2>Orchestrator &amp; system rules</h2>
-  <p class="file-list">Rules that govern how Claude works in this repo — design system, orchestration, prototype generation, etc.</p>
-  <table>
-    <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
-    <tbody>${RULE_ROWS}</tbody>
-  </table>
-
-  <h2>Slash commands</h2>
-  <table>
-    <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
-    <tbody>${COMMAND_ROWS}</tbody>
-  </table>
-</section>
-
-<section id="docs">
-  <h2>General docs</h2>
-  <p class="file-list">Reference material — guides, patterns, changelog. Plans are listed separately under the Plans tab.</p>
-  <table>
-    <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
-    <tbody>${DOC_ROWS}</tbody>
-  </table>
-
-  <h2>Articles</h2>
-  <table>
-    <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
-    <tbody>${ARTICLE_ROWS:-<tr><td colspan='3' class='empty'>No articles.</td></tr>}</tbody>
-  </table>
+  <div class="sub-section" data-sub="articles">
+    <h2>Articles</h2>
+    <table>
+      <thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead>
+      <tbody>${ARTICLE_ROWS:-<tr><td colspan='3' class='empty'>No articles.</td></tr>}</tbody>
+    </table>
+  </div>
 </section>
 
 </main>
@@ -837,6 +806,18 @@ $(cat "$EMBED_FILE")
       document.querySelectorAll('section').forEach(x => x.classList.remove('active'));
       b.classList.add('active');
       document.getElementById(b.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Sub-tab filtering inside Docs and plans.
+  document.querySelectorAll('.sub-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      const filter = b.dataset.sub;
+      document.querySelectorAll('.sub-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      document.querySelectorAll('.sub-section').forEach(s => {
+        s.classList.toggle('hidden', filter !== 'all' && s.dataset.sub !== filter);
+      });
     });
   });
 
