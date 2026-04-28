@@ -19,6 +19,22 @@ GEN_START=$EPOCH_NOW
 have_gh_galaxy=false
 if gh auth status --hostname "$HOST" >/dev/null 2>&1; then have_gh_galaxy=true; fi
 
+# ── role detection ───────────────────────────────────────────────────────
+# Maintainer = has a remote (named `galaxy`) pointing to mohammed-faris/radiantplay
+# AND is the only one pushing to it. We approximate this by remote name + URL.
+# Designer = has an `upstream` remote (per /sync-upstream convention) pointing
+# at mohammed-faris/radiantplay. They want to know how behind their fork is,
+# not see the whole fork network.
+IS_MAINTAINER=false
+DESIGNER_UPSTREAM_REMOTE=""
+galaxy_url=$(git remote get-url galaxy 2>/dev/null || echo "")
+upstream_url=$(git remote get-url upstream 2>/dev/null || echo "")
+if echo "$galaxy_url" | grep -q "mohammed-faris/radiantplay"; then
+  IS_MAINTAINER=true
+elif echo "$upstream_url" | grep -q "mohammed-faris/radiantplay"; then
+  DESIGNER_UPSTREAM_REMOTE="upstream"
+fi
+
 esc() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
 
 # Script-tag-safe escape: only break </script and <!-- so embedded markdown can
@@ -150,12 +166,12 @@ DIAGRAM=$(build_diagram | esc)
 LAST_BUILD="—"
 [ -d dist ] && LAST_BUILD=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M" dist 2>/dev/null)
 
-# ── data: forks ──────────────────────────────────────────────────────────
+# ── data: forks (maintainer only) ────────────────────────────────────────
 FORK_ROWS=""
 PROTOTYPE_LINES=""
 ACTION_LINES=""
 UPSTREAM_HEAD=""
-if $have_gh_galaxy; then
+if $have_gh_galaxy && $IS_MAINTAINER; then
   UPSTREAM_HEAD_JSON=$(gh api repos/mohammed-faris/radiantplay/commits/main --hostname "$HOST" --jq '{sha: .sha[:7], message: .commit.message | split("\n")[0], date: .commit.committer.date}' 2>/dev/null)
   UPSTREAM_HEAD=$(echo "$UPSTREAM_HEAD_JSON" | esc)
 
@@ -205,6 +221,23 @@ if $have_gh_galaxy; then
       ACTION_LINES="${ACTION_LINES}<li><strong>${f}</strong> — ${behind} behind, ${ahead} ahead → suggest <code>/sync-upstream</code></li>"
     fi
   done
+fi
+
+# ── data: designer upstream sync state ───────────────────────────────────
+DESIGNER_BEHIND="—"
+DESIGNER_AHEAD="—"
+DESIGNER_UPSTREAM_HEAD=""
+DESIGNER_UPSTREAM_URL=""
+if [ -n "$DESIGNER_UPSTREAM_REMOTE" ]; then
+  DESIGNER_UPSTREAM_URL=$(git remote get-url "$DESIGNER_UPSTREAM_REMOTE" 2>/dev/null)
+  # Best-effort fetch — silent, non-blocking on failure.
+  git fetch --quiet "$DESIGNER_UPSTREAM_REMOTE" main 2>/dev/null || true
+  counts=$(git rev-list --left-right --count "${DESIGNER_UPSTREAM_REMOTE}/main...HEAD" 2>/dev/null)
+  if [ -n "$counts" ]; then
+    DESIGNER_BEHIND=$(echo "$counts" | awk '{print $1}')
+    DESIGNER_AHEAD=$(echo "$counts" | awk '{print $2}')
+  fi
+  DESIGNER_UPSTREAM_HEAD=$(git log -1 --pretty=format:'%h %cr | %s' "${DESIGNER_UPSTREAM_REMOTE}/main" 2>/dev/null | esc)
 fi
 
 # ── data: my open work on Galaxy ─────────────────────────────────────────
@@ -589,7 +622,7 @@ cat > "$OUT" <<HTML
 <nav class="tabs">
   <button class="tab-btn active" data-tab="overview">Overview</button>
   <button class="tab-btn" data-tab="branches">Branches</button>
-  <button class="tab-btn" data-tab="forks">Forks</button>
+  <button class="tab-btn" data-tab="forks">$( $IS_MAINTAINER && echo "Forks" || echo "Upstream" )</button>
   <button class="tab-btn" data-tab="work">Open work</button>
   <button class="tab-btn" data-tab="plans">Plans</button>
   <button class="tab-btn" data-tab="rules">Rules</button>
@@ -652,14 +685,17 @@ cat >> "$OUT" <<HTML
 </section>
 
 <section id="forks">
+HTML
+
+if $IS_MAINTAINER; then
+  cat >> "$OUT" <<HTML
   <h2>Upstream HEAD</h2>
   <pre class="file-list">${UPSTREAM_HEAD:-—}</pre>
 
   <h2>Forks</h2>
 HTML
-
-if $have_gh_galaxy; then
-  cat >> "$OUT" <<HTML
+  if $have_gh_galaxy; then
+    cat >> "$OUT" <<HTML
   <table>
     <thead><tr><th>Fork</th><th>Status</th><th>Behind</th><th>Ahead</th><th>Last push</th></tr></thead>
     <tbody>${FORK_ROWS}</tbody>
@@ -671,9 +707,27 @@ if $have_gh_galaxy; then
   <h2>Active prototype work</h2>
   ${PROTOTYPE_LINES:-<p class='empty'>No prototype commits detected on forks.</p>}
 HTML
+  else
+    cat >> "$OUT" <<HTML
+  <p class="empty">Not authenticated to ${HOST}. Run <code>gh auth login --hostname ${HOST}</code> and re-run this script.</p>
+HTML
+  fi
+elif [ -n "$DESIGNER_UPSTREAM_REMOTE" ]; then
+  cat >> "$OUT" <<HTML
+  <h2>Upstream sync</h2>
+  <p>Tracking <code>${DESIGNER_UPSTREAM_REMOTE}/main</code> at <code>${DESIGNER_UPSTREAM_URL}</code>.</p>
+  <div class="stat-grid">
+    <div class="stat"><div class="k">Behind upstream</div><div class="v">${DESIGNER_BEHIND}</div></div>
+    <div class="stat"><div class="k">Ahead of upstream</div><div class="v">${DESIGNER_AHEAD}</div></div>
+  </div>
+  <h2>Upstream HEAD</h2>
+  <pre class="file-list">${DESIGNER_UPSTREAM_HEAD:-—}</pre>
+  <p>If <strong>Behind</strong> is non-zero, run <code>/sync-upstream</code> to pull the latest changes.</p>
+HTML
 else
   cat >> "$OUT" <<HTML
-  <p class="empty">Not authenticated to ${HOST}. Run <code>gh auth login --hostname ${HOST}</code> and re-run this script.</p>
+  <h2>Upstream sync</h2>
+  <p class="empty">No <code>upstream</code> remote configured. Run <code>/sync-upstream</code> to set one up — it adds <code>https://${HOST}/mohammed-faris/radiantplay.git</code> as <code>upstream</code> and fetches the latest changes.</p>
 HTML
 fi
 
