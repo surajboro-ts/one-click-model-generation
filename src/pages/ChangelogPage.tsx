@@ -21,6 +21,30 @@ const itemHighlight = (i: ChangeItem) => (typeof i === 'string' ? false : !!i.hi
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '26.4.4d',
+    date: '2026-04-28',
+    title: 'Changelog highlights system',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        label: 'Changelog page',
+        items: [
+          { text: "What's new hero — pinned section at the top of the Changelog surfaces flagged items from the most recent release, grouped by section", highlight: true },
+          { text: 'Headline callout — each release entry shows its flagged items in a Headline block above the detailed change list', highlight: true },
+          'Major pill — inline tag renders next to flagged items in the detailed list',
+        ],
+      },
+      {
+        category: 'changed',
+        label: 'Release tooling',
+        items: [
+          'release.sh now prompts for major highlights interactively and pre-inserts them as { text, highlight: true } items in the printed ChangelogPage draft',
+        ],
+      },
+    ],
+  },
+  {
     version: '26.4.4c',
     date: '2026-04-28',
     title: 'Token system Figma alignment, Modal alignment, Project status dashboard',

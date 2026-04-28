@@ -28,6 +28,17 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.4.4d',
+    date: '2026-04-28',
+    type: 'minor',
+    changes: [
+      { type: 'added', group: 'Changelog highlights', component: "What's new hero", description: 'Pinned section at the top of the Changelog page surfaces flagged items from the most recent release, grouped by section' },
+      { type: 'added', group: 'Changelog highlights', component: 'Headline callout', description: 'Each release entry shows its flagged items in a Headline block above the detailed change list' },
+      { type: 'added', group: 'Changelog highlights', component: 'Major pill', description: 'Inline pill renders next to flagged items in the detailed list itself' },
+      { type: 'added', group: 'Release tooling', component: 'Highlights prompt in release.sh', description: 'release.sh now asks the maintainer for major highlights interactively and pre-inserts them in the printed ChangelogPage draft' },
+    ],
+  },
+  {
     version: '26.4.4c',
     date: '2026-04-28',
     type: 'minor',

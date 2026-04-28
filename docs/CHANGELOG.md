@@ -1,5 +1,10 @@
 # Changelog
 
+## 26.4.4d — 2026-04-28
+
+- feat(changelog): highlights system — What's new hero, Headline callout, Major pill
+- feat(release): release.sh prompts for highlights interactively and pre-inserts them in the printed ChangelogPage draft
+
 ## 26.4.4c — 2026-04-28
 
 - docs(orchestration): add MCP plugin overhead check (B1 from workflow plan)
