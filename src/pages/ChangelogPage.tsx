@@ -1,6 +1,8 @@
 import React from 'react';
 import { systemColors, referenceColors } from '../tokens/colors';
 
+type ChangeItem = string | { text: string; highlight?: boolean };
+
 interface ChangelogEntry {
   version: string;
   date: string;
@@ -9,9 +11,13 @@ interface ChangelogEntry {
   changes: {
     category: 'added' | 'changed' | 'fixed' | 'removed';
     label?: string; // overrides the default badge text (e.g. theme group names)
-    items: string[];
+    items: ChangeItem[];
   }[];
 }
+
+// Helpers to read either string or { text, highlight } items uniformly.
+const itemText = (i: ChangeItem) => (typeof i === 'string' ? i : i.text);
+const itemHighlight = (i: ChangeItem) => (typeof i === 'string' ? false : !!i.highlight);
 
 const CHANGELOG: ChangelogEntry[] = [
   {
@@ -24,10 +30,10 @@ const CHANGELOG: ChangelogEntry[] = [
         category: 'added',
         label: 'Token system — Figma 3.0 alignment (Phases 1–5 of 8)',
         items: [
-          'Phase 1 — Primitive colors: darkGray scale (12 stops), alpha variants, hex fixes for purple and teal',
-          'Phase 2 — Light semantic colors: 6 value fixes + 22 new accent tokens (background-accent, content-accent, border)',
-          'Phase 3 — Typography: letter-spacing aligned to Figma absolutes, 6 v2TextStyles bumped medium → semibold, body weight light → regular',
-          'Phase 4 — Elevation: shadowPrimitives with 3 semantic levels (surface, menu, modal) and light/dark variants; component CSS migrated to semantic vars',
+          { text: 'Phase 1 — Primitive colors: darkGray scale (12 stops), alpha variants, hex fixes for purple and teal', highlight: true },
+          { text: 'Phase 2 — Light semantic colors: 6 value fixes + 22 new accent tokens (background-accent, content-accent, border)', highlight: true },
+          { text: 'Phase 3 — Typography: letter-spacing aligned to Figma absolutes, 6 v2TextStyles bumped medium → semibold, body weight light → regular', highlight: true },
+          { text: 'Phase 4 — Elevation: shadowPrimitives with 3 semantic levels (surface, menu, modal) and light/dark variants; component CSS migrated to semantic vars', highlight: true },
           'Phase 5 — Layout: AppSidebar/AppShell default width 261px → 260px',
         ],
       },
@@ -35,24 +41,24 @@ const CHANGELOG: ChangelogEntry[] = [
         category: 'changed',
         label: 'Modal alignment with Figma',
         items: [
-          'Modal header padding restored to 20px 24px (variable height) so wizard variants grow correctly',
-          'Modal footer fixed at 72px with corrected tertiary-left / primary-right CTA placement',
-          'Wizard stepper rebuilt as discrete 4px segments with 6px gap and 2px radii; renders for splashscreen too',
+          { text: 'Modal header padding restored to 20px 24px (variable height) so wizard variants grow correctly', highlight: true },
+          { text: 'Modal footer fixed at 72px with corrected tertiary-left / primary-right CTA placement', highlight: true },
+          { text: 'Wizard stepper rebuilt as discrete 4px segments with 6px gap and 2px radii; renders for splashscreen too', highlight: true },
           'Close icon removed from M1/M2/M3 simple modals — only M4 keeps the Close text link, per Figma',
           'New M2 eyebrow-only modal demo (no stepper)',
           'Splash screen: header no longer renders (title moved to body)',
           'Overlay z-index bumped to 1000 so M4 covers the sidebar',
-          'RdModal absorbed into Modal — single modal component going forward',
+          { text: 'RdModal absorbed into Modal — single modal component going forward', highlight: true },
         ],
       },
       {
         category: 'added',
         label: 'Project status dashboard (/project-status)',
         items: [
-          'Local HTML dashboard with overview, branches, forks/upstream, and docs/plans tabs at zero LLM token cost',
-          'Worktree view — each checkout shown with branch, modified count, divergence vs main, locked/prunable badges',
-          'Branch divergence in three columns: vs main, vs staging, vs upstream/main, with last commit subject + relative age',
-          'Role-aware tabs — maintainers see all designer forks; designer forks see upstream sync state',
+          { text: 'Local HTML dashboard with overview, branches, forks/upstream, and docs/plans tabs at zero LLM token cost', highlight: true },
+          { text: 'Worktree view — each checkout shown with branch, modified count, divergence vs main, locked/prunable badges', highlight: true },
+          { text: 'Branch divergence in three columns: vs main, vs staging, vs upstream/main, with last commit subject + relative age', highlight: true },
+          { text: 'Role-aware tabs — maintainers see all designer forks; designer forks see upstream sync state', highlight: true },
           'Inline markdown viewer — click any .md row to open its rendered content in an in-page modal',
           'Local-only badges — gitignored files (BACKLOG.md, plans/, articles/) tagged with a blue local chip',
           'Forks sorted by last push descending (most recent first)',
@@ -428,7 +434,23 @@ const typeColors = {
   patch: systemColors.light['content-tertiary'],
 };
 
+// Pull the highlight items out of an entry, paired with their section label,
+// so the Headline callout can show them grouped by area.
+const collectHighlights = (entry: ChangelogEntry) => {
+  const out: { label: string; text: string }[] = [];
+  for (const change of entry.changes) {
+    const sectionLabel = change.label ?? categoryColors[change.category].label;
+    for (const item of change.items) {
+      if (itemHighlight(item)) out.push({ label: sectionLabel, text: itemText(item) });
+    }
+  }
+  return out;
+};
+
 export const ChangelogPage: React.FC = () => {
+  const latest = CHANGELOG[0];
+  const latestHighlights = latest ? collectHighlights(latest) : [];
+
   return (
     <div style={styles.container}>
       {/* Header */}
@@ -439,58 +461,91 @@ export const ChangelogPage: React.FC = () => {
         </p>
       </div>
 
+      {/* Pinned hero — what's new in the most recent release */}
+      {latest && latestHighlights.length > 0 && (
+        <div style={styles.hero}>
+          <div style={styles.heroLabel}>What's new in v{latest.version}</div>
+          <ul style={styles.heroList}>
+            {latestHighlights.map((h, i) => (
+              <li key={i} style={styles.heroItem}>
+                <span style={styles.heroChip}>{h.label}</span>
+                <span style={styles.heroText}>{h.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Timeline */}
       <div style={styles.timeline}>
-        {CHANGELOG.map((entry, index) => (
-          <div key={entry.version} style={styles.entry}>
-            {/* Version Header */}
-            <div style={styles.entryHeader}>
-              <div style={styles.versionInfo}>
-                <span
-                  style={{
-                    ...styles.versionBadge,
-                    backgroundColor: typeColors[entry.type],
-                  }}
-                >
-                  v{entry.version}
-                </span>
-                <span style={styles.entryTitle}>{entry.title}</span>
-              </div>
-              <span style={styles.entryDate}>{entry.date}</span>
-            </div>
-
-            {/* Changes */}
-            <div style={styles.changesContainer}>
-              {entry.changes.map((change, changeIndex) => (
-                <div key={changeIndex} style={styles.changeSection}>
+        {CHANGELOG.map((entry, index) => {
+          const highlights = collectHighlights(entry);
+          return (
+            <div key={entry.version} style={styles.entry}>
+              {/* Version Header */}
+              <div style={styles.entryHeader}>
+                <div style={styles.versionInfo}>
                   <span
                     style={{
-                      ...styles.categoryBadge,
-                      backgroundColor: change.label
-                        ? systemColors.light['background-subtle']
-                        : categoryColors[change.category].bg,
-                      color: change.label
-                        ? systemColors.light['content-secondary']
-                        : categoryColors[change.category].text,
+                      ...styles.versionBadge,
+                      backgroundColor: typeColors[entry.type],
                     }}
                   >
-                    {change.label ?? categoryColors[change.category].label}
+                    v{entry.version}
                   </span>
-                  <ul style={styles.changesList}>
-                    {change.items.map((item, itemIndex) => (
-                      <li key={itemIndex} style={styles.changeItem}>
-                        {item}
-                      </li>
+                  <span style={styles.entryTitle}>{entry.title}</span>
+                </div>
+                <span style={styles.entryDate}>{entry.date}</span>
+              </div>
+
+              {/* Per-release headline callout */}
+              {highlights.length > 0 && (
+                <div style={styles.headline}>
+                  <div style={styles.headlineLabel}>Headline</div>
+                  <ul style={styles.headlineList}>
+                    {highlights.map((h, i) => (
+                      <li key={i} style={styles.headlineItem}>{h.text}</li>
                     ))}
                   </ul>
                 </div>
-              ))}
-            </div>
+              )}
 
-            {/* Connector line (except for last item) */}
-            {index < CHANGELOG.length - 1 && <div style={styles.connector} />}
-          </div>
-        ))}
+              {/* Changes */}
+              <div style={styles.changesContainer}>
+                {entry.changes.map((change, changeIndex) => (
+                  <div key={changeIndex} style={styles.changeSection}>
+                    <span
+                      style={{
+                        ...styles.categoryBadge,
+                        backgroundColor: change.label
+                          ? systemColors.light['background-subtle']
+                          : categoryColors[change.category].bg,
+                        color: change.label
+                          ? systemColors.light['content-secondary']
+                          : categoryColors[change.category].text,
+                      }}
+                    >
+                      {change.label ?? categoryColors[change.category].label}
+                    </span>
+                    <ul style={styles.changesList}>
+                      {change.items.map((item, itemIndex) => (
+                        <li key={itemIndex} style={styles.changeItem}>
+                          {itemText(item)}
+                          {itemHighlight(item) && (
+                            <span style={styles.majorPill}>Major</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              {/* Connector line (except for last item) */}
+              {index < CHANGELOG.length - 1 && <div style={styles.connector} />}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -594,6 +649,99 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '14px',
     color: referenceColors.gray['70'],
     lineHeight: '22px',
+  },
+  majorPill: {
+    display: 'inline-block',
+    marginLeft: '8px',
+    padding: '1px 6px',
+    borderRadius: '3px',
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: '10px',
+    fontWeight: 700,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    backgroundColor: systemColors.light['background-accent-amber'] ?? referenceColors.gray['10'],
+    color: systemColors.light['content-accent-amber'] ?? referenceColors.gray['90'],
+    verticalAlign: '2px',
+  },
+  hero: {
+    backgroundColor: systemColors.light['background-subtle'],
+    border: `1px solid ${systemColors.light['border-default'] ?? systemColors.light['background-subtle']}`,
+    borderRadius: '12px',
+    padding: '20px 24px',
+    marginBottom: '32px',
+  },
+  heroLabel: {
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: '11px',
+    fontWeight: 700,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: systemColors.light['content-brand'],
+    marginBottom: '12px',
+  },
+  heroList: {
+    margin: 0,
+    padding: 0,
+    listStyle: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  },
+  heroItem: {
+    display: 'flex',
+    gap: '10px',
+    alignItems: 'flex-start',
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '14px',
+    color: systemColors.light['content-primary'],
+    lineHeight: '22px',
+  },
+  heroChip: {
+    flexShrink: 0,
+    padding: '2px 8px',
+    borderRadius: '4px',
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: '10.5px',
+    fontWeight: 600,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    backgroundColor: systemColors.light['background-base'],
+    color: systemColors.light['content-secondary'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
+  },
+  heroText: {
+    flex: 1,
+  },
+  headline: {
+    backgroundColor: systemColors.light['background-subtle'],
+    borderLeft: `3px solid ${systemColors.light['content-brand']}`,
+    padding: '12px 16px',
+    marginBottom: '20px',
+    borderRadius: '4px',
+  },
+  headlineLabel: {
+    fontFamily: '"SF Mono", Monaco, monospace',
+    fontSize: '10.5px',
+    fontWeight: 700,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: systemColors.light['content-brand'],
+    marginBottom: '6px',
+  },
+  headlineList: {
+    margin: 0,
+    paddingLeft: '18px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+  },
+  headlineItem: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '13.5px',
+    color: systemColors.light['content-primary'],
+    lineHeight: '20px',
+    fontWeight: 500,
   },
   connector: {
     position: 'absolute',
