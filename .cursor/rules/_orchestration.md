@@ -31,6 +31,16 @@ If a topic switch is detected → proactively say:
 
 Do not wait to be asked. Do not load any rule files until after the designer decides.
 
+## Step 0c: MCP plugin overhead check
+
+MCP plugins add a fixed overhead to every message in the session, whether they are used or not. The Figma MCP plugin alone adds **~4,000 tokens per message** — on a 20-message session that is ~80,000 tokens of overhead before any rule file gets loaded.
+
+If the current session is not doing Figma work and the Figma plugin is enabled, suggest disabling it:
+
+> *"Heads up — Figma MCP is on and adding ~4k tokens per message. If we are not pulling from Figma this session, you can disable it via `/config` or by setting `"figma@claude-plugins-official": false` in `~/.claude/settings.json`. Re-enable when starting a Figma session."*
+
+Do not nag once per session — say it once if the signal is clear (no Figma URL or screenshot in the last few exchanges) and let the designer decide.
+
 ---
 
 ## Step 1: Classify by intent
