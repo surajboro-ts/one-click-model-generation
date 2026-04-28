@@ -1,8 +1,6 @@
 import React from 'react';
 import { systemColors, referenceColors } from '../tokens/colors';
 
-type ChangeItem = string | { text: string; highlight?: boolean };
-
 interface ChangelogEntry {
   version: string;
   date: string;
@@ -11,39 +9,48 @@ interface ChangelogEntry {
   changes: {
     category: 'added' | 'changed' | 'fixed' | 'removed';
     label?: string; // overrides the default badge text (e.g. theme group names)
-    items: ChangeItem[];
+    items: string[];
   }[];
 }
 
-// Helpers to read either string or { text, highlight } items uniformly.
-const itemText = (i: ChangeItem) => (typeof i === 'string' ? i : i.text);
-const itemHighlight = (i: ChangeItem) => (typeof i === 'string' ? false : !!i.highlight);
+// Curated highlights — cherry-picked across releases. Newest first.
+// Visibility rule: items from the last 60 days, OR the most recent 6 items
+// if fewer than 6 fall inside that window.
+interface Highlight {
+  title: string;
+  description: string;
+  version: string; // links back to the corresponding CHANGELOG entry
+  date: string; // ISO date for the time-based window
+}
+
+const HIGHLIGHTS: Highlight[] = [
+  {
+    title: 'Project status dashboard',
+    description: 'A local HTML dashboard with overview, branches, forks/upstream, worktrees, and docs/plans tabs. Run /project-status; zero LLM token cost.',
+    version: '26.4.4c',
+    date: '2026-04-28',
+  },
+  {
+    title: 'Modal redesign — Figma alignment',
+    description: 'Header padding restored, footer fixed at 72px with corrected CTA placement, wizard stepper rebuilt as discrete segments, RdModal absorbed into Modal.',
+    version: '26.4.4c',
+    date: '2026-04-27',
+  },
+  {
+    title: 'Token system — Figma 3.0 alignment',
+    description: 'Phases 1–5 of 8 shipped: primitive colors, light semantic colors, typography, shadows, layout. Dark mode (Phase 6) is next.',
+    version: '26.4.4c',
+    date: '2026-04-28',
+  },
+  {
+    title: 'Changelog highlights',
+    description: 'Curated highlights at the top of this page surface major work across recent releases — like the section you are reading.',
+    version: '26.4.4c',
+    date: '2026-04-28',
+  },
+];
 
 const CHANGELOG: ChangelogEntry[] = [
-  {
-    version: '26.4.4d',
-    date: '2026-04-28',
-    title: 'Changelog highlights system',
-    type: 'minor',
-    changes: [
-      {
-        category: 'added',
-        label: 'Changelog page',
-        items: [
-          { text: "What's new hero — pinned section at the top of the Changelog surfaces flagged items from the most recent release, grouped by section", highlight: true },
-          { text: 'Headline callout — each release entry shows its flagged items in a Headline block above the detailed change list', highlight: true },
-          'Major pill — inline tag renders next to flagged items in the detailed list',
-        ],
-      },
-      {
-        category: 'changed',
-        label: 'Release tooling',
-        items: [
-          'release.sh now prompts for major highlights interactively and pre-inserts them as { text, highlight: true } items in the printed ChangelogPage draft',
-        ],
-      },
-    ],
-  },
   {
     version: '26.4.4c',
     date: '2026-04-28',
@@ -54,10 +61,10 @@ const CHANGELOG: ChangelogEntry[] = [
         category: 'added',
         label: 'Token system — Figma 3.0 alignment (Phases 1–5 of 8)',
         items: [
-          { text: 'Phase 1 — Primitive colors: darkGray scale (12 stops), alpha variants, hex fixes for purple and teal', highlight: true },
-          { text: 'Phase 2 — Light semantic colors: 6 value fixes + 22 new accent tokens (background-accent, content-accent, border)', highlight: true },
-          { text: 'Phase 3 — Typography: letter-spacing aligned to Figma absolutes, 6 v2TextStyles bumped medium → semibold, body weight light → regular', highlight: true },
-          { text: 'Phase 4 — Elevation: shadowPrimitives with 3 semantic levels (surface, menu, modal) and light/dark variants; component CSS migrated to semantic vars', highlight: true },
+          'Phase 1 — Primitive colors: darkGray scale (12 stops), alpha variants, hex fixes for purple and teal',
+          'Phase 2 — Light semantic colors: 6 value fixes + 22 new accent tokens (background-accent, content-accent, border)',
+          'Phase 3 — Typography: letter-spacing aligned to Figma absolutes, 6 v2TextStyles bumped medium → semibold, body weight light → regular',
+          'Phase 4 — Elevation: shadowPrimitives with 3 semantic levels (surface, menu, modal) and light/dark variants; component CSS migrated to semantic vars',
           'Phase 5 — Layout: AppSidebar/AppShell default width 261px → 260px',
         ],
       },
@@ -65,27 +72,36 @@ const CHANGELOG: ChangelogEntry[] = [
         category: 'changed',
         label: 'Modal alignment with Figma',
         items: [
-          { text: 'Modal header padding restored to 20px 24px (variable height) so wizard variants grow correctly', highlight: true },
-          { text: 'Modal footer fixed at 72px with corrected tertiary-left / primary-right CTA placement', highlight: true },
-          { text: 'Wizard stepper rebuilt as discrete 4px segments with 6px gap and 2px radii; renders for splashscreen too', highlight: true },
+          'Modal header padding restored to 20px 24px (variable height) so wizard variants grow correctly',
+          'Modal footer fixed at 72px with corrected tertiary-left / primary-right CTA placement',
+          'Wizard stepper rebuilt as discrete 4px segments with 6px gap and 2px radii; renders for splashscreen too',
           'Close icon removed from M1/M2/M3 simple modals — only M4 keeps the Close text link, per Figma',
           'New M2 eyebrow-only modal demo (no stepper)',
           'Splash screen: header no longer renders (title moved to body)',
           'Overlay z-index bumped to 1000 so M4 covers the sidebar',
-          { text: 'RdModal absorbed into Modal — single modal component going forward', highlight: true },
+          'RdModal absorbed into Modal — single modal component going forward',
         ],
       },
       {
         category: 'added',
         label: 'Project status dashboard (/project-status)',
         items: [
-          { text: 'Local HTML dashboard with overview, branches, forks/upstream, and docs/plans tabs at zero LLM token cost', highlight: true },
-          { text: 'Worktree view — each checkout shown with branch, modified count, divergence vs main, locked/prunable badges', highlight: true },
-          { text: 'Branch divergence in three columns: vs main, vs staging, vs upstream/main, with last commit subject + relative age', highlight: true },
-          { text: 'Role-aware tabs — maintainers see all designer forks; designer forks see upstream sync state', highlight: true },
+          'Local HTML dashboard with overview, branches, forks/upstream, and docs/plans tabs at zero LLM token cost',
+          'Worktree view — each checkout shown with branch, modified count, divergence vs main, locked/prunable badges',
+          'Branch divergence in three columns: vs main, vs staging, vs upstream/main, with last commit subject + relative age',
+          'Role-aware tabs — maintainers see all designer forks; designer forks see upstream sync state',
           'Inline markdown viewer — click any .md row to open its rendered content in an in-page modal',
           'Local-only badges — gitignored files (BACKLOG.md, plans/, articles/) tagged with a blue local chip',
           'Forks sorted by last push descending (most recent first)',
+        ],
+      },
+      {
+        category: 'added',
+        label: 'Changelog highlights',
+        items: [
+          'Curated Highlights section at the top of the Changelog page surfaces major work across recent releases',
+          'Visibility rule: last 60 days OR last 6 items, whichever is longer',
+          'release.sh now prompts the maintainer for highlights interactively during release',
         ],
       },
       {
@@ -458,23 +474,16 @@ const typeColors = {
   patch: systemColors.light['content-tertiary'],
 };
 
-// Pull the highlight items out of an entry, paired with their section label,
-// so the Headline callout can show them grouped by area.
-const collectHighlights = (entry: ChangelogEntry) => {
-  const out: { label: string; text: string }[] = [];
-  for (const change of entry.changes) {
-    const sectionLabel = change.label ?? categoryColors[change.category].label;
-    for (const item of change.items) {
-      if (itemHighlight(item)) out.push({ label: sectionLabel, text: itemText(item) });
-    }
-  }
-  return out;
-};
+// Visible highlights: items from the last 60 days, OR the most recent 6 if
+// fewer than 6 fall in that window.
+const SIXTY_DAYS_MS = 60 * 24 * 60 * 60 * 1000;
+const visibleHighlights = (() => {
+  const now = Date.now();
+  const recent = HIGHLIGHTS.filter((h) => now - new Date(h.date).getTime() <= SIXTY_DAYS_MS);
+  return recent.length >= 6 ? recent : HIGHLIGHTS.slice(0, Math.max(6, recent.length));
+})();
 
 export const ChangelogPage: React.FC = () => {
-  const latest = CHANGELOG[0];
-  const latestHighlights = latest ? collectHighlights(latest) : [];
-
   return (
     <div style={styles.container}>
       {/* Header */}
@@ -485,15 +494,18 @@ export const ChangelogPage: React.FC = () => {
         </p>
       </div>
 
-      {/* Pinned hero — what's new in the most recent release */}
-      {latest && latestHighlights.length > 0 && (
+      {/* Curated highlights — cherry-picked across recent releases */}
+      {visibleHighlights.length > 0 && (
         <div style={styles.hero}>
-          <div style={styles.heroLabel}>What's new in v{latest.version}</div>
+          <div style={styles.heroLabel}>Highlights</div>
           <ul style={styles.heroList}>
-            {latestHighlights.map((h, i) => (
+            {visibleHighlights.map((h, i) => (
               <li key={i} style={styles.heroItem}>
-                <span style={styles.heroChip}>{h.label}</span>
-                <span style={styles.heroText}>{h.text}</span>
+                <div style={styles.heroItemHead}>
+                  <span style={styles.heroTitle}>{h.title}</span>
+                  <span style={styles.heroVersion}>v{h.version}</span>
+                </div>
+                <p style={styles.heroDescription}>{h.description}</p>
               </li>
             ))}
           </ul>
@@ -502,74 +514,56 @@ export const ChangelogPage: React.FC = () => {
 
       {/* Timeline */}
       <div style={styles.timeline}>
-        {CHANGELOG.map((entry, index) => {
-          const highlights = collectHighlights(entry);
-          return (
-            <div key={entry.version} style={styles.entry}>
-              {/* Version Header */}
-              <div style={styles.entryHeader}>
-                <div style={styles.versionInfo}>
+        {CHANGELOG.map((entry, index) => (
+          <div key={entry.version} style={styles.entry}>
+            {/* Version Header */}
+            <div style={styles.entryHeader}>
+              <div style={styles.versionInfo}>
+                <span
+                  style={{
+                    ...styles.versionBadge,
+                    backgroundColor: typeColors[entry.type],
+                  }}
+                >
+                  v{entry.version}
+                </span>
+                <span style={styles.entryTitle}>{entry.title}</span>
+              </div>
+              <span style={styles.entryDate}>{entry.date}</span>
+            </div>
+
+            {/* Changes */}
+            <div style={styles.changesContainer}>
+              {entry.changes.map((change, changeIndex) => (
+                <div key={changeIndex} style={styles.changeSection}>
                   <span
                     style={{
-                      ...styles.versionBadge,
-                      backgroundColor: typeColors[entry.type],
+                      ...styles.categoryBadge,
+                      backgroundColor: change.label
+                        ? systemColors.light['background-subtle']
+                        : categoryColors[change.category].bg,
+                      color: change.label
+                        ? systemColors.light['content-secondary']
+                        : categoryColors[change.category].text,
                     }}
                   >
-                    v{entry.version}
+                    {change.label ?? categoryColors[change.category].label}
                   </span>
-                  <span style={styles.entryTitle}>{entry.title}</span>
-                </div>
-                <span style={styles.entryDate}>{entry.date}</span>
-              </div>
-
-              {/* Per-release headline callout */}
-              {highlights.length > 0 && (
-                <div style={styles.headline}>
-                  <div style={styles.headlineLabel}>Headline</div>
-                  <ul style={styles.headlineList}>
-                    {highlights.map((h, i) => (
-                      <li key={i} style={styles.headlineItem}>{h.text}</li>
+                  <ul style={styles.changesList}>
+                    {change.items.map((item, itemIndex) => (
+                      <li key={itemIndex} style={styles.changeItem}>
+                        {item}
+                      </li>
                     ))}
                   </ul>
                 </div>
-              )}
-
-              {/* Changes */}
-              <div style={styles.changesContainer}>
-                {entry.changes.map((change, changeIndex) => (
-                  <div key={changeIndex} style={styles.changeSection}>
-                    <span
-                      style={{
-                        ...styles.categoryBadge,
-                        backgroundColor: change.label
-                          ? systemColors.light['background-subtle']
-                          : categoryColors[change.category].bg,
-                        color: change.label
-                          ? systemColors.light['content-secondary']
-                          : categoryColors[change.category].text,
-                      }}
-                    >
-                      {change.label ?? categoryColors[change.category].label}
-                    </span>
-                    <ul style={styles.changesList}>
-                      {change.items.map((item, itemIndex) => (
-                        <li key={itemIndex} style={styles.changeItem}>
-                          {itemText(item)}
-                          {itemHighlight(item) && (
-                            <span style={styles.majorPill}>Major</span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              {/* Connector line (except for last item) */}
-              {index < CHANGELOG.length - 1 && <div style={styles.connector} />}
+              ))}
             </div>
-          );
-        })}
+
+            {/* Connector line (except for last item) */}
+            {index < CHANGELOG.length - 1 && <div style={styles.connector} />}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -674,98 +668,70 @@ const styles: Record<string, React.CSSProperties> = {
     color: referenceColors.gray['70'],
     lineHeight: '22px',
   },
-  majorPill: {
-    display: 'inline-block',
-    marginLeft: '8px',
-    padding: '1px 6px',
-    borderRadius: '3px',
-    fontFamily: '"SF Mono", Monaco, monospace',
-    fontSize: '10px',
-    fontWeight: 700,
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    backgroundColor: systemColors.light['background-accent-amber'] ?? referenceColors.gray['10'],
-    color: systemColors.light['content-accent-amber'] ?? referenceColors.gray['90'],
-    verticalAlign: '2px',
-  },
   hero: {
     backgroundColor: systemColors.light['background-subtle'],
-    border: `1px solid ${systemColors.light['border-default'] ?? systemColors.light['background-subtle']}`,
+    border: `1px solid ${systemColors.light['background-subtle']}`,
     borderRadius: '12px',
-    padding: '20px 24px',
-    marginBottom: '32px',
+    padding: '24px 28px',
+    marginBottom: '40px',
   },
   heroLabel: {
     fontFamily: '"SF Mono", Monaco, monospace',
     fontSize: '11px',
     fontWeight: 700,
-    letterSpacing: '0.14em',
+    letterSpacing: '0.16em',
     textTransform: 'uppercase',
     color: systemColors.light['content-brand'],
-    marginBottom: '12px',
+    marginBottom: '16px',
   },
   heroList: {
     margin: 0,
     padding: 0,
     listStyle: 'none',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+    gap: '16px',
   },
   heroItem: {
+    backgroundColor: systemColors.light['background-base'],
+    border: `1px solid ${systemColors.light['background-subtle']}`,
+    borderRadius: '8px',
+    padding: '14px 16px',
     display: 'flex',
-    gap: '10px',
-    alignItems: 'flex-start',
-    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '14px',
-    color: systemColors.light['content-primary'],
-    lineHeight: '22px',
+    flexDirection: 'column',
+    gap: '6px',
   },
-  heroChip: {
+  heroItemHead: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '12px',
+  },
+  heroTitle: {
+    fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSize: '15px',
+    fontWeight: 600,
+    color: systemColors.light['content-primary'],
+    lineHeight: '20px',
+  },
+  heroVersion: {
     flexShrink: 0,
     padding: '2px 8px',
     borderRadius: '4px',
     fontFamily: '"SF Mono", Monaco, monospace',
-    fontSize: '10.5px',
+    fontSize: '11px',
     fontWeight: 600,
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    backgroundColor: systemColors.light['background-base'],
-    color: systemColors.light['content-secondary'],
-    border: `1px solid ${systemColors.light['background-subtle']}`,
-  },
-  heroText: {
-    flex: 1,
-  },
-  headline: {
+    letterSpacing: '0.04em',
     backgroundColor: systemColors.light['background-subtle'],
-    borderLeft: `3px solid ${systemColors.light['content-brand']}`,
-    padding: '12px 16px',
-    marginBottom: '20px',
-    borderRadius: '4px',
+    color: systemColors.light['content-secondary'],
   },
-  headlineLabel: {
-    fontFamily: '"SF Mono", Monaco, monospace',
-    fontSize: '10.5px',
-    fontWeight: 700,
-    letterSpacing: '0.14em',
-    textTransform: 'uppercase',
-    color: systemColors.light['content-brand'],
-    marginBottom: '6px',
-  },
-  headlineList: {
+  heroDescription: {
     margin: 0,
-    paddingLeft: '18px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '4px',
-  },
-  headlineItem: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontSize: '13.5px',
-    color: systemColors.light['content-primary'],
-    lineHeight: '20px',
-    fontWeight: 500,
+    fontSize: '13px',
+    fontWeight: 400,
+    color: systemColors.light['content-secondary'],
+    lineHeight: '19px',
   },
   connector: {
     position: 'absolute',

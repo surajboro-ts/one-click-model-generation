@@ -118,24 +118,30 @@ echo "    date: '$TODAY',"
 echo "    title: 'Release $VERSION',"
 echo "    type: 'minor',"
 echo "    changes: ["
-if [ "${#HIGHLIGHTS[@]}" -gt 0 ]; then
-  echo "      {"
-  echo "        category: 'added', // change to 'changed'/'fixed'/'removed' if more accurate"
-  echo "        label: 'Highlights',"
-  echo "        items: ["
-  for h in "${HIGHLIGHTS[@]}"; do
-    # Escape any single quotes in the highlight text.
-    safe=$(printf '%s' "$h" | sed "s/'/\\\\'/g")
-    echo "          { text: '$safe', highlight: true },"
-  done
-  echo "        ],"
-  echo "      },"
-  echo "      // Add the rest of the change list below — strings are fine,"
-  echo "      // use { text, highlight: true } to bubble more items into the hero."
-fi
 echo "      // { category: 'added', label: 'Section', items: ['...'] },"
 echo "    ],"
 echo "  },"
+
+if [ "${#HIGHLIGHTS[@]}" -gt 0 ]; then
+  echo ""
+  echo "═════════════════════════════════════════════════════"
+  echo "MANUAL STEP — prepend to HIGHLIGHTS array in ChangelogPage.tsx"
+  echo "(curated cherry-picks across releases — newest first)"
+  echo "═════════════════════════════════════════════════════"
+  for h in "${HIGHLIGHTS[@]}"; do
+    safe=$(printf '%s' "$h" | sed "s/'/\\\\'/g")
+    echo "  {"
+    echo "    title: '$safe',"
+    echo "    description: '...one-line context, why it matters...',"
+    echo "    version: '$VERSION',"
+    echo "    date: '$TODAY',"
+    echo "  },"
+  done
+  echo ""
+  echo "Tip: highlights show for 60 days OR the most recent 6 — older ones"
+  echo "drop off the page automatically. Prune the bottom of HIGHLIGHTS"
+  echo "occasionally if entries get stale before falling out of the window."
+fi
 echo ""
 echo "─────────────────────────────────────────────────────"
 echo "When ready:"

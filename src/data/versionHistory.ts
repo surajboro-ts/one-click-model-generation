@@ -28,17 +28,6 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
-    version: '26.4.4d',
-    date: '2026-04-28',
-    type: 'minor',
-    changes: [
-      { type: 'added', group: 'Changelog highlights', component: "What's new hero", description: 'Pinned section at the top of the Changelog page surfaces flagged items from the most recent release, grouped by section' },
-      { type: 'added', group: 'Changelog highlights', component: 'Headline callout', description: 'Each release entry shows its flagged items in a Headline block above the detailed change list' },
-      { type: 'added', group: 'Changelog highlights', component: 'Major pill', description: 'Inline pill renders next to flagged items in the detailed list itself' },
-      { type: 'added', group: 'Release tooling', component: 'Highlights prompt in release.sh', description: 'release.sh now asks the maintainer for major highlights interactively and pre-inserts them in the printed ChangelogPage draft' },
-    ],
-  },
-  {
     version: '26.4.4c',
     date: '2026-04-28',
     type: 'minor',
@@ -50,6 +39,9 @@ export const versionHistory: VersionEntry[] = [
       { type: 'added', group: 'Project status dashboard', component: 'Inline markdown viewer', description: 'Click any .md row to open its rendered content in an in-page modal (marked with raw fallback)' },
       { type: 'added', group: 'Project status dashboard', component: 'Local-only badges', description: 'Gitignored files (BACKLOG.md, plans/, articles/) get a blue local chip' },
       { type: 'modified', group: 'Project status dashboard', component: 'Forks sort order', description: 'Most recently pushed forks first instead of alphabetical' },
+      { type: 'added', group: 'Changelog highlights', component: 'Highlights section', description: 'Curated section at the top of the Changelog page cherry-picks major work across recent releases' },
+      { type: 'added', group: 'Changelog highlights', component: 'Visibility window', description: 'Highlights show items from the last 60 days OR the last 6 items, whichever is longer' },
+      { type: 'added', group: 'Changelog highlights', component: 'release.sh prompt', description: 'release.sh asks the maintainer for highlights interactively during release and pre-inserts them in the printed ChangelogPage draft' },
       { type: 'added', group: 'AI orchestrator', component: 'MCP plugin overhead check', description: 'New Step 0c flags Figma MCP ~4k tokens-per-message cost once per session if no Figma signal is detected' },
       { type: 'modified', group: 'Security', component: 'postcss', description: 'Bumped 8.5.6 to 8.5.10 in lockfile to patch XSS via unescaped style tag (GHSA-qx2v-qp2m-jg93)' },
       { type: 'added', group: 'Documentation', component: 'Workflow explorations', description: '3-slide ASCII workflow deck and revised AI workflow diagram salvaged from local experiments' },
