@@ -15,6 +15,68 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '26.4.4c',
+    date: '2026-04-28',
+    title: 'Token system Figma alignment, Modal alignment, Project status dashboard',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        label: 'Token system — Figma 3.0 alignment (Phases 1–5 of 8)',
+        items: [
+          'Phase 1 — Primitive colors: darkGray scale (12 stops), alpha variants, hex fixes for purple and teal',
+          'Phase 2 — Light semantic colors: 6 value fixes + 22 new accent tokens (background-accent, content-accent, border)',
+          'Phase 3 — Typography: letter-spacing aligned to Figma absolutes, 6 v2TextStyles bumped medium → semibold, body weight light → regular',
+          'Phase 4 — Elevation: shadowPrimitives with 3 semantic levels (surface, menu, modal) and light/dark variants; component CSS migrated to semantic vars',
+          'Phase 5 — Layout: AppSidebar/AppShell default width 261px → 260px',
+        ],
+      },
+      {
+        category: 'changed',
+        label: 'Modal alignment with Figma',
+        items: [
+          'Modal header padding restored to 20px 24px (variable height) so wizard variants grow correctly',
+          'Modal footer fixed at 72px with corrected tertiary-left / primary-right CTA placement',
+          'Wizard stepper rebuilt as discrete 4px segments with 6px gap and 2px radii; renders for splashscreen too',
+          'Close icon removed from M1/M2/M3 simple modals — only M4 keeps the Close text link, per Figma',
+          'New M2 eyebrow-only modal demo (no stepper)',
+          'Splash screen: header no longer renders (title moved to body)',
+          'Overlay z-index bumped to 1000 so M4 covers the sidebar',
+          'RdModal absorbed into Modal — single modal component going forward',
+        ],
+      },
+      {
+        category: 'added',
+        label: 'Project status dashboard (/project-status)',
+        items: [
+          'Local HTML dashboard with overview, branches, forks/upstream, and docs/plans tabs at zero LLM token cost',
+          'Worktree view — each checkout shown with branch, modified count, divergence vs main, locked/prunable badges',
+          'Branch divergence in three columns: vs main, vs staging, vs upstream/main, with last commit subject + relative age',
+          'Role-aware tabs — maintainers see all designer forks; designer forks see upstream sync state',
+          'Inline markdown viewer — click any .md row to open its rendered content in an in-page modal',
+          'Local-only badges — gitignored files (BACKLOG.md, plans/, articles/) tagged with a blue local chip',
+          'Forks sorted by last push descending (most recent first)',
+        ],
+      },
+      {
+        category: 'changed',
+        label: 'AI orchestrator',
+        items: [
+          'New Step 0c — flags Figma MCP\'s ~4k tokens-per-message cost once per session when no Figma signal is detected',
+          'Tier 1 signals expanded to include copy review and UX writing tasks (even with no code changes)',
+          'UI text rule strengthened — load content-guidelines.md before writing or reviewing labels, buttons, titles, body copy, or error messages',
+        ],
+      },
+      {
+        category: 'fixed',
+        label: 'Security',
+        items: [
+          'postcss bumped 8.5.6 → 8.5.10 in lockfile (GHSA-qx2v-qp2m-jg93 — XSS via unescaped </style> in CSS stringify output)',
+        ],
+      },
+    ],
+  },
+  {
     version: '26.4.1c',
     date: '2026-04-08',
     title: 'Registry Split, Orchestrator v2, Liveboard System, Platform Tooling',

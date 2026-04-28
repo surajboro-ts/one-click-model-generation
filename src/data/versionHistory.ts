@@ -28,6 +28,23 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.4.4c',
+    date: '2026-04-28',
+    type: 'minor',
+    changes: [
+      { type: 'added', group: 'Project status dashboard', component: '/project-status command', description: 'Renamed from /status-page; generates a local HTML dashboard with overview, branches, forks/upstream, and docs/plans tabs at zero LLM token cost' },
+      { type: 'added', group: 'Project status dashboard', component: 'Worktree view', description: 'Each checkout shown with branch, modified count, divergence vs main, and locked/prunable badges' },
+      { type: 'added', group: 'Project status dashboard', component: 'Branch divergence', description: 'Three columns vs main, staging, and upstream/main with last commit subject + relative age' },
+      { type: 'added', group: 'Project status dashboard', component: 'Role-aware tabs', description: 'Maintainers see the full Forks tab; designer forks see an Upstream sync tab with behind/ahead vs upstream' },
+      { type: 'added', group: 'Project status dashboard', component: 'Inline markdown viewer', description: 'Click any .md row to open its rendered content in an in-page modal (marked with raw fallback)' },
+      { type: 'added', group: 'Project status dashboard', component: 'Local-only badges', description: 'Gitignored files (BACKLOG.md, plans/, articles/) get a blue local chip' },
+      { type: 'modified', group: 'Project status dashboard', component: 'Forks sort order', description: 'Most recently pushed forks first instead of alphabetical' },
+      { type: 'added', group: 'AI orchestrator', component: 'MCP plugin overhead check', description: 'New Step 0c flags Figma MCP ~4k tokens-per-message cost once per session if no Figma signal is detected' },
+      { type: 'modified', group: 'Security', component: 'postcss', description: 'Bumped 8.5.6 to 8.5.10 in lockfile to patch XSS via unescaped style tag (GHSA-qx2v-qp2m-jg93)' },
+      { type: 'added', group: 'Documentation', component: 'Workflow explorations', description: '3-slide ASCII workflow deck and revised AI workflow diagram salvaged from local experiments' },
+    ],
+  },
+  {
     version: '26.4.4b',
     date: '2026-04-28',
     type: 'minor',

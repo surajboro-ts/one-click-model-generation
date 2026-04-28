@@ -1,5 +1,29 @@
 # Changelog
 
+## 26.4.4c — 2026-04-28
+
+- docs(orchestration): add MCP plugin overhead check (B1 from workflow plan)
+- feat(status): sort forks by last push descending
+- feat(status): add worktrees + branch divergence vs main/staging/upstream
+- feat(status): merge plans/rules/docs into one tab, drop Open work
+- feat(status): role-aware dashboard — designer forks see upstream-sync tab
+- feat(status): rename to /project-status, add inline md viewer + local badges
+- chore(deps): bump postcss to 8.5.10 in lockfile (fixes XSS advisory)
+- chore: salvage workflow explorations + orchestration tightening
+- Merge branch 'feat/token-system-figma-alignment' into staging
+- feat(tokens): Phases 4 & 5 — shadows + layout aligned with Figma 3.0
+- feat(tokens): Phase 3 — typography aligned with Figma 3.0 + changelog
+- feat(tokens): Phase 2 — light mode semantic colors aligned with Figma 3.0
+- feat(tokens): Phase 1 — primitive colors aligned with Figma 3.0
+- Merge branch 'review/rd-modal-component' into staging
+- docs: add 26.4.4a changelog for Modal Figma alignment
+- feat: align Modal with Figma spec and absorb RdModal learnings
+- Merge branch 'pr-10-rd-modal' into staging
+- feat: add RdModal shared modal component
+- fix: add process type declaration to middleware to resolve TS2580 errors
+- chore: extend password gate cookie lifetime to 14 days
+
+
 All notable changes to Radiant Play are documented here.
 
 **Versioning:** `YY.M.Ws` — Year.Month.Week + sub-release letter (a, b, c...).
