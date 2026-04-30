@@ -1,3 +1,7 @@
+---
+description: Check what changed in upstream RadiantPlay since last sync — new components, updated patterns, removals. Read-only, nothing is merged.
+---
+
 Check what has changed in the upstream Radiant Play repository since your last sync. Shows new components, updated patterns, removals, and a preview of what will change if you run /sync-upstream. Read-only — nothing is merged.
 
 ## Instructions

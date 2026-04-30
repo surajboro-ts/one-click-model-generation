@@ -81,6 +81,7 @@ Adding or modifying a feature within an existing prototype.
 | **Figma screenshot** | `figma-component-mapping.md` | Screenshot or Figma layer reference |
 | **Liveboard work** | `liveboard-ia.md` | Editing or adding to an existing Liveboard prototype |
 | **Liveboard canvas (view)** | `liveboard-canvas-core.md` | Grid system, tile types, view mode, chart palette |
+| **Data Model Editor work** | `data-model-editor-ia.md` | Editing or adding to an existing DME (DataModelEditor) prototype |
 | **Liveboard canvas (edit)** | `liveboard-canvas-core.md` + `liveboard-canvas-edit.md` | Drag, resize, selection, toolbars |
 | **Liveboard canvas (full)** | All 3 canvas tiers + `liveboard-canvas-advanced.md` | Groups, multi-select, inline editing |
 | **Liveboard build** | `liveboard-ia.md` + `liveboard-scaffolding.md` + canvas tiers (see Liveboard Requirements Gate below) | Building a new Liveboard from scratch |
@@ -167,6 +168,35 @@ Based on answers, load ONLY the needed canvas tiers:
 Always load `liveboard-ia.md` + `liveboard-scaffolding.md` alongside the canvas tiers.
 
 **Skip the gate** for Tier 0/1 tasks (minor tweaks, modifications to existing Liveboards). Only gate Tier 2 new builds.
+
+---
+
+## Data Model Editor Requirements Gate
+
+When the task is a **new Data Model Editor prototype** (Tier 2), BEFORE loading any DME rule files, ask the user:
+
+1. **Starting state** — Blank canvas (`welcomeVariant: 'blank'`) or pre-loaded schema (`welcomeVariant: 'existing'`)?
+   - `'blank'` → empty canvas, "Let's build your model" welcome intro with central textarea
+   - `'existing'` → pre-populated tables/joins, "Welcome back" + "Check for AI readiness" button
+2. **SpotterModel AI?** — Yes or No.
+   - **If Yes:** Ask for the Anthropic API key. Write `ANTHROPIC_API_KEY=<key>` to `.env.local`. Then ask model preference:
+     - `claude-sonnet-4-6` — balanced speed and quality **(default, recommended)**
+     - `claude-opus-4-7` — most capable, slower and more expensive
+     - `claude-haiku-4-5-20251001` — fastest and cheapest
+     Update the `model` field in `window.__DME_CONFIG__` in `index.tsx`. `init-dme.js` reads it via `window.__DME_CONFIG__?.model`.
+   - **If No:** Set `window.__DME_CONFIG__ = { spotterModel: false, welcomeVariant: 'blank' }` in `index.tsx`. Agent panel will not render. No API key needed.
+3. **Dataset** — Mock retail schema (default `DATASOURCE_TABLES` — 12 tables) or custom?
+   - **If custom:** Replace the `DATASOURCE_TABLES` array in the init file with the user's schema (`{ name, columns: string[] }[]`).
+
+Based on answers, load:
+
+| User needs | Files to load |
+|-----------|--------------|
+| Any DME work | `data-model-editor-ia.md` + `data-model-editor-components.md` |
+| SpotterModel Yes | also `data-model-editor-interactions.md` |
+| SpotterModel No | skip interactions file (agent panel not used) |
+
+**Skip the gate** for Tier 0/1 tasks (minor tweaks or edits to existing DME prototypes). Only gate Tier 2 new builds.
 
 ---
 

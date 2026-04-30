@@ -41,6 +41,7 @@ import SpotterModelThumbnail from './thumbnails/SpotterModel.svg';
 import AdminLangThumbnail from './thumbnails/AdminLang.svg';
 import MiniSpottersThumbnail from './thumbnails/MiniSpotters.svg';
 import LiveboardTemplateThumbnail from './thumbnails/LiveboardTemplate.svg';
+import DataModelEditorThumbnail from './thumbnails/DataModelEditor.svg';
 
 // ── Components (lazy-loaded) ──────────────────────────────────────────────────
 
@@ -51,6 +52,7 @@ const AdminLang = React.lazy(() => import('./AdminLang'));
 const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
 const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
 const SalesDashboard = React.lazy(() => import('./SalesDashboard'));
+const DataModelEditorSample = React.lazy(() => import('./DataModelEditor'));
 
 // ── Registry ──────────────────────────────────────────────────────────────────
 
@@ -136,6 +138,18 @@ export const coreRegistry: ProjectMeta[] = [
     component: SalesDashboard,
     dsComponents: 6,
     customComponents: 3,
+    section: 'sample',
+  },
+  {
+    id: 'DataModelEditor',
+    name: 'Data model editor',
+    description: 'Build and refine a SpotterModel schema with AI-assisted table, join, column, and formula suggestions.',
+    author: 'Design Team',
+    lastModified: '2026-04-30',
+    thumbnail: DataModelEditorThumbnail,
+    component: DataModelEditorSample,
+    dsComponents: 10,
+    customComponents: 13,
     section: 'sample',
   },
 ];
