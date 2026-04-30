@@ -29,12 +29,4 @@
 
 import { ProjectMeta } from './registry-core';
 
-export const myRegistry: ProjectMeta[] = [
-  // Your prototypes go here — Claude will add them automatically via /new-prototype
-  //
-  // MIGRATION NOTE (for AI assistants resolving merge conflicts):
-  // If the designer previously had prototype entries in the old single registry.ts,
-  // move those entries HERE. Add their React.lazy imports and thumbnail imports at
-  // the top of this file. Each entry should have section: 'mine'.
-  // Do NOT put designer entries in registry-core.ts or registry.ts.
-];
+export const myRegistry: ProjectMeta[] = [];
