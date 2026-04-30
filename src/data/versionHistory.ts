@@ -28,6 +28,24 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.0',
+    date: '2026-04-30',
+    type: 'minor',
+    changes: [
+      { type: 'added', group: 'Data Model Editor', component: 'DataModelEditor prototype', description: 'New canvas-based prototype: draggable table cards, column tree, join connectors, retail schema preset, and a unified config gate via window.__DME_CONFIG__' },
+      { type: 'added', group: 'Data Model Editor', component: 'Welcome variants', description: 'Two starting states: blank canvas with creation welcome, or pre-populated retail schema with "Check for AI readiness" CTA' },
+      { type: 'added', group: 'SpotterModel', component: 'AI agent panel', description: 'Right-side AI chat panel with table, join, column, and formula suggestions; reasoning blocks; confidence badges; and version-history restore' },
+      { type: 'added', group: 'SpotterModel', component: '/api/chat proxy', description: 'Anthropic proxy as a Vercel serverless function and a Vite dev middleware so the panel works in both environments' },
+      { type: 'added', group: 'SpotterModel', component: '/switch-model command', description: 'Switch the Claude model used by AI-capable prototypes between Haiku (cheap/fast), Sonnet (balanced), and Opus (most capable)' },
+      { type: 'added', group: 'Shared modules', component: '_agentic module', description: '11 components shared across AI-enabled prototypes: AgentPanel, SuggestionCard, ReasoningBlock, ConfidenceBadge, JoinDiagram, NextActionChips, ToolcallCard, TypingIndicator, UserBubble, VersionCard, AgentResponseBlock' },
+      { type: 'added', group: 'Shared modules', component: '_datamodel module', description: '4 canvas-layer components: TableCanvas, ColumnTree, JoinConnector, TableCard — reusable for any data-model surface' },
+      { type: 'modified', group: 'Design system', component: 'OverlayLoading', description: 'New variant + label props (backwards-compatible — existing usages continue to render the spinner)' },
+      { type: 'added', group: 'AI orchestrator', component: 'DME rule files', description: 'Three new rule files (data-model-editor-ia, -components, -interactions) and a Tier 2 DME Requirements Gate that asks welcomeVariant, SpotterModel, and dataset before loading' },
+      { type: 'modified', group: 'AI orchestrator', component: 'DME concern row split', description: 'Single Tier 1 DME row split into IA / components / interactions plus an "AI agent panel (any prototype)" fallback row for non-DME adopters' },
+      { type: 'modified', group: 'Infrastructure', component: 'ANTHROPIC_API_KEY in dev', description: 'Fixed: vite middleware now reads the key via loadEnv — previously process.env was empty and the AI panel errored on dev' },
+    ],
+  },
+  {
     version: '26.4.4c',
     date: '2026-04-28',
     type: 'minor',

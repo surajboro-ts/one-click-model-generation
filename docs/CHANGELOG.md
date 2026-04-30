@@ -1,5 +1,26 @@
 # Changelog
 
+## 26.5.0 — 2026-04-30
+
+### Added
+- feat(prototype): Data Model Editor — interactive canvas-based prototype with table cards, draggable column tree, and join connectors
+- feat(prototype): SpotterModel agent panel — AI-powered chat interface with table, join, column, and formula suggestions backed by Anthropic
+- feat(prototypes): shared `_agentic` module — AgentPanel, SuggestionCard, ReasoningBlock, ConfidenceBadge, JoinDiagram, NextActionChips, ToolcallCard, TypingIndicator, UserBubble, VersionCard, AgentResponseBlock
+- feat(prototypes): shared `_datamodel` module — TableCanvas, ColumnTree, JoinConnector, TableCard
+- feat(infra): `/api/chat` proxy for the Anthropic API (Vercel function + Vite dev middleware)
+- feat(ds): OverlayLoading variant + label props (backwards-compatible)
+- feat(tooling): `/switch-model` command — switch the Claude model used by AI-capable prototypes between Haiku, Sonnet, and Opus
+- docs(rules): three new orchestrator rule files — `data-model-editor-ia.md`, `data-model-editor-components.md`, `data-model-editor-interactions.md`
+- docs(orchestrator): "AI agent panel (any prototype)" fallback row so non-DME prototypes can adopt `_agentic`
+
+### Changed
+- chore(orchestrator): split the single DME concern row into three sub-rows (IA / components / interactions) so the right rule file loads per task
+- chore(tooling): `new-prototype` command updated for DME-style scaffolding
+- chore(tooling): status.sh untracked-files badge
+
+### Fixed
+- fix(infra): vite middleware now reads `ANTHROPIC_API_KEY` via `loadEnv` — `process.env` was empty in dev and the AI panel errored
+
 ## 26.4.4c — 2026-04-28
 
 - feat(changelog): Highlights section at the top — curated picks across recent releases (60-day window, min 6 items)
