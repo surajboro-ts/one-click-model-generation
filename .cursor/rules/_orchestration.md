@@ -81,7 +81,10 @@ Adding or modifying a feature within an existing prototype.
 | **Figma screenshot** | `figma-component-mapping.md` | Screenshot or Figma layer reference |
 | **Liveboard work** | `liveboard-ia.md` | Editing or adding to an existing Liveboard prototype |
 | **Liveboard canvas (view)** | `liveboard-canvas-core.md` | Grid system, tile types, view mode, chart palette |
-| **Data Model Editor work** | `data-model-editor-ia.md` | Editing or adding to an existing DME (DataModelEditor) prototype |
+| **DME structure / IA** | `data-model-editor-ia.md` | Editing layout variants, tabs, welcome state, or window bridge of an existing DME |
+| **DME components / agent panel** | `data-model-editor-components.md` | Modifying `_agentic` or `_datamodel` components used by DME (AgentPanel, TableCard, ColumnTree, etc.) |
+| **DME interactions / agent flow** | `data-model-editor-interactions.md` | Drag, column tree, agent panel flow, version history on existing DME |
+| **AI agent panel (any prototype)** | `data-model-editor-components.md` + `data-model-editor-interactions.md` | Adopting `_agentic` panel in a non-DME prototype |
 | **Liveboard canvas (edit)** | `liveboard-canvas-core.md` + `liveboard-canvas-edit.md` | Drag, resize, selection, toolbars |
 | **Liveboard canvas (full)** | All 3 canvas tiers + `liveboard-canvas-advanced.md` | Groups, multi-select, inline editing |
 | **Liveboard build** | `liveboard-ia.md` + `liveboard-scaffolding.md` + canvas tiers (see Liveboard Requirements Gate below) | Building a new Liveboard from scratch |
