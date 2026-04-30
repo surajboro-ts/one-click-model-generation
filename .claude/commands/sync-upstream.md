@@ -1,3 +1,7 @@
+---
+description: Merge latest changes from upstream RadiantPlay (galaxy remote) into this fork. Run /check-upstream first to preview what will change.
+---
+
 Sync this fork with the latest changes from the upstream main repo (galaxy: mohammed-faris/radiantplay).
 
 ## Instructions
