@@ -56,7 +56,6 @@ const s: Record<string, React.CSSProperties> = {
   editSubHeader: {
     background: colors.headerBg,
     flexShrink: 0,
-    borderBottom: '1px solid #DBDFE7',
   },
   editHeaderRow: {
     display: 'flex',

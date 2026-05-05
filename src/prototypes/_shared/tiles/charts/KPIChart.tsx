@@ -75,6 +75,7 @@ export const KPIChart: React.FC<Props> = ({
         gap: 8,
         fontFamily: chartFont,
         overflow: 'hidden',
+        paddingLeft: 4,
       }}
     >
       {/* ── KPI info ── */}
