@@ -53,6 +53,7 @@ const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
 const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
 const SalesDashboard = React.lazy(() => import('./SalesDashboard'));
 const DataModelEditorSample = React.lazy(() => import('./DataModelEditor'));
+const StylingPanel = React.lazy(() => import('./StylingPanel'));
 
 // ── Registry ──────────────────────────────────────────────────────────────────
 
@@ -150,6 +151,15 @@ export const coreRegistry: ProjectMeta[] = [
     component: DataModelEditorSample,
     dsComponents: 10,
     customComponents: 13,
+    section: 'sample',
+  },
+  {
+    id: 'StylingPanel',
+    name: 'Styling panel',
+    description: 'Liveboard tile styling controls — density, color themes, corner style, spacing mode, and per-tile overrides with highlight and dark palette.',
+    author: 'Devanshi Behara',
+    lastModified: '2026-04-23',
+    component: StylingPanel,
     section: 'sample',
   },
 ];
