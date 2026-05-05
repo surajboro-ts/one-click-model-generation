@@ -28,6 +28,16 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.1',
+    date: '2026-05-05',
+    type: 'patch',
+    changes: [
+      { type: 'removed', group: 'Prototypes', component: 'SalesDashboard prototype', description: 'Liveboard sample prototype removed from the registry — reference patterns continue to live in _liveboard-template' },
+      { type: 'removed', group: 'Prototypes', component: 'SpotterModel prototype', description: 'Standalone agent edit-flow prototype removed — its patterns are now covered by DataModelEditor + the shared _agentic module' },
+      { type: 'removed', group: 'Prototypes', component: 'StylingPanel merge reverted', description: 'PR #14 (StylingPanel + shared tile density/override system) reverted on staging due to integration issues; will be re-introduced in a follow-up PR' },
+    ],
+  },
+  {
     version: '26.5.0',
     date: '2026-04-30',
     type: 'minor',

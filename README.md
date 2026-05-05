@@ -196,6 +196,7 @@ Radiant Play ships with slash commands you can run directly in Claude Code (or d
 | `/explore [scope]` | Suspends Radiant constraints for freeform exploration. Use when you want to try shadcn, Tailwind, custom CSS, or any direction outside the design system. The rest of the prototype stays Radiant-compliant. Example: `/explore shadcn form components` |
 | `/radiant-check [prototype]` | Runs a compliance health check on a prototype. Shows what's using the design system correctly, what's been customised, what's hardcoded, and where easy improvements exist. Non-blocking — it's a status check, not a gate. |
 | `/new-prototype [Name]` | Scaffolds a new prototype folder with the correct structure, registers it, and pulls the latest from main first. Same as `npm run new-prototype` but with AI guidance through the setup. |
+| `/project-status` | Opens a local HTML dashboard showing branches, forks, plans, worktrees, and divergence vs main/staging/upstream. Pure shell — no AI tokens used. |
 | `/check-upstream` | Shows what has changed in the upstream Radiant Play repo since your last sync — new components, updated patterns, removals. Read-only, nothing merges. |
 | `/sync-upstream` | Merges the latest upstream changes into your fork. Saves your in-progress work first, then syncs safely. |
 | `/fork-status` | Reports on all downstream designer forks — which are up to date, which are behind, and what needs attention. |

@@ -37,7 +37,6 @@ export interface ProjectMeta {
 
 import AdminGroupsThumbnail from './thumbnails/AdminGroups.svg';
 import SpotterMemoryThumbnail from './thumbnails/SpotterMemory.svg';
-import SpotterModelThumbnail from './thumbnails/SpotterModel.svg';
 import AdminLangThumbnail from './thumbnails/AdminLang.svg';
 import MiniSpottersThumbnail from './thumbnails/MiniSpotters.svg';
 import LiveboardTemplateThumbnail from './thumbnails/LiveboardTemplate.svg';
@@ -47,11 +46,9 @@ import DataModelEditorThumbnail from './thumbnails/DataModelEditor.svg';
 
 const SpotterMemory = React.lazy(() => import('./SpotterMemory'));
 const AdminGroups = React.lazy(() => import('./AdminGroups'));
-const SpotterModelProto = React.lazy(() => import('./SpotterModel'));
 const AdminLang = React.lazy(() => import('./AdminLang'));
 const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
 const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
-const SalesDashboard = React.lazy(() => import('./SalesDashboard'));
 const DataModelEditorSample = React.lazy(() => import('./DataModelEditor'));
 
 // ── Registry ──────────────────────────────────────────────────────────────────
@@ -79,18 +76,6 @@ export const coreRegistry: ProjectMeta[] = [
     component: AdminGroups,
     dsComponents: 9,
     customComponents: 10,
-    section: 'sample',
-  },
-  {
-    id: 'SpotterModel',
-    name: 'Spotter Model',
-    description: 'SpotterModel agent edit flow — onboarding, table/join recommendations, columns editing, and impact-aware delete.',
-    author: 'Design Team',
-    lastModified: '2026-03-03',
-    thumbnail: SpotterModelThumbnail,
-    component: SpotterModelProto,
-    dsComponents: 5,
-    customComponents: 14,
     section: 'sample',
   },
   {
@@ -127,17 +112,6 @@ export const coreRegistry: ProjectMeta[] = [
     component: LiveboardTemplate,
     dsComponents: 8,
     customComponents: 4,
-    section: 'sample',
-  },
-  {
-    id: 'SalesDashboard',
-    name: 'Sales Dashboard',
-    description: 'Liveboard prototype — view and edit modes with SpotterViz.',
-    author: 'Design Team',
-    lastModified: '2026-04-03',
-    component: SalesDashboard,
-    dsComponents: 6,
-    customComponents: 3,
     section: 'sample',
   },
   {

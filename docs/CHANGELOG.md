@@ -1,5 +1,12 @@
 # Changelog
 
+## 26.5.1 — 2026-05-05
+
+### Removed
+- chore(prototypes): SalesDashboard prototype removed from the registry — reference patterns continue to live in `_liveboard-template`
+- chore(prototypes): SpotterModel standalone prototype removed — patterns now covered by DataModelEditor + the shared `_agentic` module
+- revert(prototype): PR #14 (StylingPanel + shared tile density/override system) reverted on staging due to integration issues; will be re-introduced in a follow-up PR
+
 ## 26.5.0 — 2026-04-30
 
 ### Added
