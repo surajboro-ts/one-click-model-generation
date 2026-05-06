@@ -294,7 +294,7 @@ const styles: Record<string, React.CSSProperties> = {
   resultCount: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: systemColors.light['content-tertiary'],
+    color: systemColors.light['content-secondary'],
     marginTop: '16px',
   },
 
@@ -406,7 +406,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '10px',
     fontWeight: 400,
-    color: systemColors.light['content-tertiary'],
+    color: systemColors.light['content-secondary'],
     textAlign: 'center',
     wordBreak: 'break-word',
   },
@@ -437,7 +437,7 @@ const styles: Record<string, React.CSSProperties> = {
   noResultsText: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '16px',
-    color: systemColors.light['content-tertiary'],
+    color: systemColors.light['content-secondary'],
     marginTop: '16px',
     marginBottom: '16px',
   },
@@ -485,7 +485,7 @@ const styles: Record<string, React.CSSProperties> = {
   sizeRefPixels: {
     fontFamily: '"SF Mono", Monaco, Inconsolata, monospace',
     fontSize: '12px',
-    color: systemColors.light['content-tertiary'],
+    color: systemColors.light['content-secondary'],
   },
   sizeRefPreview: {
     display: 'flex',
@@ -497,7 +497,7 @@ const styles: Record<string, React.CSSProperties> = {
   sizeRefUsage: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '12px',
-    color: systemColors.light['content-tertiary'],
+    color: systemColors.light['content-secondary'],
     margin: 0,
   },
 };

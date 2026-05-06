@@ -2165,7 +2165,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
         return (
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
             <Image src="https://picsum.photos/seed/radiant/240/160" alt="Sample image" style={{ width: 240 }} rounded />
-            <Image src="broken-url" alt="Fallback demo" style={{ width: 240, height: 160 }} fallback={<div style={{ width: 240, height: 160, background: systemColors.light['background-subtle'], display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, fontSize: 13, color: systemColors.light['content-tertiary'] }}>Image failed to load</div>} />
+            <Image src="broken-url" alt="Fallback demo" style={{ width: 240, height: 160 }} fallback={<div style={{ width: 240, height: 160, background: systemColors.light['background-subtle'], display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, fontSize: 13, color: systemColors.light['content-secondary'] }}>Image failed to load</div>} />
           </div>
         );
 
@@ -2175,7 +2175,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
             {(['no-data', 'error', 'success', 'welcome', 'no-access', 'loading'] as const).map(id => (
               <div key={id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                 <Illustration id={id} size="sm" />
-                <span style={{ fontSize: 11, color: systemColors.light['content-tertiary'] }}>{id}</span>
+                <span style={{ fontSize: 11, color: systemColors.light['content-secondary'] }}>{id}</span>
               </div>
             ))}
           </div>
@@ -2456,14 +2456,14 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
-              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Text</p><Formatters.Text value="Sample text" bold /></div>
-              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Currency</p><Formatters.Number value={1234567} format="currency" /></div>
-              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Percent</p><Formatters.Number value={0.724} format="percent" /></div>
-              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Compact</p><Formatters.Number value={48200} format="compact" /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-secondary'], marginBottom: 4 }}>Text</p><Formatters.Text value="Sample text" bold /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-secondary'], marginBottom: 4 }}>Currency</p><Formatters.Number value={1234567} format="currency" /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-secondary'], marginBottom: 4 }}>Percent</p><Formatters.Number value={0.724} format="percent" /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-secondary'], marginBottom: 4 }}>Compact</p><Formatters.Number value={48200} format="compact" /></div>
             </div>
             <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
-              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Sparkline</p><Formatters.Line data={[10, 25, 18, 40, 35, 55, 48, 62]} width={100} height={28} /></div>
-              <div><p style={{ fontSize: 11, color: systemColors.light['content-tertiary'], marginBottom: 4 }}>Interval</p><Formatters.Interval start="2026-01-01" end="2026-03-31" format="range" /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-secondary'], marginBottom: 4 }}>Sparkline</p><Formatters.Line data={[10, 25, 18, 40, 35, 55, 48, 62]} width={100} height={28} /></div>
+              <div><p style={{ fontSize: 11, color: systemColors.light['content-secondary'], marginBottom: 4 }}>Interval</p><Formatters.Interval start="2026-01-01" end="2026-03-31" format="range" /></div>
               <div style={{ display: 'flex', gap: 8 }}><Formatters.Marker color="#06BF7F" /><Formatters.Marker color="#2770EF" /><Formatters.Marker color="#E22B3D" size="lg" /></div>
             </div>
           </div>
@@ -2665,7 +2665,7 @@ const styles: Record<string, React.CSSProperties> = {
   breadcrumbItem: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '13px',
-    color: systemColors.light['content-tertiary'],
+    color: systemColors.light['content-secondary'],
   },
   breadcrumbSeparator: {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -2735,7 +2735,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '12px',
     fontWeight: 600,
-    color: systemColors.light['content-tertiary'],
+    color: systemColors.light['content-secondary'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     marginBottom: '12px',
@@ -2755,7 +2755,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: '"Plain", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontSize: '11px',
     fontWeight: 600,
-    color: systemColors.light['content-tertiary'],
+    color: systemColors.light['content-secondary'],
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
