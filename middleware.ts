@@ -210,12 +210,13 @@ export const config = {
 };
 
 export default async function middleware(request: Request): Promise<Response | undefined> {
-  const isProduction = process.env.VERCEL_ENV === 'production';
+  const vercelEnv = process.env.VERCEL_ENV;
+  const isDeployed = vercelEnv === 'production' || vercelEnv === 'preview';
   const sitePassword = process.env.SITE_PASSWORD || '';
   const url = new URL(request.url);
 
-  // Password gate — production only
-  if (isProduction && sitePassword) {
+  // Password gate — all deployed environments (production + every preview, including staging)
+  if (isDeployed && sitePassword) {
     // Handle auth form submission
     if (request.method === 'POST' && url.pathname === '/_auth') {
       const body = await request.text();
