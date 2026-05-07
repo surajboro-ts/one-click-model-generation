@@ -1,38 +1,29 @@
-# Liveboard Template
+# Muze charts
 
-A scaffolding template for creating ThoughtSpot Liveboard prototypes with Radiant components.
+Liveboard prototype showcasing **Muze dual column** and **Muze trellis** charts inside the standard Radiant liveboard scaffold (view + edit modes, sticky header, SpotterViz panel).
 
-## What's included
+## Prerequisites — packagecloud auth (one-time)
 
-- **LiveboardHeader** (shared component) — View mode header with tabs, filters, actions + Edit mode toolbar with Add/Styling/SpotterViz
-- **AnswerTile** — Tile container with mode-aware hover toolbar (Ask Spotter / Edit / Move to / Delete)
-- **SampleBarChart** — Interactive SVG bar chart with hover effects
-- **SampleKPITile** — KPI sparkline visualization
-- **SpotterVizPanel** — AI chat side panel for edit mode
-- **Mock data** — Sample tabs, filters, KPIs, and chart data
+This prototype depends on `@viz/muze` and `@viz/datamodel`, which live on a private packagecloud registry (`packagecloud.io/modeanalytics`). Without auth, `npm install` fails with `401 Unauthorized`.
 
-## Usage
+Get a packagecloud token from your team admin, then add these two lines to `~/.npmrc` (create the file if it doesn't exist):
 
-### Option A: Use the scaffolding script
-
-```bash
-npm run new-prototype MyDashboard -- --liveboard
+```
+//packagecloud.io/modeanalytics/npm/:_authToken=YOUR_TOKEN
+@viz:registry=https://packagecloud.io/modeanalytics/npm/npm/
 ```
 
-### Option B: Manual copy
+The token stays on your machine — it's never committed to the repo. After saving, run `npm install` again.
 
-1. Copy this folder to `src/prototypes/YourName/`
-2. Rename `LiveboardTemplate` to `YourName` in `index.tsx`
-3. Update mock data in `data/mockData.ts` to match your theme
-4. Register in `src/prototypes/registry.ts`
+## What's inside
 
-## Customization
+- 4 KPI tiles (Total revenue, Active customers, Orders, NPS)
+- **MuzeDualColumnChart** — Revenue by segment (New business vs Renewals) across Q1–Q4
+- **MuzeTrellisChart** — Revenue by region (Americas / EMEA / APAC) and quarter, colored by product
+- **MuzeChartTile** — Local wrapper that renders title + Muze chart and responds to tile resize via `ResizeObserver`
 
-- **Tabs & filters**: Edit `data/mockData.ts`
-- **Tile layout**: Modify the tile grid rows in `index.tsx`
-- **Charts**: Replace `SampleBarChart`/`SampleKPITile` with your visualizations
-- **Additional tile types**: Add Note, Group, or Insight tiles following `liveboard-ia.md`
+## Architecture
 
-## Architecture reference
-
-See `.cursor/rules/liveboard-ia.md` for the full Liveboard IA specification.
+- Inherits the grid + drag/resize/select system from `_liveboard-template`
+- Two new local tile types: `'muze-dual'` and `'muze-trellis'` rendered inline (bypassing AnswerTile)
+- Muze charts mount their own canvas inside the tile's content area
