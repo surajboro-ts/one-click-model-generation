@@ -510,6 +510,7 @@ const componentDocs: Record<string, {
       { name: 'onHamburgerClick', type: '() => void', description: 'Handler when hamburger is clicked' },
       { name: 'showDefaultActions', type: 'boolean', default: 'true', description: 'Show help, notification, and profile actions' },
       { name: 'rightSlot', type: 'ReactNode', description: 'Custom content rendered after default actions' },
+      { name: 'theme', type: "'dark' | 'light'", default: "'dark'", description: 'Color theme for the header' },
     ],
   },
   appsidebar: {
@@ -997,6 +998,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
   const [activeTab, setActiveTab] = useState('tab1');
   const [selectValue, setSelectValue] = useState('');
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [globalHeaderTheme, setGlobalHeaderTheme] = useState<'dark' | 'light'>('dark');
   // New component states
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [paginationPage, setPaginationPage] = useState(1);
@@ -1916,10 +1918,19 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
         return (
           <div style={styles.exampleContent}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <Tabs
+                tabs={[
+                  { id: 'dark', label: 'Dark theme' },
+                  { id: 'light', label: 'Light theme' },
+                ]}
+                activeTab={globalHeaderTheme}
+                onTabChange={(id) => setGlobalHeaderTheme(id as 'dark' | 'light')}
+              />
               <div>
                 <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Trigger mode (default)</Typography>
                 <div style={{ borderRadius: '8px', overflow: 'hidden', border: `1px solid ${referenceColors.gray['20']}` }}>
                   <GlobalHeader
+                    theme={globalHeaderTheme}
                     userName="Royal Enfield"
                     notificationCount={3}
                     onSearchClick={() => alert('Search clicked — open command palette')}
@@ -1931,6 +1942,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                 <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>Input mode</Typography>
                 <div style={{ borderRadius: '8px', overflow: 'hidden', border: `1px solid ${referenceColors.gray['20']}` }}>
                   <GlobalHeader
+                    theme={globalHeaderTheme}
                     searchMode="input"
                     searchPlaceholder="Search library"
                     userName="Acme Corp"
@@ -1942,6 +1954,7 @@ export const ComponentDocPage: React.FC<ComponentDocPageProps> = ({ componentId 
                 <Typography variant="overline" style={{ marginBottom: '8px', display: 'block' }}>With hamburger (fullscreen mode)</Typography>
                 <div style={{ borderRadius: '8px', overflow: 'hidden', border: `1px solid ${referenceColors.gray['20']}` }}>
                   <GlobalHeader
+                    theme={globalHeaderTheme}
                     showHamburger
                     onHamburgerClick={() => alert('Hamburger clicked — toggle sidebar overlay')}
                     userName="Demo User"
