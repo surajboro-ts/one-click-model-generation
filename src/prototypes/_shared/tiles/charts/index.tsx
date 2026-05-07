@@ -14,7 +14,6 @@ export { TableChart }         from './TableChart';
 export { HeatmapChart }       from './HeatmapChart';
 export { TreemapChart }       from './TreemapChart';
 export { MapChart }           from './MapChart';
-export { MuzeColumnChart }    from './MuzeColumnChart';
 
 import { BarChart }           from './BarChart';
 import { ColumnChart }        from './ColumnChart';
@@ -28,7 +27,6 @@ import { TableChart }         from './TableChart';
 import { HeatmapChart }       from './HeatmapChart';
 import { TreemapChart }       from './TreemapChart';
 import { MapChart }           from './MapChart';
-import { MuzeColumnChart }    from './MuzeColumnChart';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const chartMap: Record<ChartType, React.FC<any>> = {
@@ -44,7 +42,6 @@ const chartMap: Record<ChartType, React.FC<any>> = {
   'heatmap':         HeatmapChart,
   'treemap':         TreemapChart,
   'map':             MapChart,
-  'muze-column':     MuzeColumnChart,
 };
 
 interface ChartRendererProps {

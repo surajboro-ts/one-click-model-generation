@@ -28,8 +28,6 @@
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^1.3.1",
-    "@viz/datamodel": "^3.6.0",
-    "@viz/muze": "^4.7.10-SCAL-285469.13",
     "echarts": "^6.0.0",
     "echarts-for-react": "^3.0.6",
     "react": "^19.2.0",
