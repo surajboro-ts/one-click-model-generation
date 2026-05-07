@@ -28,6 +28,18 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.2',
+    date: '2026-05-07',
+    type: 'patch',
+    changes: [
+      { type: 'added', group: 'Documentation', component: 'Muze charts setup guide', description: 'docs/muze-charts-setup.md — opt-in walkthrough for adding Muze (private packagecloud library) to a prototype: auth, install, component scaffolding, chart-shape cheatsheet, and resize-aware mounting' },
+      { type: 'modified', group: 'Design system', component: 'LiveboardHeader', description: 'Refactor: unify dark surfaces and tokenize raw hex values' },
+      { type: 'modified', group: 'Design system', component: 'Radiant pages text contrast', description: 'Bump content-tertiary to content-secondary for readability' },
+      { type: 'removed', group: 'Pages', component: '5 unrouted page components', description: 'Delete ComponentStatusPage, DataDashboardDemo, GuidelinesPage, SettingsPanelDemo, SpotterDashboard — never wired into App.tsx routes (~2,400 lines)' },
+      { type: 'modified', group: 'Design system', component: 'components/index.ts', description: 'Remove duplicate exports of LoadingIndicator, Popover, Select' },
+    ],
+  },
+  {
     version: '26.5.1',
     date: '2026-05-05',
     type: 'patch',

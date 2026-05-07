@@ -1,5 +1,18 @@
 # Changelog
 
+## 26.5.2 — 2026-05-07
+
+### Added
+- docs(muze): `docs/muze-charts-setup.md` — opt-in guide for adding Muze charts (auth, install, chart-shape cheatsheet, resize-aware mounting). Default install stays friction-free for designers who don't use Muze
+
+### Changed
+- refactor(LiveboardHeader): unify dark surfaces and tokenize raw hex values
+- fix(radiant-pages): bump content-tertiary to content-secondary for readability
+- chore(components): remove duplicate exports of LoadingIndicator, Popover, Select from components/index.ts
+
+### Removed
+- chore(pages): delete 5 unrouted page components (ComponentStatusPage, DataDashboardDemo, GuidelinesPage, SettingsPanelDemo, SpotterDashboard) — ~2,400 lines of dead code never wired into App.tsx
+
 ## 26.5.1 — 2026-05-05
 
 ### Removed
