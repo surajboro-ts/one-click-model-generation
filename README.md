@@ -21,6 +21,19 @@ Works with any AI coding tool: **Claude Code**, **Cursor**, **Codex**, or any to
 
 ## Getting started
 
+### One-time setup — packagecloud auth
+
+Radiant Play depends on `@viz/muze` and `@viz/datamodel`, which live on a private packagecloud registry (`packagecloud.io/modeanalytics`). Without auth, `npm install` will fail with `401 Unauthorized`.
+
+Get a packagecloud token from your team admin, then add these two lines to `~/.npmrc` (create the file if it doesn't exist):
+
+```
+//packagecloud.io/modeanalytics/npm/:_authToken=YOUR_TOKEN
+@viz:registry=https://packagecloud.io/modeanalytics/npm/npm/
+```
+
+The token stays on your machine — it's never committed to the repo.
+
 ### Option 1 — With Git (recommended)
 
 ```bash
