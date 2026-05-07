@@ -1,5 +1,22 @@
 # Changelog
 
+## 26.5.2b — 2026-05-07
+
+### Added
+- feat(spotter): chat extraction end-to-end — SpotterChatProvider + useReducer + AbortController, ChatThread, MessageRow, UserBubble (single-row), AgentMessage with feedback row, TypingIndicator (spinner + "Analysing…"), ReasoningBlock with rich steps (descriptions + embedded ToolcallCard, "Worked for X seconds")
+- feat(spotter): streaming runtime — AnswerChunk protocol, askSpotter() async generator (canned + live shell), 4 fixtures with naive keyword routing (viz default)
+- feat(spotter): six block renderers — TextBlock, VizBlock (slot model with iframe / data / placeholder, canonical footer, chart/table toggle, expand modal), SourcesBlock, FollowUpsBlock (clickable chips), RefineBlock, ErrorBlock
+- feat(spotter): smooth 64↔260 panel animation via SpotterLeftSide wrapper
+- feat(spotter): purple→blue gradient border on SpotterPrompt :focus-within
+- feat(spotter): custom PanelToggle icon (Figma path), ChartSearch + Orbits glyphs for prompt mode toggle
+- feat(prototype): Spotter prototype now wraps in SpotterChatProvider; welcome ↔ chat-active transition with sticky prompt and disclaimer
+- docs(spotter): VizBlock behaviour doc; three .cursor/rules files (components, logic, response-style) with auto-attach globs; Spotter Requirements Gate in _orchestration.md; CLAUDE.md two-layer DS section
+
+### Changed
+- spotter(panel): full-width selected state on items, full-width line breaks between sections (per Figma)
+- spotter(reasoning): brand-blue trigger when expanded, gray done dots, ToolcallCard collapsed by default with "Show details" link
+- spotter(viz): schema discriminated union with `source: iframe | data | placeholder` + optional `tableData`
+
 ## 26.5.2a — 2026-05-07
 
 ### Added

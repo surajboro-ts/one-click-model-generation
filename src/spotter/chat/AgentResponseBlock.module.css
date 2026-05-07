@@ -1,0 +1,15 @@
+.response {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3, 12px);
+}
+
+.title {
+  margin: 0;
+  color: var(--rd-sys-color-content-primary);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-lg, 18px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-lg, 24px);
+  letter-spacing: -0.2px;
+}

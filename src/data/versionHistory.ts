@@ -28,6 +28,22 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.2b',
+    date: '2026-05-07',
+    type: 'patch',
+    changes: [
+      { type: 'added', group: 'Spotter chat', component: 'Chat extraction end-to-end', description: 'SpotterChatProvider + useReducer + AbortController. ChatThread, MessageRow, UserBubble (single-row layout), AgentMessage with feedback row. TypingIndicator (spinner + "Analysing…"). ReasoningBlock with rich steps (descriptions + embedded ToolcallCard, brand-blue trigger when expanded, gray done dots, "Worked for X seconds")' },
+      { type: 'added', group: 'Spotter chat', component: 'Streaming runtime', description: 'AnswerChunk protocol (reasoning_start/step/done, block_start/text_delta/block_done, message_done, error). askSpotter() async generator with canned + live modes. 4 fixtures (viz, text, refine, sources) with rich reasoning. Naive keyword router defaults to viz' },
+      { type: 'added', group: 'Spotter chat', component: 'Block renderers', description: 'TextBlock, VizBlock (slot model: chartSlot > iframe > data > placeholder; canonical 5-action footer; chart/table toggle; expand modal), SourcesBlock, FollowUpsBlock (clickable chips that call send), RefineBlock (clickable options), ErrorBlock' },
+      { type: 'modified', group: 'Spotter chat', component: 'SpotterPrompt', description: 'Purple→blue gradient border on :focus-within using token-based linear-gradient with background-clip trick' },
+      { type: 'modified', group: 'Spotter prototype', component: 'Welcome ↔ chat transition', description: 'Prototype now wraps in SpotterChatProvider; renders SpotterWelcome when empty, ChatCanvas (sticky prompt + thread + disclaimer) when populated' },
+      { type: 'modified', group: 'Spotter DS', component: 'Smooth panel animation', description: 'SpotterLeftSide owns a wrapper with cubic-bezier(0.32, 0.72, 0, 1) width transition for 64↔260 collapsed/expanded' },
+      { type: 'modified', group: 'Spotter DS', component: 'PanelToggle icon, ChartSearch + Orbits glyphs', description: 'Custom SVGs in src/spotter/icons.tsx — panel toggle from Figma (8K7cAOPsv...), prompt mode toggles (RzKUZMdJsNVdoVhkYmXvlI / 1887:6197)' },
+      { type: 'modified', group: 'Spotter DS', component: 'Panel section visuals', description: 'Full-width selected state on items, full-width line breaks between sections (per Figma 1887:3912)' },
+      { type: 'added', group: 'Documentation', component: 'VizBlock behaviour doc + Spotter rules', description: 'docs/2026-05-07-spotter-viz-block-behaviour.md covers slot model and customization. Three .cursor/rules files (spotter-components, -logic, -response-style) auto-load when working on Spotter files. Spotter Requirements Gate added to _orchestration.md. CLAUDE.md addendum points to the four Spotter docs' },
+    ],
+  },
+  {
     version: '26.5.2a',
     date: '2026-05-07',
     type: 'patch',

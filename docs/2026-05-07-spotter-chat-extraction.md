@@ -362,3 +362,96 @@ After both arrive, I'll update component sizes, visual styles, and add fixtures 
 - Welcome state shows when thread is empty; chat state takes over after first message.
 - No `window._*` globals. All state is React. All visuals use Spotter DS components.
 - TypeScript and build pass.
+
+## Status — what shipped (2026-05-07)
+
+All six build steps complete. Shipped under version `26.5.2a` plus follow-up
+work on the same branch.
+
+### Files shipped
+
+```
+src/spotter/runtime/
+  schema.ts                 ← AnswerBlock union + AnswerChunk + ChatMessage + ReasoningTrace
+  chatService.ts            ← askSpotter() async generator (canned + live mode shell)
+  cannedResponses.ts        ← 4 fixtures (viz, text, refine, sources) with rich reasoning
+  systemPrompt.ts           ← placeholder Spotter system prompt
+  index.ts                  ← barrel
+
+src/spotter/chat/
+  ChatThread.tsx            ← scrollable list, auto-scroll on streaming updates
+  MessageRow.tsx            ← role dispatcher
+  UserBubble.tsx            ← single-row: avatar + text + timestamp
+  AgentMessage.tsx          ← avatar + reasoning + response + feedback row
+  TypingIndicator.tsx       ← spinner ring + "Analysing…"
+  ReasoningBlock.tsx        ← collapsible, gray dots, brand-blue trigger when expanded,
+                              "Worked for X seconds" suffix, embedded ToolcallCard
+  AgentResponseBlock.tsx    ← block dispatcher
+  blocks/
+    TextBlock.tsx           ← streamed paragraph (markdown rendering deferred)
+    VizBlock.tsx            ← slot model: chartSlot > iframe > data > placeholder.
+                              Header tokens, chart/table toggle, expand modal,
+                              configurable footer (Pin/Save/Download/Edit + Add to coaching).
+                              See docs/2026-05-07-spotter-viz-block-behaviour.md
+    SourcesBlock.tsx        ← citation pills
+    FollowUpsBlock.tsx      ← clickable follow-up chips that call send()
+    RefineBlock.tsx         ← clarification options that call send()
+    ErrorBlock.tsx          ← typed error alert
+  SpotterChatProvider.tsx   ← React Context + useReducer + AbortController
+  useSpotterChat.ts         ← hook for { state, send, abort, clear }
+  chatReducer.ts            ← AnswerChunk → ChatState reducer
+  SpotterPrompt.tsx         ← controlled prompt; gradient border on focus
+
+src/prototypes/Spotter/
+  index.tsx                 ← wraps SpotterChatProvider, switches welcome ↔ chat view
+  components/ChatCanvas.tsx ← chat-active layout: scrollable thread + sticky prompt + disclaimer
+```
+
+### Visual treatments locked
+
+- Reasoning **collapsed by default** as "Show work ⌄" (gray); expands to brand blue.
+- Step dots: gray (pending) → brand-blue pulsing (current) → gray (done).
+- ToolcallCard collapsed by default with **"Show details ⌄"** brand-blue link on the right.
+- "Worked for X seconds" footer appears once reasoning completes.
+- Agent message ends with a **feedback row** ("Is this useful?" + thumbs up/down) when stage is done.
+- VizBlock matches Figma node `146:37670`: tokens header (multi-row wrap), chart/table toggle, expand fullscreen modal, footer with Pin / Save / Download / Edit / + Add to coaching.
+- Prompt gets a purple → blue gradient border on `:focus-within`.
+
+### Schema additions since the original plan
+
+```ts
+// schema.ts deltas
+export interface ReasoningStep {
+  // ...existing fields...
+  description?: string;
+  toolcall?: ReasoningToolCall;
+}
+export interface ReasoningToolCall {
+  id: string;
+  icon?: string;
+  title: string;
+  input?: string;
+  output?: string;
+}
+export interface ReasoningTrace {
+  // ...existing fields...
+  durationSeconds?: number;       // for "Worked for X seconds"
+}
+export type VizSource =
+  | { type: 'iframe'; url: string; sandbox?: string; title?: string }
+  | { type: 'data'; chartKind: VizChartKind; data: VizData }
+  | { type: 'placeholder'; message?: string };
+```
+
+The block-data type names were renamed with a `Data` suffix
+(`TextBlockData`, `VizBlockData`, etc.) to avoid colliding with the
+component exports of the same name.
+
+## Open follow-ups
+
+- **Markdown rendering** in TextBlock — bullets, headings, inline tables, bold (per image 9). Deferred — fixtures still use plain text.
+- **Real chart engine** in VizBlock — currently a styled SVG sketch. Real treatment lands with the AnswerCard build (see `docs/2026-05-07-spotter-answer-card.md`).
+- **Live mode** in `chatService.ts` — currently a stub. Wire to `/api/chat` once the canonical Spotter system prompt arrives.
+- **Multi-chat threads** — chat-history items in the panel are cosmetic. Persist + switch threads when product asks.
+- **Per-message timestamp ticks** — UserBubble shows absolute "07:47 PM, 11/21/2023". Could swap to relative ("2m ago") later.
+- **Reasoning step labels per fixture** — currently three generic labels per fixture path. Iterate when canonical labels land.

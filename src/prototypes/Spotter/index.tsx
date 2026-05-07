@@ -13,51 +13,77 @@ import {
   SpotterWelcome,
   type SpotterLeftMode,
 } from '@spotter/page';
+import { SpotterChatProvider, useSpotterChat } from '@spotter/chat';
+import { ChatCanvas } from './components/ChatCanvas';
 import {
   chats,
   customSpotters,
   dataModels,
-  tenantName,
 } from './data/mockData';
 
+const USER_AVATAR_URL = 'https://i.pravatar.cc/64?img=47';
+
 /**
- * Spotter prototype shell.
- *
- * Goal: validate the Spotter DS layout — header + collapsible left side
- * (rail ↔ panel) + canvas with welcome state.
- *
- * No real chat logic yet — all interactions are stubs.
+ * Spotter prototype. Wraps the chat provider so any subtree using
+ * `useSpotterChat()` can submit prompts and read state.
  */
 export const Spotter: React.FC = () => {
+  return (
+    <SpotterChatProvider mode="canned">
+      <SpotterInner />
+    </SpotterChatProvider>
+  );
+};
+
+const SpotterInner: React.FC = () => {
   const [mode, setMode] = useState<SpotterLeftMode>('panel');
   const [selectedSpotter, setSelectedSpotter] = useState<string>('default');
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [promptValue, setPromptValue] = useState('');
   const [dataModelId, setDataModelId] = useState(dataModels[0].id);
 
+  const { state, send, clear } = useSpotterChat();
+  const isEmpty = state.messages.length === 0;
+
   const toggleMode = (): void => {
     setMode((prev) => (prev === 'rail' ? 'panel' : 'rail'));
   };
 
   const handleSubmit = (value: string): void => {
-    // Stub — log the question. Real chat thread comes later.
-    // eslint-disable-next-line no-console
-    console.log('[Spotter] submit:', value);
+    send(value);
     setPromptValue('');
   };
 
   const handleQuickAction = (id: string): void => {
-    // eslint-disable-next-line no-console
-    console.log('[Spotter] quick action:', id);
+    // Quick actions are stubs for now — translate them to a prompt.
+    const promptByAction: Record<string, string> = {
+      'quick-search': 'Show me total sales by month',
+      'deep-analysis': 'Analyze sales for the upcoming Fall and Winter season',
+      'know-your-data': 'What are the most common questions asked about this data?',
+    };
+    const text = promptByAction[id];
+    if (text) send(text);
   };
 
   const handleNewChat = (): void => {
+    clear();
     setPromptValue('');
     setSelectedChat(null);
     setSelectedSpotter('default');
   };
 
   const activeDataModel = dataModels.find((m) => m.id === dataModelId) ?? dataModels[0];
+
+  const promptProps = {
+    value: promptValue,
+    onChange: setPromptValue,
+    onSubmit: handleSubmit,
+    dataModelLabel: activeDataModel.name,
+    onDataModelClick: () => {
+      const next = dataModels[(dataModels.indexOf(activeDataModel) + 1) % dataModels.length];
+      setDataModelId(next.id);
+    },
+  };
 
   const railContent = (
     <SpotterRail
@@ -132,7 +158,7 @@ export const Spotter: React.FC = () => {
           showKeyboardHint={false}
           notificationCount={1}
           userName="Alex"
-          userAvatar="https://i.pravatar.cc/64?img=47"
+          userAvatar={USER_AVATAR_URL}
         />
       }
       leftSide={
@@ -144,19 +170,20 @@ export const Spotter: React.FC = () => {
         />
       }
     >
-      <SpotterWelcome
-        promptProps={{
-          value: promptValue,
-          onChange: setPromptValue,
-          onSubmit: handleSubmit,
-          dataModelLabel: activeDataModel.name,
-          onDataModelClick: () => {
-            const next = dataModels[(dataModels.indexOf(activeDataModel) + 1) % dataModels.length];
-            setDataModelId(next.id);
-          },
-        }}
-        quickActionProps={{ onAction: handleQuickAction }}
-      />
+      {isEmpty ? (
+        <SpotterWelcome
+          promptProps={promptProps}
+          quickActionProps={{ onAction: handleQuickAction }}
+        />
+      ) : (
+        <ChatCanvas
+          messages={state.messages}
+          promptProps={promptProps}
+          userAvatarUrl={USER_AVATAR_URL}
+          userInitial="A"
+          agentAvatarIcon="ai"
+        />
+      )}
     </SpotterShell>
   );
 };

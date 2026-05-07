@@ -1,4 +1,5 @@
 .prompt {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3, 8px);
@@ -8,17 +9,29 @@
   border: 1px solid var(--rd-sys-color-border-divider);
   border-radius: 16px;
   padding: var(--spacing-4, 16px);
-  box-shadow:
-    0 0 0 1px var(--rd-sys-color-border-divider),
-    0 4px 12px rgba(25, 35, 49, 0.04);
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-shadow: 0 4px 12px rgba(25, 35, 49, 0.04);
+  transition: box-shadow 200ms ease;
 }
 
+/**
+ * Active state — when the prompt is focused, paint a purple→blue gradient
+ * border. Trick: layer two backgrounds — solid surface clipped to padding-box
+ * for the inner fill, gradient clipped to border-box for the visible edge.
+ * Border itself becomes transparent and the gradient shows through.
+ */
 .prompt:focus-within {
-  border-color: var(--rd-sys-color-border-default);
-  box-shadow:
-    0 0 0 1px var(--rd-sys-color-border-default),
-    0 4px 16px rgba(25, 35, 49, 0.06);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(
+      var(--rd-sys-color-background-base),
+      var(--rd-sys-color-background-base)
+    ) padding-box,
+    linear-gradient(
+      135deg,
+      var(--rd-sys-color-background-accent-purple-bold) 0%,
+      var(--rd-sys-color-content-brand) 100%
+    ) border-box;
+  box-shadow: 0 8px 24px rgba(140, 98, 245, 0.08);
 }
 
 .input {

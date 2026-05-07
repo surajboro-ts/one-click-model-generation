@@ -339,3 +339,29 @@ One pass. Files written in this order so each step compiles:
 - 11 new Spotter DS components in `@spotter/page` and `@spotter/chat`.
 - 1 new Spotter tokens file.
 - TypeScript and build pass on Spotter-introduced code.
+
+## Status (2026-05-07) — chat extraction integrated
+
+Since this plan was authored, the chat extraction (per
+`docs/2026-05-07-spotter-chat-extraction.md`) has shipped on top of
+the shell:
+
+- `<SpotterChatProvider>` wraps the prototype tree.
+- `<SpotterWelcome>` renders when `state.messages.length === 0`.
+- `<ChatCanvas>` (local prototype component) renders when there's a
+  conversation — scrollable `<ChatThread>` filling the canvas with a
+  sticky `<SpotterPrompt>` at the bottom and a "Spotter responses
+  should be reviewed. Learn more" disclaimer.
+- The prompt now gets a purple→blue gradient border on focus
+  (`:focus-within` state).
+- The header swapped to Radiant `<GlobalHeader theme="light">` —
+  the previous local `SpotterHeader` was deleted.
+- The panel-toggle, "New chat", and "Library" icons match the latest
+  Figma spec (panel toggle is a custom SVG in `@spotter/icons`; the
+  rest are Radiant icons from the 151-icon registry sync).
+- Smooth 64↔260 width animation on the left side via
+  `SpotterLeftSide` wrapper.
+
+Out of scope at this point: AnswerCard build (separate plan), real
+chart engine in VizBlock, markdown in TextBlock, live `/api/chat`
+integration. All tracked in their own docs.

@@ -203,6 +203,29 @@ Based on answers, load:
 
 ---
 
+### Spotter Requirements Gate
+
+When the task is **Spotter chat / agent UI work** OR **a new Spotter-flavoured prototype** (Tier 1 or Tier 2), load these rule files together:
+
+- `spotter-components.md` — DS inventory + when-to-use
+- `spotter-logic.md` — chat state machine, streaming chunk protocol, reducer behaviour
+- `spotter-response-style.md` — voice + block composition rules
+
+Globs auto-attach when the active file is in `src/spotter/**` or
+`src/prototypes/Spotter*/**`, but if the task description mentions
+"Spotter", "chat thread", "agent message", "viz block", or "answer
+card" without an open file, load all three explicitly.
+
+Spotter sits **on top of** the Radiant DS. So Tier 3 design-system
+work that touches Spotter components also needs the Radiant rules
+(`design-system.md`, `token-usage.md`) on top of the Spotter ones.
+
+The Spotter answer card spec lives at
+`docs/2026-05-07-spotter-answer-card.md` (not yet built — VizBlock
+is the current stand-in renderer for `kind: 'viz'`).
+
+---
+
 ## Iteration loop detection
 
 If the designer sends 3+ sequential single-property change requests ("make it bigger" → "center it" → "change the color"), suggest batching:

@@ -43,6 +43,17 @@ npm run new-prototype  # Scaffold a new prototype
 | `@/*` | `src/*` |
 | `@tokens/*` | `src/tokens/*` |
 | `@components/*` | `src/components/*` |
+| `@spotter/*` | `src/spotter/*` |
+
+## Two-layer DS — Radiant + Spotter
+
+`@components/*` is the **Radiant DS** — product-agnostic primitives. `@spotter/*` is the **Spotter DS** — agentic-domain blocks (chat, answers, viz, page shell) built on top of Radiant. Same conventions apply (tokens only, sentence case, layout primitives) but Spotter components encode AI-flavoured patterns.
+
+When working on Spotter surfaces, the orchestrator auto-loads `.cursor/rules/spotter-components.md`, `spotter-logic.md`, and `spotter-response-style.md`. Plans live at:
+- `docs/2026-05-07-spotter-prototype-shell.md` — shell + welcome
+- `docs/2026-05-07-spotter-chat-extraction.md` — chat extraction + state machine
+- `docs/2026-05-07-spotter-viz-block-behaviour.md` — VizBlock slot model
+- `docs/2026-05-07-spotter-answer-card.md` — AnswerCard spec (VizBlock is the current stand-in)
 
 ## Project Structure
 
