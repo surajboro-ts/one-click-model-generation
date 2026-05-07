@@ -88,7 +88,24 @@
       "Bash(du -sh /Users/mohammed.faris/code/radiantplay/src/prototypes/*/)",
       "Bash(ls /Users/mohammed.faris/code/radiantplay/*.md)",
       "Bash(sed -i '' \"s/onAction={\\(\\) => console\\\\.log\\(''Undo clicked''\\)}/onAction={\\(\\) => {}}/g\" /Users/mohammed.faris/code/radiantplay/src/pages/ComponentDocPage.tsx)",
-      "Bash(sed -i '' \"s/onSubmit={\\(v\\) => console\\\\.log\\(''submitted'', v\\)}/onSubmit={\\(\\) => {}}/g\" /Users/mohammed.faris/code/radiantplay/src/pages/ComponentDocPage.tsx)"
+      "Bash(sed -i '' \"s/onSubmit={\\(v\\) => console\\\\.log\\(''submitted'', v\\)}/onSubmit={\\(\\) => {}}/g\" /Users/mohammed.faris/code/radiantplay/src/pages/ComponentDocPage.tsx)",
+      "Bash(bash *)",
+      "Bash(npm config *)",
+      "Bash(printf '//packagecloud.io/modeanalytics/npm/:_authToken=PASTE_TOKEN_HERE\\\\n@viz:registry=https://packagecloud.io/modeanalytics/npm/npm/\\\\n')",
+      "Bash(open -e ~/.npmrc)",
+      "Bash(awk *)",
+      "Bash(pkill -f vite)",
+      "Bash(lsof -ti:5173,5175)",
+      "Bash(xargs kill *)",
+      "Bash(open *)",
+      "Bash(git log *)",
+      "Bash(xargs -I {} basename {} .tsx)",
+      "Bash(curl -s -o /tmp/spotter-home.png \"https://www.figma.com/api/mcp/asset/6811da9d-09f5-42f2-9fda-da24da46b355\")",
+      "Read(//tmp/**)",
+      "Bash(curl *)",
+      "mcp__plugin_figma_figma__get_metadata",
+      "Bash(xargs -n1 basename)",
+      "Bash(git *)"
     ]
   },
   "hooks": {
