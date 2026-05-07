@@ -50,6 +50,7 @@ const AdminLang = React.lazy(() => import('./AdminLang'));
 const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
 const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
 const DataModelEditorSample = React.lazy(() => import('./DataModelEditor'));
+const MuzeChartsSample = React.lazy(() => import('./MuzeCharts'));
 
 // ── Registry ──────────────────────────────────────────────────────────────────
 
@@ -124,6 +125,17 @@ export const coreRegistry: ProjectMeta[] = [
     component: DataModelEditorSample,
     dsComponents: 10,
     customComponents: 13,
+    section: 'sample',
+  },
+  {
+    id: 'MuzeCharts',
+    name: 'Muze charts',
+    description: 'Liveboard prototype showcasing Muze dual column and trellis charts with view and edit modes.',
+    author: 'Design Team',
+    lastModified: '2026-05-07',
+    component: MuzeChartsSample,
+    dsComponents: 4,
+    customComponents: 3,
     section: 'sample',
   },
 ];

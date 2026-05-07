@@ -21,7 +21,8 @@ export type ChartType =
   | 'table'
   | 'heatmap'
   | 'treemap'
-  | 'map';
+  | 'map'
+  | 'muze-column';
 
 export type TileMode = 'view' | 'edit';
 
