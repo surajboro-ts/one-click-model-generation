@@ -62,6 +62,7 @@ export default defineConfig(({ mode }) => {
       '@': path.resolve(__dirname, './src'),
       '@tokens': path.resolve(__dirname, './src/tokens'),
       '@components': path.resolve(__dirname, './src/components'),
+      '@spotter': path.resolve(__dirname, './src/spotter'),
     },
   },
   };

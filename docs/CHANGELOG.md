@@ -1,5 +1,16 @@
 # Changelog
 
+## 26.5.2a — 2026-05-07
+
+### Added
+- feat(spotter): `@spotter/*` peer to `@components/*` — two-layer DS scaffold for Spotter-domain building blocks layered on Radiant
+- feat(spotter): chat primitives — QuickAction, QuickActionRow, SpotterPrompt (controlled, auto-resize, mode toggle, model picker, blue submit)
+- feat(spotter): page primitives — SpotterShell, SpotterLeftSide, SpotterRail/Item, SpotterPanel/Section/Item/Action, SpotterWelcome
+- feat(spotter): smooth 64↔260 width animation between collapsed rail and expanded panel
+- feat(spotter): spotter tokens (radial glow + chart-bg aliases) and spotter icons (PanelToggle, Bell, ThoughtSpotMark, ChartSearch, Orbits) — only glyphs missing from Radiant registry
+- feat(prototype): Spotter prototype — first DS consumer with light-mode GlobalHeader and welcome canvas
+- docs(spotter): four plan docs covering the two-layer DS, prototype shell, AnswerCard spec, and chat extraction approach
+
 ## 26.5.2 — 2026-05-07
 
 ### Added

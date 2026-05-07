@@ -28,6 +28,20 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.2a',
+    date: '2026-05-07',
+    type: 'patch',
+    changes: [
+      { type: 'added', group: 'Spotter DS', component: '@spotter/ peer to @components/', description: 'Two-layer DS scaffold: Spotter-domain building blocks layered on top of Radiant. New path alias @spotter/* in vite + tsconfig' },
+      { type: 'added', group: 'Spotter DS', component: 'chat primitives', description: 'QuickAction, QuickActionRow, SpotterPrompt — controlled prompt with auto-resize, mode toggle, model picker, controls icon, blue submit' },
+      { type: 'added', group: 'Spotter DS', component: 'page primitives', description: 'SpotterShell, SpotterLeftSide, SpotterRail/Item, SpotterPanel/Section/Item/Action, SpotterWelcome — full shell with smooth 64↔260 width animation between rail and panel modes' },
+      { type: 'added', group: 'Spotter DS', component: 'spotter tokens', description: 'src/spotter/tokens.ts — radial brand glow + chart-token bg aliases over Radiant system colors' },
+      { type: 'added', group: 'Spotter DS', component: 'spotter icons', description: 'src/spotter/icons.tsx — PanelToggle, Bell, ThoughtSpotMark (brand), ChartSearch and Orbits (prompt mode toggle) — only glyphs missing from Radiant registry' },
+      { type: 'added', group: 'Prototypes', component: 'Spotter prototype', description: 'First Spotter DS consumer: light-mode GlobalHeader, collapsible left nav, welcome canvas with greeting + prompt + 3 quick actions; mock chats and custom Spotters in left panel' },
+      { type: 'added', group: 'Documentation', component: 'Spotter DS plan set', description: 'Four plan docs under docs/: parent two-layer DS plan, prototype shell plan, AnswerCard spec, chat extraction spec' },
+    ],
+  },
+  {
     version: '26.5.2',
     date: '2026-05-07',
     type: 'patch',

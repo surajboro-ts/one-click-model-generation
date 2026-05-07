@@ -27,6 +27,22 @@
  *   ];
  */
 
+import React from 'react';
 import { ProjectMeta } from './registry-core';
+import SpotterThumbnail from './thumbnails/Spotter.svg';
 
-export const myRegistry: ProjectMeta[] = [];
+const Spotter = React.lazy(() => import('./Spotter'));
+
+export const myRegistry: ProjectMeta[] = [
+  {
+    id: 'Spotter',
+    name: 'Spotter',
+    description:
+      'Spotter shell with header, collapsible left panel, and a canvas hosting the welcome state.',
+    author: 'Mohammed',
+    lastModified: '2026-05-07',
+    thumbnail: SpotterThumbnail,
+    component: Spotter,
+    section: 'mine',
+  },
+];
