@@ -28,6 +28,14 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.3a',
+    date: '2026-05-08',
+    type: 'patch',
+    changes: [
+      { type: 'modified', group: 'Sample prototypes', component: 'Gallery order', description: 'Spotter moved to the bottom of registry-core.ts so it appears first in the gallery (the gallery reverses array order to show newest-by-date first). Convention: append new sample prototypes to the end of the array' },
+    ],
+  },
+  {
     version: '26.5.3',
     date: '2026-05-08',
     type: 'minor',

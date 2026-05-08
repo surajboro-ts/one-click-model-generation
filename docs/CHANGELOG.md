@@ -1,5 +1,10 @@
 # Changelog
 
+## 26.5.3a — 2026-05-08
+
+### Changed
+- registry-core: Spotter moved to the bottom of the array so it appears first in the gallery (gallery reverses array order to show newest-by-date first)
+
 ## 26.5.3 — 2026-05-08
 
 ### Highlights

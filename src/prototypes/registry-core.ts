@@ -57,19 +57,6 @@ const Spotter = React.lazy(() => import('./Spotter'));
 
 export const coreRegistry: ProjectMeta[] = [
   {
-    id: 'Spotter',
-    name: 'Spotter',
-    description:
-      'Agentic chat shell with reasoning steps, viz blocks, and follow-ups — the in-thread Spotter answer experience powered by the Spotter DS.',
-    author: 'Design Team',
-    lastModified: '2026-05-08',
-    thumbnail: SpotterThumbnail,
-    component: Spotter,
-    dsComponents: 14,
-    customComponents: 1,
-    section: 'sample',
-  },
-  {
     id: 'SpotterMemory',
     name: 'Spotter Memory',
     description: 'Memory Sources object table experience with search, filtering, and pagination.',
@@ -139,6 +126,19 @@ export const coreRegistry: ProjectMeta[] = [
     component: DataModelEditorSample,
     dsComponents: 10,
     customComponents: 13,
+    section: 'sample',
+  },
+  {
+    id: 'Spotter',
+    name: 'Spotter',
+    description:
+      'Agentic chat shell with reasoning steps, viz blocks, and follow-ups — the in-thread Spotter answer experience powered by the Spotter DS.',
+    author: 'Design Team',
+    lastModified: '2026-05-08',
+    thumbnail: SpotterThumbnail,
+    component: Spotter,
+    dsComponents: 14,
+    customComponents: 1,
     section: 'sample',
   },
 ];
