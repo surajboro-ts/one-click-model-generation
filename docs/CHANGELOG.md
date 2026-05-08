@@ -1,5 +1,14 @@
 # Changelog
 
+## 26.5.2d — 2026-05-08
+
+### Changed
+- spotter(viz): VizBlock now uses real ECharts (echarts-for-react) instead of an SVG sketch. Pulls from the shared chart palette (`_shared/tiles/chartPalette`) so colors, fonts, and axis styling match the rest of the project's charts. Supports `line` / `bar` / `pie` / `table` from the schema with axis labels, gridlines, tooltips, value labels on bars, and a top legend for multi-series
+- spotter(viz): M4 expand modal — portaled to `document.body` to escape any ancestor containing block, full-width override (`max-width: none`), proper layout with chart title + view toggle + tokens + chart + "Showing X of X data points" footer
+
+### Fixed
+- spotter(chat): streaming keyframes (blockIn, reasoningIn, stepIn, workedForIn) end with `transform: none` instead of `translateY(0)` — translate(0) still creates a containing block per CSS spec, which had trapped Modal's `position: fixed` to the chat canvas
+
 ## 26.5.2c — 2026-05-08
 
 ### Changed

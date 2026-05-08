@@ -136,18 +136,16 @@
   display: flex;
   align-items: stretch;
   padding: 0 var(--spacing-5, 20px) var(--spacing-4, 16px);
-  min-height: 280px;
+  min-height: 320px;
 }
 
 .slot {
   flex: 1;
   position: relative;
-  background-color: var(--rd-sys-color-background-sunken);
-  border-radius: var(--radius-md, 6px);
-  overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
+  min-height: 280px;
 }
 
 .slotIframe {
@@ -159,6 +157,12 @@
 }
 
 .slotPlaceholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--rd-sys-color-background-sunken);
+  border-radius: var(--radius-md, 6px);
   color: var(--rd-sys-color-content-secondary);
   font-family: var(--font-family-primary);
   font-size: var(--font-size-md, 16px);
@@ -166,38 +170,6 @@
   line-height: var(--line-height-lg, 24px);
   text-align: center;
   padding: var(--spacing-6, 24px);
-}
-
-.chartSvg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.legend {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1, 4px);
-  padding: var(--spacing-3, 12px) 0 var(--spacing-3, 12px) var(--spacing-3, 12px);
-  min-width: 110px;
-}
-
-.legendItem {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-2, 8px);
-  color: var(--rd-sys-color-content-secondary);
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-xs, 12px);
-  font-weight: var(--font-weight-light, 375);
-  line-height: var(--line-height-sm, 18px);
-}
-
-.legendDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
 }
 
 .tableWrap {
@@ -282,51 +254,59 @@
   filter: brightness(0.9);
 }
 
-/* Expand modal */
-.expandOverlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(25, 35, 49, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-6, 24px);
-  z-index: 100;
+/* M4 modal width override — Radiant default caps at 1440px; we want true full-width minus 8px gutter. */
+.expandModalFull {
+  max-width: none !important;
 }
 
-.expandModal {
-  background-color: var(--rd-sys-color-background-base);
-  border-radius: var(--radius-lg, 8px);
-  width: 100%;
-  max-width: 1200px;
-  height: 80vh;
+/* Layout for the M4 fullscreen expand modal contents. */
+.expandedView {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 12px 48px rgba(25, 35, 49, 0.25);
+  gap: var(--spacing-3, 12px);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
-.expandHeader {
+.expandedHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
-  border-bottom: 1px solid var(--rd-sys-color-border-divider);
+  gap: var(--spacing-3, 12px);
+  flex-shrink: 0;
 }
 
-.expandTitle {
+.expandedTitle {
   margin: 0;
   color: var(--rd-sys-color-content-primary);
   font-family: var(--font-family-primary);
-  font-size: var(--font-size-lg, 18px);
+  font-size: var(--font-size-xl, 20px);
   font-weight: var(--font-weight-semibold, 600);
-  line-height: var(--line-height-lg, 24px);
+  line-height: var(--line-height-xl, 28px);
+  letter-spacing: -0.2px;
 }
 
-.expandBody {
+.expandedTokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2, 8px);
+  flex-shrink: 0;
+}
+
+.expandedChart {
   flex: 1;
+  min-height: 0;
   display: flex;
   align-items: stretch;
-  padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
-  min-height: 0;
+  background-color: var(--rd-sys-color-background-base);
+}
+
+.expandedFooter {
+  flex-shrink: 0;
+  color: var(--rd-sys-color-content-secondary);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-light, 375);
+  line-height: var(--line-height-md, 20px);
 }

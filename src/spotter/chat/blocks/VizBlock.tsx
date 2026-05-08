@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
+import ReactECharts from 'echarts-for-react';
 import { Icon } from '@components/icons';
+import { Modal } from '@components/Modal';
+import {
+  chartColors,
+  chartUi,
+  chartFont,
+  chartFontSize,
+} from '../../../prototypes/_shared/tiles/chartPalette';
 import type {
   VizBlockData,
-  VizSeries,
+  VizChartKind,
+  VizData,
   VizSource,
   VizTableData,
   VizToken,
@@ -45,19 +55,11 @@ export interface VizBlockProps {
   onAddToCoaching?: () => void;
 }
 
-const SERIES_COLORS = [
-  '#4FC3A1', // green
-  '#1FB45F', // dark green
-  '#FCC838', // yellow
-  '#2770EF', // blue
-  '#8C62F5', // purple
-  '#E22B3D', // red
-];
-
 /**
- * Stub renderer for the viz block. See
- * `docs/2026-05-07-spotter-viz-block-behaviour.md` for the slot model and
- * customization points.
+ * Renderer for the viz block. The chart slot is filled per `VizSource`:
+ * iframe / data (real ECharts via @shared/tiles palette) / placeholder.
+ * See `docs/2026-05-07-spotter-viz-block-behaviour.md` for the slot model
+ * and customization points.
  */
 export const VizBlock: React.FC<VizBlockProps> = ({
   block,
@@ -160,23 +162,90 @@ export const VizBlock: React.FC<VizBlockProps> = ({
           </div>
         </div>
       </div>
-      {expandedInternal && (
-        <ExpandModal
-          title={block.title}
-          onClose={() => setExpandedInternal(false)}
-        >
-          <Slot
-            view={view}
-            chartSlot={chartSlot}
-            source={block.source}
-            tableData={block.tableData}
-            includeLegend={false}
-          />
-        </ExpandModal>
-      )}
+      {/*
+        Portal the Modal to document.body so that any transform / will-change
+        / contain on an ancestor in the chat tree doesn't trap its
+        position: fixed inside the canvas. Modal needs to anchor to the
+        viewport for the M4 size to actually fill the screen.
+      */}
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <Modal
+            isOpen={expandedInternal}
+            onClose={() => setExpandedInternal(false)}
+            title="Expand"
+            size="M4"
+            showCloseButton
+            className={styles.expandModalFull}
+          >
+            <div className={styles.expandedView}>
+              <div className={styles.expandedHeader}>
+                <h2 className={styles.expandedTitle}>
+                  {block.title ?? 'Chart'}
+                </h2>
+                <div
+                  className={styles.viewToggle}
+                  role="group"
+                  aria-label="View mode"
+                >
+                  <button
+                    type="button"
+                    className={styles.viewBtn}
+                    data-active={view === 'table'}
+                    onClick={() => handleViewChange('table')}
+                    aria-label="Table view"
+                    aria-pressed={view === 'table'}
+                  >
+                    <Icon name="table" size="s" />
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.viewBtn}
+                    data-active={view === 'chart'}
+                    onClick={() => handleViewChange('chart')}
+                    aria-label="Chart view"
+                    aria-pressed={view === 'chart'}
+                  >
+                    <Icon name="chart" size="s" />
+                  </button>
+                </div>
+              </div>
+              <div className={styles.expandedTokens}>
+                {block.tokens.map((token) => (
+                  <Token key={token.id} token={token} />
+                ))}
+              </div>
+              <div className={styles.expandedChart}>
+                <Slot
+                  view={view}
+                  chartSlot={chartSlot}
+                  source={block.source}
+                  tableData={block.tableData}
+                  includeLegend={false}
+                />
+              </div>
+              <div className={styles.expandedFooter}>
+                {getDataPointsLabel(block)}
+              </div>
+            </div>
+          </Modal>,
+          document.body,
+        )}
     </div>
   );
 };
+
+function getDataPointsLabel(block: VizBlockData): string {
+  if (block.source.type === 'data') {
+    const count = block.source.data.series[0]?.data.length ?? 0;
+    return `Showing ${count} of ${count} data points`;
+  }
+  if (block.tableData) {
+    const count = block.tableData.rows.length;
+    return `Showing ${count} of ${count} data points`;
+  }
+  return '';
+}
 
 VizBlock.displayName = 'VizBlock';
 
@@ -235,30 +304,14 @@ const Slot: React.FC<SlotProps> = ({ view, chartSlot, source, tableData, include
   }
 
   if (source.type === 'data') {
-    const seriesWithColors = source.data.series.map((s, i) => ({
-      ...s,
-      color: s.color ?? SERIES_COLORS[i % SERIES_COLORS.length],
-    }));
     return (
-      <>
-        <div className={styles.slot}>
-          <ChartSketch series={seriesWithColors} />
-        </div>
-        {includeLegend && (
-          <div className={styles.legend}>
-            {seriesWithColors.map((s) => (
-              <span key={s.id} className={styles.legendItem}>
-                <span
-                  className={styles.legendDot}
-                  style={{ backgroundColor: s.color }}
-                  aria-hidden="true"
-                />
-                <span>{s.label}</span>
-              </span>
-            ))}
-          </div>
-        )}
-      </>
+      <div className={styles.slot}>
+        <RealChart
+          chartKind={source.chartKind}
+          data={source.data}
+          showLegend={includeLegend !== false}
+        />
+      </div>
     );
   }
 
@@ -320,85 +373,154 @@ const FooterAction: React.FC<{
   </button>
 );
 
-// ---------- Expand modal ----------
+// ---------- Real chart (ECharts) ----------
 
-const ExpandModal: React.FC<{
-  title?: string;
-  onClose: () => void;
-  children: React.ReactNode;
-}> = ({ title, onClose, children }) => (
-  <div
-    className={styles.expandOverlay}
-    onClick={onClose}
-    role="dialog"
-    aria-modal="true"
-    aria-label={title ?? 'Expanded chart'}
-  >
-    <div className={styles.expandModal} onClick={(e) => e.stopPropagation()}>
-      <div className={styles.expandHeader}>
-        <h3 className={styles.expandTitle}>{title ?? 'Chart'}</h3>
-        <button
-          type="button"
-          className={styles.iconBtn}
-          onClick={onClose}
-          aria-label="Close"
-        >
-          <Icon name="cross" size="m" />
-        </button>
-      </div>
-      <div className={styles.expandBody}>{children}</div>
-    </div>
-  </div>
-);
-
-// ---------- Chart sketch (used when source.type === 'data') ----------
-
-interface ChartSketchProps {
-  series: (VizSeries & { color: string })[];
+interface RealChartProps {
+  chartKind: VizChartKind;
+  data: VizData;
+  showLegend?: boolean;
 }
 
-const ChartSketch: React.FC<ChartSketchProps> = ({ series }) => {
-  const W = 600;
-  const H = 200;
-  const PAD_X = 16;
-  const PAD_Y = 16;
-  const innerW = W - PAD_X * 2;
-  const innerH = H - PAD_Y * 2;
+/**
+ * Renders the inline data via ECharts. Mirrors the existing chart-sample
+ * patterns in `src/prototypes/_shared/tiles/charts/*` (palette, axis
+ * styling, font). One chart for both inline and expanded views — the
+ * container's height controls the rendered size.
+ */
+const RealChart: React.FC<RealChartProps> = ({ chartKind, data, showLegend = true }) => {
+  const isLine = chartKind === 'line';
+  const isPie = chartKind === 'pie';
+  const isBar = chartKind === 'bar';
 
-  const allValues = series.flatMap((s) => s.data);
-  const max = Math.max(...allValues, 1);
-  const points = (data: number[]): string => {
-    if (data.length === 0) return '';
-    const stepX = data.length > 1 ? innerW / (data.length - 1) : 0;
-    return data
-      .map((v, i) => {
-        const x = PAD_X + stepX * i;
-        const y = PAD_Y + innerH - (v / max) * innerH;
-        return `${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`;
-      })
-      .join(' ');
+  const seriesConfig = data.series.map((s, i) => {
+    const color = s.color ?? chartColors[i % chartColors.length];
+    if (isPie) {
+      return {
+        name: s.label,
+        type: 'pie',
+        radius: ['40%', '65%'],
+        avoidLabelOverlap: true,
+        itemStyle: { color },
+        data: (data.xAxis?.categories ?? []).map((cat, idx) => ({
+          name: cat,
+          value: s.data[idx] ?? 0,
+          itemStyle: {
+            color: chartColors[idx % chartColors.length],
+          },
+        })),
+      };
+    }
+    return {
+      name: s.label,
+      type: isLine ? 'line' : 'bar',
+      data: s.data,
+      smooth: isLine,
+      lineStyle: isLine ? { color, width: 2 } : undefined,
+      itemStyle: {
+        color,
+        borderRadius: isBar ? [4, 4, 0, 0] : undefined,
+      },
+      symbol: isLine ? 'circle' : undefined,
+      symbolSize: isLine ? 5 : undefined,
+      barMaxWidth: isBar ? 56 : undefined,
+      label: isBar
+        ? {
+            show: true,
+            position: 'top',
+            fontFamily: chartFont,
+            fontSize: chartFontSize.value,
+            color: chartUi.valueColor,
+            formatter: (params: { value: number }) => formatNumber(params.value),
+          }
+        : undefined,
+    };
+  });
+
+  const showSeriesLegend =
+    showLegend && !isPie && data.series.length > 1;
+
+  const option: Record<string, unknown> = {
+    grid: { top: showSeriesLegend ? 36 : 16, bottom: 8, left: 8, right: 8, containLabel: true },
+    tooltip: {
+      trigger: isPie ? 'item' : 'axis',
+      textStyle: { fontFamily: chartFont, fontSize: chartFontSize.label },
+    },
+    color: chartColors,
+    series: seriesConfig,
   };
 
+  if (showSeriesLegend) {
+    option.legend = {
+      top: 4,
+      icon: 'circle',
+      itemWidth: 8,
+      itemHeight: 8,
+      textStyle: {
+        fontFamily: chartFont,
+        fontSize: chartFontSize.label,
+        color: chartUi.labelColor,
+      },
+    };
+  }
+
+  if (!isPie) {
+    option.xAxis = {
+      type: 'category',
+      data: data.xAxis?.categories ?? [],
+      name: data.xAxis?.label,
+      nameLocation: 'middle',
+      nameGap: 28,
+      nameTextStyle: {
+        fontFamily: chartFont,
+        fontSize: chartFontSize.label,
+        color: chartUi.labelColor,
+      },
+      axisLabel: {
+        fontFamily: chartFont,
+        fontSize: chartFontSize.tick,
+        color: chartUi.labelColor,
+      },
+      axisLine: { show: false },
+      axisTick: { show: false },
+    };
+    option.yAxis = {
+      type: 'value',
+      name: data.yAxis?.label,
+      nameLocation: 'middle',
+      nameGap: 48,
+      nameRotate: 90,
+      nameTextStyle: {
+        fontFamily: chartFont,
+        fontSize: chartFontSize.label,
+        color: chartUi.labelColor,
+      },
+      axisLabel: {
+        fontFamily: chartFont,
+        fontSize: chartFontSize.tick,
+        color: chartUi.labelColor,
+        formatter: (v: number) => formatNumber(v),
+      },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      splitLine: { lineStyle: { color: chartUi.axis } },
+    };
+  }
+
   return (
-    <svg
-      className={styles.chartSvg}
-      viewBox={`0 0 ${W} ${H}`}
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      {series.map((s) => (
-        <path
-          key={s.id}
-          d={points(s.data)}
-          stroke={s.color}
-          strokeWidth="1.6"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      ))}
-    </svg>
+    <ReactECharts
+      option={option}
+      notMerge
+      lazyUpdate
+      style={{ width: '100%', height: '100%' }}
+      opts={{ renderer: 'svg' }}
+    />
   );
+};
+
+const formatNumber = (v: number): string => {
+  if (Math.abs(v) >= 1_000_000) return `${(v / 1_000_000).toFixed(2)}M`;
+  if (Math.abs(v) >= 1_000) return `${(v / 1_000).toFixed(1)}K`;
+  return String(v);
 };
 
 export default VizBlock;
