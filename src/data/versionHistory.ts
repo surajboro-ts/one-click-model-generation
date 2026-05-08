@@ -28,6 +28,21 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.3',
+    date: '2026-05-08',
+    type: 'minor',
+    changes: [
+      { type: 'added', group: 'Spotter prototype', component: 'Spotter prototype', description: 'Registered in registry-core.ts as a sample. In-thread agentic chat with welcome state, collapsible 64↔260 left panel, light-mode GlobalHeader, sticky prompt' },
+      { type: 'added', group: 'Spotter DS', component: '@spotter/* — two-layer DS', description: 'Peer to @components/* — Spotter-domain blocks built on Radiant primitives. Subdomains: chat, page, answer, viz, runtime, plus tokens and icons' },
+      { type: 'added', group: 'Spotter DS', component: 'Chat layer', description: 'SpotterChatProvider + useReducer + AbortController, async-iterable askSpotter() service (canned + live modes), 4 fixtures with rich reasoning' },
+      { type: 'added', group: 'Spotter DS', component: 'Block renderers', description: 'TextBlock, VizBlock (real ECharts with line/bar/pie/table, iframe/data/placeholder slot, M4 fullscreen expand modal, canonical 5-action footer), SourcesBlock, FollowUpsBlock (clickable chips that call send), RefineBlock, ErrorBlock' },
+      { type: 'added', group: 'Spotter DS', component: 'Page shell + chat layout', description: 'SpotterShell, SpotterLeftSide (smooth 64↔260 animation), SpotterRail/Item, SpotterPanel/Section/Item/Action, SpotterWelcome. ChatThread, MessageRow, UserBubble, AgentMessage with feedback row, TypingIndicator, ReasoningBlock with embedded ToolcallCard and "Worked for X seconds" footer' },
+      { type: 'added', group: 'Spotter DS', component: 'Prompt + icons', description: 'SpotterPrompt with purple→blue gradient on :focus-within. Custom PanelToggle, ChartSearch, Orbits, Bell, ThoughtSpotMark glyphs (Radiant icons used for everything else)' },
+      { type: 'added', group: 'Documentation', component: 'Spotter rules + plans', description: 'Three .cursor/rules files (spotter-components, spotter-logic, spotter-response-style) auto-attach on Spotter files. Spotter Requirements Gate in _orchestration.md. CLAUDE.md addendum. Four plan docs covering DS, prototype shell, answer card, chat extraction, plus VizBlock behaviour guide' },
+      { type: 'synced', group: 'Design system', component: '147 icons + light GlobalHeader', description: 'Radiant 3.0 Figma icon sync (registry expanded ~55 → 151) and the new light-mode GlobalHeader theme used by the Spotter prototype' },
+    ],
+  },
+  {
     version: '26.5.2e',
     date: '2026-05-08',
     type: 'patch',

@@ -1,5 +1,34 @@
 # Changelog
 
+## 26.5.3 — 2026-05-08
+
+### Highlights
+
+- **Spotter prototype** — in-thread agentic chat with reasoning, viz blocks, and follow-ups
+- **Spotter design system (in progress)** — chat / page / runtime layered on Radiant
+
+### Added
+- feat(spotter): two-layer DS scaffold — `@spotter/*` peer to `@components/*` for Spotter-domain blocks built on Radiant primitives. Subdomains: chat, page, answer, viz, runtime, plus `tokens.ts` and `icons.tsx`
+- feat(spotter): Spotter prototype registered in `registry-core.ts` as a sample. Wraps `SpotterChatProvider`, switches between welcome and chat-active canvas, light-mode `GlobalHeader`, collapsible 64↔260 left panel with smooth animation
+- feat(spotter): chat extraction end-to-end — `SpotterChatProvider`, `useReducer`, `AbortController`, async-iterable `askSpotter()` service with canned + live modes, four canned fixtures with rich reasoning
+- feat(spotter): six block renderers — TextBlock, VizBlock (real ECharts via `_shared/tiles/chartPalette` — line / bar / pie / table with axes, gridlines, tooltips, value labels, legend; iframe / data / placeholder slot priority; Pin / Save / Download / Edit + Add to coaching footer; M4 fullscreen expand modal portaled to body), SourcesBlock, FollowUpsBlock (clickable chips that call `send`), RefineBlock (clickable options), ErrorBlock
+- feat(spotter): `ChatThread`, `MessageRow`, `UserBubble` (single-row), `AgentMessage` with feedback row, `TypingIndicator` (spinner + "Analysing…"), `ReasoningBlock` (collapsed-by-default "Show work ⌄" trigger, gray done dots, embedded `ToolcallCard` with "Show details", "Worked for X seconds" footer)
+- feat(spotter): purple → blue gradient border on `SpotterPrompt:focus-within`
+- feat(spotter): custom icons — `PanelToggleIcon` (sidebar layout glyph from Figma), `ChartSearchIcon` + `OrbitsIcon` (prompt mode toggle), `BellIcon`, `ThoughtSpotMark`. All other glyphs use Radiant icons (151-icon registry)
+- feat(icons): sync 147 icons from Radiant 3.0 Figma + light-mode GlobalHeader (carried forward from `26.5.2`)
+- docs(spotter): four planning docs — DS plan, prototype shell, AnswerCard spec, chat extraction. Plus `docs/2026-05-07-spotter-viz-block-behaviour.md` (slot model + customization guide)
+- docs(spotter): three `.cursor/rules/` files — `spotter-components.md`, `spotter-logic.md`, `spotter-response-style.md` — auto-attach when working in `src/spotter/**` or `src/prototypes/Spotter*/**`. Spotter Requirements Gate added to `_orchestration.md`. CLAUDE.md addendum points to the Spotter docs
+- spotter(tokens): `spotterGlow` (radial brand glow) + `spotterChartBg` (chart-token aliases) + `spotterLayout.chatMaxWidth` (880)
+
+### Changed
+- spotter(chat): streaming animation polish — step dot color transitions, block fade-up entry, steps container collapse via `max-height + opacity` (no remount), toolcall body slide-open, ReasoningBlock fades in only when reasoning starts, "Worked for X seconds" fade-in
+- spotter(panel): full-width selected state on items, full-width line breaks between sections (per Figma)
+- spotter(reasoning): brand-blue trigger when expanded, gray done dots, ToolcallCard collapsed by default with brand-blue "Show details ⌄" link
+- spotter(prototype): sentence-case fixes — "Deal Accelerator" → "Deal accelerator", "Fall and Winter" → "fall and winter"
+
+### Fixed
+- spotter(chat): streaming keyframes (blockIn, reasoningIn, stepIn, workedForIn) end with `transform: none` instead of `translateY(0)` — translate(0) creates a containing block per CSS spec, which had trapped Modal's `position: fixed` to the chat canvas
+
 ## 26.5.2e — 2026-05-08
 
 ### Changed

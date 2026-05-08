@@ -25,6 +25,18 @@ interface Highlight {
 
 const HIGHLIGHTS: Highlight[] = [
   {
+    title: 'Spotter prototype',
+    description: 'In-thread agentic chat with reasoning trace, viz blocks (real ECharts), sources, follow-ups, and refine. Welcome → chat-active transition, sticky prompt with gradient focus border, M4 fullscreen expand on charts.',
+    version: '26.5.3',
+    date: '2026-05-08',
+  },
+  {
+    title: 'Spotter design system (in progress)',
+    description: 'New @spotter/* peer to @components/* — Spotter-domain blocks (chat, page, answer, viz, runtime) built on Radiant primitives. Auto-loading .cursor/rules so future sessions get the right context.',
+    version: '26.5.3',
+    date: '2026-05-08',
+  },
+  {
     title: 'Project status dashboard',
     description: 'A local HTML dashboard with overview, branches, forks/upstream, worktrees, and docs/plans tabs. Run /project-status; zero LLM token cost.',
     version: '26.4.4c',
@@ -51,6 +63,55 @@ const HIGHLIGHTS: Highlight[] = [
 ];
 
 const CHANGELOG: ChangelogEntry[] = [
+  {
+    version: '26.5.3',
+    date: '2026-05-08',
+    title: 'Spotter prototype + Spotter design system (in progress)',
+    type: 'minor',
+    changes: [
+      {
+        category: 'added',
+        label: 'Spotter prototype — in-thread agentic chat',
+        items: [
+          'New sample prototype registered in registry-core.ts: agentic chat with welcome state and chat-active canvas',
+          'Streaming reasoning trace with description per step, embedded ToolcallCard ("Show details ⌄"), gray dots, and "Worked for X seconds" footer',
+          'Six block renderers — text, viz (real ECharts via the shared chart palette), sources, follow-ups (clickable chips), refine (clickable options), error',
+          'M4 fullscreen expand modal — portaled to body, edge-to-edge, with chart title + view toggle + tokens + chart slot + "Showing X of X data points" footer',
+          'Sticky prompt with purple → blue gradient border on focus, "Spotter responses should be reviewed. Learn more" disclaimer below',
+          'Feedback row (Is this useful? 👍 👎) on every completed agent message',
+        ],
+      },
+      {
+        category: 'added',
+        label: 'Spotter design system (in progress)',
+        items: [
+          '@spotter/* peer to @components/* — domain DS layered on Radiant',
+          'Subdomains: chat (state + thread + bubble + reasoning + blocks), page (shell + collapsible 64↔260 left panel + welcome), answer (reserved for AnswerCard), viz, runtime (schema + service + system prompt)',
+          'Spotter-local tokens (radial brand glow + chart-token bg aliases + chatMaxWidth)',
+          'Five custom icon glyphs not in Radiant: PanelToggle, Bell, ThoughtSpotMark, ChartSearch, Orbits',
+          'AsyncIterable streaming protocol (AnswerChunk) — same shape for canned mode and the live /api/chat path that lands later',
+        ],
+      },
+      {
+        category: 'added',
+        label: 'Spotter context for future sessions',
+        items: [
+          'Three .cursor/rules files (spotter-components, spotter-logic, spotter-response-style) auto-attach on src/spotter/** and src/prototypes/Spotter*/**',
+          'Spotter Requirements Gate in _orchestration.md classifies Spotter tasks and pre-loads the rules',
+          'CLAUDE.md two-layer DS section pointing to the four Spotter docs',
+          'Plans + behaviour guides under docs/: DS plan, prototype shell, AnswerCard spec, chat extraction, VizBlock behaviour',
+        ],
+      },
+      {
+        category: 'synced',
+        label: 'Radiant 3.0 icon sync + light GlobalHeader',
+        items: [
+          'Icon registry expanded ~55 → 151 icons sourced from Figma',
+          'GlobalHeader gained a light theme variant — used as the Spotter prototype header',
+        ],
+      },
+    ],
+  },
   {
     version: '26.4.4c',
     date: '2026-04-28',

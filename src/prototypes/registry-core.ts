@@ -41,6 +41,7 @@ import AdminLangThumbnail from './thumbnails/AdminLang.svg';
 import MiniSpottersThumbnail from './thumbnails/MiniSpotters.svg';
 import LiveboardTemplateThumbnail from './thumbnails/LiveboardTemplate.svg';
 import DataModelEditorThumbnail from './thumbnails/DataModelEditor.svg';
+import SpotterThumbnail from './thumbnails/Spotter.svg';
 
 // ── Components (lazy-loaded) ──────────────────────────────────────────────────
 
@@ -50,10 +51,24 @@ const AdminLang = React.lazy(() => import('./AdminLang'));
 const MiniSpotters = React.lazy(() => import('./MiniSpotters'));
 const LiveboardTemplate = React.lazy(() => import('./_liveboard-template'));
 const DataModelEditorSample = React.lazy(() => import('./DataModelEditor'));
+const Spotter = React.lazy(() => import('./Spotter'));
 
 // ── Registry ──────────────────────────────────────────────────────────────────
 
 export const coreRegistry: ProjectMeta[] = [
+  {
+    id: 'Spotter',
+    name: 'Spotter',
+    description:
+      'Agentic chat shell with reasoning steps, viz blocks, and follow-ups — the in-thread Spotter answer experience powered by the Spotter DS.',
+    author: 'Design Team',
+    lastModified: '2026-05-08',
+    thumbnail: SpotterThumbnail,
+    component: Spotter,
+    dsComponents: 14,
+    customComponents: 1,
+    section: 'sample',
+  },
   {
     id: 'SpotterMemory',
     name: 'Spotter Memory',
