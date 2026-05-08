@@ -1,5 +1,13 @@
 # Changelog
 
+## 26.5.2e — 2026-05-08
+
+### Changed
+- spotter(prototype): sentence-case fixes — "Deal Accelerator" → "Deal accelerator", "Fall and Winter" → "fall and winter" (flagged by /radiant-check)
+
+### Added
+- spotter(tokens): `spotterLayout.chatMaxWidth` (880) — documented constant for the shared chat thread + prompt max-width
+
 ## 26.5.2d — 2026-05-08
 
 ### Changed

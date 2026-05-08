@@ -28,6 +28,15 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.2e',
+    date: '2026-05-08',
+    type: 'patch',
+    changes: [
+      { type: 'modified', group: 'Spotter prototype', component: 'Sentence-case fixes', description: '"Deal Accelerator" → "Deal accelerator", "Fall and Winter" → "fall and winter" — flagged by /radiant-check' },
+      { type: 'added', group: 'Spotter DS', component: 'spotterLayout token', description: 'New spotterLayout.chatMaxWidth (880) constant in src/spotter/tokens.ts. Documented constant for shared use; CSS modules continue to use 880px until a global CSS-variable home is decided' },
+    ],
+  },
+  {
     version: '26.5.2d',
     date: '2026-05-08',
     type: 'patch',

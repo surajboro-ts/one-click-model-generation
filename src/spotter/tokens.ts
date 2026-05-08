@@ -37,3 +37,17 @@ export const spotterChartBg = {
 } as const;
 
 export type SpotterChartTokenKind = keyof typeof spotterChartBg;
+
+/**
+ * Layout constants shared across Spotter chat surfaces. These are
+ * exposed as plain numbers so consumers can use them in inline styles,
+ * CSS modules (via `--spotter-chat-max-width`), or computations.
+ */
+export const spotterLayout = {
+  /**
+   * Max width of the chat thread + the prompt area. Keeps the prompt
+   * vertically aligned with the thread on wide canvases.
+   */
+  chatMaxWidth: 880,
+} as const;
+

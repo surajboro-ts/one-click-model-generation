@@ -58,7 +58,7 @@ const SpotterInner: React.FC = () => {
     // Quick actions are stubs for now — translate them to a prompt.
     const promptByAction: Record<string, string> = {
       'quick-search': 'Show me total sales by month',
-      'deep-analysis': 'Analyze sales for the upcoming Fall and Winter season',
+      'deep-analysis': 'Analyze sales for the upcoming fall and winter season',
       'know-your-data': 'What are the most common questions asked about this data?',
     };
     const text = promptByAction[id];

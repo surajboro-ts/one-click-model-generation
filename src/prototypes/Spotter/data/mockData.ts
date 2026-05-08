@@ -22,7 +22,7 @@ export interface DataModel {
 
 export const customSpotters: CustomSpotter[] = [
   { id: 'customer-prep', name: 'Customer prep' },
-  { id: 'deal-accelerator', name: 'Deal Accelerator' },
+  { id: 'deal-accelerator', name: 'Deal accelerator' },
 ];
 
 export const chats: ChatEntry[] = [
