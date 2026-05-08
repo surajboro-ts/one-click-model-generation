@@ -49,9 +49,13 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({
     setExpanded((prev) => !prev);
   };
 
-  if (!reasoning && !isActive) return null;
+  // Don't render until reasoning is actually set — avoids the "Show work"
+  // trigger appearing during the typing-only phase. TypingIndicator covers
+  // that phase in AgentMessage.
+  if (!reasoning) return null;
 
-  const stepCount = reasoning?.steps.length ?? 0;
+  const stepCount = reasoning.steps.length;
+  const showSteps = expanded && stepCount > 0;
 
   return (
     <div className={styles.reasoning}>
@@ -67,34 +71,36 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({
           <Icon name="chevron-down" size="s" />
         </span>
       </button>
-      {expanded && reasoning && stepCount > 0 && (
-        <div className={styles.steps}>
-          {reasoning.steps.map((step, index) => (
-            <StepRow
-              key={step.id}
-              step={step}
-              isLast={
-                index === stepCount - 1 && reasoning.durationSeconds === undefined
-              }
-              animationDelay={index * 80}
-            />
-          ))}
-          {reasoning.isDone && reasoning.durationSeconds !== undefined && (
-            <div className={styles.workedFor}>
-              <div className={styles.dotColumn}>
-                <span
-                  className={styles.dot}
-                  data-status="done"
-                  aria-hidden="true"
-                />
-              </div>
-              <p className={styles.workedForBody}>
-                Worked for {reasoning.durationSeconds} seconds
-              </p>
+      {/*
+        Steps container stays MOUNTED. Visibility flips via `data-expanded`
+        so the height/opacity transition can animate collapse/expand smoothly.
+      */}
+      <div className={styles.steps} data-expanded={showSteps}>
+        {reasoning.steps.map((step, index) => (
+          <StepRow
+            key={step.id}
+            step={step}
+            isLast={
+              index === stepCount - 1 && reasoning.durationSeconds === undefined
+            }
+            animationDelay={index * 80}
+          />
+        ))}
+        {reasoning.isDone && reasoning.durationSeconds !== undefined && (
+          <div className={styles.workedFor}>
+            <div className={styles.dotColumn}>
+              <span
+                className={styles.dot}
+                data-status="done"
+                aria-hidden="true"
+              />
             </div>
-          )}
-        </div>
-      )}
+            <p className={styles.workedForBody}>
+              Worked for {reasoning.durationSeconds} seconds
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -152,8 +158,8 @@ const ToolcallCard: React.FC<{ toolcall: ReasoningToolCall }> = ({ toolcall }) =
           </span>
         )}
       </button>
-      {open && hasBody && (
-        <div className={styles.toolcallBody}>
+      {hasBody && (
+        <div className={styles.toolcallBody} data-open={open}>
           {toolcall.input !== undefined && (
             <div className={styles.toolcallSection}>
               <span className={styles.toolcallLabel}>Input</span>

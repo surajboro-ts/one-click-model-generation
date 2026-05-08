@@ -1,5 +1,17 @@
 # Changelog
 
+## 26.5.2c — 2026-05-08
+
+### Changed
+- spotter(chat): streaming animation polish — six fixes to make the live agent message feel smooth instead of poppy
+  - Step dot color transitions smoothly between gray / brand / gray as `reasoning_step` chunks fire
+  - New blocks (viz, followups, sources) fade up on entry instead of popping
+  - Steps container collapses via `max-height + opacity` (no unmount), so the auto-collapse 600ms after done animates instead of jumping
+  - Toolcall body slides open via `max-height + opacity` instead of conditional render
+  - `ReasoningBlock` only renders once reasoning is set — cleaner crossfade from TypingIndicator
+  - "Worked for X seconds" fades up with a 120ms delay instead of popping
+- spotter(chat): ReasoningBlock keeps steps + toolcall bodies mounted across collapse cycles so re-open is instant and collapse is animated
+
 ## 26.5.2b — 2026-05-07
 
 ### Added

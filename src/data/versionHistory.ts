@@ -28,6 +28,15 @@ export interface VersionEntry {
  */
 export const versionHistory: VersionEntry[] = [
   {
+    version: '26.5.2c',
+    date: '2026-05-08',
+    type: 'patch',
+    changes: [
+      { type: 'modified', group: 'Spotter chat', component: 'Streaming animation polish', description: 'Six smoothness fixes: step dot color transition (gray→brand→gray no longer snaps), block fade-up entry on viz / followups / sources, steps container collapse via max-height + opacity (no remount), toolcall body slide-open instead of pop, ReasoningBlock fades in only when reasoning starts (cleaner crossfade from TypingIndicator), "Worked for X seconds" fade-in with delay' },
+      { type: 'modified', group: 'Spotter chat', component: 'ReasoningBlock mount behaviour', description: 'Steps + toolcall body now stay mounted, visibility flips via data attributes — re-open is instant, collapse animates smoothly' },
+    ],
+  },
+  {
     version: '26.5.2b',
     date: '2026-05-07',
     type: 'patch',
