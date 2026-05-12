@@ -3,16 +3,28 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const { model, max_tokens, system, messages } = req.body;
+
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'x-api-key': process.env.ANTHROPIC_API_KEY || '',
-      'anthropic-version': '2023-06-01',
+      'Authorization': `Bearer ${process.env.GROQ_API_KEY || ''}`,
       'content-type': 'application/json',
     },
-    body: JSON.stringify(req.body),
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      max_tokens,
+      messages: [
+        ...(system ? [{ role: 'system', content: system }] : []),
+        ...messages,
+      ],
+    }),
   });
 
   const data = await response.json();
-  res.status(response.status).json(data);
+
+  // Reshape Groq (OpenAI-style) response to match Anthropic format expected by the client
+  res.status(response.status).json({
+    content: [{ text: data.choices?.[0]?.message?.content ?? '' }],
+  });
 }
