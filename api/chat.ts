@@ -12,8 +12,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
+      model: 'llama-3.3-70b-versatile',
       max_tokens,
+      response_format: { type: 'json_object' },
       messages: [
         ...(system ? [{ role: 'system', content: system }] : []),
         ...messages,
