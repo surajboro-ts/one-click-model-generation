@@ -1249,7 +1249,7 @@ Type rules:
 Context field rules: After the user has shared meaningful information about their goals, domain, personas, or business rules, populate the "context" field with a structured plain-text summary. Format it exactly like this example (use the actual conversation content):
 "Project Scope:\\n[short project title]\\n\\nStrategic Objective\\n[1-2 sentence description]\\nPrimary Persona: [role]\\nKey Question: \\"[question]\\"\\n\\nSemantic Logic & Business Rules\\n[Rule name]: [definition]\\n[Rule name]: [definition]"
 Only include the context field when there is genuinely meaningful content from the conversation. Set it to null if the user has only sent generic commands (like "add to model") with no domain context. Update it cumulatively — include all context captured so far, not just from the latest message.`,
-        messages: window._conversationHistory,
+        messages: window._conversationHistory.slice(-6),
       }),
     });
     if (!res.ok) {
