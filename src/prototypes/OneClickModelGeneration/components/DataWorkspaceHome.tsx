@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AppShell } from '@components/AppShell';
 import { Button } from '@components/Button';
 import { Avatar } from '@components/Avatar';
@@ -247,7 +247,7 @@ const DataObjectRow: React.FC<{ row: DataObject }> = ({ row }) => {
         ))}
       </div>
 
-      <div style={{ ...cellBase, padding: `${spacing.E}px ${spacing.D}px` }}>
+      <div style={{ ...cellBase, padding: `${spacing.E}px ${spacing.D}px`, '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
         <Avatar name={row.author} size="s" showName />
       </div>
 
@@ -276,6 +276,12 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
 
   const scrollLeft = () => carouselRef.current?.scrollBy({ left: -216, behavior: 'smooth' });
   const scrollRight = () => carouselRef.current?.scrollBy({ left: 216, behavior: 'smooth' });
+
+  useEffect(() => {
+    const prev = document.body.style.overscrollBehavior;
+    document.body.style.overscrollBehavior = 'none';
+    return () => { document.body.style.overscrollBehavior = prev; };
+  }, []);
 
   const filteredRows = dataObjects.filter((obj) => {
     const matchesSearch =
@@ -366,6 +372,7 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
                 overflowX: 'auto',
                 scrollBehavior: 'smooth',
                 scrollbarWidth: 'none',
+                overscrollBehavior: 'none',
               }}
             >
               {RECENT_OBJECTS.map((obj) => (
@@ -441,7 +448,7 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
             </div>
 
             {/* Scrollable rows */}
-            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, overscrollBehavior: 'none' }}>
               {filteredRows.map((row) => (
                 <DataObjectRow key={row.id} row={row} />
               ))}
