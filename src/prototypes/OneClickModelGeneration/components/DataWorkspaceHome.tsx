@@ -201,7 +201,7 @@ const DATA_OBJECT_COLUMNS: TableColumn<DataObject>[] = [
     label: 'Tags',
     width: '140px',
     render: (_, row) => (
-      <Horizontal gap={spacing.A} style={{ flexWrap: 'wrap' }}>
+      <Horizontal gap={spacing.A} style={{ flexWrap: 'nowrap', overflow: 'hidden' }}>
         {row.tags.map((tag) => (
           <span
             key={tag}
@@ -212,6 +212,7 @@ const DATA_OBJECT_COLUMNS: TableColumn<DataObject>[] = [
               fontSize: fontSize.xs,
               color: systemColors.light['content-primary'],
               whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             {tag}
@@ -302,7 +303,7 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
           { id: 'develop', label: 'Develop App', headerTitle: 'Develop' },
         ],
         activeTab: sidebarTab,
-        onTabChange: setSidebarTab,
+        onTabChange: (id) => { if (id === 'data') setSidebarTab(id); },
         categories: {
           data: [
             {

@@ -14,15 +14,24 @@ export interface DataObject {
 }
 
 export const dataObjects: DataObject[] = [
-  { id: '1', name: 'Sales Analytics Model', type: 'Model', source: 'Sales_Integration', sourceProvider: 'snowflake', tags: ['Analysis', 'Sales'], author: 'Alice Styles', lastModified: '3 days ago' },
-  { id: '2', name: 'Inventory Model', type: 'Model', source: 'Inventory_Integration', sourceProvider: 'dbt', tags: ['Sales'], author: 'Mark Rivera', lastModified: '20 days ago' },
-  { id: '3', name: 'fact_orders', type: 'Table', source: 'snowflake_prod_connection', sourceProvider: 'snowflake', tags: [], author: 'Priya Patel', lastModified: '1 month ago' },
-  { id: '4', name: 'Customer Segments Model', type: 'Model', source: 'CRM_Integration', sourceProvider: 'snowflake', tags: ['Analysis', 'CRM'], author: 'David Chen', lastModified: '5 days ago' },
-  { id: '5', name: 'dim_products', type: 'Table', source: 'snowflake_prod_connection', sourceProvider: 'snowflake', tags: [], author: 'Priya Patel', lastModified: '45 days ago' },
-  { id: '6', name: 'Marketing Attribution Model', type: 'Model', source: 'Marketing_dbt', sourceProvider: 'dbt', tags: ['Marketing', 'Analysis'], author: 'Sarah Kim', lastModified: '2 weeks ago' },
-  { id: '7', name: 'dim_customers', type: 'Table', source: 'postgres_prod', sourceProvider: 'db_connection', tags: [], author: 'Alice Styles', lastModified: '3 months ago' },
-  { id: '8', name: 'Finance Model', type: 'Model', source: 'Finance_Integration', sourceProvider: 'snowflake', tags: ['Finance'], author: 'Mark Rivera', lastModified: '1 week ago' },
-  { id: '9', name: 'fact_transactions', type: 'Table', source: 'postgres_prod', sourceProvider: 'db_connection', tags: [], author: 'David Chen', lastModified: '2 months ago' },
+  { id: '1',  name: 'Sales Analytics Model',       type: 'Model', source: 'Sales_Integration',        sourceProvider: 'snowflake',    tags: ['Analysis', 'Sales'],      author: 'Alice Styles',  lastModified: '3 days ago' },
+  { id: '2',  name: 'Inventory Model',              type: 'Model', source: 'Inventory_Integration',    sourceProvider: 'dbt',          tags: ['Sales'],                  author: 'Mark Rivera',   lastModified: '20 days ago' },
+  { id: '3',  name: 'fact_orders',                  type: 'Table', source: 'snowflake_prod_connection', sourceProvider: 'snowflake',    tags: [],                         author: 'Priya Patel',   lastModified: '1 month ago' },
+  { id: '4',  name: 'Customer Segments Model',      type: 'Model', source: 'CRM_Integration',          sourceProvider: 'snowflake',    tags: ['Analysis', 'CRM'],        author: 'David Chen',    lastModified: '5 days ago' },
+  { id: '5',  name: 'dim_products',                 type: 'Table', source: 'snowflake_prod_connection', sourceProvider: 'snowflake',    tags: [],                         author: 'Priya Patel',   lastModified: '45 days ago' },
+  { id: '6',  name: 'Marketing Attribution Model',  type: 'Model', source: 'Marketing_dbt',            sourceProvider: 'dbt',          tags: ['Marketing', 'Analysis'],  author: 'Sarah Kim',     lastModified: '2 weeks ago' },
+  { id: '7',  name: 'dim_customers',                type: 'Table', source: 'postgres_prod',            sourceProvider: 'db_connection', tags: [],                         author: 'Alice Styles',  lastModified: '3 months ago' },
+  { id: '8',  name: 'Finance Model',                type: 'Model', source: 'Finance_Integration',      sourceProvider: 'snowflake',    tags: ['Finance'],                author: 'Mark Rivera',   lastModified: '1 week ago' },
+  { id: '9',  name: 'fact_transactions',            type: 'Table', source: 'postgres_prod',            sourceProvider: 'db_connection', tags: [],                         author: 'David Chen',    lastModified: '2 months ago' },
+  { id: '10', name: 'HR Analytics Model',           type: 'Model', source: 'HR_Integration',           sourceProvider: 'snowflake',    tags: ['HR'],                     author: 'Sarah Kim',     lastModified: '4 days ago' },
+  { id: '11', name: 'dim_employees',                type: 'Table', source: 'postgres_prod',            sourceProvider: 'db_connection', tags: [],                         author: 'David Chen',    lastModified: '2 weeks ago' },
+  { id: '12', name: 'Supply Chain Model',           type: 'Model', source: 'ERP_Integration',          sourceProvider: 'dbt',          tags: ['Operations'],             author: 'Priya Patel',   lastModified: '6 days ago' },
+  { id: '13', name: 'fact_returns',                 type: 'Table', source: 'snowflake_prod_connection', sourceProvider: 'snowflake',    tags: [],                         author: 'Mark Rivera',   lastModified: '3 weeks ago' },
+  { id: '14', name: 'Revenue Forecast Model',       type: 'Model', source: 'Finance_Integration',      sourceProvider: 'snowflake',    tags: ['Finance', 'Analysis'],    author: 'Alice Styles',  lastModified: '1 day ago' },
+  { id: '15', name: 'dim_stores',                   type: 'Table', source: 'snowflake_prod_connection', sourceProvider: 'snowflake',    tags: [],                         author: 'Priya Patel',   lastModified: '5 weeks ago' },
+  { id: '16', name: 'Product Performance Model',    type: 'Model', source: 'Sales_Integration',        sourceProvider: 'snowflake',    tags: ['Sales', 'Analysis'],      author: 'David Chen',    lastModified: '10 days ago' },
+  { id: '17', name: 'fact_web_events',              type: 'Table', source: 'Marketing_dbt',            sourceProvider: 'dbt',          tags: [],                         author: 'Sarah Kim',     lastModified: '1 month ago' },
+  { id: '18', name: 'Customer Lifetime Value Model',type: 'Model', source: 'CRM_Integration',          sourceProvider: 'snowflake',    tags: ['CRM', 'Marketing'],       author: 'Alice Styles',  lastModified: '8 days ago' },
 ];
 
 export interface DataConnection {
