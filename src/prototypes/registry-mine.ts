@@ -27,6 +27,21 @@
  *   ];
  */
 
+import React from 'react';
 import { ProjectMeta } from './registry-core';
+import OneClickModelGenerationThumbnail from './thumbnails/OneClickModelGeneration.svg';
 
-export const myRegistry: ProjectMeta[] = [];
+const OneClickModelGeneration = React.lazy(() => import('./OneClickModelGeneration'));
+
+export const myRegistry: ProjectMeta[] = [
+  {
+    id: 'OneClickModelGeneration',
+    name: '1-click model generation',
+    description: 'Explore a new onboarding experience and full model generation from a single click.',
+    author: 'Suraj Boro',
+    lastModified: '2026-05-16',
+    thumbnail: OneClickModelGenerationThumbnail,
+    component: OneClickModelGeneration,
+    section: 'mine',
+  },
+];

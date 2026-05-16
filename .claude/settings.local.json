@@ -105,7 +105,8 @@
       "Bash(curl *)",
       "mcp__plugin_figma_figma__get_metadata",
       "Bash(xargs -n1 basename)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(npm run *)"
     ]
   },
   "hooks": {
