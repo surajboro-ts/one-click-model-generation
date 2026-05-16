@@ -3,6 +3,8 @@ import { systemColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
 import { dataConnections, mockAIResponses } from './data/mockData';
 import DataModelEditorComponent from '../DataModelEditor/DataModelEditor';
+import { DataWorkspaceHome } from './components/DataWorkspaceHome';
+import { ModelSelectionModal } from './components/ModelSelectionModal';
 
 /**
  * OneClickModelGeneration
@@ -16,72 +18,28 @@ type Screen = 'home' | 'connections' | 'onboarding' | 'editor';
 
 export const OneClickModelGeneration: React.FC = () => {
   const [screen, setScreen] = useState<Screen>('home');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [aiMessageIndex, setAiMessageIndex] = useState(0);
 
-  const handleStartFlow = () => setScreen('connections');
   const handleSelectConnection = () => setScreen('onboarding');
   const handleGenerateModel = () => setScreen('editor');
   const handleNext = () => setAiMessageIndex((i) => (i + 1) % mockAIResponses.length);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: systemColors.light['background-sunken'] }}>
+    <>
       {/* Home Screen */}
       {screen === 'home' && (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '100vh',
-            padding: `${spacing.F}px`,
-          }}
-        >
-          <h1
-            style={{
-              fontSize: '36px',
-              fontWeight: 700,
-              color: systemColors.light['content-primary'],
-              marginBottom: `${spacing.D}px`,
-              textAlign: 'center',
+        <>
+          <DataWorkspaceHome onOpenModal={() => setIsModalOpen(true)} />
+          <ModelSelectionModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onNext={() => {
+              setIsModalOpen(false);
+              setScreen('connections');
             }}
-          >
-            Data Workspace
-          </h1>
-          <p
-            style={{
-              fontSize: '16px',
-              color: systemColors.light['content-secondary'],
-              marginBottom: `${spacing.H}px`,
-              maxWidth: 400,
-              textAlign: 'center',
-            }}
-          >
-            Create a new data model with AI-powered guidance to structure your data in seconds.
-          </p>
-          <button
-            onClick={handleStartFlow}
-            style={{
-              padding: `${spacing.C}px ${spacing.F}px`,
-              fontSize: '16px',
-              fontWeight: 600,
-              backgroundColor: systemColors.light['content-brand'],
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'opacity 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLButtonElement).style.opacity = '0.9';
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLButtonElement).style.opacity = '1';
-            }}
-          >
-            Create model
-          </button>
-        </div>
+          />
+        </>
       )}
 
       {/* Connection Selection Screen */}
@@ -306,7 +264,7 @@ export const OneClickModelGeneration: React.FC = () => {
         (window as any).__DME_CONFIG__ = { spotterModel: true, welcomeVariant: 'blank' };
         return <DataModelEditorComponent />;
       })()}
-    </div>
+    </>
   );
 };
 

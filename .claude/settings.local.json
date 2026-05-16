@@ -112,7 +112,8 @@
       "Bash(nvm list *)",
       "Bash(nvm install *)",
       "Bash(nvm use *)",
-      "Bash(ls -la /Users/suraj.boro/.nvm/versions/node/)"
+      "Bash(ls -la /Users/suraj.boro/.nvm/versions/node/)",
+      "Bash(grep -n \"\\\\.container\\\\|\\\\.input\\\\b\\\\|\\\\.wrapper\" /Users/suraj.boro/Vibe_code/radiantplay-new/.claude/worktrees/thirsty-chandrasekhar-4d60ba/src/components/SearchInput/SearchInput.module.css | head -10 && echo \"---\" && cat /Users/suraj.boro/Vibe_code/radiantplay-new/.claire/worktrees/thirsty-chandrasekhar-4d60ba/src/components/SearchInput/SearchInput.tsx 2>/dev/null || grep -n \"className\\\\|style\\\\|wrapper\\\\|container\" /Users/suraj.boro/Vibe_code/radiantplay-new/.claude/worktrees/thirsty-chandrasekhar-4d60ba/src/components/SearchInput/SearchInput.tsx | head -15)"
     ]
   },
   "hooks": {

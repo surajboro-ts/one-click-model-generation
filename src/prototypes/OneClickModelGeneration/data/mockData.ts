@@ -2,6 +2,29 @@
  * Mock data for OneClickModelGeneration prototype
  */
 
+export interface DataObject {
+  id: string;
+  name: string;
+  type: 'Model' | 'Table';
+  source: string;
+  sourceProvider: 'snowflake' | 'dbt' | 'db_connection';
+  tags: string[];
+  author: string;
+  lastModified: string;
+}
+
+export const dataObjects: DataObject[] = [
+  { id: '1', name: 'Sales Analytics Model', type: 'Model', source: 'Sales_Integration', sourceProvider: 'snowflake', tags: ['Analysis', 'Sales'], author: 'Alice Styles', lastModified: '3 days ago' },
+  { id: '2', name: 'Inventory Model', type: 'Model', source: 'Inventory_Integration', sourceProvider: 'dbt', tags: ['Sales'], author: 'Mark Rivera', lastModified: '20 days ago' },
+  { id: '3', name: 'fact_orders', type: 'Table', source: 'snowflake_prod_connection', sourceProvider: 'snowflake', tags: [], author: 'Priya Patel', lastModified: '1 month ago' },
+  { id: '4', name: 'Customer Segments Model', type: 'Model', source: 'CRM_Integration', sourceProvider: 'snowflake', tags: ['Analysis', 'CRM'], author: 'David Chen', lastModified: '5 days ago' },
+  { id: '5', name: 'dim_products', type: 'Table', source: 'snowflake_prod_connection', sourceProvider: 'snowflake', tags: [], author: 'Priya Patel', lastModified: '45 days ago' },
+  { id: '6', name: 'Marketing Attribution Model', type: 'Model', source: 'Marketing_dbt', sourceProvider: 'dbt', tags: ['Marketing', 'Analysis'], author: 'Sarah Kim', lastModified: '2 weeks ago' },
+  { id: '7', name: 'dim_customers', type: 'Table', source: 'postgres_prod', sourceProvider: 'db_connection', tags: [], author: 'Alice Styles', lastModified: '3 months ago' },
+  { id: '8', name: 'Finance Model', type: 'Model', source: 'Finance_Integration', sourceProvider: 'snowflake', tags: ['Finance'], author: 'Mark Rivera', lastModified: '1 week ago' },
+  { id: '9', name: 'fact_transactions', type: 'Table', source: 'postgres_prod', sourceProvider: 'db_connection', tags: [], author: 'David Chen', lastModified: '2 months ago' },
+];
+
 export interface DataConnection {
   id: string;
   name: string;
