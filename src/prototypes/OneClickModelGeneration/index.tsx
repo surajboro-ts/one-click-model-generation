@@ -303,7 +303,7 @@ export const OneClickModelGeneration: React.FC = () => {
 
       {/* Data Model Editor Screen — uses the existing DataModelEditor component */}
       {screen === 'editor' && (() => {
-        (window as any).__DME_CONFIG__ = { spotterModel: false, welcomeVariant: 'blank' };
+        (window as any).__DME_CONFIG__ = { spotterModel: true, welcomeVariant: 'blank' };
         return <DataModelEditorComponent />;
       })()}
     </div>
