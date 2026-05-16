@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AppShell } from '@components/AppShell';
 import { Button } from '@components/Button';
 import { Avatar } from '@components/Avatar';
-import { Checkbox } from '@components/Checkbox';
 import { SearchInput } from '@components/SearchInput';
 import { SegmentedControl } from '@components/SegmentedControl';
 import { Pagination } from '@components/Pagination';
 import { Divider } from '@components/Divider';
 import { Icon } from '@components/icons';
 import { Horizontal } from '@components/Layout';
+import { Table } from '@components/Table';
+import type { TableColumn } from '@components/Table';
 import { systemColors } from '@tokens/colors';
 import { spacing } from '@tokens/spacing';
 import { fontSize, fontWeight, fontFamily } from '@tokens/typography';
@@ -163,73 +164,44 @@ const SEGMENTS = [
   { id: 'views', label: 'Views' },
 ];
 
-// ── Table ───────────────────────────────────────────────────────────────────
+// ── Table column definitions ────────────────────────────────────────────────
 
-const TABLE_GRID = '40px 1fr 1fr 88px 128px 192px 152px';
-
-const headerCellStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  padding: `${spacing.B}px ${spacing.C}px`,
-  fontSize: fontSize.xs,
-  color: systemColors.light['content-secondary'],
-  fontFamily: fontFamily.primary,
-  fontWeight: fontWeight.light,
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-};
-
-const DataObjectRow: React.FC<{ row: DataObject }> = ({ row }) => {
-  const [hovered, setHovered] = useState(false);
-
-  const bg = hovered
-    ? systemColors.light['background-ghost-hover']
-    : systemColors.light['background-base'];
-
-  const cellBase: React.CSSProperties = {
-    backgroundColor: bg,
-    borderBottom: `1px solid ${systemColors.light['border-divider']}`,
-    display: 'flex',
-    alignItems: 'center',
-    padding: `${spacing.C}px`,
-    fontFamily: fontFamily.primary,
-    fontWeight: fontWeight.light,
-  };
-
-  return (
-    <div
-      style={{ display: 'grid', gridTemplateColumns: TABLE_GRID, height: 72, width: '100%' }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div style={{ ...cellBase, padding: `${spacing.D}px`, justifyContent: 'center' }}>
-        <Checkbox />
-      </div>
-
-      <div style={{ ...cellBase, gap: `${spacing.C}px` }}>
+const DATA_OBJECT_COLUMNS: TableColumn<DataObject>[] = [
+  {
+    key: 'name',
+    label: 'Name',
+    render: (_, row) => (
+      <Horizontal align="center" gap={spacing.B} style={{ overflow: 'hidden' }}>
         {row.type === 'Model' ? <DataModelTypeIcon /> : <TableTypeIcon />}
-        <span style={{ fontSize: fontSize.sm, fontWeight: fontWeight.light, color: systemColors.light['content-brand'], cursor: 'pointer', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span style={{ color: systemColors.light['content-brand'], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', cursor: 'pointer' }}>
           {row.name}
         </span>
-      </div>
-
-      <div style={{ ...cellBase, gap: `${spacing.C}px` }}>
+      </Horizontal>
+    ),
+  },
+  {
+    key: 'source',
+    label: 'Source',
+    render: (_, row) => (
+      <Horizontal align="center" gap={spacing.B} style={{ overflow: 'hidden' }}>
         {row.sourceProvider === 'snowflake' && <SnowflakeIcon />}
         {row.sourceProvider === 'dbt' && <DbtIcon />}
         {row.sourceProvider === 'db_connection' && <DbConnectionIcon />}
-        <span style={{ fontSize: fontSize.sm, color: systemColors.light['content-primary'], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {row.source}
-        </span>
-      </div>
-
-      <div style={cellBase}>
-        <span style={{ fontSize: fontSize.sm, color: systemColors.light['content-primary'] }}>
-          {row.type}
-        </span>
-      </div>
-
-      <div style={{ ...cellBase, flexWrap: 'wrap', gap: `${spacing.B}px` }}>
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.source}</span>
+      </Horizontal>
+    ),
+  },
+  {
+    key: 'type',
+    label: 'Type',
+    width: '88px',
+  },
+  {
+    key: 'tags',
+    label: 'Tags',
+    width: '140px',
+    render: (_, row) => (
+      <Horizontal gap={spacing.A} style={{ flexWrap: 'wrap' }}>
         {row.tags.map((tag) => (
           <span
             key={tag}
@@ -245,20 +217,25 @@ const DataObjectRow: React.FC<{ row: DataObject }> = ({ row }) => {
             {tag}
           </span>
         ))}
-      </div>
-
-      <div style={{ ...cellBase, padding: `${spacing.E}px ${spacing.D}px`, '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
+      </Horizontal>
+    ),
+  },
+  {
+    key: 'author',
+    label: 'Author',
+    width: '192px',
+    render: (_, row) => (
+      <div style={{ '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
         <Avatar name={row.author} size="s" showName />
       </div>
-
-      <div style={cellBase}>
-        <span style={{ fontSize: fontSize.sm, color: systemColors.light['content-primary'] }}>
-          {row.lastModified}
-        </span>
-      </div>
-    </div>
-  );
-};
+    ),
+  },
+  {
+    key: 'lastModified',
+    label: 'Last modified',
+    width: '152px',
+  },
+];
 
 // ── Main component ──────────────────────────────────────────────────────────
 
@@ -272,15 +249,20 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
   const [searchValue, setSearchValue] = useState('');
   const [activeSegment, setActiveSegment] = useState('all');
   const [addMenuOpen, setAddMenuOpen] = useState(false);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => carouselRef.current?.scrollBy({ left: -216, behavior: 'smooth' });
   const scrollRight = () => carouselRef.current?.scrollBy({ left: 216, behavior: 'smooth' });
 
   useEffect(() => {
-    const prev = document.body.style.overscrollBehavior;
-    document.body.style.overscrollBehavior = 'none';
-    return () => { document.body.style.overscrollBehavior = prev; };
+    // Target AppShell's <main> (overflow: auto) — the actual source of bounce
+    const mainEl = containerRef.current?.closest('main') as HTMLElement | null;
+    const targets = [mainEl, document.documentElement, document.body].filter(Boolean) as HTMLElement[];
+    const prevValues = targets.map(el => el.style.overscrollBehavior);
+    targets.forEach(el => { el.style.overscrollBehavior = 'none'; });
+    return () => { targets.forEach((el, i) => { el.style.overscrollBehavior = prevValues[i]; }); };
   }, []);
 
   const filteredRows = dataObjects.filter((obj) => {
@@ -355,7 +337,7 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
         onNavSelect: (id) => { if (id === 'data-objects') setSidebarNav(id); },
       }}
     >
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: fontFamily.primary }}>
+      <div ref={containerRef} style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: fontFamily.primary }}>
 
         {/* Recent objects carousel */}
         <div style={{ backgroundColor: systemColors.light['background-sunken'], padding: `${spacing.F}px` }}>
@@ -414,58 +396,20 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
             />
           </Horizontal>
 
-          {/* Data objects table — flex: 1 fills remaining height; inner rows div scrolls */}
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              border: `1px solid ${systemColors.light['border-divider']}`,
-              borderRadius: 6,
-              overflow: 'hidden',
-              minHeight: 0,
-            }}
-          >
-            {/* Sticky header row */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: TABLE_GRID,
-                backgroundColor: systemColors.light['background-sunken'],
-                borderBottom: `1px solid ${systemColors.light['border-divider']}`,
-                flexShrink: 0,
-              }}
-            >
-              <div style={{ ...headerCellStyle, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: `${spacing.D}px` }}>
-                <Checkbox />
-              </div>
-              <div style={headerCellStyle}>Name</div>
-              <div style={headerCellStyle}>Source</div>
-              <div style={headerCellStyle}>Type</div>
-              <div style={headerCellStyle}>Tags</div>
-              <div style={headerCellStyle}>Author</div>
-              <div style={headerCellStyle}>Last modified</div>
-            </div>
-
-            {/* Scrollable rows */}
-            <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, overscrollBehavior: 'none' }}>
-              {filteredRows.map((row) => (
-                <DataObjectRow key={row.id} row={row} />
-              ))}
-
-              {filteredRows.length === 0 && (
-                <div
-                  style={{
-                    padding: `${spacing.H}px`,
-                    textAlign: 'center',
-                    color: systemColors.light['content-secondary'],
-                    fontSize: fontSize.sm,
-                    fontFamily: fontFamily.primary,
-                  }}
-                >
-                  No data objects match your search.
-                </div>
-              )}
+          {/* Data objects table — flex: 1 fills remaining height; Table scrolls internally */}
+          <div style={{ flex: 1, minHeight: 0, overflow: 'auto', overscrollBehavior: 'none', borderRadius: 6, border: `1px solid ${systemColors.light['border-divider']}` }}>
+            <div style={{ '--font-weight-medium': fontWeight.light, '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
+              <Table
+                columns={DATA_OBJECT_COLUMNS as unknown as TableColumn[]}
+                data={filteredRows as unknown as Record<string, unknown>[]}
+                rowKey="id"
+                selectable
+                selectedKeys={selectedKeys}
+                onSelectionChange={setSelectedKeys}
+                hoverable
+                stickyHeader
+                emptyMessage="No data objects match your search."
+              />
             </div>
           </div>
 
