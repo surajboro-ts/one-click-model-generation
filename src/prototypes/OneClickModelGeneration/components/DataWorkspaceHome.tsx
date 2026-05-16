@@ -398,7 +398,7 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
 
           {/* Data objects table — flex: 1 fills remaining height; Table scrolls internally */}
           <div style={{ flex: 1, minHeight: 0, overflow: 'auto', overscrollBehavior: 'none', borderRadius: 6, border: `1px solid ${systemColors.light['border-divider']}` }}>
-            <div style={{ '--font-weight-medium': fontWeight.light, '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
+            <div style={{ fontWeight: fontWeight.light, '--font-weight-medium': fontWeight.light, '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
               <Table
                 columns={DATA_OBJECT_COLUMNS as unknown as TableColumn[]}
                 data={filteredRows as unknown as Record<string, unknown>[]}
