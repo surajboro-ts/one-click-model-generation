@@ -194,7 +194,7 @@ const DataObjectRow: React.FC<{ row: DataObject }> = ({ row }) => {
     alignItems: 'center',
     padding: `${spacing.C}px`,
     fontFamily: fontFamily.primary,
-    fontWeight: 300,
+    fontWeight: fontWeight.light,
   };
 
   return (
@@ -209,7 +209,7 @@ const DataObjectRow: React.FC<{ row: DataObject }> = ({ row }) => {
 
       <div style={{ ...cellBase, gap: `${spacing.C}px` }}>
         {row.type === 'Model' ? <DataModelTypeIcon /> : <TableTypeIcon />}
-        <span style={{ fontSize: fontSize.sm, fontWeight: fontWeight.medium, color: systemColors.light['content-brand'], cursor: 'pointer', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span style={{ fontSize: fontSize.sm, fontWeight: fontWeight.light, color: systemColors.light['content-brand'], cursor: 'pointer', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {row.name}
         </span>
       </div>
@@ -470,6 +470,7 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
               paddingTop: `${spacing.D}px`,
               paddingBottom: `${spacing.B}px`,
               flexShrink: 0,
+              fontWeight: fontWeight.light,
             }}
           >
             <Pagination.Range
