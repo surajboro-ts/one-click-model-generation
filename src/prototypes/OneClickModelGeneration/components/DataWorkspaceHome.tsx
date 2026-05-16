@@ -170,6 +170,7 @@ const DATA_OBJECT_COLUMNS: TableColumn<DataObject>[] = [
   {
     key: 'name',
     label: 'Name',
+    width: '30%',
     render: (_, row) => (
       <Horizontal align="center" gap={spacing.B} style={{ overflow: 'hidden' }}>
         {row.type === 'Model' ? <DataModelTypeIcon /> : <TableTypeIcon />}
@@ -182,6 +183,7 @@ const DATA_OBJECT_COLUMNS: TableColumn<DataObject>[] = [
   {
     key: 'source',
     label: 'Source',
+    width: '25%',
     render: (_, row) => (
       <Horizontal align="center" gap={spacing.B} style={{ overflow: 'hidden' }}>
         {row.sourceProvider === 'snowflake' && <SnowflakeIcon />}
@@ -224,7 +226,7 @@ const DATA_OBJECT_COLUMNS: TableColumn<DataObject>[] = [
   {
     key: 'author',
     label: 'Author',
-    width: '192px',
+    width: '176px',
     render: (_, row) => (
       <div style={{ '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
         <Avatar name={row.author} size="s" showName />
@@ -234,7 +236,7 @@ const DATA_OBJECT_COLUMNS: TableColumn<DataObject>[] = [
   {
     key: 'lastModified',
     label: 'Last modified',
-    width: '152px',
+    width: '140px',
   },
 ];
 
@@ -407,9 +409,8 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
 
           {/* Data objects table — flex:1 fills remaining height; outer div scrolls */}
           <div style={{ flex: 1, minHeight: 0, overflow: 'auto', overscrollBehavior: 'none', borderRadius: 6, border: `1px solid ${systemColors.light['border-divider']}` }}>
-            <div style={{ fontWeight: fontWeight.light, '--font-weight-medium': fontWeight.light, '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
-              {/* style overflow:visible overrides Table container's overflow-x:auto so the
-                  thead position:sticky resolves to this outer scroll div, not the Table container */}
+            <style>{`.dw-objects-table table { table-layout: fixed; }`}</style>
+            <div className="dw-objects-table" style={{ fontWeight: fontWeight.light, '--font-weight-medium': fontWeight.light, '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
               <Table
                 columns={DATA_OBJECT_COLUMNS as unknown as TableColumn[]}
                 data={pagedRows as unknown as Record<string, unknown>[]}
