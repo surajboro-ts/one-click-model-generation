@@ -106,7 +106,13 @@
       "mcp__plugin_figma_figma__get_metadata",
       "Bash(xargs -n1 basename)",
       "Bash(git *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(pkill -f \"npm run dev\" || true && sleep 2 && npm run dev > /tmp/dev.log 2>&1 &)",
+      "Bash(nvm list *)",
+      "Bash(nvm install *)",
+      "Bash(nvm use *)",
+      "Bash(ls -la /Users/suraj.boro/.nvm/versions/node/)"
     ]
   },
   "hooks": {

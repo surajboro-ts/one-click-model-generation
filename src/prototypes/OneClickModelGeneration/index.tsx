@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { systemColors } from '../../tokens/colors';
 import { spacing } from '../../tokens/spacing';
-import { dataConnections, mockDatasets, mockAIResponses } from './data/mockData';
+import { dataConnections, mockAIResponses } from './data/mockData';
+import DataModelEditorComponent from '../DataModelEditor/DataModelEditor';
 
 /**
  * OneClickModelGeneration
@@ -15,17 +16,11 @@ type Screen = 'home' | 'connections' | 'onboarding' | 'editor';
 
 export const OneClickModelGeneration: React.FC = () => {
   const [screen, setScreen] = useState<Screen>('home');
-  const [datasetSchema, setDatasetSchema] = useState<any>(null);
   const [aiMessageIndex, setAiMessageIndex] = useState(0);
 
   const handleStartFlow = () => setScreen('connections');
-  const handleSelectConnection = () => {
-    setScreen('onboarding');
-  };
-  const handleGenerateModel = () => {
-    setDatasetSchema(mockDatasets.retail);
-    setScreen('editor');
-  };
+  const handleSelectConnection = () => setScreen('onboarding');
+  const handleGenerateModel = () => setScreen('editor');
   const handleNext = () => setAiMessageIndex((i) => (i + 1) % mockAIResponses.length);
 
   return (
@@ -306,136 +301,11 @@ export const OneClickModelGeneration: React.FC = () => {
         </div>
       )}
 
-      {/* Data Model Editor Screen */}
-      {screen === 'editor' && (
-        <div
-          style={{
-            display: 'flex',
-            minHeight: '100vh',
-            backgroundColor: systemColors.light['background-base'],
-          }}
-        >
-          {/* Left - Tables list */}
-          <div
-            style={{
-              width: 280,
-              backgroundColor: systemColors.light['background-sunken'],
-              borderRight: `1px solid ${systemColors.light['border-divider']}`,
-              padding: `${spacing.D}px`,
-              overflowY: 'auto',
-            }}
-          >
-            <h3
-              style={{
-                fontSize: '14px',
-                fontWeight: 600,
-                color: systemColors.light['content-primary'],
-                marginBottom: `${spacing.C}px`,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-              }}
-            >
-              Tables
-            </h3>
-            {datasetSchema?.tables.map((table: any) => (
-              <div
-                key={table.name}
-                style={{
-                  padding: `${spacing.C}px`,
-                  marginBottom: `${spacing.B}px`,
-                  backgroundColor: systemColors.light['background-base'],
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '13px',
-                  color: systemColors.light['content-primary'],
-                  borderLeft: `3px solid ${systemColors.light['content-brand']}`,
-                }}
-              >
-                <div style={{ fontWeight: 500 }}>{table.name}</div>
-                <div style={{ fontSize: '12px', color: systemColors.light['content-secondary'], marginTop: '4px' }}>
-                  {table.columns} columns • {table.rows} rows
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Right - Canvas */}
-          <div
-            style={{
-              flex: 1,
-              padding: `${spacing.H}px`,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div
-              style={{
-                textAlign: 'center',
-                maxWidth: 600,
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: '28px',
-                  fontWeight: 600,
-                  color: systemColors.light['content-primary'],
-                  marginBottom: `${spacing.D}px`,
-                }}
-              >
-                Data model editor
-              </h2>
-              <p
-                style={{
-                  fontSize: '16px',
-                  color: systemColors.light['content-secondary'],
-                  marginBottom: `${spacing.F}px`,
-                  lineHeight: '1.6',
-                }}
-              >
-                Your data model has been generated with {datasetSchema?.tables.length} tables. Refine relationships,
-                add calculations, and define hierarchies.
-              </p>
-              <div
-                style={{
-                  display: 'flex',
-                  gap: `${spacing.C}px`,
-                  justifyContent: 'center',
-                }}
-              >
-                <button
-                  onClick={() => setScreen('home')}
-                  style={{
-                    padding: `${spacing.B}px ${spacing.D}px`,
-                    fontSize: '14px',
-                    backgroundColor: systemColors.light['background-base'],
-                    border: `1px solid ${systemColors.light['border-default']}`,
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    color: systemColors.light['content-primary'],
-                  }}
-                >
-                  Back
-                </button>
-                <button
-                  style={{
-                    padding: `${spacing.B}px ${spacing.D}px`,
-                    fontSize: '14px',
-                    backgroundColor: systemColors.light['content-brand'],
-                    color: '#ffffff',
-                    border: 'none',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Save model
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Data Model Editor Screen — uses the existing DataModelEditor component */}
+      {screen === 'editor' && (() => {
+        (window as any).__DME_CONFIG__ = { spotterModel: false, welcomeVariant: 'blank' };
+        return <DataModelEditorComponent />;
+      })()}
     </div>
   );
 };
