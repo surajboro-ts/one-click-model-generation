@@ -251,6 +251,8 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
   const [activeSegment, setActiveSegment] = useState('all');
   const [addMenuOpen, setAddMenuOpen] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
   const carouselRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -276,6 +278,12 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
       (activeSegment === 'tables' && obj.type === 'Table');
     return matchesSearch && matchesSegment;
   });
+
+  const totalPages = Math.max(1, Math.ceil(filteredRows.length / ITEMS_PER_PAGE));
+  const pagedRows = filteredRows.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => { setSearchValue(e.target.value); setCurrentPage(1); };
+  const handleSegmentChange = (id: string) => { setActiveSegment(id); setCurrentPage(1); };
 
   return (
     <>
@@ -376,7 +384,7 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
             <SegmentedControl
               options={SEGMENTS}
               value={activeSegment}
-              onChange={setActiveSegment}
+              onChange={handleSegmentChange}
             />
             <div style={{ pointerEvents: 'none' }}>
               <Button variant="secondary" icon="chevron-down" iconPosition="trailing">
@@ -392,17 +400,19 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
             <SearchInput
               placeholder="Search"
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={handleSearchChange}
               style={{ width: 160 }}
             />
           </Horizontal>
 
-          {/* Data objects table — flex: 1 fills remaining height; Table scrolls internally */}
+          {/* Data objects table — flex:1 fills remaining height; outer div scrolls */}
           <div style={{ flex: 1, minHeight: 0, overflow: 'auto', overscrollBehavior: 'none', borderRadius: 6, border: `1px solid ${systemColors.light['border-divider']}` }}>
             <div style={{ fontWeight: fontWeight.light, '--font-weight-medium': fontWeight.light, '--font-weight-regular': fontWeight.light } as React.CSSProperties}>
+              {/* style overflow:visible overrides Table container's overflow-x:auto so the
+                  thead position:sticky resolves to this outer scroll div, not the Table container */}
               <Table
                 columns={DATA_OBJECT_COLUMNS as unknown as TableColumn[]}
-                data={filteredRows as unknown as Record<string, unknown>[]}
+                data={pagedRows as unknown as Record<string, unknown>[]}
                 rowKey="id"
                 selectable
                 selectedKeys={selectedKeys}
@@ -410,6 +420,7 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
                 hoverable
                 stickyHeader
                 emptyMessage="No data objects match your search."
+                style={{ overflow: 'visible' }}
               />
             </div>
           </div>
@@ -426,11 +437,11 @@ export const DataWorkspaceHome: React.FC<DataWorkspaceHomeProps> = ({ onOpenModa
             }}
           >
             <Pagination.Range
-              currentPage={1}
-              totalPages={1}
-              itemsPerPage={10}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              itemsPerPage={ITEMS_PER_PAGE}
               totalItems={filteredRows.length}
-              onPageChange={() => {}}
+              onPageChange={setCurrentPage}
             />
           </div>
         </div>
