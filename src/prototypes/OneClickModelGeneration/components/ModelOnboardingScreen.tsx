@@ -476,8 +476,8 @@ function MentionEditor({
       {/* @ table suggestion dropdown */}
       {mentionQuery !== null && suggestions.length > 0 && (
         <div style={{
-          position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 20,
-          background: 'white', borderRadius: spacing.B, marginTop: spacing.A,
+          position: 'absolute', bottom: '100%', left: 0, right: 0, zIndex: 20,
+          background: 'white', borderRadius: spacing.B, marginBottom: spacing.A,
           border: `1px solid ${systemColors.light['border-divider']}`,
           boxShadow: '0px 8px 16px rgba(25,35,49,0.08), 0px 0px 4px rgba(25,35,49,0.06)',
           overflow: 'hidden',
