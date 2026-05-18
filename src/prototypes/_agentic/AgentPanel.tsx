@@ -5,6 +5,7 @@ import { AgentMessage } from './AgentMessage';
 import { ReasoningBlock } from './ReasoningBlock';
 import { AgentResponseBlock } from './AgentResponseBlock';
 import { PlanStepsCard } from './PlanStepsCard';
+import { Button } from '@components/Button';
 import type { MessageItem, SuggType, ReasoningData } from './types';
 
 export interface AgentPanelProps {
@@ -232,12 +233,18 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
             {/* Stop button — visible only while auto-population is running */}
             {autoPopulating && (
               <div className="auto-stop-row">
-                <button className="auto-stop-btn" onClick={handleStopAutoPopulate}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <rect x="2" y="2" width="8" height="8" rx="1.5" fill="currentColor" />
-                  </svg>
+                <Button
+                  variant="secondary"
+                  onClick={handleStopAutoPopulate}
+                  icon={
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <rect x="2" y="2" width="8" height="8" rx="1.5" fill="currentColor" />
+                    </svg>
+                  }
+                  iconPosition="leading"
+                >
                   Stop generation
-                </button>
+                </Button>
               </div>
             )}
             <div className="prompt-bar" id="chat-prompt-bar">
