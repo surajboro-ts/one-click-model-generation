@@ -388,7 +388,9 @@ export function initDME() {
     const addedColumnGroups = state.model.columns;
     const hasColumns = addedColumnGroups.some(g => g.columns && g.columns.length > 0);
     if (!hasColumns) {
-      emptyEl.style.display = '';
+      // During auto-populate keep empty state hidden — let React shimmer handle the
+      // in-between state so there's no empty-state flash when the tab auto-switches.
+      emptyEl.style.display = window._autoPopulating ? 'none' : '';
       if (contentEl) { contentEl.style.alignItems = ''; contentEl.style.justifyContent = ''; }
       window._setColumnRows?.([]);
       const hasTables = state.addedTables.length > 0;
@@ -459,7 +461,8 @@ export function initDME() {
     if (!emptyEl) return;
     const formulas = state.model.formulas;
     if (!formulas.length) {
-      emptyEl.style.display = '';
+      // During auto-populate keep empty state hidden to avoid flash on tab auto-switch.
+      emptyEl.style.display = window._autoPopulating ? 'none' : '';
       window._setFormulaRows?.([]);
       if (contentEl) { contentEl.style.alignItems = ''; contentEl.style.justifyContent = ''; }
       if (toolbar) { toolbar.innerHTML = '<button class="formula-add-btn" style="pointer-events:none;opacity:0.45;">Add formula</button>'; }
@@ -1984,14 +1987,19 @@ Only include the context field when there is genuinely meaningful content from t
       });
     });
 
-    // Phase 3 — columns (one step per table group; first step switches tab)
-    tables.forEach(function(t, ti) {
-      steps.push({
-        type: 'add', itemType: 'columns',
-        items: [{ table: t.tableName.toLowerCase(), columns: t.columns.map(function(c) { return c.name; }) }],
-        phaseIndex: 3,
-        delayMs:    ti === 0 ? 900 : 700,
-        switchTabTo: ti === 0 ? 'columns' : null,
+    // Phase 3 — columns (one step per individual column; first step switches tab)
+    var colStepCount = 0;
+    tables.forEach(function(t) {
+      t.columns.forEach(function(col) {
+        var isFirstCol = colStepCount === 0;
+        steps.push({
+          type: 'add', itemType: 'columns',
+          items: [{ table: t.tableName.toLowerCase(), columns: [col.name] }],
+          phaseIndex: 3,
+          delayMs:    isFirstCol ? 900 : 350,
+          switchTabTo: isFirstCol ? 'columns' : null,
+        });
+        colStepCount++;
       });
     });
 
@@ -2087,7 +2095,11 @@ Only include the context field when there is genuinely meaningful content from t
     if (chatView)    chatView.classList.add('active');
     switchTab('tables');
 
-    // Signal UI that building is in progress (shows chat bar + stop button)
+    // Mark auto-populate in progress — suppresses empty states in columns/formulas tabs
+    window._autoPopulating = true;
+    // Notify DME React component (hides empty-state divs via inline style)
+    window._setDMEAutoPopulating && window._setDMEAutoPopulating(true);
+    // Signal AgentPanel UI that building is in progress (shows chat bar + stop button)
     window._setAutoPopulating && window._setAutoPopulating(true);
 
     // ── Push initial plan card ─────────────────────────────────────────
@@ -2103,6 +2115,9 @@ Only include the context field when there is genuinely meaningful content from t
     if (_origCleanup) _origCleanup(); // cancel any prior run (StrictMode remount)
     window.__DME_AUTO_ABORT__ = function() {
       aborted = true;
+      // Clear auto-populating flags so empty states become visible again
+      window._autoPopulating = false;
+      window._setDMEAutoPopulating && window._setDMEAutoPopulating(false);
       // Guard: _modelState may already be deleted if this is called from cleanup
       hideTableShimmer(); // null-safe
       window._setColumnShimmer  && window._setColumnShimmer(false);
@@ -2121,6 +2136,9 @@ Only include the context field when there is genuinely meaningful content from t
 
     function finishAutoPopulate() {
       if (aborted) return; // safety net — runNext already guards, but be explicit
+      // Mark auto-populate as complete — re-enables empty states for manual use
+      window._autoPopulating = false;
+      window._setDMEAutoPopulating && window._setDMEAutoPopulating(false);
       // Ensure no shimmer rows are left visible
       window._setColumnShimmer  && window._setColumnShimmer(false);
       window._setFormulaShimmer && window._setFormulaShimmer(false);
@@ -2165,9 +2183,8 @@ Only include the context field when there is genuinely meaningful content from t
         var shimmerMs = Math.round(step.delayMs * 0.55);
         var realMs    = step.delayMs - shimmerMs;
 
-        // Immediate: tab switch + show appropriate shimmer
-        if (step.switchTabTo) switchTab(step.switchTabTo);
-
+        // Queue the shimmer React update BEFORE switching tab so the incoming
+        // tab content never shows as blank — the shimmer row is ready to paint.
         if (step.itemType === 'tables') {
           showTableShimmer();
         } else if (step.itemType === 'columns') {
@@ -2175,6 +2192,9 @@ Only include the context field when there is genuinely meaningful content from t
         } else if (step.itemType === 'formulas') {
           window._setFormulaShimmer && window._setFormulaShimmer(true);
         }
+
+        // Switch tab after shimmer state is queued
+        if (step.switchTabTo) switchTab(step.switchTabTo);
 
         // After shimmerMs: hide shimmer
         setTimeout(function() {

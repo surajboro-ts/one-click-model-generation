@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@components/Button';
 import { SearchInput } from '@components/SearchInput';
 import { Toggle } from '@components/Toggle';
@@ -68,9 +68,18 @@ const DataModelEditor: React.FC = () => {
   const [tableCanvasData, setTableCanvasData] = useState<{ tables: TablePositionData[]; joins: JoinInfo[] }>({ tables: [], joins: [] });
   const [columnTreeData, setColumnTreeData] = useState<ColumnTreeData>({ tables: [], dataSourceTables: [], modelColumns: [] });
   const [modelLoading, setModelLoading] = useState<{ visible: boolean; label: string }>({ visible: false, label: '' });
+  // Auto-populate shimmer visibility for columns and formulas tabs
+  const [showColShimmer,     setShowColShimmer]     = useState(false);
+  const [showFormulaShimmer, setShowFormulaShimmer] = useState(false);
+  // Suppress empty states while auto-populate is running so tabs never flash empty
+  const [isAutoPopulating,   setIsAutoPopulating]   = useState(false);
 
   const [spotterModelEnabled] = useState<boolean>(() => (window as any).__DME_CONFIG__?.spotterModel ?? true);
   const [welcomeVariant] = useState<'blank' | 'existing'>(() => (window as any).__DME_CONFIG__?.welcomeVariant ?? 'blank');
+
+  // Capture auto-populate data in a ref so it survives React StrictMode's
+  // double-invoke (cleanup runs between mount 1 and mount 2, deleting the global).
+  const autoPopulateDataRef = useRef<unknown>((window as any).__DME_AUTO_DATA__ ?? null);
 
   const modelName = welcomeVariant === 'blank' ? 'Add model name' : 'Retail Sales Analytics';
   const modelDesc = welcomeVariant === 'blank' ? 'Add description' : 'Sales performance model for Spotter AI search';
@@ -92,6 +101,14 @@ const DataModelEditor: React.FC = () => {
     (window as any)._setTableCanvasData = (data: { tables: TablePositionData[]; joins: JoinInfo[] }) => setTableCanvasData(data);
     (window as any)._setColumnTreeData  = (data: ColumnTreeData) => setColumnTreeData(data);
     (window as any)._setModelLoading    = (visible: boolean, label?: string) => setModelLoading({ visible, label: label ?? '' });
+    (window as any)._setColumnShimmer   = (val: boolean) => setShowColShimmer(val);
+    (window as any)._setFormulaShimmer  = (val: boolean) => setShowFormulaShimmer(val);
+    (window as any)._setDMEAutoPopulating = (val: boolean) => setIsAutoPopulating(val);
+
+    // Restore auto-populate data from ref — survives StrictMode cleanup between mounts.
+    if (autoPopulateDataRef.current) {
+      (window as any).__DME_AUTO_DATA__ = autoPopulateDataRef.current;
+    }
 
     const cleanup = initDME();
     return () => {
@@ -104,6 +121,9 @@ const DataModelEditor: React.FC = () => {
       delete (window as any)._setTableCanvasData;
       delete (window as any)._setColumnTreeData;
       delete (window as any)._setModelLoading;
+      delete (window as any)._setColumnShimmer;
+      delete (window as any)._setFormulaShimmer;
+      delete (window as any)._setDMEAutoPopulating;
     };
   }, []);
 
@@ -252,7 +272,8 @@ const DataModelEditor: React.FC = () => {
 
               {/* Columns tab */}
               <div className="tab-content" id="content-columns" style={{ display: 'none' }}>
-                <div className="empty-state" id="columns-empty-state">
+                {/* Empty state — hidden during auto-populate so the shimmer has no flash */}
+                <div className="empty-state" id="columns-empty-state" style={isAutoPopulating ? { display: 'none' } : undefined}>
                   <img src="/spotter-assets/Table=l.svg" width="32" height="32" alt="table icon" />
                   <div className="empty-body">
                     <div className="empty-title">Build your foundation first</div>
@@ -266,7 +287,7 @@ const DataModelEditor: React.FC = () => {
                     <img className="moving-arrow" src="/spotter-assets/Moving arrow.svg" width="14" height="12" alt="arrow" />
                   </div>
                 </div>
-                {columnRows.length > 0 && (
+                {(columnRows.length > 0 || showColShimmer) && (
                   <div className="col-table-wrap" id="columns-canvas">
                     <div className="col-table-topbar">
                       <SearchInput
@@ -290,13 +311,24 @@ const DataModelEditor: React.FC = () => {
                       onSelectionChange={setSelectedColKeys}
                       stickyHeader
                     />
+                    {showColShimmer && (
+                      <div className="auto-populate-shimmer-row">
+                        <div className="shimmer-check-slot" />
+                        <div className="shimmer-pill" style={{ width: '13%' }} />
+                        <div className="shimmer-pill" style={{ width: '13%' }} />
+                        <div className="shimmer-pill" style={{ width: '13%' }} />
+                        <div className="shimmer-pill" style={{ width: '28%' }} />
+                        <div className="shimmer-pill" style={{ width: '28%' }} />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
 
               {/* Formulas tab */}
               <div className="tab-content" id="content-formulas" style={{ display: 'none' }}>
-                <div className="empty-state" id="formulas-empty-state">
+                {/* Empty state — hidden during auto-populate so the shimmer has no flash */}
+                <div className="empty-state" id="formulas-empty-state" style={isAutoPopulating ? { display: 'none' } : undefined}>
                   <img src="/spotter-assets/Table=l.svg" width="32" height="32" alt="table icon" />
                   <div className="empty-body">
                     <div className="empty-title">Start with a data source</div>
@@ -310,7 +342,7 @@ const DataModelEditor: React.FC = () => {
                     <img className="moving-arrow" src="/spotter-assets/Moving arrow.svg" width="14" height="12" alt="arrow" />
                   </div>
                 </div>
-                {formulaRows.length > 0 && (
+                {(formulaRows.length > 0 || showFormulaShimmer) && (
                   <div className="formula-table-wrap" id="formulas-canvas">
                     <div className="formula-topbar">
                       <SearchInput
@@ -335,6 +367,13 @@ const DataModelEditor: React.FC = () => {
                       rowKey={(r) => (r as FormulaRow).name}
                       stickyHeader
                     />
+                    {showFormulaShimmer && (
+                      <div className="auto-populate-shimmer-row">
+                        <div className="shimmer-pill" style={{ width: '30%' }} />
+                        <div className="shimmer-pill" style={{ width: '15%' }} />
+                        <div className="shimmer-pill" style={{ width: 24 }} />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

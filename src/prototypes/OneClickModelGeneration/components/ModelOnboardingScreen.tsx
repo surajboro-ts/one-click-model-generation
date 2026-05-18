@@ -2838,6 +2838,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
             <div style={{
               flexShrink: 0,
               backgroundColor: systemColors.light['background-base'],
+              minHeight: 162, // matches PromptBar slot height — prevents downward shift when CTA replaces it
             }}>
               {selectedId ? (
                 /* ── Proceed CTA — Radiant Button large, right-aligned ── */
