@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { fontFamily, fontWeight, fontSize } from '@tokens/typography';
 import { systemColors } from '@tokens/colors';
 import { spacing } from '@tokens/spacing';
@@ -2392,8 +2392,9 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   }, [chatMessages.length]);
 
   // When a direction is selected/deselected the bottom slot height changes.
-  // Snap-scroll to the end instantly so the messages don't appear to jump.
-  useEffect(() => {
+  // useLayoutEffect fires synchronously after DOM mutation but BEFORE paint,
+  // so the scroll anchors before the user ever sees the layout shift.
+  useLayoutEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
   }, [selectedId]);
 
@@ -2841,7 +2842,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               {selectedId ? (
                 /* ── Proceed CTA — Radiant Button large, right-aligned ── */
                 <div style={{ padding: `${spacing.D}px ${spacing.F}px` }}>
-                  <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', justifyContent: 'flex-end', animation: 'slideUpIn 0.2s ease both' }}>
+                  <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', justifyContent: 'center', animation: 'slideUpIn 0.2s ease both' }}>
                     <Button
                       variant="primary"
                       size="large"

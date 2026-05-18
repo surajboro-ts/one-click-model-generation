@@ -65,6 +65,7 @@ export function initDME() {
 
     activeTab = newTab;
   }
+  window._switchTab = switchTab;
 
   document.querySelectorAll('.tab-pill').forEach(pill => {
     pill.addEventListener('click', () => switchTab(pill.dataset.tab), { signal });
@@ -650,6 +651,8 @@ export function initDME() {
 
   // ── Model state — branch on welcomeVariant ────────
   if (welcomeVariant === 'existing') {
+    // Guard: if _modelState was pre-populated by BuildingScreen._handleBuildModel, don't overwrite it
+    if (!window._modelState) {
     window._modelState = {
       addedTables: ['fact_sales', 'fact_customer', 'dim_product', 'dim_store'],
       addedJoins: ['fact_sales-fact_customer', 'fact_sales-dim_product', 'fact_sales-dim_store'],
@@ -690,6 +693,7 @@ export function initDME() {
       changeLog: [],
       tablePositions: {},
     };
+    } // end guard: !window._modelState
   } else {
     window._modelState = {
       addedTables: [],
@@ -729,6 +733,48 @@ export function initDME() {
     rebuildColumnsContent();
     rebuildFormulasContent();
   }
+
+  // ── Direct model mutation — bypasses AI, used by auto-populate ────────
+  window._addToModelDirect = function(type, items) {
+    const state = window._modelState;
+    if (type === 'tables') {
+      items.forEach(function(t) {
+        if (!state.addedTables.includes(t.name)) {
+          state.addedTables.push(t.name);
+          state.model.tables.push(t);
+        }
+      });
+    } else if (type === 'joins') {
+      items.forEach(function(j) {
+        if (!state.addedJoins.includes(j.name)) {
+          state.addedJoins.push(j.name);
+          state.model.joins.push(j);
+        }
+      });
+    } else if (type === 'columns') {
+      items.forEach(function(g) {
+        var group = state.model.columns.find(function(c) { return c.table === g.table; });
+        if (!group) {
+          group = { table: g.table, columns: [] };
+          state.model.columns.push(group);
+        }
+        g.columns.forEach(function(col) {
+          if (!group.columns.includes(col)) {
+            group.columns.push(col);
+            if (state.addedColumns) state.addedColumns.push(col);
+          }
+        });
+      });
+    } else if (type === 'formulas') {
+      items.forEach(function(f) {
+        if (!state.model.formulas.find(function(x) { return x.name === f.name; })) {
+          state.model.formulas.push(f);
+        }
+      });
+    }
+    window._pendingModelRebuild = true;
+    flushModelRebuild();
+  };
 
   window._conversationHistory = [];
 
@@ -1891,6 +1937,290 @@ Only include the context field when there is genuinely meaningful content from t
     if (spotterModelEnabled) typePlaceholder(document.getElementById('chat-textarea'), 'Edit columns, formulas, tables or joins', 750);
   }
 
+  // ── Auto-populate orchestrator ────────────────────────────────────────
+  // Reads window.__DME_AUTO_DATA__ and progressively adds tables → joins →
+  // columns → formulas to the DME, updating the SpotterModel plan card.
+  function startAutoPopulate() {
+    var data = window.__DME_AUTO_DATA__;
+    if (!data) return;
+    // Consume immediately so StrictMode's second mount doesn't re-trigger.
+    delete window.__DME_AUTO_DATA__;
+
+    var goal          = data.goal;
+    var phases        = data.phases;        // array of { planLabel, planCaption, reasoning }
+    var tables        = data.tables;        // ModelTableDef[]
+    var relationships = data.relationships; // ModelRelationshipDef[]
+    var formulas      = data.formulas;      // ModelFormulaDef[]
+
+    // ── Build micro-step sequence ──────────────────────────────────────
+    var steps = [];
+
+    // Phase 0 — scan (no item added, initial schema-scan delay)
+    steps.push({ type: 'scan', phaseIndex: 0, delayMs: 1800 });
+
+    // Phase 1 — tables (one step per table; each has a shimmer then the real card)
+    tables.forEach(function(t) {
+      steps.push({
+        type: 'add', itemType: 'tables',
+        items: [{ name: t.tableName.toLowerCase(), desc: t.tableType + ' · ' + t.rowCount }],
+        phaseIndex: 1, delayMs: 800, shimmer: true,
+      });
+    });
+
+    // Phase 2 — joins (one step per relationship, stays on tables tab)
+    relationships.forEach(function(r, i) {
+      steps.push({
+        type: 'add', itemType: 'joins',
+        items: [{
+          name: 'Join ' + (i + 1),
+          desc: r.leftTable + ' → ' + r.rightTable + ' via ' + r.leftKey,
+          leftTable:   r.leftTable.toLowerCase(),
+          leftCol:     r.leftKey,
+          cardinality: r.cardinality === 'N:1' ? 'Many : 1' : r.cardinality === '1:N' ? '1 : Many' : r.cardinality,
+          rightTable:  r.rightTable.toLowerCase(),
+          rightCol:    r.rightKey,
+        }],
+        phaseIndex: 2, delayMs: 900,
+      });
+    });
+
+    // Phase 3 — columns (one step per table group; first step switches tab)
+    tables.forEach(function(t, ti) {
+      steps.push({
+        type: 'add', itemType: 'columns',
+        items: [{ table: t.tableName.toLowerCase(), columns: t.columns.map(function(c) { return c.name; }) }],
+        phaseIndex: 3,
+        delayMs:    ti === 0 ? 900 : 700,
+        switchTabTo: ti === 0 ? 'columns' : null,
+      });
+    });
+
+    // Phase 4 — formulas (one step per formula; first step switches tab)
+    formulas.forEach(function(f, fi) {
+      steps.push({
+        type: 'add', itemType: 'formulas',
+        items: [{ name: f.name, type: (f.outputType || 'DOUBLE').toUpperCase() }],
+        phaseIndex: 4,
+        delayMs:    fi === 0 ? 900 : 600,
+        switchTabTo: fi === 0 ? 'formulas' : null,
+      });
+    });
+
+    var totalSteps = steps.length;
+
+    // Compute last step index belonging to each phase
+    var endSteps = phases.map(function(_, pi) {
+      var last = -1;
+      steps.forEach(function(s, si) { if (s.phaseIndex <= pi) last = si; });
+      return last;
+    });
+
+    // ── Plan card helpers ──────────────────────────────────────────────
+    function makePlanData(completedIdx) {
+      return {
+        goal: goal,
+        steps: phases.map(function(phase, i) {
+          var phaseStart = i === 0 ? 0 : endSteps[i - 1] + 1;
+          var isDone     = completedIdx > endSteps[i];
+          var isActive   = !isDone && completedIdx >= phaseStart;
+          return { label: phase.planLabel, caption: phase.planCaption, state: isDone ? 'done' : isActive ? 'active' : 'pending' };
+        }),
+      };
+    }
+
+    function makeReasoning(completedIdx, isDone) {
+      var phaseIdx   = isDone ? -1 : (steps[completedIdx] ? steps[completedIdx].phaseIndex : 0);
+      var donePhases = phases.filter(function(_, i) { return completedIdx > endSteps[i]; });
+      return {
+        header:     isDone ? 'Done' : 'Building your model…',
+        isDone:     isDone,
+        inlineText: isDone ? '' : (phases[phaseIdx] ? phases[phaseIdx].reasoning : ''),
+        steps:      donePhases.map(function(p, i) { return { n: i + 1, name: p.planLabel, text: p.reasoning, dotState: 'done' }; }),
+      };
+    }
+
+    // ── Canvas shimmer helpers ─────────────────────────────────────────
+    // Temporarily adds a ghost shimmer card at the position where the next
+    // real table will appear, then removes it once the real card lands.
+    function showTableShimmer() {
+      var tablePositions = window._modelState.tablePositions;
+      var slot = findEmptySlot(tablePositions);
+      tablePositions['__shimmer__'] = slot;
+      var currentTables = window._modelState.model.tables;
+      var shimmerTables = currentTables.map(function(t) {
+        var pos = tablePositions[t.name] || { x: 0, y: 0 };
+        var ds = DATASOURCE_TABLES.find(function(d) { return d.name.toLowerCase() === t.name.toLowerCase(); });
+        var total = ds ? ds.columns.length : 0;
+        var addedGroup = window._modelState.model.columns.find(function(g) { return g.table === t.name; });
+        var added = addedGroup ? addedGroup.columns.length : 0;
+        return { name: t.name, x: pos.x, y: pos.y, totalColumns: total, addedColumns: added };
+      });
+      shimmerTables.push({ name: '__shimmer__', x: slot.x, y: slot.y, totalColumns: 0, addedColumns: 0, shimmer: true });
+      window._setTableCanvasData && window._setTableCanvasData({ tables: shimmerTables, joins: window._modelState.model.joins });
+    }
+
+    function hideTableShimmer() {
+      if (!window._modelState) return;
+      delete window._modelState.tablePositions['__shimmer__'];
+      // Re-render the canvas without the shimmer card so it actually disappears.
+      // showTableShimmer() called _setTableCanvasData with the shimmer entry;
+      // without this matching call the canvas keeps rendering the stale card.
+      var tablePositions = window._modelState.tablePositions;
+      var currentTables = window._modelState.model.tables;
+      var realTables = currentTables.map(function(t) {
+        var pos = tablePositions[t.name] || { x: 0, y: 0 };
+        var ds = DATASOURCE_TABLES.find(function(d) { return d.name.toLowerCase() === t.name.toLowerCase(); });
+        var total = ds ? ds.columns.length : 0;
+        var addedGroup = window._modelState.model.columns.find(function(g) { return g.table === t.name; });
+        var added = addedGroup ? addedGroup.columns.length : 0;
+        return { name: t.name, x: pos.x, y: pos.y, totalColumns: total, addedColumns: added };
+      });
+      window._setTableCanvasData && window._setTableCanvasData({ tables: realTables, joins: window._modelState.model.joins });
+    }
+
+    var PLAN_MSG_ID = 'dme-auto-populate-plan';
+
+    // ── Transition: welcome → chat; show tables pane ───────────────────
+    var welcomeView = document.getElementById('welcome-view');
+    var chatView    = document.getElementById('chat-view');
+    if (welcomeView) welcomeView.style.display = 'none';
+    if (chatView)    chatView.classList.add('active');
+    switchTab('tables');
+
+    // Signal UI that building is in progress (shows chat bar + stop button)
+    window._setAutoPopulating && window._setAutoPopulating(true);
+
+    // ── Push initial plan card ─────────────────────────────────────────
+    window._appendMsg && window._appendMsg({ kind: 'plan-steps', id: PLAN_MSG_ID, data: makePlanData(0), reasoning: makeReasoning(0, false) });
+    window._scrollMsgs && window._scrollMsgs();
+
+    // ── Step runner ────────────────────────────────────────────────────
+    var stepIdx = 0;
+
+    // Abort flag — set by cleanup or the Stop button.
+    var aborted = false;
+    var _origCleanup = window.__DME_AUTO_ABORT__;
+    if (_origCleanup) _origCleanup(); // cancel any prior run (StrictMode remount)
+    window.__DME_AUTO_ABORT__ = function() {
+      aborted = true;
+      // Guard: _modelState may already be deleted if this is called from cleanup
+      hideTableShimmer(); // null-safe
+      window._setColumnShimmer  && window._setColumnShimmer(false);
+      window._setFormulaShimmer && window._setFormulaShimmer(false);
+      if (!window._modelState || !window._versionHistory) return;
+      // Mark plan card as done at current progress
+      window._updateMsg && window._updateMsg(PLAN_MSG_ID, {
+        data: makePlanData(stepIdx),
+        reasoning: makeReasoning(stepIdx, true),
+      });
+      // Save a version and expose it for the UI stop-handler to attach to its message
+      var vCard = saveVersion('Partial model — stopped by user');
+      window._demoteVersionCards && window._demoteVersionCards();
+      window.__DME_STOP_VERSION__ = vCard;
+    };
+
+    function finishAutoPopulate() {
+      if (aborted) return; // safety net — runNext already guards, but be explicit
+      // Ensure no shimmer rows are left visible
+      window._setColumnShimmer  && window._setColumnShimmer(false);
+      window._setFormulaShimmer && window._setFormulaShimmer(false);
+      // Mark plan card done
+      window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(totalSteps), reasoning: makeReasoning(totalSteps, true) });
+      window._scrollMsgs && window._scrollMsgs();
+
+      // Save a version and show it in chat
+      var vCard = saveVersion('Initial model built by SpotterModel');
+      window._demoteVersionCards && window._demoteVersionCards();
+      var doneId = 'auto-done-' + Date.now();
+      window._appendMsg && window._appendMsg({
+        kind: 'agent', id: doneId,
+        reasoning: { header: 'Model ready', isDone: true, inlineText: '', steps: [] },
+        response: {
+          text: 'Your model is built and AI-ready. I\'ve saved this as Version ' + vCard.versionNum + '. You can now ask questions, add more context, or enable Spotter search.',
+          isVisible: true,
+          versionCard: vCard,
+          chips: [
+            { text: 'Enrich for AI search', variant: 'enrich' },
+            { text: 'Enable Spotter for this model', variant: 'enrich' },
+            { text: 'Add more tables', variant: 'default' },
+          ],
+        },
+      });
+      window._scrollMsgs && window._scrollMsgs();
+
+      // Re-enable the prompt bar send button
+      window._setAutoPopulating && window._setAutoPopulating(false);
+    }
+
+    function runNext() {
+      if (aborted) return;
+      if (stepIdx >= totalSteps) {
+        finishAutoPopulate();
+        return;
+      }
+      var step = steps[stepIdx++];
+
+      if (step.type === 'add') {
+        // All add steps: tab-switch first if needed, show shimmer, then land the real item.
+        var shimmerMs = Math.round(step.delayMs * 0.55);
+        var realMs    = step.delayMs - shimmerMs;
+
+        // Immediate: tab switch + show appropriate shimmer
+        if (step.switchTabTo) switchTab(step.switchTabTo);
+
+        if (step.itemType === 'tables') {
+          showTableShimmer();
+        } else if (step.itemType === 'columns') {
+          window._setColumnShimmer && window._setColumnShimmer(true);
+        } else if (step.itemType === 'formulas') {
+          window._setFormulaShimmer && window._setFormulaShimmer(true);
+        }
+
+        // After shimmerMs: hide shimmer
+        setTimeout(function() {
+          if (aborted) {
+            // Clean up shimmer if aborted mid-shimmer
+            if (step.itemType === 'tables')   hideTableShimmer();
+            if (step.itemType === 'columns')  window._setColumnShimmer  && window._setColumnShimmer(false);
+            if (step.itemType === 'formulas') window._setFormulaShimmer && window._setFormulaShimmer(false);
+            return;
+          }
+
+          if (step.itemType === 'tables')   hideTableShimmer();
+          if (step.itemType === 'columns')  window._setColumnShimmer  && window._setColumnShimmer(false);
+          if (step.itemType === 'formulas') window._setFormulaShimmer && window._setFormulaShimmer(false);
+
+          // After realMs: add the real item
+          setTimeout(function() {
+            if (aborted) return;
+            window._addToModelDirect && window._addToModelDirect(step.itemType, step.items);
+            window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(stepIdx), reasoning: makeReasoning(stepIdx, stepIdx >= totalSteps) });
+            window._scrollMsgs && window._scrollMsgs();
+            runNext();
+          }, realMs);
+        }, shimmerMs);
+
+      } else {
+        // scan / other non-add steps — just wait and proceed
+        setTimeout(function() {
+          if (aborted) return;
+          window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(stepIdx), reasoning: makeReasoning(stepIdx, false) });
+          window._scrollMsgs && window._scrollMsgs();
+          runNext();
+        }, step.delayMs);
+      }
+    }
+
+    setTimeout(runNext, 500);
+  }
+
+  // Trigger auto-populate if configured.
+  // Called synchronously so data is captured into a local closure before any
+  // cleanup (React StrictMode double-invoke) can delete window.__DME_AUTO_DATA__.
+  if (window.__DME_CONFIG__ && window.__DME_CONFIG__.autoPopulate && window.__DME_AUTO_DATA__) {
+    startAutoPopulate();
+  }
+
   // ── Pre-built model: paint canvas on load — existing variant only ──
   if (welcomeVariant === 'existing') {
     window._pendingModelRebuild = true;
@@ -1930,6 +2260,12 @@ Only include the context field when there is genuinely meaningful content from t
     delete window.showFgMenu;
     delete window.toggleFormulaCode;
     delete window.startChat;
+    delete window._switchTab;
+    delete window._addToModelDirect;
+    if (window.__DME_AUTO_ABORT__) { window.__DME_AUTO_ABORT__(); delete window.__DME_AUTO_ABORT__; }
+    delete window.__DME_STOP_VERSION__;
+    // Also clear the shimmer position if cleanup runs mid-sequence
+    if (window._modelState) delete window._modelState.tablePositions?.['__shimmer__'];
     delete window._handleAddToModel;
     delete window._handleChipClick;
     delete window._handleSuggestionRefine;
