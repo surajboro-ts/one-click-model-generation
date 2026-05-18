@@ -2736,6 +2736,18 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               )}
             </div>
 
+            {/* Disclaimer — below prompt bar */}
+            <p style={{
+              margin: 0, flexShrink: 0, textAlign: 'center',
+              padding: `${spacing.B}px ${spacing.F}px`,
+              fontSize: 13, lineHeight: '20px', fontWeight: fontWeight.light,
+              color: systemColors.light['content-secondary'],
+              backgroundColor: systemColors.light['background-base'],
+            }}>
+              SpotterModel responses should be reviewed.{' '}
+              <Link href="#">Learn more</Link>
+            </p>
+
             {/* Footer — chat state (same as prompt screen footer) */}
             <footer style={{
               height: 72, flexShrink: 0,
