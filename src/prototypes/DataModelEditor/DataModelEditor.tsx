@@ -272,8 +272,13 @@ const DataModelEditor: React.FC = () => {
 
               {/* Columns tab */}
               <div className="tab-content" id="content-columns" style={{ display: 'none' }}>
-                {/* Empty state — hidden during auto-populate so the shimmer has no flash */}
-                <div className="empty-state" id="columns-empty-state" style={isAutoPopulating ? { display: 'none' } : undefined}>
+                {/*
+                  Empty state — visibility is controlled ONLY by DOM manipulation in
+                  rebuildColumnsContent() (init-dme.js). Never add a React style prop here
+                  because React's reconciler will overwrite what the DOM manipulation sets,
+                  causing the empty state to re-appear alongside real content.
+                */}
+                <div className="empty-state" id="columns-empty-state">
                   <img src="/spotter-assets/Table=l.svg" width="32" height="32" alt="table icon" />
                   <div className="empty-body">
                     <div className="empty-title">Build your foundation first</div>
@@ -287,7 +292,13 @@ const DataModelEditor: React.FC = () => {
                     <img className="moving-arrow" src="/spotter-assets/Moving arrow.svg" width="14" height="12" alt="arrow" />
                   </div>
                 </div>
-                {(columnRows.length > 0 || showColShimmer) && (
+                {/*
+                  Render wrapper whenever there are rows, a shimmer is active, OR auto-populate
+                  is running — so the container is already in the DOM when the tab auto-switches,
+                  preventing a blank-frame between the empty state disappearing and the shimmer
+                  appearing.
+                */}
+                {(columnRows.length > 0 || showColShimmer || isAutoPopulating) && (
                   <div className="col-table-wrap" id="columns-canvas">
                     <div className="col-table-topbar">
                       <SearchInput
@@ -298,20 +309,25 @@ const DataModelEditor: React.FC = () => {
                       />
                       <Button variant="secondary">Model CSV import</Button>
                     </div>
-                    <Table
-                      columns={COL_TABLE_COLUMNS}
-                      data={columnRows.filter(r =>
-                        !colSearch ||
-                        r.col.toLowerCase().includes(colSearch.toLowerCase()) ||
-                        r.table.toLowerCase().includes(colSearch.toLowerCase())
-                      )}
-                      rowKey={(r) => `${(r as ColRow).table}.${(r as ColRow).col}`}
-                      selectable
-                      selectedKeys={selectedColKeys}
-                      onSelectionChange={setSelectedColKeys}
-                      stickyHeader
-                    />
-                    {showColShimmer && (
+                    {/* Only mount the Table when there are rows — avoids an empty header during the
+                        initial shimmer phase before the first column arrives */}
+                    {columnRows.length > 0 && (
+                      <Table
+                        columns={COL_TABLE_COLUMNS}
+                        data={columnRows.filter(r =>
+                          !colSearch ||
+                          r.col.toLowerCase().includes(colSearch.toLowerCase()) ||
+                          r.table.toLowerCase().includes(colSearch.toLowerCase())
+                        )}
+                        rowKey={(r) => `${(r as ColRow).table}.${(r as ColRow).col}`}
+                        selectable
+                        selectedKeys={selectedColKeys}
+                        onSelectionChange={setSelectedColKeys}
+                        stickyHeader
+                      />
+                    )}
+                    {/* Show shimmer when active OR when auto-populating with no rows yet */}
+                    {(showColShimmer || (isAutoPopulating && columnRows.length === 0)) && (
                       <div className="auto-populate-shimmer-row">
                         <div className="shimmer-check-slot" />
                         <div className="shimmer-pill" style={{ width: '13%' }} />
@@ -327,8 +343,11 @@ const DataModelEditor: React.FC = () => {
 
               {/* Formulas tab */}
               <div className="tab-content" id="content-formulas" style={{ display: 'none' }}>
-                {/* Empty state — hidden during auto-populate so the shimmer has no flash */}
-                <div className="empty-state" id="formulas-empty-state" style={isAutoPopulating ? { display: 'none' } : undefined}>
+                {/*
+                  Empty state — visibility controlled ONLY by DOM manipulation in
+                  rebuildFormulasContent(). Do NOT add a React style prop here.
+                */}
+                <div className="empty-state" id="formulas-empty-state">
                   <img src="/spotter-assets/Table=l.svg" width="32" height="32" alt="table icon" />
                   <div className="empty-body">
                     <div className="empty-title">Start with a data source</div>
@@ -342,7 +361,7 @@ const DataModelEditor: React.FC = () => {
                     <img className="moving-arrow" src="/spotter-assets/Moving arrow.svg" width="14" height="12" alt="arrow" />
                   </div>
                 </div>
-                {(formulaRows.length > 0 || showFormulaShimmer) && (
+                {(formulaRows.length > 0 || showFormulaShimmer || isAutoPopulating) && (
                   <div className="formula-table-wrap" id="formulas-canvas">
                     <div className="formula-topbar">
                       <SearchInput
@@ -352,22 +371,24 @@ const DataModelEditor: React.FC = () => {
                         className="formula-search-input"
                       />
                     </div>
-                    <Table
-                      columns={[
-                        { key: 'name', label: 'Formula name' },
-                        { key: 'type', label: 'Data type' },
-                        { key: 'actions', label: '', width: '40px', render: (_: unknown, _row: Record<string, unknown>) => (
-                          <Button variant="secondary" icon="more" iconOnly title="More options">More options</Button>
-                        )},
-                      ]}
-                      data={formulaRows.filter(r =>
-                        !formulaSearch ||
-                        r.name.toLowerCase().includes(formulaSearch.toLowerCase())
-                      )}
-                      rowKey={(r) => (r as FormulaRow).name}
-                      stickyHeader
-                    />
-                    {showFormulaShimmer && (
+                    {formulaRows.length > 0 && (
+                      <Table
+                        columns={[
+                          { key: 'name', label: 'Formula name' },
+                          { key: 'type', label: 'Data type' },
+                          { key: 'actions', label: '', width: '40px', render: (_: unknown, _row: Record<string, unknown>) => (
+                            <Button variant="secondary" icon="more" iconOnly title="More options">More options</Button>
+                          )},
+                        ]}
+                        data={formulaRows.filter(r =>
+                          !formulaSearch ||
+                          r.name.toLowerCase().includes(formulaSearch.toLowerCase())
+                        )}
+                        rowKey={(r) => (r as FormulaRow).name}
+                        stickyHeader
+                      />
+                    )}
+                    {(showFormulaShimmer || (isAutoPopulating && formulaRows.length === 0)) && (
                       <div className="auto-populate-shimmer-row">
                         <div className="shimmer-pill" style={{ width: '30%' }} />
                         <div className="shimmer-pill" style={{ width: '15%' }} />

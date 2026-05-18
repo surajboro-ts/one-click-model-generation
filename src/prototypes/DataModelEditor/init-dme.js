@@ -388,10 +388,16 @@ export function initDME() {
     const addedColumnGroups = state.model.columns;
     const hasColumns = addedColumnGroups.some(g => g.columns && g.columns.length > 0);
     if (!hasColumns) {
-      // During auto-populate keep empty state hidden — let React shimmer handle the
-      // in-between state so there's no empty-state flash when the tab auto-switches.
+      // During auto-populate: keep empty state hidden and stretch the container so
+      // the shimmer row fills the space correctly (same layout as when content exists).
+      // The React wrapper div renders when isAutoPopulating=true, so this keeps the
+      // two in sync without React fighting the DOM manipulation on display.
       emptyEl.style.display = window._autoPopulating ? 'none' : '';
-      if (contentEl) { contentEl.style.alignItems = ''; contentEl.style.justifyContent = ''; }
+      if (window._autoPopulating) {
+        if (contentEl) { contentEl.style.alignItems = 'stretch'; contentEl.style.justifyContent = 'flex-start'; }
+      } else {
+        if (contentEl) { contentEl.style.alignItems = ''; contentEl.style.justifyContent = ''; }
+      }
       window._setColumnRows?.([]);
       const hasTables = state.addedTables.length > 0;
       const colsTabActive = document.querySelector('[data-tab="columns"]')?.classList.contains('active');
@@ -461,8 +467,14 @@ export function initDME() {
     if (!emptyEl) return;
     const formulas = state.model.formulas;
     if (!formulas.length) {
-      // During auto-populate keep empty state hidden to avoid flash on tab auto-switch.
+      // During auto-populate: keep empty state hidden and stretch container so the
+      // shimmer fills the space. Same rationale as rebuildColumnsContent above.
       emptyEl.style.display = window._autoPopulating ? 'none' : '';
+      if (window._autoPopulating) {
+        if (contentEl) { contentEl.style.alignItems = 'stretch'; contentEl.style.justifyContent = 'flex-start'; }
+      } else {
+        if (contentEl) { contentEl.style.alignItems = ''; contentEl.style.justifyContent = ''; }
+      }
       window._setFormulaRows?.([]);
       if (contentEl) { contentEl.style.alignItems = ''; contentEl.style.justifyContent = ''; }
       if (toolbar) { toolbar.innerHTML = '<button class="formula-add-btn" style="pointer-events:none;opacity:0.45;">Add formula</button>'; }
