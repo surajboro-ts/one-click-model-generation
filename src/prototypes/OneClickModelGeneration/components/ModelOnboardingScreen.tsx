@@ -2292,7 +2292,9 @@ type ChatPhase =
 
 function AgentRow({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.C }}>
+    // paddingLeft: spacing.C aligns the agent avatar with the user avatar, which
+    // sits at spacing.C (12 px) inside its grey card's padding.
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.C, paddingLeft: spacing.C }}>
       <img
         src="/spotter-assets/SpotterModel avatar.svg"
         width={32} height={32} alt="SpotterModel"
@@ -2303,9 +2305,11 @@ function AgentRow({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Left indent: avatar width + gap + ReasoningBlock header left padding (spacing.A = 4 px)
-// This aligns responseText with the "Done ∨" text start exactly.
-const AGENT_TEXT_INDENT = 32 + spacing.C + spacing.A; // 32 + 12 + 4 = 48 px
+// Left indent for response text sitting below an AgentRow:
+//   row_indent + avatar_width + gap + ReasoningBlock header left padding
+//   = spacing.C  +    32      + spacing.C +       spacing.A
+//   = 12 + 32 + 12 + 4 = 60 px
+const AGENT_TEXT_INDENT = spacing.C + 32 + spacing.C + spacing.A; // 60 px
 
 // ─── User message row ─────────────────────────────────────────────────────────
 // Avatar + text inside the sunken card, with spacing.C (12 px) padding all around.
@@ -2708,7 +2712,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                   </div>
                 </div>
                 {/* Prompt bar + hint */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: 664, gap: spacing.C }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: 760, gap: spacing.C }}>
                   <PromptBar
                     onTextChange={setCurrentPromptText}
                     onSubmit={handleBuild}
@@ -2768,7 +2772,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               padding: `${spacing.F}px`,
               paddingBottom: spacing.J,
             }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.D }}>
+              <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: spacing.D }}>
                 {chatMessages.map(msg => {
                   if (msg.kind === 'user') {
                     return <UserMsgRow key={msg.id} text={msg.text} />;
@@ -2836,54 +2840,58 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
             }}>
               {selectedId ? (
                 /* ── Proceed CTA — Radiant Button large, right-aligned ── */
-                <div style={{ padding: `${spacing.D}px ${spacing.F}px`, display: 'flex', justifyContent: 'flex-end', animation: 'slideUpIn 0.2s ease both' }}>
-                  <Button
-                    variant="primary"
-                    size="large"
-                    onClick={() => {
-                      if (!selectedDirection_) return;
-                      const spec  = MODEL_SPEC[selectedDirection_.id]  ?? MODEL_SPEC['d1'];
-                      const dPlan = DME_BUILD_PLAN[selectedDirection_.id] ?? DME_BUILD_PLAN['d1'];
-                      (window as any).__DME_AUTO_DATA__ = {
-                        goal:          selectedDirection_.goal,
-                        phases:        dPlan,
-                        tables:        spec.tables,
-                        relationships: spec.relationships,
-                        formulas:      spec.formulas,
-                      };
-                      (window as any).__DME_CONFIG__ = {
-                        spotterModel:   true,
-                        welcomeVariant: 'blank',
-                        autoPopulate:   true,
-                      };
-                      onBuild();
-                    }}
-                  >
-                    Proceed in this direction →
-                  </Button>
+                <div style={{ padding: `${spacing.D}px ${spacing.F}px` }}>
+                  <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', justifyContent: 'flex-end', animation: 'slideUpIn 0.2s ease both' }}>
+                    <Button
+                      variant="primary"
+                      size="large"
+                      onClick={() => {
+                        if (!selectedDirection_) return;
+                        const spec  = MODEL_SPEC[selectedDirection_.id]  ?? MODEL_SPEC['d1'];
+                        const dPlan = DME_BUILD_PLAN[selectedDirection_.id] ?? DME_BUILD_PLAN['d1'];
+                        (window as any).__DME_AUTO_DATA__ = {
+                          goal:          selectedDirection_.goal,
+                          phases:        dPlan,
+                          tables:        spec.tables,
+                          relationships: spec.relationships,
+                          formulas:      spec.formulas,
+                        };
+                        (window as any).__DME_CONFIG__ = {
+                          spotterModel:   true,
+                          welcomeVariant: 'blank',
+                          autoPopulate:   true,
+                        };
+                        onBuild();
+                      }}
+                    >
+                      Proceed in this direction →
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <div style={{ padding: `${spacing.D}px ${spacing.F}px` }}>
-                  {chatPhase === 'clarifying' ? (
-                    <ClarifyingCard
-                      questions={CLARIFYING_QUESTIONS}
-                      currentStep={clarifyStep}
-                      onNext={handleClarifyNext}
-                      onCancel={handleClarifyCancel}
-                    />
-                  ) : (
-                    /* PromptBar is always visible. Only the send button is disabled
-                       while SpotterModel is reasoning — the user can still type. */
-                    <PromptBar
-                      onTextChange={setCurrentPromptText}
-                      onSubmit={handleFollowUp}
-                      submitDisabled={chatPhase === 'reasoning_initial' || chatPhase === 'reasoning_post'}
-                      initialText={currentPromptText || undefined}
-                      connectionName={connectionName}
-                      onConnectionClick={() => onChangeConnection?.()}
-                      onShowConnectionDetails={() => setShowConnDetails(true)}
-                    />
-                  )}
+                  <div style={{ maxWidth: 760, margin: '0 auto' }}>
+                    {chatPhase === 'clarifying' ? (
+                      <ClarifyingCard
+                        questions={CLARIFYING_QUESTIONS}
+                        currentStep={clarifyStep}
+                        onNext={handleClarifyNext}
+                        onCancel={handleClarifyCancel}
+                      />
+                    ) : (
+                      /* PromptBar is always visible. Only the send button is disabled
+                         while SpotterModel is reasoning — the user can still type. */
+                      <PromptBar
+                        onTextChange={setCurrentPromptText}
+                        onSubmit={handleFollowUp}
+                        submitDisabled={chatPhase === 'reasoning_initial' || chatPhase === 'reasoning_post'}
+                        initialText={currentPromptText || undefined}
+                        connectionName={connectionName}
+                        onConnectionClick={() => onChangeConnection?.()}
+                        onShowConnectionDetails={() => setShowConnDetails(true)}
+                      />
+                    )}
+                  </div>
                 </div>
               )}
             </div>
