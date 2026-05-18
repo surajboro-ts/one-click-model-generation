@@ -476,7 +476,6 @@ export function initDME() {
         if (contentEl) { contentEl.style.alignItems = ''; contentEl.style.justifyContent = ''; }
       }
       window._setFormulaRows?.([]);
-      if (contentEl) { contentEl.style.alignItems = ''; contentEl.style.justifyContent = ''; }
       if (toolbar) { toolbar.innerHTML = '<button class="formula-add-btn" style="pointer-events:none;opacity:0.45;">Add formula</button>'; }
       const hasTables = state.addedTables.length > 0;
       const hasColumns = state.model.columns.some(g => g.columns && g.columns.length > 0);

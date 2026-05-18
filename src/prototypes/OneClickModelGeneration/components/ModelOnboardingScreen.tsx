@@ -239,21 +239,7 @@ function promptBorderStyle(focused: boolean): React.CSSProperties {
 // Prototype-specific elevation — no Radiant shadow token at this depth.
 const PROMPT_BAR_SHADOW = '0px 2px 4px rgba(25,35,49,0.04), 0px 0px 4px rgba(25,35,49,0.10)';
 
-// ─── Drag handle icon ─────────────────────────────────────────────────────────
-const DragHandle: React.FC = () => (
-  <svg width="10" height="14" viewBox="0 0 10 14" fill="none" aria-hidden style={{ flexShrink: 0, cursor: 'grab' }}>
-    {[2, 6, 10].map(cy => (
-      <React.Fragment key={cy}>
-        <circle cx="2.5" cy={cy} r="1.25" fill={systemColors.light['content-secondary']} />
-        <circle cx="7.5" cy={cy} r="1.25" fill={systemColors.light['content-secondary']} />
-      </React.Fragment>
-    ))}
-  </svg>
-);
-
 // ─── Default prompt bar ────────────────────────────────────────────────────────
-// Owns the question list state. MentionEditor fires onAddQuestion when Enter is
-// pressed after a # query; questions appear as a reorderable list above the editor.
 function PromptBar({
   onTextChange, onSubmit, connectionName, onConnectionClick, onShowConnectionDetails, initialText, submitDisabled,
 }: {
@@ -262,29 +248,8 @@ function PromptBar({
   initialText?: string;
   submitDisabled?: boolean;
 }) {
-  const [focused,   setFocused]   = useState(false);
-  const [questions, setQuestions] = useState<string[]>([]);
+  const [focused, setFocused] = useState(false);
   const placeholder = useTypewriter(PLACEHOLDER_PHRASES);
-
-  // Drag-and-drop reorder
-  const dragIdx  = useRef<number>(-1);
-  const [dragOver, setDragOver] = useState<number>(-1);
-
-  const handleDragStart = (i: number) => { dragIdx.current = i; };
-  const handleDragOver  = (e: React.DragEvent, i: number) => { e.preventDefault(); setDragOver(i); };
-  const handleDrop      = (i: number) => {
-    const from = dragIdx.current;
-    if (from === -1 || from === i) { setDragOver(-1); return; }
-    setQuestions(qs => {
-      const next = [...qs];
-      const [moved] = next.splice(from, 1);
-      next.splice(i, 0, moved);
-      return next;
-    });
-    dragIdx.current = -1;
-    setDragOver(-1);
-  };
-  const handleDragEnd = () => { dragIdx.current = -1; setDragOver(-1); };
 
   return (
     <div
@@ -295,75 +260,12 @@ function PromptBar({
         boxShadow: PROMPT_BAR_SHADOW, ...promptBorderStyle(focused),
       }}
     >
-      {/* Reorderable question list — only shown when at least one question exists */}
-      {questions.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 /* no exact spacing token */ }}>
-          {questions.map((q, i) => (
-            <div
-              key={i}
-              draggable
-              onDragStart={() => handleDragStart(i)}
-              onDragOver={e  => handleDragOver(e, i)}
-              onDrop={() => handleDrop(i)}
-              onDragEnd={handleDragEnd}
-              style={{
-                display: 'flex', alignItems: 'center', gap: spacing.B,
-                backgroundColor: systemColors.light['background-sunken'],
-                borderRadius: spacing.B,
-                padding: `${spacing.B}px ${spacing.C}px`,
-                borderTop: dragOver === i && dragIdx.current !== i
-                  ? `2px solid ${systemColors.light['content-brand']}`
-                  : '2px solid transparent',
-                transition: 'border-color 0.1s',
-                opacity: dragIdx.current === i ? 0.4 : 1,
-              }}
-            >
-              <DragHandle />
-              <span style={{
-                flex: 1, fontSize: 14, lineHeight: '20px',
-                fontWeight: fontWeight.light,
-                color: systemColors.light['content-primary'],
-                userSelect: 'none',
-              }}>
-                {q}
-              </span>
-              <button
-                onClick={() => setQuestions(qs => qs.filter((_, idx) => idx !== i))}
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-                  flexShrink: 0, fontSize: 16, lineHeight: 1,
-                  color: systemColors.light['content-secondary'],
-                }}
-                aria-label="Remove question"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-          {/* Trailing drop zone — captures drops past the last item */}
-          <div
-            onDragOver={e => { e.preventDefault(); setDragOver(questions.length); }}
-            onDrop={() => handleDrop(questions.length)}
-            onDragLeave={() => setDragOver(-1)}
-            style={{
-              height: spacing.B,
-              borderBottom: dragOver === questions.length && dragIdx.current !== -1
-                ? `2px solid ${systemColors.light['content-brand']}`
-                : '2px solid transparent',
-              transition: 'border-color 0.1s',
-            }}
-          />
-          <div style={{ height: 1, backgroundColor: systemColors.light['border-divider'], margin: `${spacing.A}px 0 0` }} />
-        </div>
-      )}
-
       <MentionEditor
         placeholder={placeholder}
         initialText={initialText}
         onTextChange={onTextChange}
         onFocusChange={setFocused}
         onSubmit={onSubmit}
-        onAddQuestion={q => setQuestions(qs => [...qs, q])}
       />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: spacing.H }}>
         <ConnectionSelector connectionName={connectionName} onNameClick={onConnectionClick} onShowDetails={onShowConnectionDetails} />
@@ -426,10 +328,8 @@ function insertChip(chip: HTMLSpanElement, sel: Selection, trigger: '@' | '#'): 
   sel.addRange(after);
 }
 
-// ─── Inline @mention + #question editor ───────────────────────────────────────
-// Two shortcut triggers in a single contenteditable surface:
-//   @ — opens a table autocomplete dropdown; selecting a row inserts a blue chip
-//   # — starts an inline question draft; Enter commits it as a purple chip
+// ─── Inline @mention editor ───────────────────────────────────────────────────
+// @ — opens a table autocomplete dropdown; selecting a row inserts a blue chip.
 // React does NOT control the DOM content — the ref is the source of truth.
 function MentionEditor({
   placeholder,
@@ -437,19 +337,16 @@ function MentionEditor({
   onTextChange,
   onFocusChange,
   onSubmit,
-  onAddQuestion,
 }: {
   placeholder: string;
   initialText?: string;
   onTextChange: (text: string) => void;
   onFocusChange: (focused: boolean) => void;
   onSubmit: () => void;
-  onAddQuestion: (question: string) => void;
 }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [mentionQuery,  setMentionQuery]  = useState<string | null>(null);
   const [activeIdx,     setActiveIdx]     = useState(0);
-  const [questionQuery, setQuestionQuery] = useState<string | null>(null);
   const [isEmpty,       setIsEmpty]       = useState(!initialText);
 
   // On mount: restore initial text (e.g. when navigating back from directions),
@@ -473,17 +370,14 @@ function MentionEditor({
   // Read only the anchor text node — NOT the full editor range.
   // Using the full range would include text from committed chip spans
   // (which are separate non-editable nodes) and cause false trigger detections.
-  const detectTriggers = (): { mention: string | null; question: string | null } => {
+  const detectMention = (): string | null => {
     const sel = window.getSelection();
-    if (!sel || !sel.rangeCount) return { mention: null, question: null };
+    if (!sel || !sel.rangeCount) return null;
     const anchor = sel.anchorNode;
-    if (!anchor || anchor.nodeType !== Node.TEXT_NODE) return { mention: null, question: null };
+    if (!anchor || anchor.nodeType !== Node.TEXT_NODE) return null;
     const before = (anchor.textContent ?? '').slice(0, sel.anchorOffset);
-    const mAt   = before.match(/@(\w*)$/);
-    if (mAt)   return { mention: mAt[1], question: null };
-    const mHash = before.match(/#([^\n]*)$/);
-    if (mHash) return { mention: null, question: mHash[1] };
-    return { mention: null, question: null };
+    const mAt = before.match(/@(\w*)$/);
+    return mAt ? mAt[1] : null;
   };
 
   const handleInput = () => {
@@ -493,9 +387,8 @@ function MentionEditor({
     const empty = !text.trim() || text === '\n';
     setIsEmpty(empty);
     onTextChange(empty ? '' : text);
-    const { mention, question } = detectTriggers();
+    const mention = detectMention();
     setMentionQuery(mention);
-    setQuestionQuery(question);
     if (mention !== null) setActiveIdx(0);
   };
 
@@ -541,33 +434,6 @@ function MentionEditor({
     setTimeout(() => handleInput(), 0);
   };
 
-  // Commit question: delete the #query text from the editor and add to the list above.
-  // Does NOT insert a chip — questions live in the structured list in PromptBar.
-  const commitQuestion = (text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed) { setQuestionQuery(null); return; }
-    const sel = window.getSelection();
-    if (sel && sel.rangeCount) {
-      const anchor = sel.anchorNode;
-      if (anchor?.nodeType === Node.TEXT_NODE) {
-        const full = anchor.textContent ?? '';
-        const pos  = sel.anchorOffset;
-        const hashIdx = full.slice(0, pos).lastIndexOf('#');
-        if (hashIdx !== -1) {
-          anchor.textContent = full.slice(0, hashIdx) + full.slice(pos);
-          const r = document.createRange();
-          r.setStart(anchor, hashIdx);
-          r.collapse(true);
-          sel.removeAllRanges();
-          sel.addRange(r);
-        }
-      }
-    }
-    onAddQuestion(trimmed);
-    setQuestionQuery(null);
-    setTimeout(() => handleInput(), 0);
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     // @ suggestion navigation
     if (mentionQuery !== null && suggestions.length > 0) {
@@ -575,11 +441,6 @@ function MentionEditor({
       if (e.key === 'ArrowUp')   { e.preventDefault(); setActiveIdx(i => Math.max(i - 1, 0)); return; }
       if (e.key === 'Enter')     { e.preventDefault(); commitMention(suggestions[activeIdx]); return; }
       if (e.key === 'Escape')    { e.preventDefault(); setMentionQuery(null); return; }
-    }
-    // # question — Enter commits, Esc discards
-    if (questionQuery !== null) {
-      if (e.key === 'Enter')  { e.preventDefault(); commitQuestion(questionQuery); return; }
-      if (e.key === 'Escape') { e.preventDefault(); setQuestionQuery(null); return; }
     }
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSubmit(); }
   };
@@ -614,7 +475,7 @@ function MentionEditor({
         onInput={handleInput}
         onKeyDown={handleKeyDown}
         onFocus={() => onFocusChange(true)}
-        onBlur={() => { onFocusChange(false); setMentionQuery(null); setQuestionQuery(null); }}
+        onBlur={() => { onFocusChange(false); setMentionQuery(null); }}
         style={{
           width: '100%', minHeight: 48, outline: 'none',
           fontSize: 16, lineHeight: '24px', fontWeight: fontWeight.light,
@@ -672,22 +533,6 @@ function MentionEditor({
         </div>
       )}
 
-      {/* # question commit hint */}
-      {questionQuery !== null && (
-        <div style={{
-          position: 'absolute', top: '100%', left: 0, zIndex: 20, marginTop: spacing.A,
-          display: 'flex', alignItems: 'center', gap: spacing.B,
-          background: 'white', borderRadius: spacing.B, padding: `${spacing.B}px ${spacing.C}px`,
-          border: `1px solid ${systemColors.light['border-divider']}`,
-          boxShadow: '0px 8px 16px rgba(25,35,49,0.08), 0px 0px 4px rgba(25,35,49,0.06)',
-        }}>
-          <kbd style={kbdStyle}>↵ Enter</kbd>
-          <span style={{ fontSize: 12, color: systemColors.light['content-secondary'] }}>to add as question</span>
-          <span style={{ color: systemColors.light['border-divider'], margin: `0 2px` }}>·</span>
-          <kbd style={kbdStyle}>Esc</kbd>
-          <span style={{ fontSize: 12, color: systemColors.light['content-secondary'] }}>to cancel</span>
-        </div>
-      )}
     </div>
   );
 }
@@ -907,25 +752,19 @@ function DirectionCard({
           {direction.title}
         </span>
         {/* Open doc button */}
-        <button
-          onClick={e => { e.stopPropagation(); onOpenCanvas(); }}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 4,
-            background: 'none', border: `1px solid ${systemColors.light['border-divider']}`,
-            borderRadius: spacing.B, padding: `3px ${spacing.B}px`,
-            cursor: 'pointer', flexShrink: 0,
-            fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'],
-            fontFamily: 'inherit',
-            transition: 'color 0.12s, border-color 0.12s',
-          }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = systemColors.light['content-brand']; (e.currentTarget as HTMLElement).style.borderColor = systemColors.light['content-brand']; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = systemColors.light['content-secondary']; (e.currentTarget as HTMLElement).style.borderColor = systemColors.light['border-divider']; }}
+        <Button
+          variant="tertiary"
+          size="small"
+          onClick={e => { (e as React.MouseEvent).stopPropagation(); onOpenCanvas(); }}
+          icon={
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+              <path d="M5 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9M8 2h4v4M12 2 7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          }
+          iconPosition="leading"
         >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-            <path d="M7 2h3v3M10 2L6.5 5.5M5 3H2v7h7V7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
           Open doc
-        </button>
+        </Button>
       </div>
 
       {/* Body — goal + key questions */}
@@ -2725,8 +2564,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                   <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B }}>
                     <SparkleIcon />
                     <span style={{ fontSize: 14, lineHeight: '20px', fontWeight: fontWeight.light, color: systemColors.light['content-secondary'] }}>
-                      Type <span style={{ color: systemColors.light['content-primary'] }}>@</span> to reference tables,{' '}
-                      <span style={{ color: systemColors.light['content-primary'] }}>#</span> to add a business question
+                      Type <span style={{ color: systemColors.light['content-primary'] }}>@</span> to reference specific tables
                     </span>
                   </div>
                 </div>
@@ -2898,13 +2736,14 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               )}
             </div>
 
-            {/* Disclaimer — chat state */}
+            {/* Footer — chat state */}
             <div style={{
               flexShrink: 0, textAlign: 'center',
               padding: `${spacing.B}px ${spacing.F}px`,
               backgroundColor: systemColors.light['background-base'],
+              borderTop: `1px solid ${systemColors.light['border-divider']}`,
             }}>
-              <span style={{ fontSize: 13, fontWeight: fontWeight.light, color: systemColors.light['content-secondary'] }}>
+              <span style={{ fontSize: 12, fontWeight: fontWeight.light, color: systemColors.light['content-secondary'] }}>
                 SpotterModel responses should be reviewed.{' '}
                 <Link href="#">Learn more</Link>
               </span>
