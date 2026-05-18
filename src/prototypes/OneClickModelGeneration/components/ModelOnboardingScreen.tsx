@@ -275,18 +275,6 @@ function PromptBar({
   );
 }
 
-// ─── Table mode bar ────────────────────────────────────────────────────────────
-function getTableType(name: string): string {
-  const l = name.toLowerCase();
-  if (l.startsWith('fact_') || l.startsWith('fct_')) return 'Fact';
-  if (l.startsWith('dim_'))    return 'Dim';
-  if (l.startsWith('stg_') || l.startsWith('stage_')) return 'Stage';
-  if (l.startsWith('bridge_') || l.startsWith('brdg_')) return 'Bridge';
-  if (l.startsWith('agg_'))    return 'Agg';
-  if (l.startsWith('mart_'))   return 'Mart';
-  return 'Table';
-}
-
 const CONNECTION_TABLES = [
   'fact_sales_orders', 'fact_sales_pipeline', 'fact_customer_transactions',
   'fact_revenue_daily', 'fact_opportunity_stage',
@@ -509,9 +497,6 @@ function MentionEditor({
                   color: systemColors.light['content-primary'],
                 }}
               >
-                <span style={{ color: systemColors.light['content-secondary'], fontSize: 11, flexShrink: 0 }}>
-                  {getTableType(t)}
-                </span>
                 {!q || ms === -1 ? t : (
                   <span>
                     {t.slice(0, ms)}
