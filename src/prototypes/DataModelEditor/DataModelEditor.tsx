@@ -242,7 +242,12 @@ const DataModelEditor: React.FC = () => {
 
               {/* Tables tab */}
               <div className="tab-content" id="content-tables">
-                {tableCanvasData.tables.length === 0 ? (
+                {/*
+                  Show empty state only when there are no tables AND auto-populate is NOT
+                  running. During auto-populate the canvas is always shown (initially empty,
+                  then with table shimmer cards) so the user never sees the empty state.
+                */}
+                {tableCanvasData.tables.length === 0 && !isAutoPopulating ? (
                   <div className="empty-state" id="tables-empty-state">
                     <img src="/spotter-assets/Table=l.svg" width="32" height="32" alt="table icon" />
                     <div className="empty-body">

@@ -1970,15 +1970,15 @@ Only include the context field when there is genuinely meaningful content from t
     // ── Build micro-step sequence ──────────────────────────────────────
     var steps = [];
 
-    // Phase 0 — scan (no item added, initial schema-scan delay)
-    steps.push({ type: 'scan', phaseIndex: 0, delayMs: 1800 });
+    // Phase 0 — scan (no item added, brief schema-scan pause)
+    steps.push({ type: 'scan', phaseIndex: 0, delayMs: 600 });
 
     // Phase 1 — tables (one step per table; each has a shimmer then the real card)
     tables.forEach(function(t) {
       steps.push({
         type: 'add', itemType: 'tables',
         items: [{ name: t.tableName.toLowerCase(), desc: t.tableType + ' · ' + t.rowCount }],
-        phaseIndex: 1, delayMs: 800, shimmer: true,
+        phaseIndex: 1, delayMs: 1600, shimmer: true,
       });
     });
 
@@ -1995,7 +1995,7 @@ Only include the context field when there is genuinely meaningful content from t
           rightTable:  r.rightTable.toLowerCase(),
           rightCol:    r.rightKey,
         }],
-        phaseIndex: 2, delayMs: 900,
+        phaseIndex: 2, delayMs: 1800,
       });
     });
 
@@ -2008,7 +2008,7 @@ Only include the context field when there is genuinely meaningful content from t
           type: 'add', itemType: 'columns',
           items: [{ table: t.tableName.toLowerCase(), columns: [col.name] }],
           phaseIndex: 3,
-          delayMs:    isFirstCol ? 900 : 350,
+          delayMs:    isFirstCol ? 1400 : 700,
           switchTabTo: isFirstCol ? 'columns' : null,
         });
         colStepCount++;
@@ -2021,7 +2021,7 @@ Only include the context field when there is genuinely meaningful content from t
         type: 'add', itemType: 'formulas',
         items: [{ name: f.name, type: (f.outputType || 'DOUBLE').toUpperCase() }],
         phaseIndex: 4,
-        delayMs:    fi === 0 ? 900 : 600,
+        delayMs:    fi === 0 ? 1400 : 1000,
         switchTabTo: fi === 0 ? 'formulas' : null,
       });
     });
@@ -2109,10 +2109,19 @@ Only include the context field when there is genuinely meaningful content from t
 
     // Mark auto-populate in progress — suppresses empty states in columns/formulas tabs
     window._autoPopulating = true;
-    // Notify DME React component (hides empty-state divs via inline style)
+    // Notify DME React component (also suppresses tables empty state via isAutoPopulating)
     window._setDMEAutoPopulating && window._setDMEAutoPopulating(true);
     // Signal AgentPanel UI that building is in progress (shows chat bar + stop button)
     window._setAutoPopulating && window._setAutoPopulating(true);
+
+    // Pre-set stretch layout on columns/formulas containers so the shimmer wrappers
+    // fill the full height from the very first frame the tab becomes visible.
+    // rebuildColumnsContent/rebuildFormulasContent also do this, but doing it here
+    // ensures the layout is correct from the moment React renders the wrappers.
+    var _contentCols = document.getElementById('content-columns');
+    var _contentFmls = document.getElementById('content-formulas');
+    if (_contentCols) { _contentCols.style.alignItems = 'stretch'; _contentCols.style.justifyContent = 'flex-start'; }
+    if (_contentFmls) { _contentFmls.style.alignItems = 'stretch'; _contentFmls.style.justifyContent = 'flex-start'; }
 
     // ── Push initial plan card ─────────────────────────────────────────
     window._appendMsg && window._appendMsg({ kind: 'plan-steps', id: PLAN_MSG_ID, data: makePlanData(0), reasoning: makeReasoning(0, false) });
@@ -2121,23 +2130,39 @@ Only include the context field when there is genuinely meaningful content from t
     // ── Step runner ────────────────────────────────────────────────────
     var stepIdx = 0;
 
+    // Returns plan data with any currently-active phase frozen as 'pending' (no spinner).
+    // Used when the run is stopped so the plan card doesn't keep showing an active spinner.
+    function makePlanDataStopped(completedIdx) {
+      return {
+        goal: goal,
+        steps: phases.map(function(phase, i) {
+          var isDone = completedIdx > endSteps[i];
+          // Active phase becomes 'pending' (neutral dot) instead of 'active' (spinner)
+          return { label: phase.planLabel, caption: phase.planCaption, state: isDone ? 'done' : 'pending' };
+        }),
+      };
+    }
+
     // Abort flag — set by cleanup or the Stop button.
     var aborted = false;
     var _origCleanup = window.__DME_AUTO_ABORT__;
     if (_origCleanup) _origCleanup(); // cancel any prior run (StrictMode remount)
     window.__DME_AUTO_ABORT__ = function() {
       aborted = true;
-      // Clear auto-populating flags so empty states become visible again
-      window._autoPopulating = false;
-      window._setDMEAutoPopulating && window._setDMEAutoPopulating(false);
-      // Guard: _modelState may already be deleted if this is called from cleanup
+      // NOTE: do NOT call _setDMEAutoPopulating(false) or set _autoPopulating = false here.
+      // This function is called by BOTH the Stop button AND by React StrictMode cleanup.
+      // Calling the React setter here would cause a visible empty-state flash between
+      // StrictMode's unmount-1 and mount-2. Instead:
+      //   • finishAutoPopulate() resets _setDMEAutoPopulating when the run completes normally.
+      //   • AgentPanel.handleStopAutoPopulate resets it when the user clicks Stop.
+      //   • The cleanup() return function resets window._autoPopulating directly.
       hideTableShimmer(); // null-safe
       window._setColumnShimmer  && window._setColumnShimmer(false);
       window._setFormulaShimmer && window._setFormulaShimmer(false);
       if (!window._modelState || !window._versionHistory) return;
-      // Mark plan card as done at current progress
+      // Mark plan card paused — use makePlanDataStopped so active phase stops spinning
       window._updateMsg && window._updateMsg(PLAN_MSG_ID, {
-        data: makePlanData(stepIdx),
+        data: makePlanDataStopped(stepIdx),
         reasoning: makeReasoning(stepIdx, true),
       });
       // Save a version and expose it for the UI stop-handler to attach to its message
@@ -2243,7 +2268,9 @@ Only include the context field when there is genuinely meaningful content from t
       }
     }
 
-    setTimeout(runNext, 500);
+    // Start immediately — no artificial delay before first step.
+    // The scan step itself provides a short pause before first table shimmer.
+    setTimeout(runNext, 0);
   }
 
   // Trigger auto-populate if configured.
@@ -2295,6 +2322,11 @@ Only include the context field when there is genuinely meaningful content from t
     delete window._switchTab;
     delete window._addToModelDirect;
     if (window.__DME_AUTO_ABORT__) { window.__DME_AUTO_ABORT__(); delete window.__DME_AUTO_ABORT__; }
+    // Reset the autoPopulating flag at cleanup time. We do NOT call
+    // _setDMEAutoPopulating(false) here — that would flash the empty state
+    // between StrictMode's unmount-1 and mount-2. mount-2's startAutoPopulate
+    // will call _setDMEAutoPopulating(true) immediately.
+    window._autoPopulating = false;
     delete window.__DME_STOP_VERSION__;
     // Also clear the shimmer position if cleanup runs mid-sequence
     if (window._modelState) delete window._modelState.tablePositions?.['__shimmer__'];

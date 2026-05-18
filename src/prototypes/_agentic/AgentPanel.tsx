@@ -86,6 +86,11 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     // Belt-and-suspenders: clear any active shimmers immediately regardless of timing
     (window as any)._setColumnShimmer?.(false);
     (window as any)._setFormulaShimmer?.(false);
+    // Reset the DME auto-populating state so empty states re-enable after Stop.
+    // This is NOT done inside __DME_AUTO_ABORT__ itself because that function is also
+    // called by StrictMode cleanup — calling it there would flash empty states between mounts.
+    (window as any)._setDMEAutoPopulating?.(false);
+    (window as any)._autoPopulating = false;
     setAutoPopulating(false);
 
     // Grab the version card that the abort handler saved (if any)
