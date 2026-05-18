@@ -4,6 +4,7 @@ import { TypingIndicator } from './TypingIndicator';
 import { AgentMessage } from './AgentMessage';
 import { ReasoningBlock } from './ReasoningBlock';
 import { AgentResponseBlock } from './AgentResponseBlock';
+import { PlanStepsCard } from './PlanStepsCard';
 import type { MessageItem, SuggType, ReasoningData } from './types';
 
 export interface AgentPanelProps {
@@ -13,6 +14,7 @@ export interface AgentPanelProps {
 export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [chatStarted, setChatStarted] = useState(false);
+  const [autoPopulating, setAutoPopulating] = useState(false);
   const chatMsgsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,8 +22,16 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
       (window as any)._onChatStart = () => setChatStarted(true);
     }
 
+    // Idempotent append — if a message with the same id already exists (e.g.
+    // React StrictMode double-invoke) update it in place instead of duplicating.
     (window as any)._appendMsg = (item: MessageItem) =>
-      setMessages(prev => [...prev, item]);
+      setMessages(prev => {
+        if (prev.some(m => m.id === item.id)) {
+          return prev.map(m => m.id === item.id ? { ...m, ...item } as MessageItem : m);
+        }
+        return [...prev, item];
+      });
+
     (window as any)._updateMsg = (id: string, patch: Partial<MessageItem>) =>
       setMessages(prev => prev.map(m => m.id === id ? { ...m, ...patch } as MessageItem : m));
     (window as any)._removeMsg = (id: string) =>
@@ -45,6 +55,14 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
         m.kind === 'agent' && m.response ? { ...m, response: { ...m.response, chips: undefined } } : m
       ));
 
+    // Called by startAutoPopulate to control the "building" state.
+    // true  → show prompt bar immediately (disabled send), show Stop button
+    // false → re-enable send, hide Stop button
+    (window as any)._setAutoPopulating = (val: boolean) => {
+      setAutoPopulating(val);
+      if (val) setChatStarted(true); // ensure chat bar is visible
+    };
+
     return () => {
       delete (window as any)._onChatStart;
       delete (window as any)._appendMsg;
@@ -54,8 +72,50 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
       delete (window as any)._updateReasoning;
       delete (window as any)._demoteVersionCards;
       delete (window as any)._freezeConversation;
+      delete (window as any)._setAutoPopulating;
+      delete (window as any)._handleBuildModel;
     };
   }, [welcomeVariant]);
+
+  // Stop button handler — aborts the auto-populate chain and appends a
+  // diagnostic follow-up so the conversation stays engaged.
+  const handleStopAutoPopulate = () => {
+    // Trigger abort: sets aborted flag, saves version to window.__DME_STOP_VERSION__
+    (window as any).__DME_AUTO_ABORT__?.();
+    delete (window as any).__DME_AUTO_ABORT__;
+    // Belt-and-suspenders: clear any active shimmers immediately regardless of timing
+    (window as any)._setColumnShimmer?.(false);
+    (window as any)._setFormulaShimmer?.(false);
+    setAutoPopulating(false);
+
+    // Grab the version card that the abort handler saved (if any)
+    const vCard = (window as any).__DME_STOP_VERSION__ ?? undefined;
+    delete (window as any).__DME_STOP_VERSION__;
+
+    const diagId = 'auto-stop-diag-' + Date.now();
+    setMessages(prev => [...prev, {
+      kind: 'agent',
+      id: diagId,
+      reasoning: { header: 'Paused', isDone: true, inlineText: '', steps: [] },
+      response: {
+        text: vCard
+          ? `Happy to pause — I\'ve saved your progress as Version ${vCard.versionNum}. What wasn\'t quite right?`
+          : "Happy to pause — let me know what wasn\'t quite right with what I was building.",
+        isVisible: true,
+        versionCard: vCard,
+        chips: [
+          { text: 'Wrong tables',              variant: 'default' },
+          { text: 'Wrong joins',               variant: 'default' },
+          { text: 'Wrong formulas',            variant: 'default' },
+          { text: 'Continue building',         variant: 'enrich'  },
+        ],
+      },
+    } as MessageItem]);
+
+    setTimeout(() => {
+      if (chatMsgsRef.current) chatMsgsRef.current.scrollTop = chatMsgsRef.current.scrollHeight;
+    }, 60);
+  };
 
   return (
     <div className="agent-panel" id="agent-panel">
@@ -130,6 +190,16 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
             const isReadOnly = idx < messages.length - 1;
             if (msg.kind === 'user') return <UserBubble key={msg.id} text={msg.text} />;
             if (msg.kind === 'typing') return <TypingIndicator key={msg.id} label={msg.label} />;
+            if (msg.kind === 'plan-steps') return (
+              <AgentMessage key={msg.id}>
+                {msg.reasoning && <ReasoningBlock data={msg.reasoning} />}
+                <PlanStepsCard
+                  data={msg.data}
+                  showBuildCta={msg.showBuildCta}
+                  onBuild={() => (window as any)._handleBuildModel?.()}
+                />
+              </AgentMessage>
+            );
             if (msg.kind === 'agent') return (
               <AgentMessage key={msg.id}>
                 <ReasoningBlock data={msg.reasoning} />
@@ -154,10 +224,32 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
       {welcomeVariant === 'blank' ? (
         chatStarted && (
           <div className="chat-input-wrapper">
+            {/* Stop button — visible only while auto-population is running */}
+            {autoPopulating && (
+              <div className="auto-stop-row">
+                <button className="auto-stop-btn" onClick={handleStopAutoPopulate}>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <rect x="2" y="2" width="8" height="8" rx="1.5" fill="currentColor" />
+                  </svg>
+                  Stop generation
+                </button>
+              </div>
+            )}
             <div className="prompt-bar" id="chat-prompt-bar">
-              <textarea className="agent-textarea" id="chat-textarea" placeholder="Let me help you build a model"></textarea>
+              <textarea
+                className="agent-textarea"
+                id="chat-textarea"
+                placeholder={autoPopulating ? 'Building your model…' : 'Let me help you build a model'}
+                disabled={autoPopulating}
+              ></textarea>
               <div className="prompt-bar-actions">
-                <button className="send-btn" id="chat-send-btn" title="Send">
+                <button
+                  className="send-btn"
+                  id="chat-send-btn"
+                  title="Send"
+                  disabled={autoPopulating}
+                  style={autoPopulating ? { opacity: 0.35, cursor: 'default', pointerEvents: 'none' } : undefined}
+                >
                   <img src="/spotter-assets/Primary buttton/Primary buttton/arrow-up-m.svg" width="16" height="16" alt="send" />
                 </button>
               </div>
