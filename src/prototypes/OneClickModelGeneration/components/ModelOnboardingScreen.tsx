@@ -2736,18 +2736,21 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               )}
             </div>
 
-            {/* Footer — chat state */}
-            <div style={{
-              flexShrink: 0, textAlign: 'center',
-              padding: `${spacing.B}px ${spacing.F}px`,
-              backgroundColor: systemColors.light['background-base'],
-              borderTop: `1px solid ${systemColors.light['border-divider']}`,
+            {/* Footer — chat state (same as prompt screen footer) */}
+            <footer style={{
+              height: 72, flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: `0 ${spacing.F}px`,
+              backgroundColor: systemColors.light['background-sunken'],
+              borderTop: `6px solid ${systemColors.light['content-brand']}`,
             }}>
-              <span style={{ fontSize: 12, fontWeight: fontWeight.light, color: systemColors.light['content-secondary'] }}>
-                SpotterModel responses should be reviewed.{' '}
-                <Link href="#">Learn more</Link>
-              </span>
-            </div>
+              <Button variant="secondary" onClick={onSkip}>
+                I'll build it manually
+              </Button>
+              <Button variant="primary" onClick={onBuild}>
+                Exit data model
+              </Button>
+            </footer>
           </div>
 
           {/* Requirements canvas — slides in when a direction doc is opened */}
