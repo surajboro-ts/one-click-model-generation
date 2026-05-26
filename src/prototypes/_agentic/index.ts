@@ -11,4 +11,5 @@ export { SuggestionCard } from './SuggestionCard';
 export { NextActionChips } from './NextActionChips';
 export { VersionCard } from './VersionCard';
 export { AgentResponseBlock } from './AgentResponseBlock';
-export type { MessageItem, ResponseData, VersionCardData, ReasoningData, ReasoningStep, ToolcallData, SuggType, TableSuggestion, JoinSuggestion, ColumnGroup, FormulaSuggestion, ChipItem } from './types';
+export { PlanStepsCard } from './PlanStepsCard';
+export type { MessageItem, ResponseData, VersionCardData, ReasoningData, ReasoningStep, ToolcallData, SuggType, TableSuggestion, JoinSuggestion, ColumnGroup, FormulaSuggestion, ChipItem, PlanStep, PlanStepsData } from './types';

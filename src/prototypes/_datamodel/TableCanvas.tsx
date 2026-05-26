@@ -12,6 +12,8 @@ export interface TablePositionData {
   y: number;
   totalColumns: number;
   addedColumns: number;
+  /** When true, renders a shimmer ghost card instead of the real card */
+  shimmer?: boolean;
 }
 
 export interface TableCanvasProps {
@@ -43,6 +45,16 @@ const TableCanvas: React.FC<TableCanvasProps> = ({ tables, joins, onTableDragEnd
     <>
       {tables.map(t => {
         const pos = positions[t.name] ?? { x: t.x, y: t.y };
+        if (t.shimmer) {
+          // Ghost shimmer placeholder — shown briefly before the real card lands
+          return (
+            <div
+              key="__shimmer__"
+              className="table-shimmer-card"
+              style={{ position: 'absolute', left: pos.x, top: pos.y, width: 200, height: 120 }}
+            />
+          );
+        }
         return (
           <TableCard
             key={t.name}

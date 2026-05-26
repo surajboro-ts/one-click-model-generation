@@ -1,0 +1,116 @@
+/* ── Card chrome ── */
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--rd-sys-color-background-base);
+  border: 1px solid var(--rd-sys-color-border-divider);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-surface);
+  overflow: hidden;
+}
+
+/* ── Inner content area (goal + divider + steps) ── */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+}
+
+.goal {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+  color: var(--rd-sys-color-content-secondary);
+  line-height: var(--line-height-sm);
+  font-family: var(--font-family-primary);
+}
+
+.goalLabel {
+  font-weight: var(--font-weight-semibold);
+  color: var(--rd-sys-color-content-primary);
+}
+
+.divider {
+  height: 1px;
+  background: var(--rd-sys-color-border-divider);
+  flex-shrink: 0;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+/* 16×16 icon slot — vertically centred with the first line of label text */
+.iconSlot {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3px; /* nudge to align with cap-height of sm text */
+}
+
+/* Contextual spinner inherits brand blue from its own styles */
+.spinner {
+  color: var(--rd-sys-color-content-brand);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Base label — state modifiers below */
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+  font-family: var(--font-family-primary);
+  transition: color var(--duration-normal) var(--easing-standard);
+}
+
+/* Done — darkest, primary color */
+.done {
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-primary);
+}
+
+/* Active — brand blue to match spinner */
+.active {
+  font-weight: var(--font-weight-medium);
+  color: var(--rd-sys-color-content-brand);
+}
+
+/* Pending — dulled tertiary */
+.pending {
+  color: var(--rd-sys-color-content-tertiary);
+}
+
+.caption {
+  font-size: 11px;
+  font-weight: var(--font-weight-light);
+  color: var(--rd-sys-color-content-secondary);
+  line-height: var(--line-height-xs);
+  font-family: var(--font-family-primary);
+  white-space: pre-line;
+}
+
+/* ── Build CTA footer ── */
+.ctaFooter {
+  border-top: 1px solid var(--rd-sys-color-border-divider);
+  padding: var(--spacing-3) var(--spacing-4);
+}

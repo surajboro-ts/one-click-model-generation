@@ -291,6 +291,66 @@
   .table-item { cursor: grab; }
   .table-item.dragging { opacity: 0.45; cursor: grabbing; }
   #content-tables.drag-over { outline: 2px dashed var(--rd-sys-color-content-brand); outline-offset: -4px; background: color-mix(in srgb, var(--rd-sys-color-content-brand) 3%, transparent); }
+
+  /* ── Table row shimmer (columns & formulas auto-populate) ───────────── */
+  .auto-populate-shimmer-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    padding: var(--spacing-3) var(--spacing-4);
+    border-top: 1px solid var(--rd-sys-color-border-divider);
+  }
+
+  /* Tiny checkbox placeholder */
+  .shimmer-check-slot {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--rd-sys-color-background-subtle) 25%,
+      var(--rd-sys-color-background-sunken) 50%,
+      var(--rd-sys-color-background-subtle) 75%
+    );
+    background-size: 300% 100%;
+    animation: shimmerSlide 1.5s infinite linear;
+  }
+
+  /* Pill-shaped shimmer content cell */
+  .shimmer-pill {
+    height: 12px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: linear-gradient(
+      90deg,
+      var(--rd-sys-color-background-subtle) 25%,
+      var(--rd-sys-color-background-sunken) 50%,
+      var(--rd-sys-color-background-subtle) 75%
+    );
+    background-size: 300% 100%;
+    animation: shimmerSlide 1.5s infinite linear;
+  }
+
+  /* ── Canvas shimmer ghost card ───────────────────── */
+  @keyframes shimmerSlide {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .table-shimmer-card {
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--rd-sys-color-border-divider);
+    background: linear-gradient(
+      90deg,
+      var(--rd-sys-color-background-subtle) 25%,
+      var(--rd-sys-color-background-sunken) 50%,
+      var(--rd-sys-color-background-subtle) 75%
+    );
+    background-size: 300% 100%;
+    animation: shimmerSlide 1.5s infinite linear;
+    box-sizing: border-box;
+  }
   /* Manual save message — borrows reasoning-header layout + shimmer */
   .manual-save-row {
     display: flex;
@@ -1848,6 +1908,35 @@
     overflow: visible;
     transform-origin: center;
     animation: prompt-bar-expand 0.45s ease-out 0.2s both;
+  }
+
+  /* ── Stop-generation row ─────────────────────── */
+  .auto-stop-row {
+    display: flex;
+    justify-content: center;
+    padding-bottom: var(--spacing-2);
+  }
+
+  .auto-stop-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--rd-sys-color-border-default);
+    background: var(--rd-sys-color-background-base);
+    color: var(--rd-sys-color-content-secondary);
+    font-size: 12px;
+    font-family: var(--font-family-primary);
+    font-weight: var(--font-weight-regular);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .auto-stop-btn:hover {
+    background: var(--rd-sys-color-background-subtle);
+    color: var(--rd-sys-color-content-primary);
+    border-color: var(--rd-sys-color-border-strong);
   }
 
   /* ── APP FOOTER ──────────────────────────────────── */

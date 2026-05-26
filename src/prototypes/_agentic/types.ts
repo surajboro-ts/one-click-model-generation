@@ -5,6 +5,19 @@ import type { ChipItem } from './NextActionChips';
 
 export type { ToolcallData, ReasoningStep, ReasoningData, SuggType, TableSuggestion, JoinSuggestion, ColumnGroup, FormulaSuggestion, ChipItem };
 
+// ── Plan Steps Card ───────────────────────────────────────────────────────────
+
+export interface PlanStep {
+  label: string;
+  caption?: string;
+  state: 'done' | 'active' | 'pending';
+}
+
+export interface PlanStepsData {
+  goal: string;
+  steps: PlanStep[];
+}
+
 export interface VersionCardData {
   versionNum: number;
   label: string;
@@ -26,6 +39,7 @@ export interface ResponseData {
 }
 
 export type MessageItem =
-  | { kind: 'user';   id: string; text: string }
-  | { kind: 'typing'; id: string; label: string }
-  | { kind: 'agent';  id: string; reasoning: ReasoningData; response: ResponseData | null };
+  | { kind: 'user';       id: string; text: string }
+  | { kind: 'typing';     id: string; label: string }
+  | { kind: 'agent';      id: string; reasoning: ReasoningData; response: ResponseData | null }
+  | { kind: 'plan-steps'; id: string; data: PlanStepsData; reasoning?: ReasoningData; showBuildCta?: boolean };

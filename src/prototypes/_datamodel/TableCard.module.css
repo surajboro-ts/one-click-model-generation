@@ -1,3 +1,8 @@
+@keyframes tableCardEnter {
+  from { opacity: 0; transform: scale(0.90) translateY(6px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
+}
+
 .card {
   position: absolute;
   width: 200px;
@@ -13,6 +18,7 @@
   cursor: grab;
   user-select: none;
   box-sizing: border-box;
+  animation: tableCardEnter 0.35s cubic-bezier(0.0, 0.0, 0.2, 1) both;
 }
 
 .dragging {

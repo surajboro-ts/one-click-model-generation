@@ -55,6 +55,8 @@ export interface RdModalProps {
   /** Primary pill button. */
   confirmLabel?: string;
   onConfirm?: () => void;
+  /** Disable the primary button without hiding it. */
+  confirmDisabled?: boolean;
 
   children: React.ReactNode;
 }
@@ -72,6 +74,7 @@ export const RdModal: React.FC<RdModalProps> = ({
   onCancel,
   confirmLabel = 'Save',
   onConfirm,
+  confirmDisabled = false,
   children,
 }) => {
   const isM4 = size === 'M4';
@@ -209,10 +212,10 @@ export const RdModal: React.FC<RdModalProps> = ({
                   style={{
                     border: 'none', background: 'none', cursor: 'pointer',
                     fontFamily: font, fontSize: '13.5px', fontWeight: 500,
-                    color: '#374151', padding: 0,
+                    color: brand, padding: 0,
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#111827'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#374151'; }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.8'; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
                 >
                   {tertiaryLabel}
                 </button>
@@ -239,15 +242,18 @@ export const RdModal: React.FC<RdModalProps> = ({
               )}
               {onConfirm && (
                 <button
-                  onClick={onConfirm}
+                  onClick={confirmDisabled ? undefined : onConfirm}
+                  disabled={confirmDisabled}
                   style={{
                     height: '36px', padding: '0 24px', borderRadius: '20px',
                     border: 'none', backgroundColor: brand,
-                    cursor: 'pointer', fontFamily: font, fontSize: '13.5px',
+                    cursor: confirmDisabled ? 'not-allowed' : 'pointer',
+                    fontFamily: font, fontSize: '13.5px',
                     fontWeight: 600, color: '#FFFFFF', transition: 'opacity 0.15s',
+                    opacity: confirmDisabled ? 0.4 : 1,
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.9'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
+                  onMouseEnter={(e) => { if (!confirmDisabled) (e.currentTarget as HTMLButtonElement).style.opacity = '0.9'; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = confirmDisabled ? '0.4' : '1'; }}
                 >
                   {confirmLabel}
                 </button>
