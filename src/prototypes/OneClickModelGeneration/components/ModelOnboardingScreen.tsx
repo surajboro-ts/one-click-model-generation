@@ -5,10 +5,8 @@ import { spacing } from '@tokens/spacing';
 import { Button } from '@components/Button';
 import { Link } from '@components/Link';
 import type { DataConnection } from '../data/mockData';
-import { AgentPanel } from '../../_agentic/AgentPanel';
 import { ReasoningBlock } from '../../_agentic/ReasoningBlock';
 import type { ReasoningData } from '../../_agentic/ReasoningBlock';
-import type { PlanStep } from '../../_agentic/types';
 import { ClarifyingCard } from './ClarifyingCard';
 import type { ClarifyQuestion } from './ClarifyingCard';
 import '../../DataModelEditor/dme.css';
@@ -959,66 +957,6 @@ function RequirementsCanvas({
 }
 
 
-// ─── DME auto-populate plan ────────────────────────────────────────────────────
-// Phase labels/captions/reasoning for the 5-phase plan card shown in the DME's
-// SpotterModel panel during progressive auto-population.
-
-const DME_BUILD_PLAN: Record<string, Array<{ planLabel: string; planCaption: string; reasoning: string }>> = {
-  d1: [
-    {
-      planLabel: 'Scanning schema',
-      planCaption: 'Found 8 candidate tables in Snowflake\n4 match the sales performance context — 1 fact, 3 dimensions',
-      reasoning: 'Scanning the Snowflake schema for fact and dimension tables related to sales performance and regional revenue…',
-    },
-    {
-      planLabel: 'Selecting tables',
-      planCaption: 'Adding FACT_SALES_ORDERS as the primary grain table\nDIM_REGIONS, DIM_SALES_REPS, and DIM_DATE joined as dimensions',
-      reasoning: 'Adding fact_sales_orders as the primary grain table. Selecting dim_regions, dim_sales_reps, and dim_date as supporting dimensions.',
-    },
-    {
-      planLabel: 'Building joins',
-      planCaption: '3 joins validated via region_id, rep_id, and order_date\nNo ambiguous paths or circular references detected',
-      reasoning: 'Joining dim_regions on region_id, dim_sales_reps on rep_id, and dim_date on order_date. All join paths are unambiguous.',
-    },
-    {
-      planLabel: 'Mapping columns',
-      planCaption: '23 columns labeled with types, descriptions, and AI context\nAll columns assigned to their respective tables',
-      reasoning: 'Mapping columns to each table in the model. Assigning data types, descriptions, and AI context for all 23 fields.',
-    },
-    {
-      planLabel: 'Adding formulas',
-      planCaption: '4 metrics defined: Total Revenue, Quota Attainment, Deal Count, YoY Growth\nAll formulas validated against the model schema',
-      reasoning: 'Building metric formulas and validating expressions against available columns. All 4 formulas pass schema validation.',
-    },
-  ],
-  d2: [
-    {
-      planLabel: 'Scanning schema',
-      planCaption: 'Found 6 candidate tables in Redshift\n3 match the churn analysis context — 1 fact, 2 dimensions',
-      reasoning: 'Scanning the Redshift schema for tables related to customer engagement and retention…',
-    },
-    {
-      planLabel: 'Selecting tables',
-      planCaption: 'Adding FACT_CUSTOMER_ACTIVITY as the primary grain table\nDIM_CUSTOMERS and DIM_DATE joined as dimensions',
-      reasoning: 'Adding fact_customer_activity as the primary grain table. Selecting dim_customers and dim_date as supporting dimensions.',
-    },
-    {
-      planLabel: 'Building joins',
-      planCaption: '2 joins validated via customer_id and date_id\nAll join paths verified — no missing foreign keys',
-      reasoning: 'Joining dim_customers on customer_id and dim_date on date_id. Both join paths are clean with no ambiguity.',
-    },
-    {
-      planLabel: 'Mapping columns',
-      planCaption: '18 columns labeled with types, descriptions, and AI context\nAll columns assigned to their respective tables',
-      reasoning: 'Mapping columns to each table in the model. Assigning data types, descriptions, and AI context for all 18 fields.',
-    },
-    {
-      planLabel: 'Adding formulas',
-      planCaption: '4 metrics defined: Last Active Date, Support Tickets, NPS Score, Churn Risk Score\nAll formulas validated against the model schema',
-      reasoning: 'Building churn metric formulas and validating expressions against available columns. All 4 formulas pass schema validation.',
-    },
-  ],
-};
 
 // ─── Build plan data ───────────────────────────────────────────────────────────
 
@@ -1355,15 +1293,216 @@ const TABS: { id: ActiveTab; baseLabel: string }[] = [
   { id: 'questions',     baseLabel: 'Sample questions' },
 ];
 
-// @ts-ignore — kept for reference; invocation removed in favor of DME auto-populate
+// ── Demo variant type ─────────────────────────────────────────────────────────
+type DemoVariant = 'option1' | 'option2';
+
+// ── Agent avatar row (used in chat stream and BuildingScreen panels) ──────────
+function AgentRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.C, paddingLeft: spacing.C }}>
+      <img
+        src="/spotter-assets/SpotterModel avatar.svg"
+        width={32} height={32} alt="SpotterModel"
+        style={{ flexShrink: 0 }}
+      />
+      <div style={{ flex: 1, minWidth: 0, paddingTop: spacing.A }}>{children}</div>
+    </div>
+  );
+}
+const AGENT_TEXT_INDENT = spacing.C + 32 + spacing.C + spacing.A; // 60 px
+
+// ── PlanStepsCardV2 — plan card with per-step inline reasoning ────────────────
+interface PlanStepV2 {
+  planLabel: string;
+  planCaption: string;
+  state: 'done' | 'active' | 'pending';
+  reasoningText?: string; // shown inline when state = 'active'
+}
+
+function PlanStepsCardV2({ steps, goal }: { steps: PlanStepV2[]; goal: string }) {
+  return (
+    <div style={{
+      border: `1px solid ${systemColors.light['border-divider']}`,
+      borderRadius: spacing.B, overflow: 'hidden',
+      backgroundColor: systemColors.light['background-base'],
+    }}>
+      {/* Goal row */}
+      <div style={{ padding: `${spacing.C}px ${spacing.D}px`, borderBottom: `1px solid ${systemColors.light['border-divider']}` }}>
+        <span style={{ fontSize: fontSize.sm, fontWeight: fontWeight.light, color: systemColors.light['content-secondary'] }}>
+          <strong style={{ fontWeight: 500, color: systemColors.light['content-primary'] }}>Goal: </strong>
+          {goal}
+        </span>
+      </div>
+      {/* Steps */}
+      {steps.map((step, i) => (
+        <div key={i} style={{ opacity: step.state === 'pending' ? 0.45 : 1, transition: 'opacity 0.3s ease' }}>
+          <div style={{
+            display: 'flex', alignItems: 'flex-start', gap: spacing.C,
+            padding: `${spacing.C}px ${spacing.D}px`,
+            borderBottom: (step.state !== 'active' && i < steps.length - 1)
+              ? `1px solid ${systemColors.light['border-divider']}` : 'none',
+          }}>
+            <div style={{ width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+              {step.state === 'active' ? (
+                <div style={{
+                  width: 14, height: 14,
+                  border: `2px solid ${systemColors.light['border-divider']}`,
+                  borderTop: `2px solid ${systemColors.light['content-brand']}`,
+                  borderRadius: '50%', animation: 'planStepSpin 0.7s linear infinite',
+                }} />
+              ) : step.state === 'done' ? (
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="8" fill="var(--rd-sys-color-content-success)" />
+                  <path d="M4.5 8L7 10.5L11.5 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="7" stroke="var(--rd-sys-color-border-default)" strokeWidth="1.5"/>
+                </svg>
+              )}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <span style={{
+                display: 'block', fontSize: fontSize.sm,
+                fontWeight: step.state === 'active' ? 500 : fontWeight.light,
+                lineHeight: '22px', color: systemColors.light['content-primary'],
+              }}>
+                {step.planLabel}
+              </span>
+              {step.state === 'done' && step.planCaption && (
+                <span style={{
+                  display: 'block', fontSize: 12, fontWeight: fontWeight.light,
+                  lineHeight: '18px', color: systemColors.light['content-secondary'],
+                  whiteSpace: 'pre-line', marginTop: 1,
+                }}>
+                  {step.planCaption}
+                </span>
+              )}
+            </div>
+          </div>
+          {/* Inline reasoning — only for active step */}
+          {step.state === 'active' && step.reasoningText && (
+            <div style={{
+              padding: `0 ${spacing.D}px ${spacing.C}px ${spacing.D + 20 + spacing.C}px`,
+              borderBottom: i < steps.length - 1 ? `1px solid ${systemColors.light['border-divider']}` : 'none',
+              animation: 'fadeIn 0.25s ease both',
+            }}>
+              <ReasoningBlock data={{
+                header: 'Reasoning', isDone: false,
+                inlineText: step.reasoningText, steps: [],
+              }} />
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Option 1 panel — single reasoning block that accumulates build steps ──────
+function Option1Panel({ phases, currentPhaseIdx, completedPhases, allDone }: {
+  phases: Array<{ planLabel: string; planCaption: string; reasoning: string; endStep: number }>;
+  currentPhaseIdx: number;
+  completedPhases: Array<{ planLabel: string; planCaption: string; reasoning: string; endStep: number }>;
+  allDone: boolean;
+}) {
+  const data: ReasoningData = {
+    header:     allDone ? 'Done' : 'Reasoning',
+    isDone:     allDone,
+    inlineText: allDone ? '' : (phases[currentPhaseIdx]?.reasoning ?? 'Building model…'),
+    steps:      completedPhases.map((p, i) => ({
+      n: i + 1, name: p.planLabel, text: p.reasoning, dotState: 'done' as const,
+    })),
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.D }}>
+      <AgentRow>
+        <ReasoningBlock data={data} />
+      </AgentRow>
+      {allDone && (
+        <div style={{
+          paddingLeft: AGENT_TEXT_INDENT,
+          fontSize: fontSize.sm, fontWeight: fontWeight.light,
+          lineHeight: '22px', color: systemColors.light['content-primary'],
+          animation: 'fadeIn 0.3s ease both',
+        }}>
+          Model built — {phases.length} phases complete. Tables, relationships, and formulas are ready.
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Option 2 panel — global reasoning + collapsed plan card with per-step reasoning ─
+function Option2Panel({ phases, completedCount, allDone }: {
+  phases: Array<{ planLabel: string; planCaption: string; reasoning: string; endStep: number }>;
+  completedCount: number;
+  allDone: boolean;
+}) {
+  const [o2Phase, setO2Phase] = useState<'global_reasoning' | 'building'>('global_reasoning');
+  const [globalData, setGlobalData] = useState<ReasoningData>({
+    header: 'Reasoning', isDone: false, inlineText: 'Analysing direction…', steps: [],
+  });
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setGlobalData(d => ({ ...d, inlineText: 'Generating build plan…' })), 700);
+    const t2 = setTimeout(() => {
+      setGlobalData({
+        header: 'Done', isDone: true, inlineText: '',
+        steps: [
+          { n: 1, name: 'Analysed direction', text: 'Mapped business goals to schema entities.', dotState: 'done' },
+          { n: 2, name: 'Generated plan',     text: `${phases.length} phases identified for model construction.`, dotState: 'done' },
+        ],
+      });
+      setO2Phase('building');
+    }, 1500);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const stepsV2: PlanStepV2[] = phases.map((phase, i) => {
+    const phaseStart = i === 0 ? 0 : phases[i - 1].endStep + 1;
+    const isDone   = completedCount > phase.endStep;
+    const isActive = !isDone && completedCount >= phaseStart;
+    return {
+      planLabel:     phase.planLabel,
+      planCaption:   phase.planCaption,
+      state:         isDone ? 'done' : isActive ? 'active' : 'pending',
+      reasoningText: isActive ? phase.reasoning : undefined,
+    };
+  });
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.D }}>
+      <AgentRow>
+        <ReasoningBlock data={globalData} />
+      </AgentRow>
+      {o2Phase === 'building' && (
+        <div style={{ animation: 'slideUpIn 0.3s ease both' }}>
+          <PlanStepsCardV2 steps={stepsV2} goal={phases[0]?.planLabel ?? ''} />
+        </div>
+      )}
+      {allDone && (
+        <div style={{
+          paddingLeft: AGENT_TEXT_INDENT,
+          fontSize: fontSize.sm, fontWeight: fontWeight.light,
+          lineHeight: '22px', color: systemColors.light['content-primary'],
+          animation: 'fadeIn 0.3s ease both',
+        }}>
+          Model built — all {phases.length} phases complete. Tables, relationships, and formulas are ready.
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── BuildingScreen ────────────────────────────────────────────────────────────
 function BuildingScreen({
   direction,
-  connection: _connection,
-  onBuild,
+  variant,
 }: {
   direction: Direction;
-  connection: DataConnection;
-  onBuild: () => void;
+  variant: DemoVariant;
 }) {
   const plan = BUILD_PLAN[direction.id] ?? BUILD_PLAN['d1'];
   const steps = plan.steps;
@@ -1376,26 +1515,6 @@ function BuildingScreen({
   // Track previous visible counts to detect new arrivals for pulse + auto-switch
   const prevCountsRef = useRef({ tables: 0, relationships: 0, formulas: 0, questions: 0 });
 
-  // Stable ID for the single build-phase plan+reasoning message
-  const PLAN_MSG_ID = 'plan-steps-msg';
-
-  // Helper: compute plan-steps data from current completedCount using phase ranges
-  const makePlanStepsData = (count: number) => ({
-    goal: direction.description,
-    steps: plan.phases.map((phase, i): PlanStep => {
-      const phaseStart = i === 0 ? 0 : plan.phases[i - 1].endStep + 1;
-      const isDone     = count > phase.endStep;
-      const isActive   = !isDone && count >= phaseStart;
-      return {
-        label:   phase.planLabel,
-        caption: phase.planCaption,
-        state:   isDone ? 'done' : isActive ? 'active' : 'pending',
-      };
-    }),
-  });
-
-  // Guard against React StrictMode double-invoking the mount effect
-  const panelInitRef = useRef(false);
 
   // Chain timeouts — each step completes after its own delayMs
   useEffect(() => {
@@ -1418,65 +1537,8 @@ function BuildingScreen({
   // Phases that have completely finished (all their micro-steps done)
   const completedPhases = plan.phases.filter(p => completedCount > p.endStep);
 
-  // Reasoning block data — merged into the plan-steps message
-  const reasoningData: ReasoningData = {
-    header:     allDone ? 'Done' : 'Reasoning',
-    isDone:     allDone,
-    inlineText: allDone ? '' : (plan.phases[currentPhaseIdx]?.reasoning ?? ''),
-    steps:      completedPhases.map((phase, i) => ({
-      n: i + 1, name: phase.planLabel, text: phase.reasoning, dotState: 'done' as const,
-    })),
-  };
-
-  // Helper — append a user bubble then an agent reply
-  const appendUserAndRespond = (text: string) => {
-    (window as any)._freezeConversation?.();
-    (window as any)._appendMsg?.({ kind: 'user', id: `u-${Date.now()}`, text });
-    (window as any)._scrollMsgs?.();
-    setTimeout(() => {
-      (window as any)._appendMsg?.({
-        kind: 'agent', id: `a-${Date.now()}`,
-        reasoning: { header: 'Done', isDone: true, inlineText: '', steps: [] },
-        response: { text: "Got it — I've updated the draft. Check the left panel for changes.", isVisible: true },
-      });
-      (window as any)._scrollMsgs?.();
-    }, 1200);
-  };
-
-  // On mount: start chat view and push the single plan+reasoning message
+  // Auto-switch active tab and trigger pulse when a new section starts filling.
   useEffect(() => {
-    if (panelInitRef.current) return;
-    panelInitRef.current = true;
-
-    const welcomeView = document.getElementById('welcome-view');
-    const chatView    = document.getElementById('chat-view');
-    if (welcomeView) welcomeView.style.display = 'none';
-    if (chatView)    chatView.classList.add('active');
-
-    (window as any)._appendMsg?.({
-      kind: 'plan-steps',
-      id:   PLAN_MSG_ID,
-      data: makePlanStepsData(0),
-      reasoning: {
-        header:     'Building your draft…',
-        isDone:     false,
-        inlineText: plan.phases[0]?.reasoning ?? 'Analysing schema…',
-        steps:      [],
-      },
-    });
-    (window as any)._scrollMsgs?.();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Keep plan steps + reasoning in sync as build steps complete.
-  // Also: auto-switch active tab and trigger pulse when a new section starts filling.
-  useEffect(() => {
-    (window as any)._updateMsg?.(PLAN_MSG_ID, {
-      data:      makePlanStepsData(completedCount),
-      reasoning: reasoningData,
-    });
-    (window as any)._scrollMsgs?.();
-
     // Detect which tabs just got their first item (or any new item)
     const prev = prevCountsRef.current;
     const curr = {
@@ -1518,89 +1580,6 @@ function BuildingScreen({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [completedCount]);
 
-  // When build finishes: show Build CTA on plan card and enable chat input
-  useEffect(() => {
-    if (!allDone) return;
-
-    (window as any)._updateMsg?.(PLAN_MSG_ID, {
-      data:         makePlanStepsData(steps.length),
-      reasoning:    reasoningData,
-      showBuildCta: true,
-    });
-    (window as any)._scrollMsgs?.();
-
-    // Register build handler — sets global DME state before navigating
-    (window as any)._handleBuildModel = () => {
-      // Map MODEL_SPEC → window._modelState so init-dme.js pre-populates the DME
-      (window as any)._modelState = {
-        addedTables:  spec.tables.map(t => t.tableName.toLowerCase()),
-        addedJoins:   spec.relationships.map(r => `${r.leftTable}-${r.rightTable}`),
-        addedColumns: spec.tables.flatMap(t =>
-          t.columns.map(c => `${t.tableName.toLowerCase()}.${c.name}`)
-        ),
-        initialContext: direction.description,
-        hasAskedClarify: false,
-        clarifyCount: 0,
-        model: {
-          tables: spec.tables.map(t => ({
-            name: t.tableName.toLowerCase(),
-            desc: `${t.tableType} table · ${t.rowCount}`,
-          })),
-          joins: spec.relationships.map((r, i) => ({
-            name:        `Join ${i + 1}`,
-            desc:        `${r.leftTable} → ${r.rightTable} via ${r.leftKey}`,
-            leftTable:   r.leftTable,
-            leftCol:     r.leftKey,
-            cardinality: r.cardinality === 'N:1' ? 'Many : 1' : r.cardinality === '1:N' ? '1 : Many' : r.cardinality,
-            rightTable:  r.rightTable,
-            rightCol:    r.rightKey,
-          })),
-          columns: spec.tables.map(t => ({
-            table:   t.tableName.toLowerCase(),
-            columns: t.columns.map(c => c.name),
-          })),
-          formulas: spec.formulas.map(f => ({
-            name: f.name,
-            code: f.expression,
-          })),
-        },
-        changeLog:      [],
-        tablePositions: {},
-      };
-      (window as any).__DME_CONFIG__ = { spotterModel: true, welcomeVariant: 'existing' };
-      onBuild();
-    };
-
-    // Register chip click handler for follow-up questions
-    (window as any)._handleChipClick = (text: string) => appendUserAndRespond(text);
-
-    // Enable chat input
-    if ((window as any)._onChatStart) {
-      (window as any)._onChatStart();
-      (window as any)._onChatStart = null;
-    }
-
-    // Wire send button + textarea
-    const wireInput = () => {
-      const btn = document.getElementById('chat-send-btn');
-      const ta  = document.getElementById('chat-textarea') as HTMLTextAreaElement | null;
-      if (!btn || !ta) { setTimeout(wireInput, 50); return; }
-      const doSend = () => {
-        const text = ta.value.trim();
-        if (!text) return;
-        ta.value = '';
-        appendUserAndRespond(text);
-      };
-      btn.addEventListener('click', doSend);
-      ta.addEventListener('keydown', (e: Event) => {
-        const ke = e as KeyboardEvent;
-        if (ke.key === 'Enter' && !ke.shiftKey) { ke.preventDefault(); doSend(); }
-      });
-      ta.focus();
-    };
-    setTimeout(wireInput, 0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allDone]);
 
   // ── Shared chip renderer ──────────────────────────────────────────────────────
   const TypeChip = ({ type }: { type: 'Dimension' | 'Metric' }) => {
@@ -1952,6 +1931,13 @@ function BuildingScreen({
           0%   { background-position: 200% 0; }
           100% { background-position: -200% 0; }
         }
+        @keyframes planStepSpin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
         @keyframes tabPulse {
           0%   { background-color: transparent; }
           30%  { background-color: rgba(39,112,239,0.08); }
@@ -2050,9 +2036,28 @@ function BuildingScreen({
           </div>
         </div>
 
-        {/* ── SpotterModel right panel — AgentPanel from DME ── */}
-        {/* Plan overview + reasoning are pushed as MessageItems via window._* APIs */}
-        <AgentPanel welcomeVariant="blank" />
+        {/* ── SpotterModel right panel — variant-based ── */}
+        <div style={{
+          width: 320, flexShrink: 0,
+          borderLeft: `1px solid ${systemColors.light['border-divider']}`,
+          overflowY: 'auto',
+          padding: `${spacing.F}px`,
+          backgroundColor: systemColors.light['background-base'],
+        }}>
+          {variant === 'option1'
+            ? <Option1Panel
+                phases={plan.phases}
+                currentPhaseIdx={currentPhaseIdx}
+                completedPhases={completedPhases}
+                allDone={allDone}
+              />
+            : <Option2Panel
+                phases={plan.phases}
+                completedCount={completedCount}
+                allDone={allDone}
+              />
+          }
+        </div>
 
       </div>
     </div>
@@ -2106,35 +2111,6 @@ type ChatPhase =
   | 'directions'         // direction cards in stream; bottom slot empty
   | 'idle';              // chat on screen; prompt bar at bottom for follow-up
 
-// ─── Agent avatar row (small, used in chat stream) ────────────────────────────
-// alignItems: flex-start keeps the avatar pinned to the top when the reasoning
-// box is expanded. paddingTop: spacing.A on the content wrapper offsets the
-// ReasoningBlock header down by 4 px so that:
-//   avatar center   = 32/2        = 16 px from row top
-//   header text ctr = 4 + 4 + ~7  = 15 px from row top  (wrapper pad + header pad + half line-height)
-// → within 1 px — visually aligned.
-
-function AgentRow({ children }: { children: React.ReactNode }) {
-  return (
-    // paddingLeft: spacing.C aligns the agent avatar with the user avatar, which
-    // sits at spacing.C (12 px) inside its grey card's padding.
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.C, paddingLeft: spacing.C }}>
-      <img
-        src="/spotter-assets/SpotterModel avatar.svg"
-        width={32} height={32} alt="SpotterModel"
-        style={{ flexShrink: 0 }}
-      />
-      <div style={{ flex: 1, minWidth: 0, paddingTop: spacing.A }}>{children}</div>
-    </div>
-  );
-}
-
-// Left indent for response text sitting below an AgentRow:
-//   row_indent + avatar_width + gap + ReasoningBlock header left padding
-//   = spacing.C  +    32      + spacing.C +       spacing.A
-//   = 12 + 32 + 12 + 4 = 60 px
-const AGENT_TEXT_INDENT = spacing.C + 32 + spacing.C + spacing.A; // 60 px
-
 // ─── User message row ─────────────────────────────────────────────────────────
 // Avatar + text inside the sunken card, with spacing.C (12 px) padding all around.
 // AgentRow matches this left padding so both avatars share the same x-position.
@@ -2167,6 +2143,49 @@ function UserMsgRow({ text }: { text: string }) {
   );
 }
 
+// ─── Demo variant tab bar ─────────────────────────────────────────────────────
+// Floats in the top-right corner — visually "outside" the ThoughtSpot chrome so
+// it's clearly a demo navigation control, not part of the product UI.
+
+function DemoTabBar({ demoVariant, onSwitch }: { demoVariant: DemoVariant; onSwitch: (v: DemoVariant) => void }) {
+  const VARIANTS: { id: DemoVariant; label: string }[] = [
+    { id: 'option1', label: 'Option 1 — Reasoning only' },
+    { id: 'option2', label: 'Option 2 — Per-step reasoning' },
+  ];
+  return (
+    <div style={{
+      position: 'fixed', top: 12, right: 16, zIndex: 9999,
+      display: 'flex', gap: spacing.A,
+      backgroundColor: systemColors.light['background-base'],
+      border: `1px solid ${systemColors.light['border-divider']}`,
+      borderRadius: spacing.B, padding: spacing.A,
+      boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+    }}>
+      {VARIANTS.map(v => (
+        <button
+          key={v.id}
+          onClick={() => onSwitch(v.id)}
+          style={{
+            padding: `${spacing.A}px ${spacing.C}px`,
+            borderRadius: 6, border: 'none', cursor: 'pointer',
+            fontSize: 12, fontWeight: demoVariant === v.id ? 500 : 400,
+            fontFamily: fontFamily.primary,
+            backgroundColor: demoVariant === v.id
+              ? systemColors.light['background-information']
+              : 'transparent',
+            color: demoVariant === v.id
+              ? systemColors.light['content-brand']
+              : systemColors.light['content-secondary'],
+            transition: 'background-color 0.15s, color 0.15s',
+          }}
+        >
+          {v.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // ─── Main component ────────────────────────────────────────────────────────────
 
 export interface ModelOnboardingScreenProps {
@@ -2185,6 +2204,10 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
 }) => {
   const connectionName = connection.name;
   const [showConnDetails, setShowConnDetails] = useState(false);
+
+  // ── Demo variant + screen state ──────────────────────────────────────────
+  const [demoVariant,      setDemoVariant]      = useState<DemoVariant>('option1');
+  const [buildingDirection, setBuildingDirection] = useState<Direction | null>(null);
 
   // ── Screen state machine ──────────────────────────────────────────────────
   type ScreenState = 'prompt' | 'chat' | 'building';
@@ -2385,9 +2408,28 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     setChatPhase('reasoning_initial');
   };
 
+  // ── Variant reset helper ──────────────────────────────────────────────────
+  const resetToPrompt = () => {
+    setScreenState('prompt');
+    setChatMessages([]);
+    setChatPhase('idle');
+    setClarifyAnswers([]);
+    setClarifyStep(0);
+    setSelectedId(null);
+    setCanvasDirection(null);
+    setBuildingDirection(null);
+    setDirections(MOCK_DIRECTIONS);
+  };
+
   // ── Early return for BuildingScreen ──────────────────────────────────────
-  // BuildingScreen removed: population now happens directly in the DME via auto-populate.
-  // The 'building' screen state is no longer used.
+  if (screenState === 'building' && buildingDirection) {
+    return (
+      <>
+        <DemoTabBar demoVariant={demoVariant} onSwitch={v => { setDemoVariant(v); resetToPrompt(); }} />
+        <BuildingScreen direction={buildingDirection} variant={demoVariant} />
+      </>
+    );
+  }
 
   const selectedDirection_ = directions.find(d => d.id === selectedId) ?? null;
 
@@ -2400,6 +2442,9 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
         fontFamily: fontFamily.primary, color: systemColors.light['content-primary'],
       }}
     >
+      {/* Demo variant tab bar */}
+      <DemoTabBar demoVariant={demoVariant} onSwitch={v => { setDemoVariant(v); resetToPrompt(); }} />
+
       {/* Keyframes */}
       <style>{`
         @property --gradient-angle {
@@ -2672,21 +2717,8 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                       size="large"
                       onClick={() => {
                         if (!selectedDirection_) return;
-                        const spec  = MODEL_SPEC[selectedDirection_.id]  ?? MODEL_SPEC['d1'];
-                        const dPlan = DME_BUILD_PLAN[selectedDirection_.id] ?? DME_BUILD_PLAN['d1'];
-                        (window as any).__DME_AUTO_DATA__ = {
-                          goal:          selectedDirection_.goal,
-                          phases:        dPlan,
-                          tables:        spec.tables,
-                          relationships: spec.relationships,
-                          formulas:      spec.formulas,
-                        };
-                        (window as any).__DME_CONFIG__ = {
-                          spotterModel:   true,
-                          welcomeVariant: 'blank',
-                          autoPopulate:   true,
-                        };
-                        onBuild();
+                        setBuildingDirection(selectedDirection_);
+                        setScreenState('building');
                       }}
                     >
                       Proceed in this direction →
