@@ -11,6 +11,7 @@ export interface PlanStep {
   label: string;
   caption?: string;
   state: 'done' | 'active' | 'pending';
+  reasoningData?: ReasoningData;  // only set on the active step (Option 2 per-step reasoning)
 }
 
 export interface PlanStepsData {

@@ -1,6 +1,8 @@
 import React from 'react';
 import { LoadingIndicator } from '@components/LoadingIndicator';
 import { Button } from '@components/Button';
+import { spacing } from '@tokens/spacing';
+import { ReasoningBlock } from './ReasoningBlock';
 import styles from './PlanStepsCard.module.css';
 import type { PlanStepsData } from './types';
 
@@ -23,7 +25,7 @@ export const PlanStepsCard: React.FC<PlanStepsCardProps> = ({ data, showBuildCta
 
       <div className={styles.steps}>
         {data.steps.map((step, i) => (
-          <div key={i} className={styles.step}>
+          <div key={i} className={styles.step} style={{ opacity: step.state === 'pending' ? 0.45 : 1 }}>
             {/* Icon slot: spinner | check | empty circle */}
             <div className={styles.iconSlot}>
               {step.state === 'active' ? (
@@ -40,13 +42,18 @@ export const PlanStepsCard: React.FC<PlanStepsCardProps> = ({ data, showBuildCta
               )}
             </div>
 
-            {/* Label + caption */}
+            {/* Label + caption + optional per-step reasoning (Option 2 active step) */}
             <div className={styles.info}>
               <span className={[styles.label, styles[step.state]].join(' ')}>
                 {step.label}
               </span>
               {step.caption && (
                 <span className={styles.caption}>{step.caption}</span>
+              )}
+              {step.reasoningData && (
+                <div style={{ marginTop: spacing.B }}>
+                  <ReasoningBlock data={step.reasoningData} />
+                </div>
               )}
             </div>
           </div>

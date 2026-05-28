@@ -5,6 +5,7 @@ import { spacing } from '@tokens/spacing';
 import { Button } from '@components/Button';
 import { Link } from '@components/Link';
 import type { DataConnection } from '../data/mockData';
+import { AgentPanel } from '../../_agentic/AgentPanel';
 import { ReasoningBlock } from '../../_agentic/ReasoningBlock';
 import type { ReasoningData } from '../../_agentic/ReasoningBlock';
 import { ClarifyingCard } from './ClarifyingCard';
@@ -1296,7 +1297,7 @@ const TABS: { id: ActiveTab; baseLabel: string }[] = [
 // ── Demo variant type ─────────────────────────────────────────────────────────
 type DemoVariant = 'option1' | 'option2';
 
-// ── Agent avatar row (used in chat stream and BuildingScreen panels) ──────────
+// ── Agent avatar row — used in the chat stream for reasoning + response messages ─
 function AgentRow({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.C, paddingLeft: spacing.C }}>
@@ -1310,191 +1311,6 @@ function AgentRow({ children }: { children: React.ReactNode }) {
   );
 }
 const AGENT_TEXT_INDENT = spacing.C + 32 + spacing.C + spacing.A; // 60 px
-
-// ── PlanStepsCardV2 — plan card with per-step inline reasoning ────────────────
-interface PlanStepV2 {
-  planLabel: string;
-  planCaption: string;
-  state: 'done' | 'active' | 'pending';
-  reasoningText?: string; // shown inline when state = 'active'
-}
-
-function PlanStepsCardV2({ steps, goal }: { steps: PlanStepV2[]; goal: string }) {
-  return (
-    <div style={{
-      border: `1px solid ${systemColors.light['border-divider']}`,
-      borderRadius: spacing.B, overflow: 'hidden',
-      backgroundColor: systemColors.light['background-base'],
-    }}>
-      {/* Goal row */}
-      <div style={{ padding: `${spacing.C}px ${spacing.D}px`, borderBottom: `1px solid ${systemColors.light['border-divider']}` }}>
-        <span style={{ fontSize: fontSize.sm, fontWeight: fontWeight.light, color: systemColors.light['content-secondary'] }}>
-          <strong style={{ fontWeight: 500, color: systemColors.light['content-primary'] }}>Goal: </strong>
-          {goal}
-        </span>
-      </div>
-      {/* Steps */}
-      {steps.map((step, i) => (
-        <div key={i} style={{ opacity: step.state === 'pending' ? 0.45 : 1, transition: 'opacity 0.3s ease' }}>
-          <div style={{
-            display: 'flex', alignItems: 'flex-start', gap: spacing.C,
-            padding: `${spacing.C}px ${spacing.D}px`,
-            borderBottom: (step.state !== 'active' && i < steps.length - 1)
-              ? `1px solid ${systemColors.light['border-divider']}` : 'none',
-          }}>
-            <div style={{ width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
-              {step.state === 'active' ? (
-                <div style={{
-                  width: 14, height: 14,
-                  border: `2px solid ${systemColors.light['border-divider']}`,
-                  borderTop: `2px solid ${systemColors.light['content-brand']}`,
-                  borderRadius: '50%', animation: 'planStepSpin 0.7s linear infinite',
-                }} />
-              ) : step.state === 'done' ? (
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="8" r="8" fill="var(--rd-sys-color-content-success)" />
-                  <path d="M4.5 8L7 10.5L11.5 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              ) : (
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="8" r="7" stroke="var(--rd-sys-color-border-default)" strokeWidth="1.5"/>
-                </svg>
-              )}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <span style={{
-                display: 'block', fontSize: fontSize.sm,
-                fontWeight: step.state === 'active' ? 500 : fontWeight.light,
-                lineHeight: '22px', color: systemColors.light['content-primary'],
-              }}>
-                {step.planLabel}
-              </span>
-              {step.state === 'done' && step.planCaption && (
-                <span style={{
-                  display: 'block', fontSize: 12, fontWeight: fontWeight.light,
-                  lineHeight: '18px', color: systemColors.light['content-secondary'],
-                  whiteSpace: 'pre-line', marginTop: 1,
-                }}>
-                  {step.planCaption}
-                </span>
-              )}
-            </div>
-          </div>
-          {/* Inline reasoning — only for active step */}
-          {step.state === 'active' && step.reasoningText && (
-            <div style={{
-              padding: `0 ${spacing.D}px ${spacing.C}px ${spacing.D + 20 + spacing.C}px`,
-              borderBottom: i < steps.length - 1 ? `1px solid ${systemColors.light['border-divider']}` : 'none',
-              animation: 'fadeIn 0.25s ease both',
-            }}>
-              <ReasoningBlock data={{
-                header: 'Reasoning', isDone: false,
-                inlineText: step.reasoningText, steps: [],
-              }} />
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ── Option 1 panel — single reasoning block that accumulates build steps ──────
-function Option1Panel({ phases, currentPhaseIdx, completedPhases, allDone }: {
-  phases: Array<{ planLabel: string; planCaption: string; reasoning: string; endStep: number }>;
-  currentPhaseIdx: number;
-  completedPhases: Array<{ planLabel: string; planCaption: string; reasoning: string; endStep: number }>;
-  allDone: boolean;
-}) {
-  const data: ReasoningData = {
-    header:     allDone ? 'Done' : 'Reasoning',
-    isDone:     allDone,
-    inlineText: allDone ? '' : (phases[currentPhaseIdx]?.reasoning ?? 'Building model…'),
-    steps:      completedPhases.map((p, i) => ({
-      n: i + 1, name: p.planLabel, text: p.reasoning, dotState: 'done' as const,
-    })),
-  };
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.D }}>
-      <AgentRow>
-        <ReasoningBlock data={data} />
-      </AgentRow>
-      {allDone && (
-        <div style={{
-          paddingLeft: AGENT_TEXT_INDENT,
-          fontSize: fontSize.sm, fontWeight: fontWeight.light,
-          lineHeight: '22px', color: systemColors.light['content-primary'],
-          animation: 'fadeIn 0.3s ease both',
-        }}>
-          Model built — {phases.length} phases complete. Tables, relationships, and formulas are ready.
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ── Option 2 panel — global reasoning + collapsed plan card with per-step reasoning ─
-function Option2Panel({ phases, completedCount, allDone }: {
-  phases: Array<{ planLabel: string; planCaption: string; reasoning: string; endStep: number }>;
-  completedCount: number;
-  allDone: boolean;
-}) {
-  const [o2Phase, setO2Phase] = useState<'global_reasoning' | 'building'>('global_reasoning');
-  const [globalData, setGlobalData] = useState<ReasoningData>({
-    header: 'Reasoning', isDone: false, inlineText: 'Analysing direction…', steps: [],
-  });
-
-  useEffect(() => {
-    const t1 = setTimeout(() => setGlobalData(d => ({ ...d, inlineText: 'Generating build plan…' })), 700);
-    const t2 = setTimeout(() => {
-      setGlobalData({
-        header: 'Done', isDone: true, inlineText: '',
-        steps: [
-          { n: 1, name: 'Analysed direction', text: 'Mapped business goals to schema entities.', dotState: 'done' },
-          { n: 2, name: 'Generated plan',     text: `${phases.length} phases identified for model construction.`, dotState: 'done' },
-        ],
-      });
-      setO2Phase('building');
-    }, 1500);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const stepsV2: PlanStepV2[] = phases.map((phase, i) => {
-    const phaseStart = i === 0 ? 0 : phases[i - 1].endStep + 1;
-    const isDone   = completedCount > phase.endStep;
-    const isActive = !isDone && completedCount >= phaseStart;
-    return {
-      planLabel:     phase.planLabel,
-      planCaption:   phase.planCaption,
-      state:         isDone ? 'done' : isActive ? 'active' : 'pending',
-      reasoningText: isActive ? phase.reasoning : undefined,
-    };
-  });
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.D }}>
-      <AgentRow>
-        <ReasoningBlock data={globalData} />
-      </AgentRow>
-      {o2Phase === 'building' && (
-        <div style={{ animation: 'slideUpIn 0.3s ease both' }}>
-          <PlanStepsCardV2 steps={stepsV2} goal={phases[0]?.planLabel ?? ''} />
-        </div>
-      )}
-      {allDone && (
-        <div style={{
-          paddingLeft: AGENT_TEXT_INDENT,
-          fontSize: fontSize.sm, fontWeight: fontWeight.light,
-          lineHeight: '22px', color: systemColors.light['content-primary'],
-          animation: 'fadeIn 0.3s ease both',
-        }}>
-          Model built — all {phases.length} phases complete. Tables, relationships, and formulas are ready.
-        </div>
-      )}
-    </div>
-  );
-}
 
 // ── BuildingScreen ────────────────────────────────────────────────────────────
 function BuildingScreen({
@@ -1536,6 +1352,111 @@ function BuildingScreen({
 
   // Phases that have completely finished (all their micro-steps done)
   const completedPhases = plan.phases.filter(p => completedCount > p.endStep);
+
+  // ── Window API message IDs ────────────────────────────────────────────────────
+  const AGENT_MSG_ID  = 'build-agent-msg';   // Option 1: single agent message
+  const GLOBAL_MSG_ID = 'global-reason-msg'; // Option 2: global reasoning message
+  const PLAN_MSG_ID   = 'plan-steps-msg';    // Option 2: plan card message
+
+  // Guard: only push the initial messages once
+  const panelInitRef = useRef(false);
+
+  // Mount effect — push initial messages into AgentPanel chat
+  // variant is stable for a BuildingScreen's lifetime (tab switch unmounts it)
+  useEffect(() => {
+    if (panelInitRef.current) return;
+    panelInitRef.current = true;
+
+    if (variant === 'option1') {
+      // Single agent reasoning message — stays open while build runs, collapses when done
+      (window as any)._appendMsg?.({
+        kind: 'agent', id: AGENT_MSG_ID,
+        reasoning: {
+          header: 'Reasoning', isDone: false,
+          inlineText: plan.phases[0]?.reasoning ?? 'Building model…',
+          steps: [],
+        },
+        response: null,
+      });
+    } else {
+      // Option 2 — global reasoning agent message
+      (window as any)._appendMsg?.({
+        kind: 'agent', id: GLOBAL_MSG_ID,
+        reasoning: { header: 'Reasoning', isDone: false, inlineText: 'Analysing direction…', steps: [] },
+        response: null,
+      });
+      // After 700ms: update inline text
+      setTimeout(() => {
+        (window as any)._updateMsg?.(GLOBAL_MSG_ID, {
+          reasoning: { header: 'Reasoning', isDone: false, inlineText: 'Generating build plan…', steps: [] },
+        });
+      }, 700);
+      // After 1500ms: collapse global reasoning, then append plan-steps card (all pending)
+      setTimeout(() => {
+        (window as any)._updateMsg?.(GLOBAL_MSG_ID, {
+          reasoning: {
+            header: 'Done', isDone: true, inlineText: '',
+            steps: [
+              { n: 1, name: 'Analysed direction', text: 'Mapped business goals to schema entities.', dotState: 'done' },
+              { n: 2, name: 'Generated plan', text: `${plan.phases.length} phases identified for model construction.`, dotState: 'done' },
+            ],
+          },
+        });
+        (window as any)._appendMsg?.({
+          kind: 'plan-steps', id: PLAN_MSG_ID,
+          data: {
+            goal: direction.title,
+            steps: plan.phases.map(p => ({ label: p.planLabel, state: 'pending' as const })),
+          },
+        });
+        (window as any)._scrollMsgs?.();
+      }, 1500);
+    }
+    (window as any)._scrollMsgs?.();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // completedCount effect — update messages as build progresses
+  useEffect(() => {
+    if (!panelInitRef.current) return;
+
+    if (variant === 'option1') {
+      (window as any)._updateMsg?.(AGENT_MSG_ID, {
+        reasoning: {
+          header: allDone ? 'Done' : 'Reasoning',
+          isDone: allDone,
+          inlineText: allDone ? '' : (plan.phases[currentPhaseIdx]?.reasoning ?? 'Building model…'),
+          steps: completedPhases.map((p, i) => ({
+            n: i + 1, name: p.planLabel, text: p.reasoning, dotState: 'done' as const,
+          })),
+        },
+        response: allDone ? {
+          text: `Model built — ${plan.phases.length} phases complete. Tables, relationships, and formulas are ready.`,
+          isVisible: true,
+        } : null,
+      });
+    } else {
+      // Option 2: evolve plan-steps card (_updateMsg is a no-op if message doesn't exist yet)
+      (window as any)._updateMsg?.(PLAN_MSG_ID, {
+        data: {
+          goal: direction.title,
+          steps: plan.phases.map((p, i) => ({
+            label: p.planLabel,
+            caption: completedPhases.includes(p) ? p.planCaption : undefined,
+            state: completedPhases.includes(p) ? 'done' as const
+                 : i === currentPhaseIdx        ? 'active' as const
+                 :                                'pending' as const,
+            reasoningData: i === currentPhaseIdx ? {
+              header: 'Reasoning', isDone: false, inlineText: p.reasoning, steps: [],
+            } : undefined,
+          })),
+        },
+        showBuildCta: allDone,
+      });
+    }
+    (window as any)._scrollMsgs?.();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [completedCount]);
 
   // Auto-switch active tab and trigger pulse when a new section starts filling.
   useEffect(() => {
@@ -1931,9 +1852,6 @@ function BuildingScreen({
           0%   { background-position: 200% 0; }
           100% { background-position: -200% 0; }
         }
-        @keyframes planStepSpin {
-          to { transform: rotate(360deg); }
-        }
         @keyframes fadeIn {
           from { opacity: 0; }
           to   { opacity: 1; }
@@ -2036,28 +1954,8 @@ function BuildingScreen({
           </div>
         </div>
 
-        {/* ── SpotterModel right panel — variant-based ── */}
-        <div style={{
-          width: 320, flexShrink: 0,
-          borderLeft: `1px solid ${systemColors.light['border-divider']}`,
-          overflowY: 'auto',
-          padding: `${spacing.F}px`,
-          backgroundColor: systemColors.light['background-base'],
-        }}>
-          {variant === 'option1'
-            ? <Option1Panel
-                phases={plan.phases}
-                currentPhaseIdx={currentPhaseIdx}
-                completedPhases={completedPhases}
-                allDone={allDone}
-              />
-            : <Option2Panel
-                phases={plan.phases}
-                completedCount={completedCount}
-                allDone={allDone}
-              />
-          }
-        </div>
+        {/* ── SpotterModel right panel — AgentPanel (messages driven via window APIs) ── */}
+        <AgentPanel welcomeVariant="blank" />
 
       </div>
     </div>
