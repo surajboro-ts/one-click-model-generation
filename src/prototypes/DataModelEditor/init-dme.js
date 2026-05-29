@@ -64,6 +64,8 @@ export function initDME() {
     }
 
     activeTab = newTab;
+    // Keep React SegmentedControl in sync with DOM state
+    window._setActiveTab && window._setActiveTab(newTab);
   }
   window._switchTab = switchTab;
 
@@ -2050,7 +2052,7 @@ Only include the context field when there is genuinely meaningful content from t
             state:   isDone ? 'done' : isActive ? 'active' : 'pending',
             // Per-step inline reasoning — only on the active step
             reasoningData: isActive ? {
-              header:     'Reasoning',
+              header:     phase.planLabel,
               isDone:     false,
               inlineText: phase.reasoning,
               steps:      [],
@@ -2127,7 +2129,7 @@ Only include the context field when there is genuinely meaningful content from t
     // reasoning to Done, reveal "Plan ready" text, then begin canvas build.
     window._appendMsg && window._appendMsg({
       kind: 'plan-steps', id: PLAN_MSG_ID,
-      reasoning: { header: 'Reasoning', isDone: false, inlineText: 'Generating a build plan…', steps: [] },
+      reasoning: { header: 'Building a plan', isDone: false, inlineText: 'Generating a build plan…', steps: [] },
       data: makePlanData(0),
     });
     window._scrollMsgs && window._scrollMsgs();

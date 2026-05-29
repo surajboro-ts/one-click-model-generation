@@ -15,8 +15,9 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [chatStarted, setChatStarted] = useState(false);
   const [autoPopulating, setAutoPopulating] = useState(false);
-  const chatMsgsRef  = useRef<HTMLDivElement>(null);
-  const lastUserRef  = useRef<HTMLDivElement>(null);
+  const chatMsgsRef      = useRef<HTMLDivElement>(null);
+  const lastUserRef      = useRef<HTMLDivElement>(null);
+  const shouldScrollNext = useRef(false);
 
   useEffect(() => {
     // Pre-populate with onboarding history if available (carry-over from the
@@ -48,12 +49,12 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     (window as any)._removeMsg = (id: string) =>
       setMessages(prev => prev.filter(m => m.id !== id));
     (window as any)._scrollMsgs = () => {
-      const el = lastUserRef.current;
+      // Explicit programmatic scroll (called by init-dme.js on step completions
+      // and final "Model ready" message) — scroll to bottom so the latest content
+      // is always visible regardless of where the user currently is.
       const container = chatMsgsRef.current;
-      if (!el || !container) return;
-      const elRect = el.getBoundingClientRect();
-      const cRect  = container.getBoundingClientRect();
-      container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
+      if (!container) return;
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
     };
     (window as any)._updateReasoning = (id: string, reasoning: ReasoningData) =>
       setMessages(prev => prev.map(m =>
@@ -134,25 +135,54 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     } as MessageItem]);
 
     setTimeout(() => {
+      const container = chatMsgsRef.current;
+      if (!container) return;
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+    }, 60);
+  };
+
+  // Auto-scroll: fires on user send + the first agent response only.
+  // plan-steps arrival scrolls to the bottom to reveal the plan card.
+  // All further updates in the same response chain are suppressed so the
+  // user can freely scroll without being pulled back.
+  // Explicit programmatic scrolls (e.g. from init-dme step completions)
+  // go through _scrollMsgs which always scrolls to the bottom independently.
+  useEffect(() => {
+    if (!messages.length) return;
+    const lastMsg = messages[messages.length - 1];
+
+    const scrollToLastUser = () => {
       const el = lastUserRef.current;
       const container = chatMsgsRef.current;
       if (!el || !container) return;
       const elRect = el.getBoundingClientRect();
       const cRect  = container.getBoundingClientRect();
       container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
-    }, 60);
-  };
+    };
 
-  // Auto-scroll: bring the latest user message to 12px from the top so the
-  // prompt + its response are both visible.
-  useEffect(() => {
-    if (!messages.length) return;
-    const el = lastUserRef.current;
-    const container = chatMsgsRef.current;
-    if (!el || !container) return;
-    const elRect = el.getBoundingClientRect();
-    const cRect  = container.getBoundingClientRect();
-    container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
+    if (lastMsg.kind === 'user') {
+      // New user message — scroll into view and arm the "scroll once on first response" flag
+      shouldScrollNext.current = true;
+      scrollToLastUser();
+      return;
+    }
+
+    if (lastMsg.kind === 'plan-steps') {
+      // Plan card first appeared — scroll to bottom so it's fully visible
+      shouldScrollNext.current = false;
+      const container = chatMsgsRef.current;
+      if (container) container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+      return;
+    }
+
+    if (shouldScrollNext.current) {
+      // First non-user, non-plan response after a user send — scroll once then suppress
+      shouldScrollNext.current = false;
+      scrollToLastUser();
+      return;
+    }
+
+    // Suppress all subsequent message additions in the same response chain
   }, [messages.length]);
 
   return (

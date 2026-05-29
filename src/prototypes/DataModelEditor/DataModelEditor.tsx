@@ -104,6 +104,7 @@ const DataModelEditor: React.FC = () => {
     (window as any)._setColumnShimmer   = (val: boolean) => setShowColShimmer(val);
     (window as any)._setFormulaShimmer  = (val: boolean) => setShowFormulaShimmer(val);
     (window as any)._setDMEAutoPopulating = (val: boolean) => setIsAutoPopulating(val);
+    (window as any)._setActiveTab = (tab: string) => setActiveTab(tab);
 
     // Restore auto-populate data from ref — survives StrictMode cleanup between mounts.
     if (autoPopulateDataRef.current) {
@@ -124,6 +125,7 @@ const DataModelEditor: React.FC = () => {
       delete (window as any)._setColumnShimmer;
       delete (window as any)._setFormulaShimmer;
       delete (window as any)._setDMEAutoPopulating;
+      delete (window as any)._setActiveTab;
     };
   }, []);
 

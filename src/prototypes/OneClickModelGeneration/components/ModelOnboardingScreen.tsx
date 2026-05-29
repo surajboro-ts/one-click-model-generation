@@ -1451,23 +1451,43 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   const [canvasDirection,   setCanvasDirection]   = useState<Direction | null>(null);
   const [currentPromptHtml, setCurrentPromptHtml] = useState('');
 
-  const chatScrollRef  = useRef<HTMLDivElement>(null);
-  const lastUserRef    = useRef<HTMLDivElement>(null);
-  const reasoningMsgId = useRef<string>('');
+  const chatScrollRef    = useRef<HTMLDivElement>(null);
+  const lastUserRef      = useRef<HTMLDivElement>(null);
+  const reasoningMsgId   = useRef<string>('');
+  const shouldScrollNext = useRef(false);
 
   const sweepKey = usePeriodicSweep(4000);
   const SUBTITLE = "I'll build an AI-ready model for you in minutes";
 
-  // Auto-scroll: when a new message arrives, bring the latest user prompt to
-  // 12px from the top so the prompt + its response stay in view together.
+  // Auto-scroll: fires once on user send, then once more on the first agent
+  // response. All subsequent message additions in the same response chain are
+  // suppressed so the user can freely scroll without being pulled away.
   useEffect(() => {
     if (!chatMessages.length) return;
-    const el = lastUserRef.current;
-    const container = chatScrollRef.current;
-    if (!el || !container) return;
-    const elRect = el.getBoundingClientRect();
-    const cRect  = container.getBoundingClientRect();
-    container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
+    const lastMsg = chatMessages[chatMessages.length - 1];
+
+    const doScroll = () => {
+      const el = lastUserRef.current;
+      const container = chatScrollRef.current;
+      if (!el || !container) return;
+      const elRect = el.getBoundingClientRect();
+      const cRect  = container.getBoundingClientRect();
+      container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
+    };
+
+    if (lastMsg.kind === 'user') {
+      shouldScrollNext.current = true;
+      doScroll();
+      return;
+    }
+
+    if (shouldScrollNext.current) {
+      shouldScrollNext.current = false;
+      doScroll();
+      return;
+    }
+
+    // Suppress auto-scroll for all further messages in the same response chain
   }, [chatMessages.length]);
 
   // ── Reasoning helpers ─────────────────────────────────────────────────────
@@ -1487,14 +1507,14 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     reasoningMsgId.current = msgId;
 
     const inProgress: ReasoningData = {
-      header: 'Reasoning', isDone: false,
-      inlineText: 'Analysing your prompt…',
+      header: 'Understanding your use case', isDone: false,
+      inlineText: 'Analysing your use case…',
       steps: [],
     };
     setChatMessages(prev => [...prev, { kind: 'reasoning', id: msgId, data: inProgress }]);
 
     const t1 = setTimeout(() => updateReasoningMsg(msgId, {
-      data: { ...inProgress, inlineText: 'Mapping business context and schema…' },
+      data: { ...inProgress, inlineText: 'Mapping business context…' },
     }), 900);
 
     const t2 = setTimeout(() => updateReasoningMsg(msgId, {
@@ -1532,14 +1552,14 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     reasoningMsgId.current = msgId;
 
     const inProgress: ReasoningData = {
-      header: 'Reasoning', isDone: false,
-      inlineText: 'Mapping your answers to available tables…',
+      header: 'Connecting the dots', isDone: false,
+      inlineText: 'Mapping your answers to business entities…',
       steps: [],
     };
     setChatMessages(prev => [...prev, { kind: 'reasoning', id: msgId, data: inProgress }]);
 
     const t1 = setTimeout(() => updateReasoningMsg(msgId, {
-      data: { ...inProgress, inlineText: 'Identifying tables and joins…' },
+      data: { ...inProgress, inlineText: 'Structuring the model requirements…' },
     }), 800);
 
     const t2 = setTimeout(() => updateReasoningMsg(msgId, {
@@ -1573,7 +1593,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     reasoningMsgId.current = msgId;
 
     const inProgress: ReasoningData = {
-      header: 'Reasoning', isDone: false,
+      header: 'Revisiting the requirements', isDone: false,
       inlineText: 'Reviewing your changes…',
       steps: [],
     };
@@ -1592,7 +1612,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
             { n: 2, name: 'Updated requirements', text: 'Revised goals, questions, and schema mappings.', dotState: 'done' },
           ],
         },
-        responseText: "I've updated the requirements based on your changes. The previous version is preserved above.",
+        responseText: "Switched focus to churn analysis — updated the primary grain, metric set, and sample questions.\nReview the Goals and Formulas sections — the calculated metrics and audience definition have changed.",
       });
     }, 1600);
 
@@ -1910,6 +1930,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                             fontSize: fontSize.sm, fontWeight: fontWeight.light,
                             lineHeight: '22px', color: systemColors.light['content-primary'],
                             animation: 'fadeIn 0.3s ease both',
+                            whiteSpace: 'pre-line',
                           }}>
                             {msg.responseText}
                           </div>
