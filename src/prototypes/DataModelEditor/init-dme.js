@@ -2052,7 +2052,7 @@ Only include the context field when there is genuinely meaningful content from t
             state:   isDone ? 'done' : isActive ? 'active' : 'pending',
             // Per-step inline reasoning — only on the active step
             reasoningData: isActive ? {
-              header:     phase.planLabel,
+              header:     phase.reasoningHeader || phase.planLabel,
               isDone:     false,
               inlineText: phase.reasoning,
               steps:      [],

@@ -1043,6 +1043,7 @@ interface PlanPhase {
   planLabel: string;
   planCaption: string;   // 2-line caption — \n renders as line break (white-space: pre-line)
   reasoning: string;
+  reasoningHeader: string;   // header shown in the per-step ReasoningBlock while phase is active
   endStep: number;       // inclusive last micro-step index for this phase
 }
 
@@ -1063,30 +1064,35 @@ const BUILD_PLAN: Record<string, DirectionPlan> = {
       {
         planLabel: 'Scanning connection',
         planCaption: 'Found 8 candidate tables in Snowflake\n4 match the sales performance context — 1 fact, 3 dimensions',
+        reasoningHeader: 'Looking for matching tables',
         reasoning: 'Scanning the Snowflake schema for fact and dimension tables related to sales performance and regional revenue…',
         endStep: 0,
       },
       {
         planLabel: 'Selecting tables',
         planCaption: 'Adding FACT_SALES_ORDERS as the primary grain table\nDIM_REGIONS, DIM_SALES_REPS, and DIM_DATE joined as dimensions',
+        reasoningHeader: 'Adding tables to the model',
         reasoning: 'Identified fact_sales_orders as the primary grain (85K rows). Adding dimension tables for regions, sales reps, and calendar dates to enable full analytical coverage.',
         endStep: 4,
       },
       {
         planLabel: 'Building relationships',
         planCaption: '3 joins validated via region_id, rep_id, and order_date\nNo ambiguous paths or circular references detected',
+        reasoningHeader: 'Defining table joins',
         reasoning: 'Joining dim_regions on region_id (INNER), dim_sales_reps on rep_id (LEFT to preserve unassigned orders), and dim_date on order_date (INNER) for time-series analysis.',
         endStep: 7,
       },
       {
         planLabel: 'Configuring columns & formulas',
         planCaption: '23 columns labeled with types, descriptions, and AI context\n4 metrics defined: Total Revenue, Quota Attainment, Deal Count, YoY Growth',
+        reasoningHeader: 'Annotating columns and metrics',
         reasoning: 'Annotating all columns with AI-friendly context. Defining total_revenue (SUM), quota_attainment (ratio), deal_count (COUNT DISTINCT), and yoy_growth (LAG window) for full KPI coverage.',
         endStep: 11,
       },
       {
         planLabel: 'Making AI ready',
         planCaption: 'AI search context added to all 23 columns\n3 sample questions verified as answerable by the model',
+        reasoningHeader: 'Enabling AI search context',
         reasoning: 'Applying region_id IS NOT NULL filter to exclude unattributed system rows. Generating sample questions to validate coverage and setting AI context for each column.',
         endStep: 14,
       },
@@ -1115,30 +1121,35 @@ const BUILD_PLAN: Record<string, DirectionPlan> = {
       {
         planLabel: 'Scanning connection',
         planCaption: 'Found 6 candidate tables in Redshift\n3 match the churn analysis context — 1 fact, 2 dimensions',
+        reasoningHeader: 'Looking for matching tables',
         reasoning: 'Scanning the Redshift schema for customer activity, engagement, and support tables relevant to churn analysis…',
         endStep: 0,
       },
       {
         planLabel: 'Selecting tables',
         planCaption: 'Adding FACT_CUSTOMER_ACTIVITY as the primary grain table\nDIM_CUSTOMERS and DIM_DATE joined as dimensions',
+        reasoningHeader: 'Adding tables to the model',
         reasoning: 'Identified fact_customer_activity as the engagement grain (120K event rows). Adding dim_customers for account metadata and dim_date for time-windowed lookback analysis.',
         endStep: 3,
       },
       {
         planLabel: 'Building relationships',
         planCaption: '2 joins validated via customer_id and activity_date\nAll join paths verified — no missing foreign keys',
+        reasoningHeader: 'Defining table joins',
         reasoning: 'Joining dim_customers on customer_id (INNER) for segment and tier breakdown, and dim_date on activity_date (INNER) to enable 30-day and 90-day lookback windows.',
         endStep: 5,
       },
       {
         planLabel: 'Configuring columns & formulas',
         planCaption: '18 columns labeled with types, descriptions, and AI context\n4 metrics: Last Active Date, Support Tickets, NPS Score, Churn Risk Score',
+        reasoningHeader: 'Annotating columns and metrics',
         reasoning: 'Annotating all columns with churn-oriented AI context. Defining last_active_date (MAX), support_tickets (COUNT), nps_score (rolling AVG), and churn_risk_score (weighted composite).',
         endStep: 9,
       },
       {
         planLabel: 'Making AI ready',
         planCaption: 'AI search context added to all 18 columns\n3 sample questions verified as answerable by the model',
+        reasoningHeader: 'Enabling AI search context',
         reasoning: 'Applying active customer filter (status = active) to exclude closed accounts. Generating sample questions to validate engagement and revenue coverage.',
         endStep: 12,
       },
@@ -1515,11 +1526,11 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
 
     const t1 = setTimeout(() => updateReasoningMsg(msgId, {
       data: { ...inProgress, inlineText: 'Mapping business context…' },
-    }), 900);
+    }), 1800);
 
     const t2 = setTimeout(() => updateReasoningMsg(msgId, {
       data: { ...inProgress, inlineText: 'Identifying what I need to know…' },
-    }), 1800);
+    }), 3400);
 
     // t3: mark reasoning done + show response text
     const t3 = setTimeout(() => {
@@ -1534,11 +1545,11 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
         },
         responseText: "Got it — before I start building, I have a few quick questions.",
       });
-    }, 2600);
+    }, 5000);
 
-    // t4: show clarifying card ~350 ms after the response text, so the user
+    // t4: show clarifying card ~400 ms after the response text, so the user
     // has a moment to read it before the card slides in from the bottom.
-    const t4 = setTimeout(() => setChatPhase('clarifying'), 2950);
+    const t4 = setTimeout(() => setChatPhase('clarifying'), 5400);
 
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1560,11 +1571,11 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
 
     const t1 = setTimeout(() => updateReasoningMsg(msgId, {
       data: { ...inProgress, inlineText: 'Structuring the model requirements…' },
-    }), 800);
+    }), 1600);
 
     const t2 = setTimeout(() => updateReasoningMsg(msgId, {
       data: { ...inProgress, inlineText: 'Preparing model requirements…' },
-    }), 1600);
+    }), 3000);
 
     const t3 = setTimeout(() => {
       updateReasoningMsg(msgId, {
@@ -1579,7 +1590,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
       });
       setChatMessages(prev => [...prev, { kind: 'directions', id: `dir-${Date.now()}`, version: 1, isCollapsed: false }]);
       setChatPhase('directions');
-    }, 2400);
+    }, 4800);
 
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1601,7 +1612,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
 
     const t1 = setTimeout(() => updateReasoningMsg(msgId, {
       data: { ...inProgress, inlineText: 'Applying updates to the requirements…' },
-    }), 700);
+    }), 1400);
 
     const t2 = setTimeout(() => {
       updateReasoningMsg(msgId, {
@@ -1614,9 +1625,9 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
         },
         responseText: "Switched focus to churn analysis — updated the primary grain, metric set, and sample questions.\nReview the Goals and Formulas sections — the calculated metrics and audience definition have changed.",
       });
-    }, 1600);
+    }, 2800);
 
-    // ~350 ms after response text appears: collapse old MRDs, push new one
+    // ~400 ms after response text appears: collapse old MRDs, push new one
     const t3 = setTimeout(() => {
       setChatMessages(prev => {
         // Derive next version from existing direction messages
@@ -1636,7 +1647,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
         }];
       });
       setChatPhase('directions');
-    }, 1950);
+    }, 3200);
 
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1866,6 +1877,20 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               </div>
             </div>
 
+            {/* "I'll build it manually" link — well below prompt bar, above disclaimer */}
+            <button
+              onClick={onSkip}
+              style={{
+                position: 'absolute', bottom: 44, left: 0, right: 0,
+                background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+                fontSize: 13, fontWeight: fontWeight.light, lineHeight: '20px',
+                color: systemColors.light['content-secondary'],
+                textDecoration: 'underline', textAlign: 'center',
+              }}
+            >
+              I&apos;ll build it manually
+            </button>
+
             {/* Disclaimer */}
             <p style={{
               position: 'absolute', bottom: spacing.B, fontSize: 14,
@@ -1880,14 +1905,11 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
           {/* Footer — only on prompt screen */}
           <footer style={{
             height: 72, flexShrink: 0, /* no exact spacing token */
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
             padding: `0 ${spacing.F}px`,
             backgroundColor: systemColors.light['background-sunken'],
             borderTop: `6px solid ${systemColors.light['content-brand']}`,
           }}>
-            <Button variant="secondary" onClick={onSkip}>
-              I'll build it manually
-            </Button>
             <Button variant="primary" onClick={onBuild}>
               Exit data model
             </Button>
@@ -1981,6 +2003,8 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                                   spotterModel:   true,
                                   welcomeVariant: 'blank',
                                   autoPopulate:   true,
+                                  modelName:      mrd.title,
+                                  modelDesc:      mrd.description,
                                 };
                                 // Carry the full onboarding conversation into the DME AgentPanel.
                                 // AgentPanel reads this window global on mount and pre-populates its
@@ -2067,10 +2091,25 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               </div>
             </div>
 
+            {/* "I'll build it manually" link — well below prompt bar, above disclaimer */}
+            <div style={{ flexShrink: 0, textAlign: 'center', padding: `${spacing.E}px ${spacing.F}px ${spacing.B}px` }}>
+              <button
+                onClick={onSkip}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+                  fontSize: 13, fontWeight: fontWeight.light, lineHeight: '20px',
+                  color: systemColors.light['content-secondary'],
+                  textDecoration: 'underline',
+                }}
+              >
+                I&apos;ll build it manually
+              </button>
+            </div>
+
             {/* Disclaimer — below prompt bar */}
             <p style={{
               margin: 0, flexShrink: 0, textAlign: 'center',
-              padding: `${spacing.B}px ${spacing.F}px`,
+              padding: `0 ${spacing.F}px ${spacing.B}px`,
               fontSize: 13, lineHeight: '20px', fontWeight: fontWeight.light,
               color: systemColors.light['content-secondary'],
               backgroundColor: systemColors.light['background-base'],
@@ -2079,17 +2118,14 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               <Link href="#">Learn more</Link>
             </p>
 
-            {/* Footer — chat state (same as prompt screen footer) */}
+            {/* Footer — chat state */}
             <footer style={{
               height: 72, flexShrink: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
               padding: `0 ${spacing.F}px`,
               backgroundColor: systemColors.light['background-sunken'],
               borderTop: `6px solid ${systemColors.light['content-brand']}`,
             }}>
-              <Button variant="secondary" onClick={onSkip}>
-                I'll build it manually
-              </Button>
               <Button variant="primary" onClick={onBuild}>
                 Exit data model
               </Button>

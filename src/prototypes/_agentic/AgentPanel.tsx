@@ -271,7 +271,7 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
               <AgentMessage key={msg.id}>
                 {msg.reasoning && <ReasoningBlock data={msg.reasoning} />}
                 {msg.text && (
-                  <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 300, lineHeight: '20px', color: 'var(--rd-sys-color-content-primary)' }}>
+                  <p style={{ margin: '0 0 8px', fontSize: 14, fontWeight: 300, lineHeight: '20px', color: 'var(--rd-sys-color-content-primary)' }}>
                     {msg.text}
                   </p>
                 )}

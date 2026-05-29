@@ -81,8 +81,16 @@ const DataModelEditor: React.FC = () => {
   // double-invoke (cleanup runs between mount 1 and mount 2, deleting the global).
   const autoPopulateDataRef = useRef<unknown>((window as any).__DME_AUTO_DATA__ ?? null);
 
-  const modelName = welcomeVariant === 'blank' ? 'Add model name' : 'Retail Sales Analytics';
-  const modelDesc = welcomeVariant === 'blank' ? 'Add description' : 'Sales performance model for Spotter AI search';
+  const [modelName] = useState<string>(() => {
+    const cfg = (window as any).__DME_CONFIG__;
+    if (cfg?.welcomeVariant === 'existing') return 'Retail Sales Analytics';
+    return cfg?.modelName ?? 'Add model name';
+  });
+  const [modelDesc] = useState<string>(() => {
+    const cfg = (window as any).__DME_CONFIG__;
+    if (cfg?.welcomeVariant === 'existing') return 'Sales performance model for Spotter AI search';
+    return cfg?.modelDesc ?? 'Add description';
+  });
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
