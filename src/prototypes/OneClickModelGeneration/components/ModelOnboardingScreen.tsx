@@ -1884,7 +1884,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                 position: 'absolute', bottom: 44, left: 0, right: 0,
                 background: 'none', border: 'none', cursor: 'pointer', padding: 0,
                 fontSize: 13, fontWeight: fontWeight.light, lineHeight: '20px',
-                color: systemColors.light['content-secondary'],
+                color: systemColors.light['content-brand'],
                 textDecoration: 'underline', textAlign: 'center',
               }}
             >
@@ -2110,21 +2110,6 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                   )}
                 </div>
               </div>
-            </div>
-
-            {/* "I'll build it manually" link — well below prompt bar, above disclaimer */}
-            <div style={{ flexShrink: 0, textAlign: 'center', padding: `${spacing.E}px ${spacing.F}px ${spacing.B}px` }}>
-              <button
-                onClick={onSkip}
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-                  fontSize: 13, fontWeight: fontWeight.light, lineHeight: '20px',
-                  color: systemColors.light['content-secondary'],
-                  textDecoration: 'underline',
-                }}
-              >
-                I&apos;ll build it manually
-              </button>
             </div>
 
             {/* Disclaimer — below prompt bar */}
