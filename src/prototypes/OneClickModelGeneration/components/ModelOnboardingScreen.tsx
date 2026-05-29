@@ -412,9 +412,11 @@ function MentionEditor({
               backgroundColor: systemColors.light['background-sunken'],
               borderBottom: `1px solid ${systemColors.light['border-divider']}`,
             }}>
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden>
-                <circle cx="8" cy="8" r="6.5" stroke={systemColors.light['content-secondary']} strokeWidth="1.5"/>
-                <path d="M8 4v4l2.5 2.5" stroke={systemColors.light['content-secondary']} strokeWidth="1.5" strokeLinecap="round"/>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
+                <path d="M12 2v20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3" stroke="#29B5E8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 12h20M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3" stroke="#29B5E8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M5.636 5.636l12.728 12.728M5.636 5.636l1.06 3.889M5.636 5.636l3.889 1.06M18.364 18.364l-1.06-3.889M18.364 18.364l-3.889-1.06" stroke="#29B5E8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M18.364 5.636L5.636 18.364M18.364 5.636l-3.889 1.06M18.364 5.636l-1.06 3.889M5.636 18.364l3.889-1.06M5.636 18.364l1.06-3.889" stroke="#29B5E8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               <span style={{ fontSize: 11, fontWeight: fontWeight.regular, lineHeight: '16px', color: systemColors.light['content-secondary'], letterSpacing: '0.2px' }}>
                 {connectionName}
