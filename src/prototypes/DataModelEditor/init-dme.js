@@ -2035,26 +2035,28 @@ Only include the context field when there is genuinely meaningful content from t
     });
 
     // ── Plan card helpers ──────────────────────────────────────────────
+    // makePlanData: builds the PlanStepsData object for the given micro-step index.
+    // The active step carries an inline reasoningData block (per-step reasoning).
     function makePlanData(completedIdx) {
       return {
         goal: goal,
         steps: phases.map(function(phase, i) {
           var phaseStart = i === 0 ? 0 : endSteps[i - 1] + 1;
-          var isDone     = completedIdx > endSteps[i];
-          var isActive   = !isDone && completedIdx >= phaseStart;
-          return { label: phase.planLabel, caption: phase.planCaption, state: isDone ? 'done' : isActive ? 'active' : 'pending' };
+          var isDone   = completedIdx > endSteps[i];
+          var isActive = !isDone && completedIdx >= phaseStart;
+          return {
+            label:   phase.planLabel,
+            caption: isDone ? phase.planCaption : undefined,
+            state:   isDone ? 'done' : isActive ? 'active' : 'pending',
+            // Per-step inline reasoning — only on the active step
+            reasoningData: isActive ? {
+              header:     'Reasoning',
+              isDone:     false,
+              inlineText: phase.reasoning,
+              steps:      [],
+            } : undefined,
+          };
         }),
-      };
-    }
-
-    function makeReasoning(completedIdx, isDone) {
-      var phaseIdx   = isDone ? -1 : (steps[completedIdx] ? steps[completedIdx].phaseIndex : 0);
-      var donePhases = phases.filter(function(_, i) { return completedIdx > endSteps[i]; });
-      return {
-        header:     isDone ? 'Done' : 'Building your model…',
-        isDone:     isDone,
-        inlineText: isDone ? '' : (phases[phaseIdx] ? phases[phaseIdx].reasoning : ''),
-        steps:      donePhases.map(function(p, i) { return { n: i + 1, name: p.planLabel, text: p.reasoning, dotState: 'done' }; }),
       };
     }
 
@@ -2097,7 +2099,8 @@ Only include the context field when there is genuinely meaningful content from t
       window._setTableCanvasData && window._setTableCanvasData({ tables: realTables, joins: window._modelState.model.joins });
     }
 
-    var PLAN_MSG_ID = 'dme-auto-populate-plan';
+    var PLAN_MSG_ID       = 'dme-auto-populate-plan';
+    var GLOBAL_REASON_ID  = 'dme-global-reasoning';
 
     // ── Transition: welcome → chat; show tables pane ───────────────────
     var welcomeView = document.getElementById('welcome-view');
@@ -2115,16 +2118,43 @@ Only include the context field when there is genuinely meaningful content from t
 
     // Pre-set stretch layout on columns/formulas containers so the shimmer wrappers
     // fill the full height from the very first frame the tab becomes visible.
-    // rebuildColumnsContent/rebuildFormulasContent also do this, but doing it here
-    // ensures the layout is correct from the moment React renders the wrappers.
     var _contentCols = document.getElementById('content-columns');
     var _contentFmls = document.getElementById('content-formulas');
     if (_contentCols) { _contentCols.style.alignItems = 'stretch'; _contentCols.style.justifyContent = 'flex-start'; }
     if (_contentFmls) { _contentFmls.style.alignItems = 'stretch'; _contentFmls.style.justifyContent = 'flex-start'; }
 
-    // ── Push initial plan card ─────────────────────────────────────────
-    window._appendMsg && window._appendMsg({ kind: 'plan-steps', id: PLAN_MSG_ID, data: makePlanData(0), reasoning: makeReasoning(0, false) });
+    // ── Phase A: global reasoning "Generating a build plan…" ──────────
+    // Appears immediately, collapses after ~1.2s, then the plan-steps card
+    // lands and the canvas build begins.
+    window._appendMsg && window._appendMsg({
+      kind: 'agent', id: GLOBAL_REASON_ID,
+      reasoning: { header: 'Reasoning', isDone: false, inlineText: 'Generating a build plan…', steps: [] },
+      response: null,
+    });
     window._scrollMsgs && window._scrollMsgs();
+
+    setTimeout(function() {
+      // Collapse global reasoning to Done + show "building model" response
+      window._updateMsg && window._updateMsg(GLOBAL_REASON_ID, {
+        reasoning: {
+          header: 'Done', isDone: true, inlineText: '',
+          steps: [
+            { n: 1, name: 'Mapped requirements', text: 'Extracted tables, joins, formulas, and goal from the MRD.', dotState: 'done' },
+            { n: 2, name: 'Generated plan',      text: phases.length + ' build steps identified.', dotState: 'done' },
+          ],
+        },
+        response: { text: 'Plan ready — building your model now.', isVisible: true },
+      });
+
+      // ── Phase B: push plan-steps card (all steps pending initially) ──
+      setTimeout(function() {
+        window._appendMsg && window._appendMsg({ kind: 'plan-steps', id: PLAN_MSG_ID, data: makePlanData(0) });
+        window._scrollMsgs && window._scrollMsgs();
+
+        // Begin canvas build after plan card settles
+        setTimeout(runNext, 300);
+      }, 300);
+    }, 1200);
 
     // ── Step runner ────────────────────────────────────────────────────
     var stepIdx = 0;
@@ -2162,7 +2192,6 @@ Only include the context field when there is genuinely meaningful content from t
       // Mark plan card paused — use makePlanDataStopped so active phase stops spinning
       window._updateMsg && window._updateMsg(PLAN_MSG_ID, {
         data: makePlanDataStopped(stepIdx),
-        reasoning: makeReasoning(stepIdx, true),
       });
       // Save a version and expose it for the UI stop-handler to attach to its message
       var vCard = saveVersion('Partial model — stopped by user');
@@ -2178,8 +2207,8 @@ Only include the context field when there is genuinely meaningful content from t
       // Ensure no shimmer rows are left visible
       window._setColumnShimmer  && window._setColumnShimmer(false);
       window._setFormulaShimmer && window._setFormulaShimmer(false);
-      // Mark plan card done
-      window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(totalSteps), reasoning: makeReasoning(totalSteps, true) });
+      // Mark plan card done — all steps show 'done' with captions, no active step reasoning
+      window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(totalSteps) });
       window._scrollMsgs && window._scrollMsgs();
 
       // Save a version and show it in chat
@@ -2250,7 +2279,7 @@ Only include the context field when there is genuinely meaningful content from t
           setTimeout(function() {
             if (aborted) return;
             window._addToModelDirect && window._addToModelDirect(step.itemType, step.items);
-            window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(stepIdx), reasoning: makeReasoning(stepIdx, stepIdx >= totalSteps) });
+            window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(stepIdx) });
             window._scrollMsgs && window._scrollMsgs();
             runNext();
           }, realMs);
@@ -2260,16 +2289,15 @@ Only include the context field when there is genuinely meaningful content from t
         // scan / other non-add steps — just wait and proceed
         setTimeout(function() {
           if (aborted) return;
-          window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(stepIdx), reasoning: makeReasoning(stepIdx, false) });
+          window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(stepIdx) });
           window._scrollMsgs && window._scrollMsgs();
           runNext();
         }, step.delayMs);
       }
     }
 
-    // Start immediately — no artificial delay before first step.
-    // The scan step itself provides a short pause before first table shimmer.
-    setTimeout(runNext, 0);
+    // runNext is now called via the delayed chain in Phase B above (not immediately).
+    // The setTimeout(runNext, 0) that was here has been moved into the Phase B callback.
   }
 
   // Trigger auto-populate if configured.

@@ -19,6 +19,16 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
   const chatMsgsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Pre-populate with onboarding history if available (carry-over from the
+    // full-screen onboarding flow). Consume immediately so StrictMode's second
+    // mount doesn't duplicate messages.
+    const carried = (window as any).__ONBOARDING_HISTORY__;
+    if (Array.isArray(carried) && carried.length > 0) {
+      setMessages(carried as MessageItem[]);
+      setChatStarted(true);
+      delete (window as any).__ONBOARDING_HISTORY__;
+    }
+
     if (welcomeVariant === 'blank') {
       (window as any)._onChatStart = () => setChatStarted(true);
     }
@@ -219,6 +229,13 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
                     onRestoreVersion={(num: number) => (window as any)._restoreVersion?.(num)}
                   />
                 )}
+              </AgentMessage>
+            );
+            // MRD card carried from the onboarding screen — rendered via window.__renderMRD__
+            // registered in OneClickModelGeneration/index.tsx
+            if (msg.kind === 'mrd') return (
+              <AgentMessage key={msg.id}>
+                {(window as any).__renderMRD__?.(msg) ?? null}
               </AgentMessage>
             );
             return null;

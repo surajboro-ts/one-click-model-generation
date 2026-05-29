@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DataModelEditorComponent from '../DataModelEditor/DataModelEditor';
 import { DataWorkspaceHome } from './components/DataWorkspaceHome';
 import { ModelSelectionModal } from './components/ModelSelectionModal';
 import { ConnectionSelectionScreen } from './components/ConnectionSelectionScreen';
 import { ModelOnboardingScreen } from './components/ModelOnboardingScreen';
+import { DirectionCard } from './components/DirectionCard';
+import type { Direction } from './components/DirectionCard';
 import type { DataConnection } from './data/mockData';
 
 /**
@@ -18,6 +20,28 @@ type Screen = 'home' | 'connections' | 'onboarding' | 'editor';
 
 export const OneClickModelGeneration: React.FC = () => {
   const [screen, setScreen] = useState<Screen>('home');
+
+  // Register a renderer for 'mrd' messages in the DME AgentPanel.
+  // AgentPanel calls window.__renderMRD__(msg) for each kind:'mrd' message it finds
+  // in the carried history. Registered here (not in ModelOnboardingScreen) so it
+  // persists across the onboarding→editor screen transition.
+  useEffect(() => {
+    (window as any).__renderMRD__ = (msg: { kind: string; mrdData: Record<string, unknown>; version: number; isCollapsed: boolean; id: string }) => {
+      if (msg.kind !== 'mrd') return null;
+      const { direction, connection } = msg.mrdData as { direction: Direction; connection: DataConnection };
+      return React.createElement(DirectionCard, {
+        direction,
+        connection,
+        version:     msg.version,
+        isCollapsed: msg.isCollapsed,
+        isLatest:    false,   // always false in DME history — model already being built
+        onBuild:     () => {},
+        onToggleCollapse: () => (window as any)._updateMsg?.(msg.id, { isCollapsed: !msg.isCollapsed }),
+        onOpenCanvas: () => {},
+      });
+    };
+    return () => { delete (window as any).__renderMRD__; };
+  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedConnection, setSelectedConnection] = useState<DataConnection | null>(null);
   // Shown as an overlay on top of the onboarding screen when the user wants to switch connection.
