@@ -530,7 +530,7 @@ interface Direction {
   keyQuestions: string[];     // kept for Open doc / future use
   linkedConcepts: string[];   // e.g. ['deals', 'regions', 'sales_reps', 'quotas']
   understoodPoints: string[]; // bullet list for "WHAT I UNDERSTOOD"
-  addedItems: string[];       // "What I added" collapsible content
+  addedSections: Array<{ label: string; items: string[] }>; // "What I added" grouped sections
   guardrails: string[];       // structured guardrails rendered in card
   docHtml: string;            // full requirements doc HTML, shown in canvas panel
 }
@@ -545,6 +545,8 @@ const MOCK_DIRECTIONS: Direction[] = [
       'What is total revenue by region this quarter vs last quarter?',
       'Which regions are behind on their quota targets?',
       'What is the average deal size and win rate by region?',
+      'How has year-over-year revenue trended across territories?',
+      'Which sales reps are consistently exceeding or missing quota?',
     ],
     linkedConcepts: ['deals', 'regions', 'sales_reps', 'quotas'],
     understoodPoints: [
@@ -554,13 +556,59 @@ const MOCK_DIRECTIONS: Direction[] = [
       'Quota attainment aligns deal value to annual targets prorated by fiscal quarter',
       'Consumers include VPs, regional managers, and RevOps — each needs different drill depth',
     ],
-    addedItems: [
-      'Fiscal calendar starts in February — Q1 covers Feb–Apr, prorated quota accordingly',
-      'Revenue defaults to closed-won deal value; gross figures only, refunds not yet modelled',
-      '"Region" uses primary sales territory assignment, not the customer\'s billing address',
-      'Test accounts and internal dummy deals are excluded from all calculations',
-      'Unattributed orders (no region_id) excluded from regional totals but included in company-wide figures',
-      'AI instructions: when asked about "quota", default to annual target prorated by quarter',
+    addedSections: [
+      {
+        label: 'Consumers & personas',
+        items: [
+          'VP of Sales — quarterly board-level pipeline review, territory health at a glance',
+          'Regional Sales Managers — weekly rep coaching, deal-level drill-down',
+          'Revenue Operations — quota setting, forecast accuracy, data quality checks',
+        ],
+      },
+      {
+        label: 'Key metrics',
+        items: [
+          'Total Revenue (closed-won deal value)',
+          'Quota Attainment (% of quota achieved per rep / region)',
+          'Deal Count (number of closed-won deals)',
+          'YoY Revenue Growth (current period vs same period last year)',
+          'Average Deal Size',
+          'Win Rate',
+        ],
+      },
+      {
+        label: 'Dimensions & filters',
+        items: [
+          'Region, territory, sub-region',
+          'Sales rep, team, manager',
+          'Deal stage, deal type, product line',
+          'Close date, fiscal quarter, fiscal year',
+        ],
+      },
+      {
+        label: 'Time handling',
+        items: [
+          'Year-over-year and quarterly comparisons as the primary lens',
+          'Fiscal calendar aligned — Q1 starts February, quota prorated accordingly',
+          'MTD and QTD running totals for real-time tracking',
+        ],
+      },
+      {
+        label: 'AI instructions',
+        items: [
+          '"Revenue" defaults to closed-won deal value unless pipeline or forecast is specified',
+          '"Quota" = annual sales target, prorated by quarter',
+          '"Region" = primary sales territory assignment, not the customer\'s billing address',
+        ],
+      },
+      {
+        label: 'Limitations',
+        items: [
+          'Returns and refunds not yet modelled — revenue figures are gross',
+          'Territory re-assignments before 2023 may cause historical rep-level figures to appear understated',
+          'Forecast data is not included in this model',
+        ],
+      },
     ],
     guardrails: [
       'Exclude test accounts and internal dummy deals from all revenue calculations',
@@ -694,10 +742,10 @@ const MOCK_DIRECTIONS: Direction[] = [
   <li>NPS data has gaps for customers who opted out of surveys</li>
   <li>Historical churn risk scores before Q3 2023 are unavailable</li>
 </ul>`.trim(),
-    // d2 requires new fields (linkedConcepts, understoodPoints, addedItems, guardrails) before un-commenting
+    // d2 requires new fields (linkedConcepts, understoodPoints, addedSections, guardrails) before un-commenting
     linkedConcepts: [],
     understoodPoints: [],
-    addedItems: [],
+    addedSections: [],
     guardrails: [],
   }, */
 ];
@@ -815,6 +863,14 @@ function DirectionCard({
 
       <Divider />
 
+      {/* ── BUSINESS QUESTIONS ── */}
+      <div style={{ padding: `${spacing.D}px` }}>
+        <SectionLabel>Business questions this model can answer</SectionLabel>
+        <BulletList items={direction.keyQuestions} />
+      </div>
+
+      <Divider />
+
       {/* ── WHAT I UNDERSTOOD ── */}
       <div style={{ padding: `${spacing.D}px` }}>
         <SectionLabel>What I understood</SectionLabel>
@@ -849,7 +905,7 @@ function DirectionCard({
         >
           <span style={{ fontSize: 12, fontWeight: 600, textAlign: 'left' as const }}>
             What I added{' '}
-            <span style={{ fontWeight: 400 }}>· business rules &amp; AI context not in your prompt</span>
+            <span style={{ fontWeight: 400 }}>· consumers, metrics, dimensions, time, AI rules &amp; limitations</span>
           </span>
           <svg
             width="12" height="12" viewBox="0 0 12 12" fill="none"
@@ -860,8 +916,20 @@ function DirectionCard({
           </svg>
         </button>
         {addedExpanded && (
-          <div style={{ padding: `0 ${spacing.D}px ${spacing.D}px` }}>
-            <BulletList items={direction.addedItems} color={systemColors.light['content-brand']} />
+          <div style={{ padding: `0 ${spacing.D}px ${spacing.D}px`, display: 'flex', flexDirection: 'column', gap: spacing.D }}>
+            {direction.addedSections.map(section => (
+              <div key={section.label}>
+                <p style={{
+                  margin: `0 0 ${spacing.B}px`,
+                  fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+                  textTransform: 'uppercase' as const,
+                  color: systemColors.light['content-brand'],
+                }}>
+                  {section.label}
+                </p>
+                <BulletList items={section.items} />
+              </div>
+            ))}
           </div>
         )}
       </div>
