@@ -771,8 +771,8 @@ function DirectionCard({
 
   const SectionLabel = ({ children }: { children: React.ReactNode }) => (
     <p style={{
-      margin: `0 0 ${spacing.B}px`,
-      fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+      margin: `0 0 ${spacing.C}px`,
+      fontSize: 12, fontWeight: 700, letterSpacing: '0.06em',
       textTransform: 'uppercase' as const,
       color: systemColors.light['content-secondary'],
     }}>
@@ -903,7 +903,7 @@ function DirectionCard({
 
       {/* ── WHAT YOU'LL BE ABLE TO ASK ── */}
       <div style={{ padding: `${spacing.D}px` }}>
-        <SectionLabel>What you'll be able to ask</SectionLabel>
+        <SectionLabel>Questions you'll be able to answer</SectionLabel>
         <BulletList items={direction.keyQuestions} />
       </div>
 
@@ -943,19 +943,21 @@ function DirectionCard({
           <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.A }}>
             {/* Heading matches SectionLabel style */}
             <span style={{
-              fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+              fontSize: 12, fontWeight: 700, letterSpacing: '0.06em',
               textTransform: 'uppercase' as const,
               color: systemColors.light['content-secondary'],
             }}>
               What I added
             </span>
-            {/* Sub-title on its own line */}
-            <span style={{
-              fontSize: 11, fontWeight: fontWeight.light,
-              lineHeight: '16px', color: systemColors.light['content-tertiary'],
-            }}>
-              metrics, dimensions, consumers, guardrails &amp; more
-            </span>
+            {/* Sub-title only shown when collapsed */}
+            {!addedExpanded && (
+              <span style={{
+                fontSize: 11, fontWeight: fontWeight.light,
+                lineHeight: '16px', color: systemColors.light['content-tertiary'],
+              }}>
+                metrics, dimensions, consumers, guardrails &amp; more
+              </span>
+            )}
           </div>
           <svg
             width="12" height="12" viewBox="0 0 12 12" fill="none"
