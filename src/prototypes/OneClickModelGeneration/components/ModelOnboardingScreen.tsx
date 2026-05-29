@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { fontFamily, fontWeight, fontSize } from '@tokens/typography';
 import { systemColors } from '@tokens/colors';
 import { spacing } from '@tokens/spacing';
@@ -526,8 +526,12 @@ interface Direction {
   id: string;
   title: string;
   description: string;        // short subtitle used in BuildingScreen header
-  goal: string;               // one-sentence goal shown on compact card
-  keyQuestions: string[];     // 3 questions shown on compact card
+  goal: string;               // "WHAT YOU ASKED FOR" prose
+  keyQuestions: string[];     // kept for Open doc / future use
+  linkedConcepts: string[];   // e.g. ['deals', 'regions', 'sales_reps', 'quotas']
+  understoodPoints: string[]; // bullet list for "WHAT I UNDERSTOOD"
+  addedItems: string[];       // "What I added" collapsible content
+  guardrails: string[];       // structured guardrails rendered in card
   docHtml: string;            // full requirements doc HTML, shown in canvas panel
 }
 
@@ -541,6 +545,27 @@ const MOCK_DIRECTIONS: Direction[] = [
       'What is total revenue by region this quarter vs last quarter?',
       'Which regions are behind on their quota targets?',
       'What is the average deal size and win rate by region?',
+    ],
+    linkedConcepts: ['deals', 'regions', 'sales_reps', 'quotas'],
+    understoodPoints: [
+      'Closed-won deal value is the primary revenue signal — not pipeline or forecast',
+      'Performance is grouped by region, territory, and sales rep hierarchy',
+      'Quarterly and year-over-year comparisons surface trends and seasonal patterns',
+      'Quota attainment aligns deal value to annual targets prorated by fiscal quarter',
+      'Consumers include VPs, regional managers, and RevOps — each needs different drill depth',
+    ],
+    addedItems: [
+      'Fiscal calendar starts in February — Q1 covers Feb–Apr, prorated quota accordingly',
+      'Revenue defaults to closed-won deal value; gross figures only, refunds not yet modelled',
+      '"Region" uses primary sales territory assignment, not the customer\'s billing address',
+      'Test accounts and internal dummy deals are excluded from all calculations',
+      'Unattributed orders (no region_id) excluded from regional totals but included in company-wide figures',
+      'AI instructions: when asked about "quota", default to annual target prorated by quarter',
+    ],
+    guardrails: [
+      'Exclude test accounts and internal dummy deals from all revenue calculations',
+      'Do not expose cost, margin, or commission data — this model is for revenue tracking only',
+      'Unattributed orders (no region_id) excluded from regional breakdowns but included in company-wide totals',
     ],
     docHtml: `
 <h2>Goal</h2>
@@ -600,7 +625,8 @@ const MOCK_DIRECTIONS: Direction[] = [
   <li>Forecast data is not included in this model</li>
 </ul>`.trim(),
   },
-  {
+  // ─── d2 kept in code for future use — uncomment to re-enable ───────────────
+  /* {
     id: 'd2',
     title: 'Customer health and retention',
     description: 'Identify at-risk customers early by tracking engagement trends and support interactions.',
@@ -668,105 +694,203 @@ const MOCK_DIRECTIONS: Direction[] = [
   <li>NPS data has gaps for customers who opted out of surveys</li>
   <li>Historical churn risk scores before Q3 2023 are unavailable</li>
 </ul>`.trim(),
-  },
+    // d2 requires new fields (linkedConcepts, understoodPoints, addedItems, guardrails) before un-commenting
+    linkedConcepts: [],
+    understoodPoints: [],
+    addedItems: [],
+    guardrails: [],
+  }, */
 ];
 
 
-// ─── Direction card (compact) ──────────────────────────────────────────────────
-// Shows title + goal + 3 key questions. Select radio picks the direction.
-// "Open doc" button opens the full requirements canvas on the right.
+// ─── Model Requirements Document card ─────────────────────────────────────────
+// Full MRD card — MODEL REQUIREMENT label, title, connection chip, WHAT YOU ASKED
+// FOR, WHAT I UNDERSTOOD, What I added (collapsible), GUARDRAILS, Build model CTA.
+// No selection — single card shown, Build model button is the only action.
 
 function DirectionCard({
   direction,
-  index,
-  isSelected,
-  onSelect,
-  onOpenCanvas,
+  connection,
+  onBuild,
+  onOpenCanvas: _onOpenCanvas,  // hidden — uncomment Open doc button below to use
 }: {
   direction: Direction;
-  index: number;
-  isSelected: boolean;
-  onSelect: () => void;
+  connection: DataConnection;
+  onBuild: () => void;
   onOpenCanvas: () => void;
 }) {
-  const numLabel = String(index + 1).padStart(2, '0');
+  const [addedExpanded, setAddedExpanded] = React.useState(false);
+
+  const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+    <p style={{
+      margin: `0 0 ${spacing.B}px`,
+      fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+      textTransform: 'uppercase' as const,
+      color: systemColors.light['content-secondary'],
+    }}>
+      {children}
+    </p>
+  );
+
+  const BulletList = ({ items, color }: { items: string[]; color?: string }) => (
+    <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 5 }}>
+      {items.map((item, i) => (
+        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.B, fontSize: 13, lineHeight: '19px', color: systemColors.light['content-secondary'], fontWeight: fontWeight.light }}>
+          <span style={{
+            flexShrink: 0, marginTop: 5, width: 4, height: 4, borderRadius: '50%',
+            backgroundColor: color ?? systemColors.light['content-tertiary'],
+            display: 'inline-block',
+          }} />
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+
+  const Divider = () => (
+    <div style={{ height: 1, background: systemColors.light['border-divider'] }} />
+  );
 
   return (
-    <div
-      style={{
-        flex: 1, minWidth: 0,
-        display: 'flex', flexDirection: 'column',
-        borderRadius: spacing.C, overflow: 'hidden',
-        backgroundColor: systemColors.light['background-base'],
-        border: `1.5px solid ${isSelected ? systemColors.light['content-brand'] : systemColors.light['border-divider']}`,
-        transition: 'border-color 0.2s',
-      }}
-    >
-      {/* Header — click to select */}
-      <div
-        onClick={onSelect}
-        style={{
-          display: 'flex', alignItems: 'center', gap: spacing.C,
-          padding: `${spacing.C}px ${spacing.D}px`,
-          cursor: 'pointer',
-          backgroundColor: isSelected ? systemColors.light['background-information'] : 'transparent',
-          borderBottom: `1px solid ${systemColors.light['border-divider']}`,
-          transition: 'background-color 0.15s',
-        }}
-        onMouseEnter={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.backgroundColor = systemColors.light['background-sunken']; }}
-        onMouseLeave={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
-      >
-        {/* Radio */}
-        <div style={{
-          width: 16, height: 16, borderRadius: '50%', flexShrink: 0,
-          border: `1.5px solid ${isSelected ? systemColors.light['content-brand'] : systemColors.light['border-default']}`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          backgroundColor: systemColors.light['background-base'],
-          transition: 'border-color 0.15s',
-        }}>
-          {isSelected && <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: systemColors.light['content-brand'] }} />}
+    <div style={{
+      borderRadius: spacing.C, overflow: 'hidden',
+      backgroundColor: systemColors.light['background-base'],
+      border: `1px solid ${systemColors.light['border-divider']}`,
+    }}>
+      {/* ── Header: MODEL REQUIREMENT label + title + connection chip ── */}
+      <div style={{ padding: `${spacing.D}px ${spacing.D}px ${spacing.C}px` }}>
+        {/* Label */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B, marginBottom: spacing.B }}>
+          <span style={{
+            width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+            backgroundColor: systemColors.light['content-brand'],
+          }} />
+          <span style={{
+            fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: systemColors.light['content-brand'],
+          }}>
+            Model requirement
+          </span>
         </div>
-        {/* Number */}
-        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', flexShrink: 0, color: isSelected ? systemColors.light['content-brand'] : systemColors.light['content-secondary'] }}>
-          {numLabel}
-        </span>
+
         {/* Title */}
-        <span style={{ flex: 1, fontSize: 14, fontWeight: 600, lineHeight: '20px', color: systemColors.light['content-primary'], overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <h2 style={{
+          margin: `0 0 ${spacing.C}px`, padding: 0,
+          fontSize: 17, fontWeight: 700, lineHeight: '24px',
+          color: systemColors.light['content-primary'],
+        }}>
           {direction.title}
-        </span>
-        {/* Open doc button */}
-        <Button
-          variant="tertiary"
-          size="small"
-          onClick={e => { (e as React.MouseEvent).stopPropagation(); onOpenCanvas(); }}
-          icon={
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-              <path d="M5 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9M8 2h4v4M12 2 7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          }
-          iconPosition="leading"
-        >
-          Open doc
-        </Button>
+        </h2>
+
+        {/* Connection chip */}
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: spacing.B,
+          backgroundColor: systemColors.light['background-sunken'],
+          borderRadius: 100, padding: '3px 10px',
+          border: `1px solid ${systemColors.light['border-divider']}`,
+        }}>
+          <span style={{
+            width: 6, height: 6, borderRadius: '50%',
+            backgroundColor: '#22c55e', flexShrink: 0,
+          }} />
+          <span style={{ fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'] }}>
+            {connection.name} · {connection.source}
+          </span>
+        </div>
       </div>
 
-      {/* Body — goal + key questions */}
-      <div style={{ padding: `${spacing.C}px ${spacing.D}px ${spacing.D}px`, display: 'flex', flexDirection: 'column', gap: spacing.C }}>
-        {/* Goal */}
-        <p style={{ margin: 0, fontSize: 13, fontWeight: fontWeight.light, lineHeight: '19px', color: systemColors.light['content-primary'] }}>
+      <Divider />
+
+      {/* ── WHAT YOU ASKED FOR ── */}
+      <div style={{ padding: `${spacing.D}px` }}>
+        <SectionLabel>What you asked for</SectionLabel>
+        <p style={{
+          margin: 0, fontSize: 13, fontWeight: fontWeight.light,
+          lineHeight: '20px', color: systemColors.light['content-primary'],
+        }}>
           {direction.goal}
         </p>
-        {/* Divider */}
-        <div style={{ height: 1, background: systemColors.light['border-divider'] }} />
-        {/* Key questions */}
-        <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {direction.keyQuestions.map((q, i) => (
-            <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.B, fontSize: 13, lineHeight: '18px', color: systemColors.light['content-secondary'], fontWeight: fontWeight.light }}>
-              <span style={{ flexShrink: 0, marginTop: 4, width: 4, height: 4, borderRadius: '50%', backgroundColor: systemColors.light['content-tertiary'], display: 'inline-block' }} />
-              {q}
-            </li>
+      </div>
+
+      <Divider />
+
+      {/* ── WHAT I UNDERSTOOD ── */}
+      <div style={{ padding: `${spacing.D}px` }}>
+        <SectionLabel>What I understood</SectionLabel>
+        {/* Linked concepts line */}
+        <p style={{ margin: `0 0 ${spacing.C}px`, fontSize: 13, lineHeight: '20px', color: systemColors.light['content-primary'] }}>
+          <span style={{ fontWeight: 500 }}>
+            {direction.linkedConcepts.length} linked concepts:{' '}
+          </span>
+          {direction.linkedConcepts.map((c, i) => (
+            <React.Fragment key={c}>
+              <span style={{ fontWeight: 600, color: systemColors.light['content-brand'] }}>{c}</span>
+              {i < direction.linkedConcepts.length - 1 && (
+                <span style={{ color: systemColors.light['content-tertiary'], margin: '0 5px' }}>→</span>
+              )}
+            </React.Fragment>
           ))}
-        </ul>
+        </p>
+        <BulletList items={direction.understoodPoints} />
+      </div>
+
+      {/* ── What I added (collapsible, starts collapsed) ── */}
+      <div style={{ borderTop: `1px solid ${systemColors.light['border-divider']}` }}>
+        <button
+          onClick={() => setAddedExpanded(e => !e)}
+          style={{
+            width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: `${spacing.C}px ${spacing.D}px`,
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: systemColors.light['content-secondary'],
+            fontFamily: fontFamily.primary,
+          }}
+        >
+          <span style={{ fontSize: 12, fontWeight: 600, textAlign: 'left' as const }}>
+            What I added{' '}
+            <span style={{ fontWeight: 400 }}>· business rules &amp; AI context not in your prompt</span>
+          </span>
+          <svg
+            width="12" height="12" viewBox="0 0 12 12" fill="none"
+            style={{ flexShrink: 0, transform: addedExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
+            aria-hidden
+          >
+            <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        {addedExpanded && (
+          <div style={{ padding: `0 ${spacing.D}px ${spacing.D}px` }}>
+            <BulletList items={direction.addedItems} color={systemColors.light['content-brand']} />
+          </div>
+        )}
+      </div>
+
+      <Divider />
+
+      {/* ── GUARDRAILS ── */}
+      <div style={{ padding: `${spacing.D}px` }}>
+        <SectionLabel>Guardrails</SectionLabel>
+        <BulletList items={direction.guardrails} />
+      </div>
+
+      {/* ── Footer: Build model CTA ── */}
+      <div style={{
+        borderTop: `1px solid ${systemColors.light['border-divider']}`,
+        padding: `${spacing.C}px ${spacing.D}px`,
+        display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: spacing.C,
+        backgroundColor: systemColors.light['background-sunken'],
+      }}>
+        {/* "Open doc" is hidden — uncomment to re-enable:
+        <Button variant="tertiary" size="small" onClick={onOpenCanvas}
+          icon={<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+            <path d="M5 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9M8 2h4v4M12 2 7 7"
+              stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>} iconPosition="leading">Open doc</Button>
+        */}
+        <Button variant="primary" size="basic" onClick={onBuild}>
+          Build model
+        </Button>
       </div>
     </div>
   );
@@ -1355,7 +1479,6 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   // ── Screen state machine ──────────────────────────────────────────────────
   type ScreenState = 'prompt' | 'chat';
   const [screenState,       setScreenState]       = useState<ScreenState>('prompt');
-  const [_selectedDirection, _setSelectedDirection] = useState<Direction | null>(null);
   const [currentPromptText, setCurrentPromptText] = useState('');
   const [lastPrompt,        setLastPrompt]         = useState('');
 
@@ -1366,8 +1489,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   const [clarifyStep,    setClarifyStep]    = useState(0);
   const [clarifyAnswers, setClarifyAnswers] = useState<Array<{ selections: string[]; freeText?: string }>>([]);
   const [chatMessages,   setChatMessages]   = useState<ChatMsg[]>([]);
-  const [directions,   setDirections]   = useState<Direction[]>(MOCK_DIRECTIONS);
-  const [selectedId,   setSelectedId]   = useState<string | null>(null);
+  const [directions,      setDirections]      = useState<Direction[]>(MOCK_DIRECTIONS);
   const [canvasDirection, setCanvasDirection] = useState<Direction | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -1381,14 +1503,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [chatMessages.length]);
 
-  // When a direction is selected/deselected the bottom slot height changes.
-  // useLayoutEffect fires synchronously after DOM mutation but BEFORE paint,
-  // so the scroll anchors before the user ever sees the layout shift.
-  useLayoutEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
-  }, [selectedId]);
-
-  // Also scroll when the last reasoning message gains a responseText — this is
+  // Scroll when the last reasoning message gains a responseText — this is
   // an in-place update (no length change) so the above effect won't fire.
   const reasoningMsgs = chatMessages
     .filter((m): m is Extract<ChatMsg, { kind: 'reasoning' }> => m.kind === 'reasoning');
@@ -1474,7 +1589,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     }), 800);
 
     const t2 = setTimeout(() => updateReasoningMsg(msgId, {
-      data: { ...inProgress, inlineText: 'Preparing 2 directions…' },
+      data: { ...inProgress, inlineText: 'Preparing model requirements…' },
     }), 1600);
 
     const t3 = setTimeout(() => {
@@ -1483,8 +1598,8 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
           header: 'Done', isDone: true, inlineText: '',
           steps: [
             { n: 1, name: 'Mapped context',       text: 'Matched goals and audience to schema entities.',  dotState: 'done' },
-            { n: 2, name: 'Selected tables',      text: 'Found 4 candidate tables across 2 directions.',  dotState: 'done' },
-            { n: 3, name: 'Prepared directions',  text: 'Generated 2 annotated model directions.',        dotState: 'done' },
+            { n: 2, name: 'Selected tables',      text: 'Found 4 candidate tables for your model.',       dotState: 'done' },
+            { n: 3, name: 'Prepared requirements', text: 'Generated a Model Requirements Document.',      dotState: 'done' },
           ],
         },
       });
@@ -1506,7 +1621,6 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     setChatPhase('reasoning_initial');
     setClarifyStep(0);
     setClarifyAnswers([]);
-    setSelectedId(null);
     setDirections(MOCK_DIRECTIONS);
     setCurrentPromptText(''); // clear draft after send
     setScreenState('chat');
@@ -1546,12 +1660,9 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     setChatMessages(prev => [...prev, { kind: 'user', id: `u-${Date.now()}`, text }]);
     setClarifyAnswers([]);
     setClarifyStep(0);
-    setSelectedId(null);
     setCurrentPromptText(''); // clear draft after send
     setChatPhase('reasoning_initial');
   };
-
-  const selectedDirection_ = directions.find(d => d.id === selectedId) ?? null;
 
   return (
     <div
@@ -1785,6 +1896,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                   }
 
                   if (msg.kind === 'directions') {
+                    const mrd = directions[0];
                     return (
                       <div key={msg.id} style={{
                         display: 'flex', flexDirection: 'column', gap: spacing.D,
@@ -1793,22 +1905,34 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                         {/* SpotterModel intro text */}
                         <div style={{ paddingLeft: AGENT_TEXT_INDENT }}>
                           <p style={{ margin: 0, fontSize: fontSize.sm, fontWeight: fontWeight.light, lineHeight: '22px', color: systemColors.light['content-primary'] }}>
-                            Based on your goals, I've put together two directions. Each one is a full requirements doc — open it to review what I've drafted and edit anything you'd like to change. When you're ready, select one and proceed.
+                            Based on your goals, I've prepared a Model Requirements Document. Review what I've drafted — when you're ready, click <strong>Build model</strong> to get started.
                           </p>
                         </div>
-                        {/* Direction cards side-by-side */}
-                        <div style={{ display: 'flex', gap: spacing.D, alignItems: 'stretch' }}>
-                          {directions.map((d, i) => (
-                            <DirectionCard
-                              key={d.id}
-                              direction={d}
-                              index={i}
-                              isSelected={selectedId === d.id}
-                              onSelect={() => setSelectedId(id => id === d.id ? null : d.id)}
-                              onOpenCanvas={() => setCanvasDirection(d)}
-                            />
-                          ))}
-                        </div>
+                        {/* Single MRD card */}
+                        {mrd && (
+                          <DirectionCard
+                            direction={mrd}
+                            connection={connection}
+                            onBuild={() => {
+                              const spec       = MODEL_SPEC[mrd.id] ?? MODEL_SPEC['d1'];
+                              const planPhases = BUILD_PLAN[mrd.id]?.phases ?? BUILD_PLAN['d1'].phases;
+                              (window as any).__DME_AUTO_DATA__ = {
+                                goal:          mrd.goal,
+                                phases:        planPhases,
+                                tables:        spec.tables,
+                                relationships: spec.relationships,
+                                formulas:      spec.formulas,
+                              };
+                              (window as any).__DME_CONFIG__ = {
+                                spotterModel:   true,
+                                welcomeVariant: 'blank',
+                                autoPopulate:   true,
+                              };
+                              onBuild();
+                            }}
+                            onOpenCanvas={() => setCanvasDirection(mrd)}
+                          />
+                        )}
                       </div>
                     );
                   }
@@ -1819,68 +1943,36 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               </div>
             </div>
 
-            {/* Bottom slot — Proceed CTA (when direction selected) or ClarifyingCard / PromptBar */}
+            {/* Bottom slot — ClarifyingCard or PromptBar */}
             <div style={{
               flexShrink: 0,
               backgroundColor: systemColors.light['background-base'],
-              minHeight: 162, // matches PromptBar slot height — prevents downward shift when CTA replaces it
+              minHeight: 162,
             }}>
-              {selectedId ? (
-                /* ── Proceed CTA — Radiant Button large, right-aligned ── */
-                <div style={{ padding: `${spacing.D}px ${spacing.F}px` }}>
-                  <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', justifyContent: 'center', animation: 'slideUpIn 0.2s ease both' }}>
-                    <Button
-                      variant="primary"
-                      size="large"
-                      onClick={() => {
-                        if (!selectedDirection_) return;
-                        const spec       = MODEL_SPEC[selectedDirection_.id] ?? MODEL_SPEC['d1'];
-                        const planPhases = BUILD_PLAN[selectedDirection_.id]?.phases ?? BUILD_PLAN['d1'].phases;
-                        (window as any).__DME_AUTO_DATA__ = {
-                          goal:          selectedDirection_.goal,
-                          phases:        planPhases,
-                          tables:        spec.tables,
-                          relationships: spec.relationships,
-                          formulas:      spec.formulas,
-                        };
-                        (window as any).__DME_CONFIG__ = {
-                          spotterModel:   true,
-                          welcomeVariant: 'blank',
-                          autoPopulate:   true,
-                        };
-                        onBuild();
-                      }}
-                    >
-                      Proceed in this direction →
-                    </Button>
-                  </div>
+              <div style={{ padding: `${spacing.D}px ${spacing.F}px` }}>
+                <div style={{ maxWidth: 760, margin: '0 auto' }}>
+                  {chatPhase === 'clarifying' ? (
+                    <ClarifyingCard
+                      questions={CLARIFYING_QUESTIONS}
+                      currentStep={clarifyStep}
+                      onNext={handleClarifyNext}
+                      onCancel={handleClarifyCancel}
+                    />
+                  ) : (
+                    /* PromptBar is always visible. Only the send button is disabled
+                       while SpotterModel is reasoning — the user can still type. */
+                    <PromptBar
+                      onTextChange={setCurrentPromptText}
+                      onSubmit={handleFollowUp}
+                      submitDisabled={chatPhase === 'reasoning_initial' || chatPhase === 'reasoning_post'}
+                      initialText={currentPromptText || undefined}
+                      connectionName={connectionName}
+                      onConnectionClick={() => onChangeConnection?.()}
+                      onShowConnectionDetails={() => setShowConnDetails(true)}
+                    />
+                  )}
                 </div>
-              ) : (
-                <div style={{ padding: `${spacing.D}px ${spacing.F}px` }}>
-                  <div style={{ maxWidth: 760, margin: '0 auto' }}>
-                    {chatPhase === 'clarifying' ? (
-                      <ClarifyingCard
-                        questions={CLARIFYING_QUESTIONS}
-                        currentStep={clarifyStep}
-                        onNext={handleClarifyNext}
-                        onCancel={handleClarifyCancel}
-                      />
-                    ) : (
-                      /* PromptBar is always visible. Only the send button is disabled
-                         while SpotterModel is reasoning — the user can still type. */
-                      <PromptBar
-                        onTextChange={setCurrentPromptText}
-                        onSubmit={handleFollowUp}
-                        submitDisabled={chatPhase === 'reasoning_initial' || chatPhase === 'reasoning_post'}
-                        initialText={currentPromptText || undefined}
-                        connectionName={connectionName}
-                        onConnectionClick={() => onChangeConnection?.()}
-                        onShowConnectionDetails={() => setShowConnDetails(true)}
-                      />
-                    )}
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
 
             {/* Disclaimer — below prompt bar */}
