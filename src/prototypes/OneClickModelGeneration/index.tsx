@@ -4,6 +4,8 @@ import { DataWorkspaceHome } from './components/DataWorkspaceHome';
 import { ModelSelectionModal } from './components/ModelSelectionModal';
 import { ConnectionSelectionScreen } from './components/ConnectionSelectionScreen';
 import { ModelOnboardingScreen } from './components/ModelOnboardingScreen';
+import { DemoVariantOverlay } from './components/DemoVariantOverlay';
+import type { DemoVariant } from './components/ModelOnboardingScreen';
 import type { DataConnection } from './data/mockData';
 
 /**
@@ -22,6 +24,13 @@ export const OneClickModelGeneration: React.FC = () => {
   const [selectedConnection, setSelectedConnection] = useState<DataConnection | null>(null);
   // Shown as an overlay on top of the onboarding screen when the user wants to switch connection.
   const [showConnectionPicker, setShowConnectionPicker] = useState(false);
+  // Active demo variant — lifted here so the overlay can switch it and navigate back to onboarding.
+  const [demoVariant, setDemoVariant] = useState<DemoVariant>('option1');
+
+  const handleVariantSwitch = (v: DemoVariant) => {
+    setDemoVariant(v);
+    setScreen('onboarding');
+  };
 
   return (
     <>
@@ -62,6 +71,8 @@ export const OneClickModelGeneration: React.FC = () => {
           onBuild={() => setScreen('editor')}
           onSkip={() => setScreen('editor')}
           onChangeConnection={() => setShowConnectionPicker(true)}
+          demoVariant={demoVariant}
+          onVariantSwitch={handleVariantSwitch}
         />
       )}
 
@@ -79,13 +90,14 @@ export const OneClickModelGeneration: React.FC = () => {
         />
       )}
 
-      {screen === 'editor' && (() => {
-        // Only set blank config if _handleBuildModel hasn't already set 'existing'
-        if (!(window as any).__DME_CONFIG__) {
-          (window as any).__DME_CONFIG__ = { spotterModel: true, welcomeVariant: 'blank' };
-        }
-        return <DataModelEditorComponent />;
-      })()}
+      {screen === 'editor' && (
+        <>
+          {/* Real DME — AgentPanel registers window APIs in its own useEffect */}
+          <DataModelEditorComponent />
+          {/* Overlay mounts AFTER DME so window._appendMsg is already registered */}
+          <DemoVariantOverlay onVariantSwitch={handleVariantSwitch} />
+        </>
+      )}
     </>
   );
 };
