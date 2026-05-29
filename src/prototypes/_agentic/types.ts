@@ -2,8 +2,9 @@ import type { ToolcallData } from './ToolcallCard';
 import type { ReasoningStep, ReasoningData } from './ReasoningBlock';
 import type { SuggType, TableSuggestion, JoinSuggestion, ColumnGroup, FormulaSuggestion } from './SuggestionCard';
 import type { ChipItem } from './NextActionChips';
+import type { StopClarifyResult } from './StopClarifyCard';
 
-export type { ToolcallData, ReasoningStep, ReasoningData, SuggType, TableSuggestion, JoinSuggestion, ColumnGroup, FormulaSuggestion, ChipItem };
+export type { ToolcallData, ReasoningStep, ReasoningData, SuggType, TableSuggestion, JoinSuggestion, ColumnGroup, FormulaSuggestion, ChipItem, StopClarifyResult };
 
 // ── Plan Steps Card ───────────────────────────────────────────────────────────
 
@@ -40,11 +41,13 @@ export interface ResponseData {
 }
 
 export type MessageItem =
-  | { kind: 'user';       id: string; text: string; html?: string }
-  | { kind: 'typing';     id: string; label: string }
-  | { kind: 'agent';      id: string; reasoning: ReasoningData; response: ResponseData | null }
-  | { kind: 'plan-steps'; id: string; data: PlanStepsData; reasoning?: ReasoningData; text?: string; showBuildCta?: boolean }
+  | { kind: 'user';          id: string; text: string; html?: string }
+  | { kind: 'typing';        id: string; label: string }
+  | { kind: 'agent';         id: string; reasoning: ReasoningData; response: ResponseData | null }
+  | { kind: 'plan-steps';    id: string; data: PlanStepsData; reasoning?: ReasoningData; text?: string; showBuildCta?: boolean }
   // Carried from the onboarding screen — rendered via window.__renderMRD__
   // reasoning + responseText are set when the preceding onboarding reasoning
   // message is merged into this entry so both appear in one AgentMessage row.
-  | { kind: 'mrd'; id: string; mrdData: Record<string, unknown>; version: number; isCollapsed: boolean; reasoning?: ReasoningData; responseText?: string };
+  | { kind: 'mrd';           id: string; mrdData: Record<string, unknown>; version: number; isCollapsed: boolean; reasoning?: ReasoningData; responseText?: string }
+  // Stop-clarify card — shown when the user pauses auto-generation
+  | { kind: 'stop-clarify';  id: string; isReadOnly?: boolean };

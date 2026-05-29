@@ -1501,6 +1501,12 @@ Only include the context field when there is genuinely meaningful content from t
   async function startChat(prompt, isAutoPrompt = false, spinnerLabel = null) {
     if (!prompt || !prompt.trim()) return;
 
+    // Intercept special chip actions that restart the build rather than chat
+    if (prompt.trim() === 'Resume building') {
+      window._restartBuildFromPhase && window._restartBuildFromPhase('__resume__');
+      return;
+    }
+
     if (window._onChatStart) { window._onChatStart(); window._onChatStart = null; }
     document.getElementById('welcome-view').style.display = 'none';
     const chatView = document.getElementById('chat-view');
@@ -1956,11 +1962,59 @@ Only include the context field when there is genuinely meaningful content from t
   // ── Auto-populate orchestrator ────────────────────────────────────────
   // Reads window.__DME_AUTO_DATA__ and progressively adds tables → joins →
   // columns → formulas to the DME, updating the SpotterModel plan card.
-  function startAutoPopulate() {
-    var data = window.__DME_AUTO_DATA__;
-    if (!data) return;
-    // Consume immediately so StrictMode's second mount doesn't re-trigger.
-    delete window.__DME_AUTO_DATA__;
+  // ── Clear model state down to a given phase (used by restart) ────────
+  // phaseIdx is the FIRST phase that will be rebuilt (everything from that
+  // phase onward is cleared; everything before it is preserved).
+  function clearModelToPhase(phaseIdx) {
+    if (!window._modelState) return;
+    var m = window._modelState.model;
+    if (phaseIdx <= 1) {
+      // Full reset — clear tables, joins, columns, formulas
+      m.tables   = [];
+      m.joins    = [];
+      m.columns  = [];
+      m.formulas = [];
+      window._modelState.addedTables  = [];
+      window._modelState.addedJoins   = [];
+      window._modelState.addedColumns = [];
+      window._modelState.tablePositions = {};
+    } else if (phaseIdx === 2) {
+      // Keep tables, clear joins/columns/formulas
+      m.joins    = [];
+      m.columns  = [];
+      m.formulas = [];
+      window._modelState.addedJoins   = [];
+      window._modelState.addedColumns = [];
+    } else {
+      // Phase 3+ — keep tables + joins + columns, clear formulas only
+      m.formulas = [];
+    }
+    // Reset auto-populate flags so empty states reappear cleanly
+    window._setColumnShimmer  && window._setColumnShimmer(false);
+    window._setFormulaShimmer && window._setFormulaShimmer(false);
+    window._setDMEAutoPopulating && window._setDMEAutoPopulating(false);
+    window._autoPopulating = false;
+    // Repaint canvas and tab content
+    window._pendingModelRebuild = true;
+    flushModelRebuild();
+    switchTab('tables');
+  }
+
+  function startAutoPopulate(startFromPhaseIdx) {
+    startFromPhaseIdx = startFromPhaseIdx || 0;
+
+    var data;
+    if (startFromPhaseIdx === 0) {
+      // First run: consume from __DME_AUTO_DATA__, save a copy for future restarts
+      data = window.__DME_AUTO_DATA__;
+      if (!data) return;
+      delete window.__DME_AUTO_DATA__;
+      window.__DME_AUTO_DATA_SAVED__ = data; // persists for restart calls
+    } else {
+      // Restart run: read from saved copy (do not re-consume)
+      data = window.__DME_AUTO_DATA_SAVED__;
+      if (!data) return;
+    }
 
     var goal          = data.goal;
     var phases        = data.phases;        // array of { planLabel, planCaption, reasoning }
@@ -2035,6 +2089,12 @@ Only include the context field when there is genuinely meaningful content from t
       steps.forEach(function(s, si) { if (s.phaseIndex <= pi) last = si; });
       return last;
     });
+
+    // For restarts: the initial completedIdx reflects phases already done.
+    // For fresh runs startFromPhaseIdx === 0 so initialCompletedIdx = 0.
+    var initialCompletedIdx = startFromPhaseIdx === 0
+      ? 0
+      : (endSteps[startFromPhaseIdx - 1] !== undefined ? endSteps[startFromPhaseIdx - 1] + 1 : 0);
 
     // ── Plan card helpers ──────────────────────────────────────────────
     // makePlanData: builds the PlanStepsData object for the given micro-step index.
@@ -2115,7 +2175,30 @@ Only include the context field when there is genuinely meaningful content from t
       window._setTableCanvasData && window._setTableCanvasData({ tables: realTables, joins: window._modelState.model.joins });
     }
 
-    var PLAN_MSG_ID = 'dme-auto-populate-plan';
+    var PLAN_MSG_ID = 'dme-auto-populate-plan-' + Date.now();
+
+    // ── expose restart function ────────────────────────────────────────
+    // Closure captures PLAN_MSG_ID, phases, endSteps from THIS run so that
+    // _restartBuildFromPhase always removes the correct plan card.
+    window._restartBuildFromPhase = function(action, _issue) {
+      var targetPhaseIdx = 0;
+      if (action === '__resume__') {
+        targetPhaseIdx = window.__DME_ABORT_PHASE_IDX__ || 0;
+      } else if (action === 'joins') {
+        targetPhaseIdx = 2;
+      } else if (action === 'formulas') {
+        targetPhaseIdx = 4;
+      } else {
+        // 'tables', 'other' — restart from tables phase
+        targetPhaseIdx = 1;
+      }
+      // Clear the model to the chosen phase
+      clearModelToPhase(targetPhaseIdx);
+      // Remove old plan card from chat
+      window._removeMsg && window._removeMsg(PLAN_MSG_ID);
+      // Rerun from the target phase
+      startAutoPopulate(targetPhaseIdx);
+    };
 
     // ── Transition: welcome → chat; show tables pane ───────────────────
     var welcomeView = document.getElementById('welcome-view');
@@ -2138,35 +2221,55 @@ Only include the context field when there is genuinely meaningful content from t
     if (_contentCols) { _contentCols.style.alignItems = 'stretch'; _contentCols.style.justifyContent = 'flex-start'; }
     if (_contentFmls) { _contentFmls.style.alignItems = 'stretch'; _contentFmls.style.justifyContent = 'flex-start'; }
 
-    // ── Single plan-steps message: reasoning inline, then plan card below ─
-    // Push immediately with active reasoning spinner. After 1.2s collapse
-    // reasoning to Done, reveal "Plan ready" text, then begin canvas build.
+    // ── Plan card ─────────────────────────────────────────────────────
+    // Fresh run: show planning spinner → collapse to Done → start build.
+    // Restart run (startFromPhaseIdx > 0): skip spinner, show plan card
+    // immediately with completed phases marked done, then start build.
     window._appendMsg && window._appendMsg({
       kind: 'plan-steps', id: PLAN_MSG_ID,
-      reasoning: { header: 'Building a plan', isDone: false, inlineText: 'Generating a build plan…', steps: [] },
-      data: makePlanData(0),
+      reasoning: startFromPhaseIdx === 0
+        ? { header: 'Building a plan', isDone: false, inlineText: 'Generating a build plan…', steps: [] }
+        : { header: 'Resuming build', isDone: true, inlineText: '', steps: [] },
+      data: makePlanData(initialCompletedIdx),
+      text: startFromPhaseIdx > 0 ? 'Restarting build from ' + phases[startFromPhaseIdx].planLabel.toLowerCase() + '.' : undefined,
     });
     window._scrollMsgs && window._scrollMsgs();
 
-    setTimeout(function() {
-      // Collapse reasoning to Done + reveal intro text above the plan card
-      window._updateMsg && window._updateMsg(PLAN_MSG_ID, {
-        reasoning: {
-          header: 'Done', isDone: true, inlineText: '',
-          steps: [
-            { n: 1, name: 'Mapped requirements', text: 'Extracted tables, joins, formulas, and goal from the MRD.', dotState: 'done' },
-            { n: 2, name: 'Generated plan',      text: phases.length + ' build steps identified.', dotState: 'done' },
-          ],
-        },
-        text: 'Plan ready — building your model now.',
-      });
-
-      // Begin canvas build after plan card settles
-      setTimeout(runNext, 300);
-    }, 1200);
+    if (startFromPhaseIdx === 0) {
+      // First run: collapse reasoning after 1.2s then start building
+      setTimeout(function() {
+        window._updateMsg && window._updateMsg(PLAN_MSG_ID, {
+          reasoning: {
+            header: 'Done', isDone: true, inlineText: '',
+            steps: [
+              { n: 1, name: 'Mapped requirements', text: 'Extracted tables, joins, formulas, and goal from the MRD.', dotState: 'done' },
+              { n: 2, name: 'Generated plan',      text: phases.length + ' build steps identified.', dotState: 'done' },
+            ],
+          },
+          text: 'Plan ready — building your model now.',
+        });
+        setTimeout(runNext, 300);
+      }, 1200);
+    } else {
+      // Restart: begin immediately
+      setTimeout(runNext, 200);
+    }
 
     // ── Step runner ────────────────────────────────────────────────────
+    // For restart runs, jump stepIdx to the first step belonging to startFromPhaseIdx.
+    // If no such step exists (edge case), jump to totalSteps so finishAutoPopulate runs.
     var stepIdx = 0;
+    if (startFromPhaseIdx > 0) {
+      var _jumpFound = false;
+      for (var _si = 0; _si < steps.length; _si++) {
+        if (steps[_si].phaseIndex >= startFromPhaseIdx) {
+          stepIdx = _si;
+          _jumpFound = true;
+          break;
+        }
+      }
+      if (!_jumpFound) stepIdx = totalSteps;
+    }
 
     // Returns plan data with any currently-active phase frozen as 'pending' (no spinner).
     // Used when the run is stopped so the plan card doesn't keep showing an active spinner.
@@ -2197,6 +2300,17 @@ Only include the context field when there is genuinely meaningful content from t
       hideTableShimmer(); // null-safe
       window._setColumnShimmer  && window._setColumnShimmer(false);
       window._setFormulaShimmer && window._setFormulaShimmer(false);
+      // Record the phase index where abort happened so a 'resume' restart can
+      // continue from the right place.
+      var abortStepIdx = Math.max(0, stepIdx - 1);
+      var abortPhaseIdx = 0;
+      for (var _pi = phases.length - 1; _pi >= 0; _pi--) {
+        if (abortStepIdx >= (_pi === 0 ? 0 : endSteps[_pi - 1] + 1)) {
+          abortPhaseIdx = _pi;
+          break;
+        }
+      }
+      window.__DME_ABORT_PHASE_IDX__ = abortPhaseIdx;
       if (!window._modelState || !window._versionHistory) return;
       // Mark plan card paused — use makePlanDataStopped so active phase stops spinning
       window._updateMsg && window._updateMsg(PLAN_MSG_ID, {
@@ -2382,6 +2496,9 @@ Only include the context field when there is genuinely meaningful content from t
     // will call _setDMEAutoPopulating(true) immediately.
     window._autoPopulating = false;
     delete window.__DME_STOP_VERSION__;
+    delete window.__DME_ABORT_PHASE_IDX__;
+    delete window.__DME_AUTO_DATA_SAVED__;
+    delete window._restartBuildFromPhase;
     // Also clear the shimmer position if cleanup runs mid-sequence
     if (window._modelState) delete window._modelState.tablePositions?.['__shimmer__'];
     delete window._handleAddToModel;

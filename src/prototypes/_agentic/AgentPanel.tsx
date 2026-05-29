@@ -5,7 +5,8 @@ import { AgentMessage } from './AgentMessage';
 import { ReasoningBlock } from './ReasoningBlock';
 import { AgentResponseBlock } from './AgentResponseBlock';
 import { PlanStepsCard } from './PlanStepsCard';
-import type { MessageItem, SuggType, ReasoningData } from './types';
+import { StopClarifyCard } from './StopClarifyCard';
+import type { MessageItem, SuggType, ReasoningData, StopClarifyResult } from './types';
 
 export interface AgentPanelProps {
   welcomeVariant: 'blank' | 'existing';
@@ -94,8 +95,8 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     };
   }, [welcomeVariant]);
 
-  // Stop button handler — aborts the auto-populate chain and appends a
-  // diagnostic follow-up so the conversation stays engaged.
+  // Stop button handler — aborts the auto-populate chain, appends a lead-in
+  // message and a stop-clarify card so the user can explain what was wrong.
   const handleStopAutoPopulate = () => {
     // Trigger abort: sets aborted flag, saves version to window.__DME_STOP_VERSION__
     (window as any).__DME_AUTO_ABORT__?.();
@@ -104,8 +105,6 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     (window as any)._setColumnShimmer?.(false);
     (window as any)._setFormulaShimmer?.(false);
     // Reset the DME auto-populating state so empty states re-enable after Stop.
-    // This is NOT done inside __DME_AUTO_ABORT__ itself because that function is also
-    // called by StrictMode cleanup — calling it there would flash empty states between mounts.
     (window as any)._setDMEAutoPopulating?.(false);
     (window as any)._autoPopulating = false;
     setAutoPopulating(false);
@@ -114,31 +113,119 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     const vCard = (window as any).__DME_STOP_VERSION__ ?? undefined;
     delete (window as any).__DME_STOP_VERSION__;
 
-    const diagId = 'auto-stop-diag-' + Date.now();
-    setMessages(prev => [...prev, {
-      kind: 'agent',
-      id: diagId,
-      reasoning: { header: 'Paused', isDone: true, inlineText: '', steps: [] },
-      response: {
-        text: vCard
-          ? `Happy to pause — I\'ve saved your progress as Version ${vCard.versionNum}. What wasn\'t quite right?`
-          : "Happy to pause — let me know what wasn\'t quite right with what I was building.",
-        isVisible: true,
-        versionCard: vCard,
-        chips: [
-          { text: 'Wrong tables',              variant: 'default' },
-          { text: 'Wrong joins',               variant: 'default' },
-          { text: 'Wrong formulas',            variant: 'default' },
-          { text: 'Continue building',         variant: 'enrich'  },
-        ],
-      },
-    } as MessageItem]);
+    const now = Date.now();
+    const leadInId   = 'auto-stop-lead-' + now;
+    const clarifyId  = 'auto-stop-clarify-' + now;
+
+    setMessages(prev => [
+      ...prev,
+      // Lead-in agent message
+      {
+        kind: 'agent',
+        id: leadInId,
+        reasoning: { header: 'Paused', isDone: true, inlineText: '', steps: [] },
+        response: {
+          text: vCard
+            ? `Paused — saved your progress as Version ${vCard.versionNum}. Let me help you get this right.`
+            : "Paused — let me help you figure out what needs to change.",
+          isVisible: true,
+          versionCard: vCard,
+        },
+      } as MessageItem,
+      // Stop-clarify card
+      {
+        kind: 'stop-clarify',
+        id: clarifyId,
+      } as MessageItem,
+    ]);
 
     setTimeout(() => {
       const container = chatMsgsRef.current;
       if (!container) return;
       container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
     }, 60);
+  };
+
+  // Called by StopClarifyCard when the user has made their choice.
+  const handleStopClarifyComplete = (id: string, result: StopClarifyResult) => {
+    // Mark the clarify card as read-only
+    setMessages(prev => prev.map(m =>
+      m.id === id && m.kind === 'stop-clarify' ? { ...m, isReadOnly: true } : m
+    ));
+
+    const responseId = 'stop-clarify-response-' + Date.now();
+
+    if (result.action === 'resume') {
+      // Restart from where the build was aborted
+      setAutoPopulating(true);
+      (window as any)._restartBuildFromPhase?.('__resume__');
+      return;
+    }
+
+    if (result.action === 'review') {
+      // Just waiting — show a response with a Resume chip
+      setMessages(prev => [...prev, {
+        kind: 'agent',
+        id: responseId,
+        reasoning: { header: 'Waiting', isDone: true, inlineText: '', steps: [] },
+        response: {
+          text: "Take your time. I've saved everything built so far. When you're ready, resume and I'll continue from where we left off.",
+          isVisible: true,
+          chips: [{ text: 'Resume building', variant: 'enrich' }],
+        },
+      } as MessageItem]);
+      setTimeout(() => (window as any)._scrollMsgs?.(), 60);
+      return;
+    }
+
+    if (result.action === 'manual') {
+      // Hand off to the user
+      setMessages(prev => [...prev, {
+        kind: 'agent',
+        id: responseId,
+        reasoning: { header: 'Handing off', isDone: true, inlineText: '', steps: [] },
+        response: {
+          text: "No problem — I'll step back. Everything built so far is saved and ready for you to continue manually. You can always ask me for help with specific parts.",
+          isVisible: true,
+          chips: [
+            { text: 'Help with formulas',   variant: 'default' },
+            { text: 'Suggest more columns', variant: 'default' },
+          ],
+        },
+      } as MessageItem]);
+      setTimeout(() => (window as any)._scrollMsgs?.(), 60);
+      return;
+    }
+
+    // rebuild — determine layer label for the response text
+    const layerLabel: Record<string, string> = {
+      tables:   'tables',
+      joins:    'joins',
+      formulas: 'formulas',
+      other:    'the beginning',
+    };
+    const label = layerLabel[result.layer] ?? 'the beginning';
+
+    setMessages(prev => [...prev, {
+      kind: 'agent',
+      id: responseId,
+      reasoning: { header: `Rebuilding from ${label}`, isDone: false, inlineText: `Resetting ${label} and replanning…`, steps: [] },
+      response: null,
+    } as MessageItem]);
+
+    // Small delay so the "Rebuilding" reasoning block is visible before DME starts
+    setTimeout(() => {
+      setAutoPopulating(true);
+      (window as any)._restartBuildFromPhase?.(result.layer, result.issue);
+      // Mark the rebuilding message as done once the restart is underway
+      setTimeout(() => {
+        setMessages(prev => prev.map(m =>
+          m.id === responseId && m.kind === 'agent'
+            ? { ...m, reasoning: { header: `Rebuilding from ${label}`, isDone: true, inlineText: '', steps: [] } }
+            : m
+        ));
+      }, 600);
+    }, 800);
   };
 
   // Auto-scroll: fires on user send + the first agent response only.
@@ -310,6 +397,15 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
                   </p>
                 )}
                 {(window as any).__renderMRD__?.(msg) ?? null}
+              </AgentMessage>
+            );
+            // Stop-clarify card — 3-step wizard shown when user pauses auto-generation
+            if (msg.kind === 'stop-clarify') return (
+              <AgentMessage key={msg.id}>
+                <StopClarifyCard
+                  isReadOnly={isReadOnly || msg.isReadOnly}
+                  onComplete={(result: StopClarifyResult) => handleStopClarifyComplete(msg.id, result)}
+                />
               </AgentMessage>
             );
             return null;
