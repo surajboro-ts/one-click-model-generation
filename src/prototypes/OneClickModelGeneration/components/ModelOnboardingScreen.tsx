@@ -937,7 +937,7 @@ function DirectionCard({
             width: '100%', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.C,
             padding: `${spacing.D}px`,
             background: 'none', border: 'none', cursor: 'pointer',
-            fontFamily: fontFamily.primary, textAlign: 'left' as const,
+            fontFamily: fontFamily.primary, fontSize: 'inherit', textAlign: 'left' as const,
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.A }}>
@@ -967,24 +967,25 @@ function DirectionCard({
             <path d="M2 4l4 4 4-4" stroke={systemColors.light['content-tertiary']} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
-        {addedExpanded && (
-          <div style={{ padding: `0 ${spacing.D}px ${spacing.D}px`, display: 'flex', flexDirection: 'column', gap: spacing.D }}>
-            {/* addedSections from data */}
-            {direction.addedSections.map(section => (
-              <div key={section.label}>
-                <SubSectionLabel>{section.label}</SubSectionLabel>
-                <BulletList items={section.items} />
-              </div>
-            ))}
-            {/* Guardrails always last inside the collapsible */}
-            {direction.guardrails.length > 0 && (
-              <div>
-                <SubSectionLabel>Guardrails</SubSectionLabel>
-                <BulletList items={direction.guardrails} />
-              </div>
-            )}
-          </div>
-        )}
+        {addedExpanded && (() => {
+          const allSections = [
+            ...direction.addedSections,
+            ...(direction.guardrails.length > 0 ? [{ label: 'Guardrails', items: direction.guardrails }] : []),
+          ];
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {allSections.map((section, i) => (
+                <React.Fragment key={section.label}>
+                  {i > 0 && <div style={{ height: 1, background: systemColors.light['border-divider'] }} />}
+                  <div style={{ padding: `${spacing.D}px` }}>
+                    <SubSectionLabel>{section.label}</SubSectionLabel>
+                    <BulletList items={section.items} />
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+          );
+        })()}
       </div>
 
       {/* ── Footer: Build model CTA ── */}
