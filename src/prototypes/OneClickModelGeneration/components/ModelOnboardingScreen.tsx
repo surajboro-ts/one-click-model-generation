@@ -4,6 +4,7 @@ import { systemColors } from '@tokens/colors';
 import { spacing } from '@tokens/spacing';
 import { Button } from '@components/Button';
 import { Link } from '@components/Link';
+import { GridViewIcon } from '@components/icons';
 import type { DataConnection } from '../data/mockData';
 import { ReasoningBlock } from '../../_agentic/ReasoningBlock';
 import type { ReasoningData } from '../../_agentic/ReasoningBlock';
@@ -408,14 +409,14 @@ function MentionEditor({
       'line-height:20px',
     ].join(';');
 
-    // 2×2 grid icon inline with table name (no @ prefix)
+    // GridViewIcon xs — paths from @components/icons/icons/GridView.tsx (fill="currentColor" inherits fg)
     chip.innerHTML = [
       `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"`,
       ` style="display:inline-block;vertical-align:middle;margin-right:4px;margin-bottom:1px">`,
-      `<rect x="0.75" y="0.75" width="4.5" height="4.5" rx="1" fill="${fg}"/>`,
-      `<rect x="6.75" y="0.75" width="4.5" height="4.5" rx="1" fill="${fg}"/>`,
-      `<rect x="0.75" y="6.75" width="4.5" height="4.5" rx="1" fill="${fg}"/>`,
-      `<rect x="6.75" y="6.75" width="4.5" height="4.5" rx="1" fill="${fg}"/>`,
+      `<path d="M1.33329 2C0.965103 2 0.666626 2.29848 0.666626 2.66667V4.66667C0.666626 5.03486 0.965103 5.33333 1.33329 5.33333H4.66663C5.03482 5.33333 5.33329 5.03486 5.33329 4.66667V2.66667C5.33329 2.29848 5.03482 2 4.66663 2H1.33329Z" fill="currentColor"/>`,
+      `<path d="M1.33329 6.66667C0.965103 6.66667 0.666626 6.96514 0.666626 7.33333V9.33333C0.666626 9.70152 0.965103 10 1.33329 10H4.66663C5.03482 10 5.33329 9.70152 5.33329 9.33333V7.33333C5.33329 6.96514 5.03482 6.66667 4.66663 6.66667H1.33329Z" fill="currentColor"/>`,
+      `<path d="M6.66663 2.66667C6.66663 2.29848 6.9651 2 7.33329 2H10.6666C11.0348 2 11.3333 2.29848 11.3333 2.66667V4.66667C11.3333 5.03486 11.0348 5.33333 10.6666 5.33333H7.33329C6.9651 5.33333 6.66663 5.03486 6.66663 4.66667V2.66667Z" fill="currentColor"/>`,
+      `<path d="M7.33329 6.66667C6.9651 6.66667 6.66663 6.96514 6.66663 7.33333V9.33333C6.66663 9.70152 6.9651 10 7.33329 10H10.6666C11.0348 10 11.3333 9.70152 11.3333 9.33333V7.33333C11.3333 6.96514 11.0348 6.66667 10.6666 6.66667H7.33329Z" fill="currentColor"/>`,
       `</svg>`,
       tableName,
     ].join('');
@@ -500,13 +501,10 @@ function MentionEditor({
                   color: systemColors.light['content-primary'],
                 }}
               >
-                {/* Grid icon — matches the committed chip icon */}
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden style={{ flexShrink: 0 }}>
-                  <rect x="0.75" y="0.75" width="4.5" height="4.5" rx="1" fill={systemColors.light['content-brand']} />
-                  <rect x="6.75" y="0.75" width="4.5" height="4.5" rx="1" fill={systemColors.light['content-brand']} />
-                  <rect x="0.75" y="6.75" width="4.5" height="4.5" rx="1" fill={systemColors.light['content-brand']} />
-                  <rect x="6.75" y="6.75" width="4.5" height="4.5" rx="1" fill={systemColors.light['content-brand']} />
-                </svg>
+                {/* Grid icon — GridViewIcon xs from @components/icons */}
+                <span style={{ flexShrink: 0, display: 'inline-flex' }}>
+                  <GridViewIcon size="xs" color={systemColors.light['content-brand']} aria-hidden />
+                </span>
                 {!q || ms === -1 ? t : (
                   <span>
                     {t.slice(0, ms)}
