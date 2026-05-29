@@ -298,9 +298,17 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
               </AgentMessage>
             );
             // MRD card carried from the onboarding screen — rendered via window.__renderMRD__
-            // registered in OneClickModelGeneration/index.tsx
+            // registered in OneClickModelGeneration/index.tsx.
+            // reasoning + responseText are merged in when the onboarding history was serialised
+            // so the reasoning block, response text, and MRD card appear as one AgentMessage.
             if (msg.kind === 'mrd') return (
               <AgentMessage key={msg.id}>
+                {msg.reasoning && <ReasoningBlock data={msg.reasoning} />}
+                {msg.responseText && (
+                  <p style={{ margin: '4px 0 8px', fontSize: 14, fontWeight: 300, lineHeight: '20px', color: 'var(--rd-sys-color-content-primary)', whiteSpace: 'pre-line' }}>
+                    {msg.responseText}
+                  </p>
+                )}
                 {(window as any).__renderMRD__?.(msg) ?? null}
               </AgentMessage>
             );

@@ -2009,30 +2009,51 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                                 // Carry the full onboarding conversation into the DME AgentPanel.
                                 // AgentPanel reads this window global on mount and pre-populates its
                                 // message list so the user sees their history in the right panel.
-                                (window as any).__ONBOARDING_HISTORY__ = chatMessages.map(m => {
-                                  if (m.kind === 'user') {
-                                    return { kind: 'user', id: m.id, text: m.text, html: m.html };
-                                  }
-                                  if (m.kind === 'reasoning') {
-                                    return {
-                                      kind: 'agent', id: m.id,
-                                      reasoning: m.data,
-                                      response: m.responseText
-                                        ? { text: m.responseText, isVisible: true }
-                                        : null,
-                                    };
-                                  }
-                                  // directions — becomes kind:'mrd' so AgentPanel renders DirectionCard
-                                  return {
-                                    kind: 'mrd', id: m.id,
-                                    mrdData: {
-                                      direction: m.version > 1 ? MOCK_DIRECTION_V2 : MOCK_DIRECTIONS[0],
-                                      connection: connection,
-                                    },
-                                    version:     m.version,
-                                    isCollapsed: m.isCollapsed,
-                                  };
-                                });
+                                // Build history: merge reasoning+directions pairs into a single
+                                // 'mrd' entry so they appear as one AgentMessage in the DME panel.
+                                (window as any).__ONBOARDING_HISTORY__ = chatMessages.reduce(
+                                  (acc: unknown[], m, i, arr) => {
+                                    if (m.kind === 'user') {
+                                      acc.push({ kind: 'user', id: m.id, text: m.text, html: m.html });
+                                      return acc;
+                                    }
+                                    if (m.kind === 'reasoning') {
+                                      // If the next message is a directions card, defer — it will be
+                                      // merged into the mrd entry below.
+                                      const next = arr[i + 1];
+                                      if (next?.kind === 'directions') return acc;
+                                      // Standalone reasoning (e.g. initial reasoning before clarify)
+                                      acc.push({
+                                        kind: 'agent', id: m.id,
+                                        reasoning: m.data,
+                                        response: m.responseText
+                                          ? { text: m.responseText, isVisible: true }
+                                          : null,
+                                      });
+                                      return acc;
+                                    }
+                                    if (m.kind === 'directions') {
+                                      const prev = arr[i - 1];
+                                      // Merge the preceding reasoning message in if present
+                                      const reasoningData = prev?.kind === 'reasoning' ? prev.data    : undefined;
+                                      const responseText  = prev?.kind === 'reasoning' ? prev.responseText : undefined;
+                                      acc.push({
+                                        kind: 'mrd', id: m.id,
+                                        mrdData: {
+                                          direction: m.version > 1 ? MOCK_DIRECTION_V2 : MOCK_DIRECTIONS[0],
+                                          connection: connection,
+                                        },
+                                        version:      m.version,
+                                        isCollapsed:  true, // always collapsed in DME panel
+                                        reasoning:    reasoningData,
+                                        responseText: responseText,
+                                      });
+                                      return acc;
+                                    }
+                                    return acc;
+                                  },
+                                  []
+                                );
                                 onBuild();
                               }}
                               onToggleCollapse={() => setChatMessages(prev =>

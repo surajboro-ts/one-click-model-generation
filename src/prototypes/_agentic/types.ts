@@ -45,4 +45,6 @@ export type MessageItem =
   | { kind: 'agent';      id: string; reasoning: ReasoningData; response: ResponseData | null }
   | { kind: 'plan-steps'; id: string; data: PlanStepsData; reasoning?: ReasoningData; text?: string; showBuildCta?: boolean }
   // Carried from the onboarding screen — rendered via window.__renderMRD__
-  | { kind: 'mrd';        id: string; mrdData: Record<string, unknown>; version: number; isCollapsed: boolean };
+  // reasoning + responseText are set when the preceding onboarding reasoning
+  // message is merged into this entry so both appear in one AgentMessage row.
+  | { kind: 'mrd'; id: string; mrdData: Record<string, unknown>; version: number; isCollapsed: boolean; reasoning?: ReasoningData; responseText?: string };
