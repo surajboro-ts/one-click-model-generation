@@ -871,38 +871,20 @@ function DirectionCard({
 
         {/* Title + description */}
         <div style={{ padding: `${spacing.C}px ${spacing.D}px ${spacing.D}px`, display: 'flex', flexDirection: 'column', gap: spacing.B }}>
-          {/* Model name row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B }}>
-            <span style={{
-              flexShrink: 0, fontSize: 11, fontWeight: 500,
-              color: systemColors.light['content-tertiary'],
-            }}>
-              Model name
-            </span>
-            <h2 style={{
-              margin: 0, padding: 0,
-              fontSize: 17, fontWeight: 700, lineHeight: '24px',
-              color: systemColors.light['content-primary'],
-            }}>
-              {direction.title}
-            </h2>
-          </div>
-          {/* Description row */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.B }}>
-            <span style={{
-              flexShrink: 0, fontSize: 11, fontWeight: 500, lineHeight: '18px',
-              color: systemColors.light['content-tertiary'],
-            }}>
-              Description
-            </span>
-            <p style={{
-              margin: 0, padding: 0,
-              fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px',
-              color: systemColors.light['content-secondary'],
-            }}>
-              {direction.description}
-            </p>
-          </div>
+          <h2 style={{
+            margin: 0, padding: 0,
+            fontSize: 17, fontWeight: 700, lineHeight: '24px',
+            color: systemColors.light['content-primary'],
+          }}>
+            {direction.title}
+          </h2>
+          <p style={{
+            margin: 0, padding: 0,
+            fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px',
+            color: systemColors.light['content-secondary'],
+          }}>
+            {direction.description}
+          </p>
         </div>
       </div>
 
@@ -2042,8 +2024,9 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                             Based on your goals, I've prepared a Model Requirements Document. Review what I've drafted — when you're ready, click <strong>Build model</strong> to get started.
                           </p>
                         </div>
-                        {/* Single MRD card */}
+                        {/* Single MRD card — indented to align with response text */}
                         {mrd && (
+                          <div style={{ paddingLeft: AGENT_TEXT_INDENT }}>
                           <DirectionCard
                             direction={mrd}
                             connection={connection}
@@ -2066,6 +2049,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                             }}
                             onOpenCanvas={() => setCanvasDirection(mrd)}
                           />
+                          </div>
                         )}
                       </div>
                     );
