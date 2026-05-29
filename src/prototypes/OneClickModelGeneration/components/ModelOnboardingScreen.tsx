@@ -870,21 +870,39 @@ function DirectionCard({
         </div>
 
         {/* Title + description */}
-        <div style={{ padding: `${spacing.C}px ${spacing.D}px ${spacing.D}px` }}>
-          <h2 style={{
-            margin: `0 0 ${spacing.A}px`, padding: 0,
-            fontSize: 17, fontWeight: 700, lineHeight: '24px',
-            color: systemColors.light['content-primary'],
-          }}>
-            {direction.title}
-          </h2>
-          <p style={{
-            margin: 0, padding: 0,
-            fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px',
-            color: systemColors.light['content-secondary'],
-          }}>
-            {direction.description}
-          </p>
+        <div style={{ padding: `${spacing.C}px ${spacing.D}px ${spacing.D}px`, display: 'flex', flexDirection: 'column', gap: spacing.B }}>
+          {/* Model name row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B }}>
+            <span style={{
+              flexShrink: 0, fontSize: 11, fontWeight: 500,
+              color: systemColors.light['content-tertiary'],
+            }}>
+              Model name
+            </span>
+            <h2 style={{
+              margin: 0, padding: 0,
+              fontSize: 17, fontWeight: 700, lineHeight: '24px',
+              color: systemColors.light['content-primary'],
+            }}>
+              {direction.title}
+            </h2>
+          </div>
+          {/* Description row */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.B }}>
+            <span style={{
+              flexShrink: 0, fontSize: 11, fontWeight: 500, lineHeight: '18px',
+              color: systemColors.light['content-tertiary'],
+            }}>
+              Description
+            </span>
+            <p style={{
+              margin: 0, padding: 0,
+              fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px',
+              color: systemColors.light['content-secondary'],
+            }}>
+              {direction.description}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -935,7 +953,9 @@ function DirectionCard({
           onClick={() => setAddedExpanded(e => !e)}
           style={{
             width: '100%', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.C,
-            padding: `${spacing.D}px`,
+            padding: addedExpanded
+              ? `${spacing.D}px ${spacing.D}px ${spacing.B}px`
+              : `${spacing.D}px`,
             background: 'none', border: 'none', cursor: 'pointer',
             fontFamily: fontFamily.primary, fontSize: 'inherit', textAlign: 'left' as const,
           }}
