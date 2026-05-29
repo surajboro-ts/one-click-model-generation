@@ -378,43 +378,46 @@ function MentionEditor({
     if (mention !== null) setActiveIdx(0);
   };
 
-  // Build a chip span with the given label, bg/color tokens, and data attribute
-  const buildChip = (
-    label: string,
-    bgToken: string,
-    colorToken: string,
-    dataAttr: { key: string; value: string },
-  ): HTMLSpanElement => {
+
+  // Commit @tableName chip — grid icon + table name, no @ prefix
+  const commitMention = (tableName: string) => {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return;
+
+    const bg = systemColors.light['background-information'];
+    const fg = systemColors.light['content-brand'];
+
     const chip = document.createElement('span');
-    chip.setAttribute(dataAttr.key, dataAttr.value);
+    chip.setAttribute('data-table', tableName);
     chip.setAttribute('contenteditable', 'false');
-    chip.textContent = label;
     chip.style.cssText = [
-      'display:inline',
-      `background:${bgToken}`,
-      `color:${colorToken}`,
-      'border-radius:4px',
-      'padding:2px 6px',
-      'font-size:14px',
-      'font-weight:375', /* fontWeight.light */
+      'display:inline-block',
+      `background:${bg}`,
+      `color:${fg}`,
+      'border-radius:6px',
+      'padding:2px 8px 2px 5px',
+      'font-size:13px',
+      'font-weight:375',
       'margin:0 2px',
       'white-space:nowrap',
       'cursor:default',
       'user-select:none',
+      'vertical-align:text-bottom',
+      'line-height:20px',
     ].join(';');
-    return chip;
-  };
 
-  // Commit @tableName chip (blue)
-  const commitMention = (tableName: string) => {
-    const sel = window.getSelection();
-    if (!sel || !sel.rangeCount) return;
-    const chip = buildChip(
-      `@${tableName}`,
-      systemColors.light['background-information'],
-      systemColors.light['content-brand'],
-      { key: 'data-table', value: tableName },
-    );
+    // 2×2 grid icon inline with table name (no @ prefix)
+    chip.innerHTML = [
+      `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"`,
+      ` style="display:inline-block;vertical-align:middle;margin-right:4px;margin-bottom:1px">`,
+      `<rect x="0.75" y="0.75" width="4.5" height="4.5" rx="1" fill="${fg}"/>`,
+      `<rect x="6.75" y="0.75" width="4.5" height="4.5" rx="1" fill="${fg}"/>`,
+      `<rect x="0.75" y="6.75" width="4.5" height="4.5" rx="1" fill="${fg}"/>`,
+      `<rect x="6.75" y="6.75" width="4.5" height="4.5" rx="1" fill="${fg}"/>`,
+      `</svg>`,
+      tableName,
+    ].join('');
+
     insertChip(chip, sel, '@');
     setMentionQuery(null);
     setTimeout(() => handleInput(), 0);
@@ -495,6 +498,13 @@ function MentionEditor({
                   color: systemColors.light['content-primary'],
                 }}
               >
+                {/* Grid icon — matches the committed chip icon */}
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden style={{ flexShrink: 0 }}>
+                  <rect x="0.75" y="0.75" width="4.5" height="4.5" rx="1" fill={systemColors.light['content-brand']} />
+                  <rect x="6.75" y="0.75" width="4.5" height="4.5" rx="1" fill={systemColors.light['content-brand']} />
+                  <rect x="0.75" y="6.75" width="4.5" height="4.5" rx="1" fill={systemColors.light['content-brand']} />
+                  <rect x="6.75" y="6.75" width="4.5" height="4.5" rx="1" fill={systemColors.light['content-brand']} />
+                </svg>
                 {!q || ms === -1 ? t : (
                   <span>
                     {t.slice(0, ms)}
@@ -750,6 +760,100 @@ const MOCK_DIRECTIONS: Direction[] = [
   }, */
 ];
 
+
+// ─── Revised direction — v2 MRD shown after the user requests an edit ─────────
+// Simulates SpotterModel incorporating a "add product line breakdown" request.
+const MOCK_DIRECTION_V2: Direction = {
+  id: 'd1-v2',
+  title: 'Sales performance by region & product',
+  description: 'Track revenue, quota attainment, and pipeline across sales regions and product lines.',
+  goal: 'Enable sales leaders to track revenue, quota attainment, and deal pipeline across regions and product lines — so they can identify growth opportunities by category and make data-driven coaching decisions.',
+  keyQuestions: [
+    'What is total revenue by region this quarter vs last quarter?',
+    'Which regions are behind on their quota targets?',
+    'Which product lines are driving the most revenue growth?',
+    'What is the average deal size and win rate by region and product?',
+    'What is the open pipeline value by region and product line?',
+    'How has year-over-year revenue trended across territories?',
+    'Which sales reps are consistently exceeding or missing quota?',
+  ],
+  linkedConcepts: ['deals', 'regions', 'sales_reps', 'quotas', 'products'],
+  understoodPoints: [
+    'Closed-won deal value is the primary revenue signal — not pipeline or forecast',
+    'Performance is grouped by region, territory, sales rep hierarchy, and product line',
+    'Quarterly and year-over-year comparisons surface trends and seasonal patterns',
+    'Quota attainment aligns deal value to annual targets prorated by fiscal quarter',
+    'Product line attribution uses the primary product on each deal',
+    'Consumers include VPs, regional managers, RevOps, and product managers',
+  ],
+  addedSections: [
+    {
+      label: 'Consumers & personas',
+      items: [
+        'VP of Sales — board-level pipeline review, territory and product health at a glance',
+        'Regional Sales Managers — weekly rep coaching, deal drill-down by product',
+        'Revenue Operations — quota setting, forecast accuracy, product mix analysis',
+        'Product Managers — product revenue contribution and attach rates',
+      ],
+    },
+    {
+      label: 'Key metrics',
+      items: [
+        'Total Revenue (closed-won deal value)',
+        'Quota Attainment (% of quota achieved per rep / region)',
+        'Pipeline Value (open opportunities weighted by stage)',
+        'Average Sales Cycle Length (days from open to close)',
+        'Product Attach Rate (% of deals including each product line)',
+        'YoY Revenue Growth (current period vs same period last year)',
+        'Average Deal Size',
+        'Win Rate',
+      ],
+    },
+    {
+      label: 'Dimensions & filters',
+      items: [
+        'Region, territory, sub-region',
+        'Sales rep, team, manager',
+        'Product line, product category, product SKU',
+        'Deal stage, deal type',
+        'Close date, fiscal quarter, fiscal year',
+      ],
+    },
+    {
+      label: 'Time handling',
+      items: [
+        'Year-over-year and quarterly comparisons as the primary lens',
+        'Fiscal calendar aligned — Q1 starts February, quota prorated accordingly',
+        'MTD and QTD running totals for real-time tracking',
+        'Pipeline snapshots taken at end of each fiscal quarter for trend analysis',
+      ],
+    },
+    {
+      label: 'AI instructions',
+      items: [
+        '"Revenue" defaults to closed-won deal value unless pipeline or forecast is specified',
+        '"Quota" = annual sales target, prorated by quarter',
+        '"Region" = primary sales territory assignment, not the customer\'s billing address',
+        '"Product" refers to the primary product line on a deal — multi-product deals use the highest-value line',
+      ],
+    },
+    {
+      label: 'Limitations',
+      items: [
+        'Returns and refunds not yet modelled — revenue figures are gross',
+        'Territory re-assignments before 2023 may cause historical rep-level figures to appear understated',
+        'Pipeline metrics reflect current open opportunities — closed/lost pipeline is not backdated',
+      ],
+    },
+  ],
+  guardrails: [
+    'Exclude test accounts and internal dummy deals from all revenue calculations',
+    'Do not expose cost, margin, or commission data — this model is for revenue tracking only',
+    'Unattributed orders (no region_id) excluded from regional breakdowns but included in company-wide totals',
+    'Multi-product deals must not be double-counted — use primary product line for product attribution',
+  ],
+  docHtml: '',
+};
 
 // ─── Model Requirements Document card ─────────────────────────────────────────
 // Full MRD card — gray-fill header block, WHAT YOU ASKED FOR, WHAT YOU'LL BE
@@ -2163,7 +2267,8 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                   }
 
                   if (msg.kind === 'directions') {
-                    const mrd = directions[0];
+                    // v2+ uses the revised direction; v1 uses the original
+                    const mrd = msg.version > 1 ? MOCK_DIRECTION_V2 : directions[0];
                     const dirMsgs = chatMessages
                       .filter((m): m is Extract<ChatMsg, { kind: 'directions' }> => m.kind === 'directions');
                     const isLatest = dirMsgs[dirMsgs.length - 1]?.id === msg.id;
