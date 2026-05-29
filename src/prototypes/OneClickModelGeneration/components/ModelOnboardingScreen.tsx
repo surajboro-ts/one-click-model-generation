@@ -759,12 +759,20 @@ const MOCK_DIRECTIONS: Direction[] = [
 function DirectionCard({
   direction,
   connection,
+  version,
+  isCollapsed = false,
+  isLatest = true,
   onBuild,
+  onToggleCollapse,
   onOpenCanvas: _onOpenCanvas,  // hidden — uncomment Open doc button below to use
 }: {
   direction: Direction;
   connection: DataConnection;
+  version: number;
+  isCollapsed?: boolean;
+  isLatest?: boolean;
   onBuild: () => void;
+  onToggleCollapse?: () => void;
   onOpenCanvas: () => void;
 }) {
   const [addedExpanded, setAddedExpanded] = React.useState(false);
@@ -823,6 +831,70 @@ function DirectionCard({
     </svg>
   );
 
+  // ── Collapsed (previous-version) view — header strip only ────────────────
+  if (isCollapsed) {
+    return (
+      <div style={{
+        borderRadius: spacing.C, overflow: 'hidden',
+        backgroundColor: systemColors.light['background-base'],
+        border: `1px solid ${systemColors.light['border-divider']}`,
+        opacity: 0.75,
+      }}>
+        <div style={{
+          backgroundColor: systemColors.light['background-sunken'],
+          cursor: 'pointer',
+        }}
+          onClick={onToggleCollapse}
+        >
+          {/* Top strip */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: `${spacing.C}px ${spacing.D}px`,
+            borderBottom: `1px solid ${systemColors.light['border-divider']}`,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', flexShrink: 0, backgroundColor: systemColors.light['content-brand'] }} />
+              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: systemColors.light['content-brand'] }}>
+                Model requirement
+              </span>
+              {/* Version badge */}
+              <span style={{
+                fontSize: 10, fontWeight: 600, letterSpacing: '0.04em',
+                padding: '1px 6px', borderRadius: 100,
+                backgroundColor: systemColors.light['background-subtle'],
+                color: systemColors.light['content-tertiary'],
+                border: `1px solid ${systemColors.light['border-divider']}`,
+              }}>
+                v{version}
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: spacing.C }}>
+              {/* Connection chip */}
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.B, backgroundColor: systemColors.light['background-base'], borderRadius: 100, padding: '3px 10px', border: `1px solid ${systemColors.light['border-divider']}` }}>
+                <SnowflakeIcon />
+                <span style={{ fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'] }}>{connection.name}</span>
+              </div>
+              {/* Expand chevron */}
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                <path d="M2 4l4 4 4-4" stroke={systemColors.light['content-tertiary']} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+          {/* Title + description */}
+          <div style={{ padding: `${spacing.C}px ${spacing.D}px ${spacing.D}px` }}>
+            <h2 style={{ margin: `0 0 ${spacing.A}px`, padding: 0, fontSize: 17, fontWeight: 700, lineHeight: '24px', color: systemColors.light['content-primary'] }}>
+              {direction.title}
+            </h2>
+            <p style={{ margin: 0, padding: 0, fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px', color: systemColors.light['content-secondary'] }}>
+              {direction.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Full (expanded) view ───────────────────────────────────────────────────
   return (
     <div style={{
       borderRadius: spacing.C, overflow: 'hidden',
@@ -840,7 +912,7 @@ function DirectionCard({
           padding: `${spacing.C}px ${spacing.D}px`,
           borderBottom: `1px solid ${systemColors.light['border-divider']}`,
         }}>
-          {/* MODEL REQUIREMENT label */}
+          {/* MODEL REQUIREMENT label + version badge */}
           <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B }}>
             <span style={{
               width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
@@ -853,19 +925,43 @@ function DirectionCard({
             }}>
               Model requirement
             </span>
+            {/* Version badge — 'v1 · Latest' when current, 'v1' when previous */}
+            <span style={{
+              fontSize: 10, fontWeight: 600, letterSpacing: '0.04em',
+              padding: '1px 6px', borderRadius: 100,
+              backgroundColor: isLatest ? systemColors.light['background-information'] : systemColors.light['background-subtle'],
+              color: isLatest ? systemColors.light['content-brand'] : systemColors.light['content-tertiary'],
+              border: `1px solid ${isLatest ? systemColors.light['border-default'] : systemColors.light['border-divider']}`,
+            }}>
+              {isLatest ? `v${version} · Latest` : `v${version}`}
+            </span>
           </div>
 
-          {/* Connection chip — Snowflake icon + name only */}
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: spacing.B,
-            backgroundColor: systemColors.light['background-base'],
-            borderRadius: 100, padding: '3px 10px',
-            border: `1px solid ${systemColors.light['border-divider']}`,
-          }}>
-            <SnowflakeIcon />
-            <span style={{ fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'] }}>
-              {connection.name}
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: spacing.C }}>
+            {/* Connection chip — Snowflake icon + name only */}
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: spacing.B,
+              backgroundColor: systemColors.light['background-base'],
+              borderRadius: 100, padding: '3px 10px',
+              border: `1px solid ${systemColors.light['border-divider']}`,
+            }}>
+              <SnowflakeIcon />
+              <span style={{ fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'] }}>
+                {connection.name}
+              </span>
+            </div>
+            {/* Collapse chevron — only on non-latest expanded cards */}
+            {!isLatest && (
+              <button
+                onClick={onToggleCollapse}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: spacing.A, display: 'flex', alignItems: 'center' }}
+                title="Collapse"
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                  <path d="M2 8l4-4 4 4" stroke={systemColors.light['content-tertiary']} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
 
@@ -990,24 +1086,26 @@ function DirectionCard({
         })()}
       </div>
 
-      {/* ── Footer: Build model CTA ── */}
-      <div style={{
-        borderTop: `1px solid ${systemColors.light['border-divider']}`,
-        padding: `${spacing.C}px ${spacing.D}px`,
-        display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: spacing.C,
-        backgroundColor: systemColors.light['background-sunken'],
-      }}>
-        {/* "Open doc" is hidden — uncomment to re-enable:
-        <Button variant="tertiary" size="small" onClick={onOpenCanvas}
-          icon={<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-            <path d="M5 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9M8 2h4v4M12 2 7 7"
-              stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>} iconPosition="leading">Open doc</Button>
-        */}
-        <Button variant="primary" size="basic" onClick={onBuild}>
-          Build model
-        </Button>
-      </div>
+      {/* ── Footer: Build model CTA — only on the latest MRD ── */}
+      {isLatest && (
+        <div style={{
+          borderTop: `1px solid ${systemColors.light['border-divider']}`,
+          padding: `${spacing.C}px ${spacing.D}px`,
+          display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: spacing.C,
+          backgroundColor: systemColors.light['background-sunken'],
+        }}>
+          {/* "Open doc" is hidden — uncomment to re-enable:
+          <Button variant="tertiary" size="small" onClick={onOpenCanvas}
+            icon={<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+              <path d="M5 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9M8 2h4v4M12 2 7 7"
+                stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>} iconPosition="leading">Open doc</Button>
+          */}
+          <Button variant="primary" size="basic" onClick={onBuild}>
+            Build model
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
@@ -1529,14 +1627,15 @@ const CLARIFYING_QUESTIONS: ClarifyQuestion[] = [
 type ChatMsg =
   | { kind: 'user';       id: string; text: string }
   | { kind: 'reasoning';  id: string; data: ReasoningData; responseText?: string }
-  | { kind: 'directions'; id: string };
+  | { kind: 'directions'; id: string; version: number; isCollapsed: boolean };
 
 type ChatPhase =
-  | 'reasoning_initial'  // first reasoning block; bottom = locked input
-  | 'clarifying'         // ClarifyingCard occupies bottom slot
-  | 'reasoning_post'     // second reasoning block; bottom = locked input
-  | 'directions'         // direction cards in stream; bottom slot empty
-  | 'idle';              // chat on screen; prompt bar at bottom for follow-up
+  | 'reasoning_initial'   // first reasoning block; bottom = locked input
+  | 'clarifying'          // ClarifyingCard occupies bottom slot
+  | 'reasoning_post'      // second reasoning block; bottom = locked input
+  | 'directions'          // MRD shown; prompt bar active for revisions
+  | 'reasoning_revision'  // revision reasoning block; bottom = locked input
+  | 'idle';               // chat on screen; prompt bar at bottom for follow-up
 
 // ─── User message row ─────────────────────────────────────────────────────────
 // Avatar + text inside the sunken card, with spacing.C (12 px) padding all around.
@@ -1719,9 +1818,66 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
           ],
         },
       });
-      setChatMessages(prev => [...prev, { kind: 'directions', id: `dir-${Date.now()}` }]);
+      setChatMessages(prev => [...prev, { kind: 'directions', id: `dir-${Date.now()}`, version: 1, isCollapsed: false }]);
       setChatPhase('directions');
     }, 2400);
+
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatPhase]);
+
+  // Kick off the revision reasoning sequence
+  useEffect(() => {
+    if (chatPhase !== 'reasoning_revision') return;
+
+    const msgId = `r-revision-${Date.now()}`;
+    reasoningMsgId.current = msgId;
+
+    const inProgress: ReasoningData = {
+      header: 'Reasoning', isDone: false,
+      inlineText: 'Reviewing your changes…',
+      steps: [],
+    };
+    setChatMessages(prev => [...prev, { kind: 'reasoning', id: msgId, data: inProgress }]);
+
+    const t1 = setTimeout(() => updateReasoningMsg(msgId, {
+      data: { ...inProgress, inlineText: 'Applying updates to the requirements…' },
+    }), 700);
+
+    const t2 = setTimeout(() => {
+      updateReasoningMsg(msgId, {
+        data: {
+          header: 'Done', isDone: true, inlineText: '',
+          steps: [
+            { n: 1, name: 'Parsed changes',      text: 'Identified the requested modifications.',          dotState: 'done' },
+            { n: 2, name: 'Updated requirements', text: 'Revised goals, questions, and schema mappings.', dotState: 'done' },
+          ],
+        },
+        responseText: "I've updated the requirements based on your changes. The previous version is preserved above.",
+      });
+    }, 1600);
+
+    // ~350 ms after response text appears: collapse old MRDs, push new one
+    const t3 = setTimeout(() => {
+      setChatMessages(prev => {
+        // Derive next version from existing direction messages
+        const maxVersion = prev
+          .filter((m): m is Extract<ChatMsg, { kind: 'directions' }> => m.kind === 'directions')
+          .reduce((max, m) => Math.max(max, m.version), 0);
+        const newVersion = maxVersion + 1;
+
+        const withCollapsed = prev.map(m =>
+          m.kind === 'directions' ? { ...m, isCollapsed: true } : m
+        );
+        return [...withCollapsed, {
+          kind: 'directions' as const,
+          id: `dir-${Date.now()}`,
+          version: newVersion,
+          isCollapsed: false,
+        }];
+      });
+      setChatPhase('directions');
+    }, 1950);
 
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1777,7 +1933,8 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     setClarifyAnswers([]);
     setClarifyStep(0);
     setCurrentPromptText(''); // clear draft after send
-    setChatPhase('reasoning_initial');
+    // If an MRD is already shown, treat as a revision request; otherwise re-run initial reasoning
+    setChatPhase(chatPhase === 'directions' ? 'reasoning_revision' : 'reasoning_initial');
   };
 
   return (
@@ -2013,42 +2170,57 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
 
                   if (msg.kind === 'directions') {
                     const mrd = directions[0];
+                    const dirMsgs = chatMessages
+                      .filter((m): m is Extract<ChatMsg, { kind: 'directions' }> => m.kind === 'directions');
+                    const isLatest = dirMsgs[dirMsgs.length - 1]?.id === msg.id;
                     return (
                       <div key={msg.id} style={{
                         display: 'flex', flexDirection: 'column', gap: spacing.D,
                         animation: 'slideUpIn 0.35s cubic-bezier(0.4,0,0.2,1) both',
                       }}>
-                        {/* SpotterModel intro text */}
-                        <div style={{ paddingLeft: AGENT_TEXT_INDENT }}>
-                          <p style={{ margin: 0, fontSize: fontSize.sm, fontWeight: fontWeight.light, lineHeight: '22px', color: systemColors.light['content-primary'] }}>
-                            Based on your goals, I've prepared a Model Requirements Document. Review what I've drafted — when you're ready, click <strong>Build model</strong> to get started.
-                          </p>
-                        </div>
-                        {/* Single MRD card — indented to align with response text */}
+                        {/* Intro text only for v1 — revisions have responseText on the reasoning msg */}
+                        {msg.version === 1 && (
+                          <div style={{ paddingLeft: AGENT_TEXT_INDENT }}>
+                            <p style={{ margin: 0, fontSize: fontSize.sm, fontWeight: fontWeight.light, lineHeight: '22px', color: systemColors.light['content-primary'] }}>
+                              Based on your goals, I've prepared a Model Requirements Document. Review what I've drafted — when you're ready, click <strong>Build model</strong> to get started.
+                            </p>
+                          </div>
+                        )}
+                        {/* MRD card — indented to align with response text */}
                         {mrd && (
                           <div style={{ paddingLeft: AGENT_TEXT_INDENT }}>
-                          <DirectionCard
-                            direction={mrd}
-                            connection={connection}
-                            onBuild={() => {
-                              const spec       = MODEL_SPEC[mrd.id] ?? MODEL_SPEC['d1'];
-                              const planPhases = BUILD_PLAN[mrd.id]?.phases ?? BUILD_PLAN['d1'].phases;
-                              (window as any).__DME_AUTO_DATA__ = {
-                                goal:          mrd.goal,
-                                phases:        planPhases,
-                                tables:        spec.tables,
-                                relationships: spec.relationships,
-                                formulas:      spec.formulas,
-                              };
-                              (window as any).__DME_CONFIG__ = {
-                                spotterModel:   true,
-                                welcomeVariant: 'blank',
-                                autoPopulate:   true,
-                              };
-                              onBuild();
-                            }}
-                            onOpenCanvas={() => setCanvasDirection(mrd)}
-                          />
+                            <DirectionCard
+                              direction={mrd}
+                              connection={connection}
+                              version={msg.version}
+                              isCollapsed={msg.isCollapsed}
+                              isLatest={isLatest}
+                              onBuild={() => {
+                                const spec       = MODEL_SPEC[mrd.id] ?? MODEL_SPEC['d1'];
+                                const planPhases = BUILD_PLAN[mrd.id]?.phases ?? BUILD_PLAN['d1'].phases;
+                                (window as any).__DME_AUTO_DATA__ = {
+                                  goal:          mrd.goal,
+                                  phases:        planPhases,
+                                  tables:        spec.tables,
+                                  relationships: spec.relationships,
+                                  formulas:      spec.formulas,
+                                };
+                                (window as any).__DME_CONFIG__ = {
+                                  spotterModel:   true,
+                                  welcomeVariant: 'blank',
+                                  autoPopulate:   true,
+                                };
+                                onBuild();
+                              }}
+                              onToggleCollapse={() => setChatMessages(prev =>
+                                prev.map(m =>
+                                  m.id === msg.id && m.kind === 'directions'
+                                    ? { ...m, isCollapsed: !m.isCollapsed }
+                                    : m
+                                )
+                              )}
+                              onOpenCanvas={() => setCanvasDirection(mrd)}
+                            />
                           </div>
                         )}
                       </div>
