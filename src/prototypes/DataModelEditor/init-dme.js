@@ -2039,13 +2039,27 @@ Only include the context field when there is genuinely meaningful content from t
     // ── Plan card helpers ──────────────────────────────────────────────
     // makePlanData: builds the PlanStepsData object for the given micro-step index.
     // The active step carries an inline reasoningData block (per-step reasoning).
-    function makePlanData(completedIdx) {
+    // reasoningTexts cycles as micro-steps complete within the phase so the text
+    // changes rather than staying static for the entire phase duration.
+    function makePlanData(completedIdx, inlineTextOverride) {
       return {
         goal: goal,
         steps: phases.map(function(phase, i) {
           var phaseStart = i === 0 ? 0 : endSteps[i - 1] + 1;
           var isDone   = completedIdx > endSteps[i];
           var isActive = !isDone && completedIdx >= phaseStart;
+          var inlineText;
+          if (isActive) {
+            if (inlineTextOverride !== undefined) {
+              inlineText = inlineTextOverride;
+            } else {
+              var texts = phase.reasoningTexts && phase.reasoningTexts.length
+                ? phase.reasoningTexts
+                : [phase.reasoning];
+              var stepsInPhase = completedIdx - phaseStart;
+              inlineText = texts[Math.min(stepsInPhase, texts.length - 1)];
+            }
+          }
           return {
             label:   phase.planLabel,
             caption: isDone ? phase.planCaption : undefined,
@@ -2054,7 +2068,7 @@ Only include the context field when there is genuinely meaningful content from t
             reasoningData: isActive ? {
               header:     phase.reasoningHeader || phase.planLabel,
               isDone:     false,
-              inlineText: phase.reasoning,
+              inlineText: inlineText,
               steps:      [],
             } : undefined,
           };
@@ -2281,7 +2295,25 @@ Only include the context field when there is genuinely meaningful content from t
         }, shimmerMs);
 
       } else {
-        // scan / other non-add steps — just wait and proceed
+        // scan / other non-add steps — cycle through reasoningTexts mid-step
+        // so the inline text changes rather than staying fixed for the full delay.
+        var scanPhase = phases[step.phaseIndex];
+        var scanTexts = (scanPhase && scanPhase.reasoningTexts && scanPhase.reasoningTexts.length > 1)
+          ? scanPhase.reasoningTexts
+          : null;
+        if (scanTexts) {
+          var textInterval = Math.floor(step.delayMs / scanTexts.length);
+          for (var ti = 1; ti < scanTexts.length; ti++) {
+            (function(idx) {
+              setTimeout(function() {
+                if (aborted) return;
+                window._updateMsg && window._updateMsg(PLAN_MSG_ID, {
+                  data: makePlanData(stepIdx - 1, scanTexts[idx]),
+                });
+              }, textInterval * idx);
+            })(ti);
+          }
+        }
         setTimeout(function() {
           if (aborted) return;
           window._updateMsg && window._updateMsg(PLAN_MSG_ID, { data: makePlanData(stepIdx) });
