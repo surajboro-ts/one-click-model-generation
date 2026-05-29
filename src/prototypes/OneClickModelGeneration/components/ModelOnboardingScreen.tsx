@@ -752,9 +752,9 @@ const MOCK_DIRECTIONS: Direction[] = [
 
 
 // ─── Model Requirements Document card ─────────────────────────────────────────
-// Full MRD card — MODEL REQUIREMENT label, title, connection chip, WHAT YOU ASKED
-// FOR, WHAT I UNDERSTOOD, What I added (collapsible), GUARDRAILS, Build model CTA.
-// No selection — single card shown, Build model button is the only action.
+// Full MRD card — gray-fill header block, WHAT YOU ASKED FOR, WHAT YOU'LL BE
+// ABLE TO ASK, WHAT I UNDERSTOOD, collapsible What I added (includes guardrails),
+// Build model CTA. No selection — single card, Build model is the only action.
 
 function DirectionCard({
   direction,
@@ -780,13 +780,13 @@ function DirectionCard({
     </p>
   );
 
-  const BulletList = ({ items, color }: { items: string[]; color?: string }) => (
+  const BulletList = ({ items }: { items: string[] }) => (
     <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 5 }}>
       {items.map((item, i) => (
         <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.B, fontSize: 13, lineHeight: '19px', color: systemColors.light['content-secondary'], fontWeight: fontWeight.light }}>
           <span style={{
             flexShrink: 0, marginTop: 5, width: 4, height: 4, borderRadius: '50%',
-            backgroundColor: color ?? systemColors.light['content-tertiary'],
+            backgroundColor: systemColors.light['content-tertiary'],
             display: 'inline-block',
           }} />
           {item}
@@ -799,16 +799,43 @@ function DirectionCard({
     <div style={{ height: 1, background: systemColors.light['border-divider'] }} />
   );
 
+  // Sub-label used inside the "What I added" expanded area — neutral, not brand-colored
+  const SubSectionLabel = ({ children }: { children: React.ReactNode }) => (
+    <p style={{
+      margin: `0 0 ${spacing.B}px`,
+      fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+      textTransform: 'uppercase' as const,
+      color: systemColors.light['content-secondary'],
+      opacity: 0.7,
+    }}>
+      {children}
+    </p>
+  );
+
+  // Snowflake SVG icon for the connection chip
+  const SnowflakeIcon = () => (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
+      <path d="M12 2v20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3" stroke={systemColors.light['content-tertiary']} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M2 12h20M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3" stroke={systemColors.light['content-tertiary']} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M5.636 5.636l12.728 12.728M5.636 5.636l1.06 3.889M5.636 5.636l3.889 1.06M18.364 18.364l-1.06-3.889M18.364 18.364l-3.889-1.06" stroke={systemColors.light['content-tertiary']} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M18.364 5.636L5.636 18.364M18.364 5.636l-3.889 1.06M18.364 5.636l-1.06 3.889M5.636 18.364l3.889-1.06M5.636 18.364l1.06-3.889" stroke={systemColors.light['content-tertiary']} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
   return (
     <div style={{
       borderRadius: spacing.C, overflow: 'hidden',
       backgroundColor: systemColors.light['background-base'],
       border: `1px solid ${systemColors.light['border-divider']}`,
     }}>
-      {/* ── Header: MODEL REQUIREMENT label + title + connection chip ── */}
-      <div style={{ padding: `${spacing.D}px ${spacing.D}px ${spacing.C}px` }}>
-        {/* Label */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B, marginBottom: spacing.B }}>
+      {/* ── Header block: gray-fill, distinct from white body ── */}
+      <div style={{
+        padding: `${spacing.D}px`,
+        backgroundColor: systemColors.light['background-sunken'],
+        borderBottom: `1.5px solid ${systemColors.light['border-divider']}`,
+      }}>
+        {/* MODEL REQUIREMENT label */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B, marginBottom: spacing.C }}>
           <span style={{
             width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
             backgroundColor: systemColors.light['content-brand'],
@@ -822,33 +849,37 @@ function DirectionCard({
           </span>
         </div>
 
-        {/* Title */}
+        {/* Model name (title) */}
         <h2 style={{
-          margin: `0 0 ${spacing.C}px`, padding: 0,
+          margin: `0 0 ${spacing.B}px`, padding: 0,
           fontSize: 17, fontWeight: 700, lineHeight: '24px',
           color: systemColors.light['content-primary'],
         }}>
           {direction.title}
         </h2>
 
-        {/* Connection chip */}
+        {/* Model description */}
+        <p style={{
+          margin: `0 0 ${spacing.C}px`, padding: 0,
+          fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px',
+          color: systemColors.light['content-secondary'],
+        }}>
+          {direction.description}
+        </p>
+
+        {/* Connection chip — Snowflake icon + name only, no colored dot */}
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: spacing.B,
-          backgroundColor: systemColors.light['background-sunken'],
+          backgroundColor: systemColors.light['background-base'],
           borderRadius: 100, padding: '3px 10px',
           border: `1px solid ${systemColors.light['border-divider']}`,
         }}>
-          <span style={{
-            width: 6, height: 6, borderRadius: '50%',
-            backgroundColor: '#22c55e', flexShrink: 0,
-          }} />
+          <SnowflakeIcon />
           <span style={{ fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'] }}>
-            {connection.name} · {connection.source}
+            {connection.name}
           </span>
         </div>
       </div>
-
-      <Divider />
 
       {/* ── WHAT YOU ASKED FOR ── */}
       <div style={{ padding: `${spacing.D}px` }}>
@@ -863,9 +894,9 @@ function DirectionCard({
 
       <Divider />
 
-      {/* ── BUSINESS QUESTIONS ── */}
+      {/* ── WHAT YOU'LL BE ABLE TO ASK ── */}
       <div style={{ padding: `${spacing.D}px` }}>
-        <SectionLabel>Business questions this model can answer</SectionLabel>
+        <SectionLabel>What you'll be able to ask</SectionLabel>
         <BulletList items={direction.keyQuestions} />
       </div>
 
@@ -874,7 +905,7 @@ function DirectionCard({
       {/* ── WHAT I UNDERSTOOD ── */}
       <div style={{ padding: `${spacing.D}px` }}>
         <SectionLabel>What I understood</SectionLabel>
-        {/* Linked concepts line */}
+        {/* Linked concepts chain */}
         <p style={{ margin: `0 0 ${spacing.C}px`, fontSize: 13, lineHeight: '20px', color: systemColors.light['content-primary'] }}>
           <span style={{ fontWeight: 500 }}>
             {direction.linkedConcepts.length} linked concepts:{' '}
@@ -891,7 +922,7 @@ function DirectionCard({
         <BulletList items={direction.understoodPoints} />
       </div>
 
-      {/* ── What I added (collapsible, starts collapsed) ── */}
+      {/* ── What I added (collapsible) — includes guardrails at the end ── */}
       <div style={{ borderTop: `1px solid ${systemColors.light['border-divider']}` }}>
         <button
           onClick={() => setAddedExpanded(e => !e)}
@@ -905,7 +936,7 @@ function DirectionCard({
         >
           <span style={{ fontSize: 12, fontWeight: 600, textAlign: 'left' as const }}>
             What I added{' '}
-            <span style={{ fontWeight: 400 }}>· consumers, metrics, dimensions, time, AI rules &amp; limitations</span>
+            <span style={{ fontWeight: 400 }}>· metrics, dimensions, consumers, guardrails &amp; more</span>
           </span>
           <svg
             width="12" height="12" viewBox="0 0 12 12" fill="none"
@@ -917,29 +948,22 @@ function DirectionCard({
         </button>
         {addedExpanded && (
           <div style={{ padding: `0 ${spacing.D}px ${spacing.D}px`, display: 'flex', flexDirection: 'column', gap: spacing.D }}>
+            {/* addedSections from data */}
             {direction.addedSections.map(section => (
               <div key={section.label}>
-                <p style={{
-                  margin: `0 0 ${spacing.B}px`,
-                  fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
-                  textTransform: 'uppercase' as const,
-                  color: systemColors.light['content-brand'],
-                }}>
-                  {section.label}
-                </p>
+                <SubSectionLabel>{section.label}</SubSectionLabel>
                 <BulletList items={section.items} />
               </div>
             ))}
+            {/* Guardrails always last inside the collapsible */}
+            {direction.guardrails.length > 0 && (
+              <div>
+                <SubSectionLabel>Guardrails</SubSectionLabel>
+                <BulletList items={direction.guardrails} />
+              </div>
+            )}
           </div>
         )}
-      </div>
-
-      <Divider />
-
-      {/* ── GUARDRAILS ── */}
-      <div style={{ padding: `${spacing.D}px` }}>
-        <SectionLabel>Guardrails</SectionLabel>
-        <BulletList items={direction.guardrails} />
       </div>
 
       {/* ── Footer: Build model CTA ── */}
