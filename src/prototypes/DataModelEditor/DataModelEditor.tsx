@@ -80,6 +80,7 @@ const DataModelEditor: React.FC = () => {
   // Capture auto-populate data in a ref so it survives React StrictMode's
   // double-invoke (cleanup runs between mount 1 and mount 2, deleting the global).
   const autoPopulateDataRef = useRef<unknown>((window as any).__DME_AUTO_DATA__ ?? null);
+  const autoPopulateStartedRef = useRef(false);
 
   const [modelName] = useState<string>(() => {
     const cfg = (window as any).__DME_CONFIG__;
@@ -114,10 +115,13 @@ const DataModelEditor: React.FC = () => {
     (window as any)._setDMEAutoPopulating = (val: boolean) => setIsAutoPopulating(val);
     (window as any)._setActiveTab = (tab: string) => setActiveTab(tab);
 
-    // Restore auto-populate data from ref — survives StrictMode cleanup between mounts.
-    if (autoPopulateDataRef.current) {
+    // Restore auto-populate data from ref — but only once per component instance.
+    // autoPopulateStartedRef persists through StrictMode cleanup+remount so the
+    // second effect invocation skips the restore and prevents a double build plan.
+    if (autoPopulateDataRef.current && !autoPopulateStartedRef.current) {
       (window as any).__DME_AUTO_DATA__ = autoPopulateDataRef.current;
     }
+    autoPopulateStartedRef.current = true;
 
     const cleanup = initDME();
     return () => {

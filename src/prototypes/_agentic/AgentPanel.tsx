@@ -16,6 +16,7 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [chatStarted, setChatStarted] = useState(false);
   const [autoPopulating, setAutoPopulating] = useState(false);
+  const [activeClarifyId, setActiveClarifyId] = useState<string | null>(null);
   const chatMsgsRef      = useRef<HTMLDivElement>(null);
   const lastUserRef      = useRef<HTMLDivElement>(null);
   const shouldScrollNext = useRef(false);
@@ -95,75 +96,59 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     };
   }, [welcomeVariant]);
 
-  // Stop button handler — aborts the auto-populate chain, appends a lead-in
-  // message and a stop-clarify card so the user can explain what was wrong.
+  // Format the user bubble text from a clarify result
+  const formatStopUserText = (result: StopClarifyResult): string => {
+    if (result.action === 'resume') return 'Resume — I stopped by mistake';
+    if (result.action === 'review') return 'I want to review before continuing';
+    if (result.action === 'manual') return "I'll finish building manually";
+    if (result.action === 'rebuild') {
+      const layerLabel: Record<string, string> = {
+        tables:   'The tables selected',
+        joins:    'The joins between tables',
+        formulas: 'The formulas or metrics',
+        other:    'Something in the build',
+      };
+      return `${layerLabel[result.layer] ?? 'Something'} isn't right — ${result.issue}`;
+    }
+    return '';
+  };
+
+  // Stop button handler — aborts the build and shows the clarify card in the prompt bar.
   const handleStopAutoPopulate = () => {
-    // Trigger abort: sets aborted flag, saves version to window.__DME_STOP_VERSION__
     (window as any).__DME_AUTO_ABORT__?.();
     delete (window as any).__DME_AUTO_ABORT__;
-    // Belt-and-suspenders: clear any active shimmers immediately regardless of timing
     (window as any)._setColumnShimmer?.(false);
     (window as any)._setFormulaShimmer?.(false);
-    // Reset the DME auto-populating state so empty states re-enable after Stop.
     (window as any)._setDMEAutoPopulating?.(false);
     (window as any)._autoPopulating = false;
     setAutoPopulating(false);
-
-    // Grab the version card that the abort handler saved (if any)
-    const vCard = (window as any).__DME_STOP_VERSION__ ?? undefined;
+    // Discard version card — not shown in the clarify flow
     delete (window as any).__DME_STOP_VERSION__;
-
-    const now = Date.now();
-    const leadInId   = 'auto-stop-lead-' + now;
-    const clarifyId  = 'auto-stop-clarify-' + now;
-
-    setMessages(prev => [
-      ...prev,
-      // Lead-in agent message
-      {
-        kind: 'agent',
-        id: leadInId,
-        reasoning: { header: 'Paused', isDone: true, inlineText: '', steps: [] },
-        response: {
-          text: vCard
-            ? `Paused — saved your progress as Version ${vCard.versionNum}. Let me help you get this right.`
-            : "Paused — let me help you figure out what needs to change.",
-          isVisible: true,
-          versionCard: vCard,
-        },
-      } as MessageItem,
-      // Stop-clarify card
-      {
-        kind: 'stop-clarify',
-        id: clarifyId,
-      } as MessageItem,
-    ]);
-
-    setTimeout(() => {
-      const container = chatMsgsRef.current;
-      if (!container) return;
-      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
-    }, 60);
+    // Show clarify card in place of the prompt bar
+    setActiveClarifyId('stop-' + Date.now());
   };
 
-  // Called by StopClarifyCard when the user has made their choice.
-  const handleStopClarifyComplete = (id: string, result: StopClarifyResult) => {
-    // Mark the clarify card as read-only
-    setMessages(prev => prev.map(m =>
-      m.id === id && m.kind === 'stop-clarify' ? { ...m, isReadOnly: true } : m
-    ));
+  // Called when the user submits the clarify card in the prompt bar.
+  const handleStopClarifyComplete = (result: StopClarifyResult) => {
+    setActiveClarifyId(null);
 
-    const responseId = 'stop-clarify-response-' + Date.now();
+    const now = Date.now();
+    const userId     = 'stop-user-'     + now;
+    const responseId = 'stop-response-' + now;
+
+    const userText = formatStopUserText(result);
+
+    // Append user bubble
+    setMessages(prev => [...prev, { kind: 'user', id: userId, text: userText } as MessageItem]);
 
     if (result.action === 'resume') {
-      // Restart from where the build was aborted
       setAutoPopulating(true);
       (window as any)._restartBuildFromPhase?.('__resume__');
+      setTimeout(() => (window as any)._scrollMsgs?.(), 100);
       return;
     }
 
     if (result.action === 'review') {
-      // Just waiting — show a response with a Resume chip
       setMessages(prev => [...prev, {
         kind: 'agent',
         id: responseId,
@@ -179,13 +164,12 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     }
 
     if (result.action === 'manual') {
-      // Hand off to the user
       setMessages(prev => [...prev, {
         kind: 'agent',
         id: responseId,
         reasoning: { header: 'Handing off', isDone: true, inlineText: '', steps: [] },
         response: {
-          text: "No problem — I'll step back. Everything built so far is saved and ready for you to continue manually. You can always ask me for help with specific parts.",
+          text: "No problem — I'll step back. Everything built so far is saved. You can always ask me for help with specific parts.",
           isVisible: true,
           chips: [
             { text: 'Help with formulas',   variant: 'default' },
@@ -197,7 +181,7 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
       return;
     }
 
-    // rebuild — determine layer label for the response text
+    // rebuild — determine label for response text
     const layerLabel: Record<string, string> = {
       tables:   'tables',
       joins:    'joins',
@@ -213,11 +197,9 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
       response: null,
     } as MessageItem]);
 
-    // Small delay so the "Rebuilding" reasoning block is visible before DME starts
     setTimeout(() => {
       setAutoPopulating(true);
       (window as any)._restartBuildFromPhase?.(result.layer, result.issue);
-      // Mark the rebuilding message as done once the restart is underway
       setTimeout(() => {
         setMessages(prev => prev.map(m =>
           m.id === responseId && m.kind === 'agent'
@@ -225,6 +207,7 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
             : m
         ));
       }, 600);
+      setTimeout(() => (window as any)._scrollMsgs?.(), 80);
     }, 800);
   };
 
@@ -399,15 +382,7 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
                 {(window as any).__renderMRD__?.(msg) ?? null}
               </AgentMessage>
             );
-            // Stop-clarify card — 3-step wizard shown when user pauses auto-generation
-            if (msg.kind === 'stop-clarify') return (
-              <AgentMessage key={msg.id}>
-                <StopClarifyCard
-                  isReadOnly={isReadOnly || msg.isReadOnly}
-                  onComplete={(result: StopClarifyResult) => handleStopClarifyComplete(msg.id, result)}
-                />
-              </AgentMessage>
-            );
+
             return null;
           });
           })()}
@@ -417,39 +392,48 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
       {/* Bottom prompt bar */}
       {welcomeVariant === 'blank' ? (
         chatStarted && (
-          <div className="chat-input-wrapper">
-            <div className="prompt-bar" id="chat-prompt-bar">
-              <textarea
-                className="agent-textarea"
-                id="chat-textarea"
-                placeholder={autoPopulating ? 'Building your model…' : 'Let me help you build a model'}
-                disabled={autoPopulating}
-              ></textarea>
-              <div className="prompt-bar-actions">
-                {autoPopulating ? (
-                  /* Pause button — replaces send icon while building */
-                  <button
-                    className="send-btn"
-                    title="Pause generation"
-                    onClick={handleStopAutoPopulate}
-                  >
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <rect x="2.5" y="1.5" width="3" height="11" rx="1" fill="white" />
-                      <rect x="8.5" y="1.5" width="3" height="11" rx="1" fill="white" />
-                    </svg>
-                  </button>
-                ) : (
-                  <button
-                    className="send-btn"
-                    id="chat-send-btn"
-                    title="Send"
-                  >
-                    <img src="/spotter-assets/Primary buttton/Primary buttton/arrow-up-m.svg" width="16" height="16" alt="send" />
-                  </button>
-                )}
+          activeClarifyId ? (
+            /* Clarify card replaces prompt bar when user pauses auto-generation */
+            <div className="chat-input-wrapper">
+              <StopClarifyCard
+                onComplete={handleStopClarifyComplete}
+              />
+            </div>
+          ) : (
+            <div className="chat-input-wrapper">
+              <div className="prompt-bar" id="chat-prompt-bar">
+                <textarea
+                  className="agent-textarea"
+                  id="chat-textarea"
+                  placeholder={autoPopulating ? 'Building your model…' : 'Let me help you build a model'}
+                  disabled={autoPopulating}
+                ></textarea>
+                <div className="prompt-bar-actions">
+                  {autoPopulating ? (
+                    /* Pause button — replaces send icon while building */
+                    <button
+                      className="send-btn"
+                      title="Pause generation"
+                      onClick={handleStopAutoPopulate}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <rect x="2.5" y="1.5" width="3" height="11" rx="1" fill="white" />
+                        <rect x="8.5" y="1.5" width="3" height="11" rx="1" fill="white" />
+                      </svg>
+                    </button>
+                  ) : (
+                    <button
+                      className="send-btn"
+                      id="chat-send-btn"
+                      title="Send"
+                    >
+                      <img src="/spotter-assets/Primary buttton/Primary buttton/arrow-up-m.svg" width="16" height="16" alt="send" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          )
         )
       ) : (
         <div className="chat-input-wrapper">

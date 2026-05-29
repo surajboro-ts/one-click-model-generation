@@ -2000,6 +2000,26 @@ Only include the context field when there is genuinely meaningful content from t
     switchTab('tables');
   }
 
+  // ── Restart function — module-level so it survives StrictMode cleanup+remount ──
+  // Uses window.__DME_CURRENT_PLAN_ID__ (set by startAutoPopulate on each run) and
+  // window.__DME_AUTO_DATA_SAVED__ (saved on first run, not deleted in cleanup).
+  window._restartBuildFromPhase = function(action, _issue) {
+    var targetPhaseIdx = 0;
+    if (action === '__resume__') {
+      targetPhaseIdx = window.__DME_ABORT_PHASE_IDX__ || 0;
+    } else if (action === 'joins') {
+      targetPhaseIdx = 2;
+    } else if (action === 'formulas') {
+      targetPhaseIdx = 4;
+    } else {
+      // 'tables', 'other' — restart from tables phase
+      targetPhaseIdx = 1;
+    }
+    clearModelToPhase(targetPhaseIdx);
+    window._removeMsg && window._removeMsg(window.__DME_CURRENT_PLAN_ID__);
+    startAutoPopulate(targetPhaseIdx);
+  };
+
   function startAutoPopulate(startFromPhaseIdx) {
     startFromPhaseIdx = startFromPhaseIdx || 0;
 
@@ -2176,29 +2196,9 @@ Only include the context field when there is genuinely meaningful content from t
     }
 
     var PLAN_MSG_ID = 'dme-auto-populate-plan-' + Date.now();
-
-    // ── expose restart function ────────────────────────────────────────
-    // Closure captures PLAN_MSG_ID, phases, endSteps from THIS run so that
-    // _restartBuildFromPhase always removes the correct plan card.
-    window._restartBuildFromPhase = function(action, _issue) {
-      var targetPhaseIdx = 0;
-      if (action === '__resume__') {
-        targetPhaseIdx = window.__DME_ABORT_PHASE_IDX__ || 0;
-      } else if (action === 'joins') {
-        targetPhaseIdx = 2;
-      } else if (action === 'formulas') {
-        targetPhaseIdx = 4;
-      } else {
-        // 'tables', 'other' — restart from tables phase
-        targetPhaseIdx = 1;
-      }
-      // Clear the model to the chosen phase
-      clearModelToPhase(targetPhaseIdx);
-      // Remove old plan card from chat
-      window._removeMsg && window._removeMsg(PLAN_MSG_ID);
-      // Rerun from the target phase
-      startAutoPopulate(targetPhaseIdx);
-    };
+    // Track the current plan message ID so the module-level _restartBuildFromPhase
+    // can remove the right card even after StrictMode cleanup+remount.
+    window.__DME_CURRENT_PLAN_ID__ = PLAN_MSG_ID;
 
     // ── Transition: welcome → chat; show tables pane ───────────────────
     var welcomeView = document.getElementById('welcome-view');
@@ -2286,8 +2286,12 @@ Only include the context field when there is genuinely meaningful content from t
 
     // Abort flag — set by cleanup or the Stop button.
     var aborted = false;
-    var _origCleanup = window.__DME_AUTO_ABORT__;
-    if (_origCleanup) _origCleanup(); // cancel any prior run (StrictMode remount)
+    // Only cancel a prior run on fresh start (StrictMode protection).
+    // On restart (startFromPhaseIdx > 0) the prior run was already aborted by the Stop button.
+    if (startFromPhaseIdx === 0) {
+      var _origCleanup = window.__DME_AUTO_ABORT__;
+      if (_origCleanup) _origCleanup();
+    }
     window.__DME_AUTO_ABORT__ = function() {
       aborted = true;
       // NOTE: do NOT call _setDMEAutoPopulating(false) or set _autoPopulating = false here.
@@ -2497,7 +2501,9 @@ Only include the context field when there is genuinely meaningful content from t
     window._autoPopulating = false;
     delete window.__DME_STOP_VERSION__;
     delete window.__DME_ABORT_PHASE_IDX__;
-    delete window.__DME_AUTO_DATA_SAVED__;
+    delete window.__DME_CURRENT_PLAN_ID__;
+    // __DME_AUTO_DATA_SAVED__ is intentionally NOT deleted here so it survives
+    // StrictMode cleanup+remount and _restartBuildFromPhase can still use it.
     delete window._restartBuildFromPhase;
     // Also clear the shimmer position if cleanup runs mid-sequence
     if (window._modelState) delete window._modelState.tablePositions?.['__shimmer__'];
