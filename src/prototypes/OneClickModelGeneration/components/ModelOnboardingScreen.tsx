@@ -101,96 +101,6 @@ function SparkleIcon({ color = systemColors.light['content-secondary'] }: { colo
 }
 
 // ─── Connection split-button ───────────────────────────────────────────────────
-// Custom pill shape with split layout — no Radiant Button variant matches this.
-function ConnectionSelector({
-  connectionName,
-  onNameClick,
-  onShowDetails,
-}: {
-  connectionName: string;
-  onNameClick?: () => void;
-  onShowDetails?: () => void;
-}) {
-  const [showOverflow, setShowOverflow] = useState(false);
-  const chevronRef = useRef<HTMLButtonElement>(null);
-  const overflowRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!showOverflow) return;
-    const handler = (e: MouseEvent) => {
-      if (
-        chevronRef.current && !chevronRef.current.contains(e.target as Node) &&
-        overflowRef.current && !overflowRef.current.contains(e.target as Node)
-      ) setShowOverflow(false);
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [showOverflow]);
-
-  return (
-    <div style={{ display: 'flex', height: spacing.H, gap: 2, position: 'relative' }}>
-      <button
-        onClick={onNameClick}
-        style={{
-          height: spacing.H, padding: `6px ${spacing.B}px 6px ${spacing.D}px`, /* no exact spacing token for 6 */
-          backgroundColor: systemColors.light['background-subtle'], borderRadius: '18px 1px 1px 18px',
-          border: 'none', fontSize: 14, lineHeight: '20px', fontWeight: fontWeight.light,
-          color: systemColors.light['content-primary'], fontFamily: 'inherit',
-          maxWidth: 160, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
-          cursor: onNameClick ? 'pointer' : 'default',
-        }}
-        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.filter = 'brightness(0.95)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.filter = 'none'; }}
-      >
-        {connectionName}
-      </button>
-      <button
-        ref={chevronRef}
-        onClick={() => setShowOverflow(v => !v)}
-        style={{
-          width: 36, height: spacing.H, backgroundColor: systemColors.light['background-subtle'],
-          borderRadius: '1px 16px 16px 1px', border: 'none',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0, cursor: 'pointer',
-        }}
-        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.filter = 'brightness(0.95)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.filter = 'none'; }}
-        aria-label="Connection options"
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-          <path d="M4 6L8 10L12 6" stroke={systemColors.light['content-primary']} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
-      {showOverflow && (
-        <div
-          ref={overflowRef}
-          style={{
-            position: 'absolute', bottom: 'calc(100% + 6px)', left: 0, /* no exact spacing token for 6 */
-            minWidth: 200, background: systemColors.light['background-base'], borderRadius: spacing.B,
-            border: `1px solid ${systemColors.light['border-divider']}`,
-            boxShadow: '0px 8px 16px rgba(25,35,49,0.08), 0px 0px 4px rgba(25,35,49,0.06)',
-            overflow: 'hidden', zIndex: 50,
-          }}
-        >
-          <button
-            onClick={() => { setShowOverflow(false); onShowDetails?.(); }}
-            style={{
-              display: 'block', width: '100%', textAlign: 'left',
-              height: 36, padding: `0 14px`, background: 'none', /* no exact spacing token for 14 */
-              border: 'none', cursor: 'pointer', fontSize: 13,
-              color: systemColors.light['content-primary'], fontFamily: 'inherit',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = systemColors.light['background-sunken']; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'none'; }}
-          >
-            Show connection details
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
 // ─── Build button — custom gradient arrow pill, kept as raw button ─────────────
 function BuildButton({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) {
   return (
@@ -242,7 +152,7 @@ const PROMPT_BAR_SHADOW = '0px 2px 4px rgba(25,35,49,0.04), 0px 0px 4px rgba(25,
 
 // ─── Default prompt bar ────────────────────────────────────────────────────────
 function PromptBar({
-  onTextChange, onHtmlChange, onSubmit, connectionName, onConnectionClick, onShowConnectionDetails, initialText, submitDisabled,
+  onTextChange, onHtmlChange, onSubmit, connectionName, onConnectionClick: _onConnectionClick, onShowConnectionDetails: _onShowConnectionDetails, initialText, submitDisabled,
 }: {
   onTextChange: (text: string) => void;
   onHtmlChange?: (html: string) => void;
@@ -270,9 +180,10 @@ function PromptBar({
         onHtmlChange={onHtmlChange}
         onFocusChange={setFocused}
         onSubmit={onSubmit}
+        connectionName={connectionName}
       />
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: spacing.H }}>
-        <ConnectionSelector connectionName={connectionName} onNameClick={onConnectionClick} onShowDetails={onShowConnectionDetails} />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', height: spacing.H }}>
+        {/* ConnectionSelector hidden for now — may restore later */}
         <BuildButton onClick={onSubmit} disabled={submitDisabled} />
       </div>
     </div>
@@ -330,6 +241,7 @@ function MentionEditor({
   onHtmlChange,
   onFocusChange,
   onSubmit,
+  connectionName,
 }: {
   placeholder: string;
   initialText?: string;
@@ -337,6 +249,7 @@ function MentionEditor({
   onHtmlChange?: (html: string) => void;
   onFocusChange: (focused: boolean) => void;
   onSubmit: () => void;
+  connectionName?: string;
 }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [mentionQuery,  setMentionQuery]  = useState<string | null>(null);
@@ -492,6 +405,22 @@ function MentionEditor({
           boxShadow: '0px 8px 16px rgba(25,35,49,0.08), 0px 0px 4px rgba(25,35,49,0.06)',
           overflow: 'hidden',
         }}>
+          {/* Connection name strip */}
+          {connectionName && (
+            <div style={{
+              padding: `5px 14px`, display: 'flex', alignItems: 'center', gap: spacing.B,
+              backgroundColor: systemColors.light['background-sunken'],
+              borderBottom: `1px solid ${systemColors.light['border-divider']}`,
+            }}>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <circle cx="8" cy="8" r="6.5" stroke={systemColors.light['content-secondary']} strokeWidth="1.5"/>
+                <path d="M8 4v4l2.5 2.5" stroke={systemColors.light['content-secondary']} strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              <span style={{ fontSize: 11, fontWeight: fontWeight.regular, lineHeight: '16px', color: systemColors.light['content-secondary'], letterSpacing: '0.2px' }}>
+                {connectionName}
+              </span>
+            </div>
+          )}
           {suggestions.map((t, i) => {
             const q  = mentionQuery.toLowerCase();
             const ms = t.toLowerCase().indexOf(q);
@@ -1923,7 +1852,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                   <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B }}>
                     <SparkleIcon />
                     <span style={{ fontSize: 14, lineHeight: '20px', fontWeight: fontWeight.light, color: systemColors.light['content-secondary'] }}>
-                      Type <span style={{ color: systemColors.light['content-primary'] }}>@</span> to reference specific tables
+                      Type <span style={{ color: systemColors.light['content-primary'] }}>@</span> to reference tables from the connection
                     </span>
                   </div>
                 </div>
