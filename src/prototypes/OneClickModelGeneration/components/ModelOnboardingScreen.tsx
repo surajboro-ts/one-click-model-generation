@@ -812,13 +812,14 @@ function DirectionCard({
     </p>
   );
 
-  // Snowflake SVG icon for the connection chip
+  // Snowflake SVG icon — #29B5E8 is Snowflake's official brand color, no Radiant token maps to it
+  const SNOWFLAKE_BRAND = '#29B5E8';
   const SnowflakeIcon = () => (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
-      <path d="M12 2v20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3" stroke={systemColors.light['content-tertiary']} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M2 12h20M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3" stroke={systemColors.light['content-tertiary']} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M5.636 5.636l12.728 12.728M5.636 5.636l1.06 3.889M5.636 5.636l3.889 1.06M18.364 18.364l-1.06-3.889M18.364 18.364l-3.889-1.06" stroke={systemColors.light['content-tertiary']} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M18.364 5.636L5.636 18.364M18.364 5.636l-3.889 1.06M18.364 5.636l-1.06 3.889M5.636 18.364l3.889-1.06M5.636 18.364l1.06-3.889" stroke={systemColors.light['content-tertiary']} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M12 2v20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3" stroke={SNOWFLAKE_BRAND} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M2 12h20M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3" stroke={SNOWFLAKE_BRAND} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M5.636 5.636l12.728 12.728M5.636 5.636l1.06 3.889M5.636 5.636l3.889 1.06M18.364 18.364l-1.06-3.889M18.364 18.364l-3.889-1.06" stroke={SNOWFLAKE_BRAND} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M18.364 5.636L5.636 18.364M18.364 5.636l-3.889 1.06M18.364 5.636l-1.06 3.889M5.636 18.364l3.889-1.06M5.636 18.364l1.06-3.889" stroke={SNOWFLAKE_BRAND} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 
@@ -830,54 +831,60 @@ function DirectionCard({
     }}>
       {/* ── Header block: gray-fill, distinct from white body ── */}
       <div style={{
-        padding: `${spacing.D}px`,
         backgroundColor: systemColors.light['background-sunken'],
         borderBottom: `1.5px solid ${systemColors.light['border-divider']}`,
       }}>
-        {/* MODEL REQUIREMENT label */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B, marginBottom: spacing.C }}>
-          <span style={{
-            width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-            backgroundColor: systemColors.light['content-brand'],
-          }} />
-          <span style={{
-            fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: systemColors.light['content-brand'],
+        {/* Top strip: MODEL REQUIREMENT label on left, connection chip on right */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: `${spacing.C}px ${spacing.D}px`,
+          borderBottom: `1px solid ${systemColors.light['border-divider']}`,
+        }}>
+          {/* MODEL REQUIREMENT label */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B }}>
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+              backgroundColor: systemColors.light['content-brand'],
+            }} />
+            <span style={{
+              fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: systemColors.light['content-brand'],
+            }}>
+              Model requirement
+            </span>
+          </div>
+
+          {/* Connection chip — Snowflake icon + name only */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: spacing.B,
+            backgroundColor: systemColors.light['background-base'],
+            borderRadius: 100, padding: '3px 10px',
+            border: `1px solid ${systemColors.light['border-divider']}`,
           }}>
-            Model requirement
-          </span>
+            <SnowflakeIcon />
+            <span style={{ fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'] }}>
+              {connection.name}
+            </span>
+          </div>
         </div>
 
-        {/* Model name (title) */}
-        <h2 style={{
-          margin: `0 0 ${spacing.B}px`, padding: 0,
-          fontSize: 17, fontWeight: 700, lineHeight: '24px',
-          color: systemColors.light['content-primary'],
-        }}>
-          {direction.title}
-        </h2>
-
-        {/* Model description */}
-        <p style={{
-          margin: `0 0 ${spacing.C}px`, padding: 0,
-          fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px',
-          color: systemColors.light['content-secondary'],
-        }}>
-          {direction.description}
-        </p>
-
-        {/* Connection chip — Snowflake icon + name only, no colored dot */}
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: spacing.B,
-          backgroundColor: systemColors.light['background-base'],
-          borderRadius: 100, padding: '3px 10px',
-          border: `1px solid ${systemColors.light['border-divider']}`,
-        }}>
-          <SnowflakeIcon />
-          <span style={{ fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'] }}>
-            {connection.name}
-          </span>
+        {/* Title + description */}
+        <div style={{ padding: `${spacing.C}px ${spacing.D}px ${spacing.D}px` }}>
+          <h2 style={{
+            margin: `0 0 ${spacing.A}px`, padding: 0,
+            fontSize: 17, fontWeight: 700, lineHeight: '24px',
+            color: systemColors.light['content-primary'],
+          }}>
+            {direction.title}
+          </h2>
+          <p style={{
+            margin: 0, padding: 0,
+            fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px',
+            color: systemColors.light['content-secondary'],
+          }}>
+            {direction.description}
+          </p>
         </div>
       </div>
 
@@ -912,7 +919,7 @@ function DirectionCard({
           </span>
           {direction.linkedConcepts.map((c, i) => (
             <React.Fragment key={c}>
-              <span style={{ fontWeight: 600, color: systemColors.light['content-brand'] }}>{c}</span>
+              <span style={{ fontWeight: 600, color: systemColors.light['content-primary'] }}>{c}</span>
               {i < direction.linkedConcepts.length - 1 && (
                 <span style={{ color: systemColors.light['content-tertiary'], margin: '0 5px' }}>→</span>
               )}
@@ -927,23 +934,35 @@ function DirectionCard({
         <button
           onClick={() => setAddedExpanded(e => !e)}
           style={{
-            width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: `${spacing.C}px ${spacing.D}px`,
+            width: '100%', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.C,
+            padding: `${spacing.D}px`,
             background: 'none', border: 'none', cursor: 'pointer',
-            color: systemColors.light['content-secondary'],
-            fontFamily: fontFamily.primary,
+            fontFamily: fontFamily.primary, textAlign: 'left' as const,
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 600, textAlign: 'left' as const }}>
-            What I added{' '}
-            <span style={{ fontWeight: 400 }}>· metrics, dimensions, consumers, guardrails &amp; more</span>
-          </span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.A }}>
+            {/* Heading matches SectionLabel style */}
+            <span style={{
+              fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+              textTransform: 'uppercase' as const,
+              color: systemColors.light['content-secondary'],
+            }}>
+              What I added
+            </span>
+            {/* Sub-title on its own line */}
+            <span style={{
+              fontSize: 11, fontWeight: fontWeight.light,
+              lineHeight: '16px', color: systemColors.light['content-tertiary'],
+            }}>
+              metrics, dimensions, consumers, guardrails &amp; more
+            </span>
+          </div>
           <svg
             width="12" height="12" viewBox="0 0 12 12" fill="none"
-            style={{ flexShrink: 0, transform: addedExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
+            style={{ flexShrink: 0, marginTop: 2, transform: addedExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
             aria-hidden
           >
-            <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M2 4l4 4 4-4" stroke={systemColors.light['content-tertiary']} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
         {addedExpanded && (
