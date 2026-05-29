@@ -831,64 +831,58 @@ function DirectionCard({
     </svg>
   );
 
-  // ── Collapsed (previous-version) view — header strip only ────────────────
+  // ── Collapsed (previous-version) view — title/description with inline version badge ──
   if (isCollapsed) {
     return (
-      <div style={{
-        borderRadius: spacing.C, overflow: 'hidden',
-        backgroundColor: systemColors.light['background-base'],
-        border: `1px solid ${systemColors.light['border-divider']}`,
-        opacity: 0.75,
-      }}>
-        <div style={{
-          backgroundColor: systemColors.light['background-sunken'],
+      <div
+        style={{
+          borderRadius: spacing.C,
+          backgroundColor: systemColors.light['background-base'],
+          border: `1px solid ${systemColors.light['border-divider']}`,
           cursor: 'pointer',
         }}
-          onClick={onToggleCollapse}
-        >
-          {/* Top strip */}
+        onClick={onToggleCollapse}
+      >
+        <div style={{ padding: `${spacing.C}px ${spacing.D}px ${spacing.D}px` }}>
+          {/* Title row: version badge + title + expand chevron */}
           <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: `${spacing.C}px ${spacing.D}px`,
-            borderBottom: `1px solid ${systemColors.light['border-divider']}`,
+            display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
+            gap: spacing.B, marginBottom: spacing.A,
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', flexShrink: 0, backgroundColor: systemColors.light['content-brand'] }} />
-              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: systemColors.light['content-brand'] }}>
-                Model requirement
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: spacing.B, flex: 1, minWidth: 0 }}>
               {/* Version badge */}
               <span style={{
+                flexShrink: 0,
                 fontSize: 10, fontWeight: 600, letterSpacing: '0.04em',
                 padding: '1px 6px', borderRadius: 100,
-                backgroundColor: systemColors.light['background-subtle'],
-                color: systemColors.light['content-tertiary'],
-                border: `1px solid ${systemColors.light['border-divider']}`,
+                backgroundColor: systemColors.light['background-information'],
+                color: systemColors.light['content-brand'],
+                border: `1px solid ${systemColors.light['content-brand']}`,
               }}>
                 v{version}
               </span>
+              <h2 style={{
+                margin: 0, padding: 0,
+                fontSize: 15, fontWeight: 700, lineHeight: '22px',
+                color: systemColors.light['content-primary'],
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+              }}>
+                {direction.title}
+              </h2>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: spacing.C }}>
-              {/* Connection chip */}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.B, backgroundColor: systemColors.light['background-base'], borderRadius: 100, padding: '3px 10px', border: `1px solid ${systemColors.light['border-divider']}` }}>
-                <SnowflakeIcon />
-                <span style={{ fontSize: 12, fontWeight: 500, color: systemColors.light['content-secondary'] }}>{connection.name}</span>
-              </div>
-              {/* Expand chevron */}
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                <path d="M2 4l4 4 4-4" stroke={systemColors.light['content-tertiary']} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            {/* Expand chevron */}
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden style={{ flexShrink: 0, marginTop: 4 }}>
+              <path d="M2 4l4 4 4-4" stroke={systemColors.light['content-tertiary']} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </div>
           </div>
-          {/* Title + description */}
-          <div style={{ padding: `${spacing.C}px ${spacing.D}px ${spacing.D}px` }}>
-            <h2 style={{ margin: `0 0 ${spacing.A}px`, padding: 0, fontSize: 17, fontWeight: 700, lineHeight: '24px', color: systemColors.light['content-primary'] }}>
-              {direction.title}
-            </h2>
-            <p style={{ margin: 0, padding: 0, fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px', color: systemColors.light['content-secondary'] }}>
-              {direction.description}
-            </p>
-          </div>
+          {/* Description */}
+          <p style={{
+            margin: 0, padding: 0,
+            fontSize: 12, fontWeight: fontWeight.light, lineHeight: '18px',
+            color: systemColors.light['content-secondary'],
+          }}>
+            {direction.description}
+          </p>
         </div>
       </div>
     );
@@ -925,13 +919,13 @@ function DirectionCard({
             }}>
               Model requirement
             </span>
-            {/* Version badge — 'v1 · Latest' when current, 'v1' when previous */}
+            {/* Version badge — 'v1 · Latest' when current, 'v1' when previous — always blue border */}
             <span style={{
               fontSize: 10, fontWeight: 600, letterSpacing: '0.04em',
               padding: '1px 6px', borderRadius: 100,
-              backgroundColor: isLatest ? systemColors.light['background-information'] : systemColors.light['background-subtle'],
-              color: isLatest ? systemColors.light['content-brand'] : systemColors.light['content-tertiary'],
-              border: `1px solid ${isLatest ? systemColors.light['border-default'] : systemColors.light['border-divider']}`,
+              backgroundColor: systemColors.light['background-information'],
+              color: systemColors.light['content-brand'],
+              border: `1px solid ${systemColors.light['content-brand']}`,
             }}>
               {isLatest ? `v${version} · Latest` : `v${version}`}
             </span>
