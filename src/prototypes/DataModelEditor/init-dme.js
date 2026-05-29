@@ -2099,8 +2099,7 @@ Only include the context field when there is genuinely meaningful content from t
       window._setTableCanvasData && window._setTableCanvasData({ tables: realTables, joins: window._modelState.model.joins });
     }
 
-    var PLAN_MSG_ID       = 'dme-auto-populate-plan';
-    var GLOBAL_REASON_ID  = 'dme-global-reasoning';
+    var PLAN_MSG_ID = 'dme-auto-populate-plan';
 
     // ── Transition: welcome → chat; show tables pane ───────────────────
     var welcomeView = document.getElementById('welcome-view');
@@ -2113,7 +2112,7 @@ Only include the context field when there is genuinely meaningful content from t
     window._autoPopulating = true;
     // Notify DME React component (also suppresses tables empty state via isAutoPopulating)
     window._setDMEAutoPopulating && window._setDMEAutoPopulating(true);
-    // Signal AgentPanel UI that building is in progress (shows chat bar + stop button)
+    // Signal AgentPanel UI that building is in progress (shows chat bar + pause button)
     window._setAutoPopulating && window._setAutoPopulating(true);
 
     // Pre-set stretch layout on columns/formulas containers so the shimmer wrappers
@@ -2123,19 +2122,19 @@ Only include the context field when there is genuinely meaningful content from t
     if (_contentCols) { _contentCols.style.alignItems = 'stretch'; _contentCols.style.justifyContent = 'flex-start'; }
     if (_contentFmls) { _contentFmls.style.alignItems = 'stretch'; _contentFmls.style.justifyContent = 'flex-start'; }
 
-    // ── Phase A: global reasoning "Generating a build plan…" ──────────
-    // Appears immediately, collapses after ~1.2s, then the plan-steps card
-    // lands and the canvas build begins.
+    // ── Single plan-steps message: reasoning inline, then plan card below ─
+    // Push immediately with active reasoning spinner. After 1.2s collapse
+    // reasoning to Done, reveal "Plan ready" text, then begin canvas build.
     window._appendMsg && window._appendMsg({
-      kind: 'agent', id: GLOBAL_REASON_ID,
+      kind: 'plan-steps', id: PLAN_MSG_ID,
       reasoning: { header: 'Reasoning', isDone: false, inlineText: 'Generating a build plan…', steps: [] },
-      response: null,
+      data: makePlanData(0),
     });
     window._scrollMsgs && window._scrollMsgs();
 
     setTimeout(function() {
-      // Collapse global reasoning to Done + show "building model" response
-      window._updateMsg && window._updateMsg(GLOBAL_REASON_ID, {
+      // Collapse reasoning to Done + reveal intro text above the plan card
+      window._updateMsg && window._updateMsg(PLAN_MSG_ID, {
         reasoning: {
           header: 'Done', isDone: true, inlineText: '',
           steps: [
@@ -2143,17 +2142,11 @@ Only include the context field when there is genuinely meaningful content from t
             { n: 2, name: 'Generated plan',      text: phases.length + ' build steps identified.', dotState: 'done' },
           ],
         },
-        response: { text: 'Plan ready — building your model now.', isVisible: true },
+        text: 'Plan ready — building your model now.',
       });
 
-      // ── Phase B: push plan-steps card (all steps pending initially) ──
-      setTimeout(function() {
-        window._appendMsg && window._appendMsg({ kind: 'plan-steps', id: PLAN_MSG_ID, data: makePlanData(0) });
-        window._scrollMsgs && window._scrollMsgs();
-
-        // Begin canvas build after plan card settles
-        setTimeout(runNext, 300);
-      }, 300);
+      // Begin canvas build after plan card settles
+      setTimeout(runNext, 300);
     }, 1200);
 
     // ── Step runner ────────────────────────────────────────────────────

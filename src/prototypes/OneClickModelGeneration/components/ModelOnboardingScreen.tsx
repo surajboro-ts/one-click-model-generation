@@ -1451,16 +1451,23 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   const [canvasDirection,   setCanvasDirection]   = useState<Direction | null>(null);
   const [currentPromptHtml, setCurrentPromptHtml] = useState('');
 
-  const lastMsgTopRef  = useRef<HTMLDivElement>(null);
+  const chatScrollRef  = useRef<HTMLDivElement>(null);
+  const lastUserRef    = useRef<HTMLDivElement>(null);
   const reasoningMsgId = useRef<string>('');
 
   const sweepKey = usePeriodicSweep(4000);
   const SUBTITLE = "I'll build an AI-ready model for you in minutes";
 
-  // Auto-scroll: when a new message arrives, bring its top to the top of the chat.
+  // Auto-scroll: when a new message arrives, bring the latest user prompt to
+  // 12px from the top so the prompt + its response stay in view together.
   useEffect(() => {
     if (!chatMessages.length) return;
-    lastMsgTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const el = lastUserRef.current;
+    const container = chatScrollRef.current;
+    if (!el || !container) return;
+    const elRect = el.getBoundingClientRect();
+    const cRect  = container.getBoundingClientRect();
+    container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
   }, [chatMessages.length]);
 
   // ── Reasoning helpers ─────────────────────────────────────────────────────
@@ -1874,17 +1881,18 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
           {/* Chat column */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
             {/* Scrollable messages area */}
-            <div style={{
+            <div ref={chatScrollRef} style={{
               flex: 1, overflowY: 'auto',
               padding: `${spacing.F}px`,
               paddingBottom: spacing.J,
             }}>
               <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: spacing.D }}>
-                {chatMessages.map((msg, idx) => {
-                  const isLast = idx === chatMessages.length - 1;
+                {(() => {
+                  const lastUserIdx = chatMessages.reduce((acc, m, i) => m.kind === 'user' ? i : acc, -1);
+                  return chatMessages.map((msg, idx) => {
                   if (msg.kind === 'user') {
                     return (
-                      <div key={msg.id} ref={isLast ? lastMsgTopRef : undefined}>
+                      <div key={msg.id} ref={idx === lastUserIdx ? lastUserRef : undefined}>
                         <UserMsgRow text={msg.text} html={msg.html} />
                       </div>
                     );
@@ -1892,7 +1900,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
 
                   if (msg.kind === 'reasoning') {
                     return (
-                      <div key={msg.id} ref={isLast ? lastMsgTopRef : undefined} style={{ display: 'flex', flexDirection: 'column', gap: spacing.B }}>
+                      <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', gap: spacing.B }}>
                         <AgentRow>
                           <ReasoningBlock data={msg.data} />
                         </AgentRow>
@@ -1917,7 +1925,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                       .filter((m): m is Extract<ChatMsg, { kind: 'directions' }> => m.kind === 'directions');
                     const isLatest = dirMsgs[dirMsgs.length - 1]?.id === msg.id;
                     return (
-                      <div key={msg.id} ref={isLast ? lastMsgTopRef : undefined} style={{
+                      <div key={msg.id} style={{
                         display: 'flex', flexDirection: 'column', gap: spacing.D,
                         animation: 'slideUpIn 0.35s cubic-bezier(0.4,0,0.2,1) both',
                       }}>
@@ -1998,7 +2006,8 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                   }
 
                   return null;
-                })}
+                  });
+                })()}
                 {/* Spacer so the last message can scroll to the top of the view */}
                 <div style={{ height: '60vh', flexShrink: 0 }} />
               </div>

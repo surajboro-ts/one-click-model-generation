@@ -43,6 +43,6 @@ export type MessageItem =
   | { kind: 'user';       id: string; text: string; html?: string }
   | { kind: 'typing';     id: string; label: string }
   | { kind: 'agent';      id: string; reasoning: ReasoningData; response: ResponseData | null }
-  | { kind: 'plan-steps'; id: string; data: PlanStepsData; reasoning?: ReasoningData; showBuildCta?: boolean }
+  | { kind: 'plan-steps'; id: string; data: PlanStepsData; reasoning?: ReasoningData; text?: string; showBuildCta?: boolean }
   // Carried from the onboarding screen — rendered via window.__renderMRD__
   | { kind: 'mrd';        id: string; mrdData: Record<string, unknown>; version: number; isCollapsed: boolean };

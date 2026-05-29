@@ -5,7 +5,6 @@ import { AgentMessage } from './AgentMessage';
 import { ReasoningBlock } from './ReasoningBlock';
 import { AgentResponseBlock } from './AgentResponseBlock';
 import { PlanStepsCard } from './PlanStepsCard';
-import { Button } from '@components/Button';
 import type { MessageItem, SuggType, ReasoningData } from './types';
 
 export interface AgentPanelProps {
@@ -16,7 +15,8 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [chatStarted, setChatStarted] = useState(false);
   const [autoPopulating, setAutoPopulating] = useState(false);
-  const chatMsgsRef = useRef<HTMLDivElement>(null);
+  const chatMsgsRef  = useRef<HTMLDivElement>(null);
+  const lastUserRef  = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Pre-populate with onboarding history if available (carry-over from the
@@ -48,10 +48,12 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     (window as any)._removeMsg = (id: string) =>
       setMessages(prev => prev.filter(m => m.id !== id));
     (window as any)._scrollMsgs = () => {
-      const el = chatMsgsRef.current;
-      if (!el) return;
-      const last = el.lastElementChild as HTMLElement | null;
-      last?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const el = lastUserRef.current;
+      const container = chatMsgsRef.current;
+      if (!el || !container) return;
+      const elRect = el.getBoundingClientRect();
+      const cRect  = container.getBoundingClientRect();
+      container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
     };
     (window as any)._updateReasoning = (id: string, reasoning: ReasoningData) =>
       setMessages(prev => prev.map(m =>
@@ -132,20 +134,25 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     } as MessageItem]);
 
     setTimeout(() => {
-      const el = chatMsgsRef.current;
-      if (!el) return;
-      const last = el.lastElementChild as HTMLElement | null;
-      last?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const el = lastUserRef.current;
+      const container = chatMsgsRef.current;
+      if (!el || !container) return;
+      const elRect = el.getBoundingClientRect();
+      const cRect  = container.getBoundingClientRect();
+      container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
     }, 60);
   };
 
-  // Auto-scroll to top of latest message whenever a new one arrives
+  // Auto-scroll: bring the latest user message to 12px from the top so the
+  // prompt + its response are both visible.
   useEffect(() => {
     if (!messages.length) return;
-    const el = chatMsgsRef.current;
-    if (!el) return;
-    const last = el.lastElementChild as HTMLElement | null;
-    last?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const el = lastUserRef.current;
+    const container = chatMsgsRef.current;
+    if (!el || !container) return;
+    const elRect = el.getBoundingClientRect();
+    const cRect  = container.getBoundingClientRect();
+    container.scrollTo({ top: Math.max(0, container.scrollTop + (elRect.top - cRect.top) - 12), behavior: 'smooth' });
   }, [messages.length]);
 
   return (
@@ -217,13 +224,27 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
       {/* Chat view */}
       <div className="chat-view" id="chat-view">
         <div className="chat-messages" id="chat-messages" ref={chatMsgsRef}>
-          {messages.map((msg, idx) => {
+          {(() => {
+            const lastUserIdx = messages.reduce((acc, m, i) => m.kind === 'user' ? i : acc, -1);
+            return messages.map((msg, idx) => {
             const isReadOnly = idx < messages.length - 1;
-            if (msg.kind === 'user') return <UserBubble key={msg.id} text={msg.text} html={msg.html} />;
+            if (msg.kind === 'user') return (
+              <UserBubble
+                key={msg.id}
+                ref={idx === lastUserIdx ? lastUserRef : undefined}
+                text={msg.text}
+                html={msg.html}
+              />
+            );
             if (msg.kind === 'typing') return <TypingIndicator key={msg.id} label={msg.label} />;
             if (msg.kind === 'plan-steps') return (
               <AgentMessage key={msg.id}>
                 {msg.reasoning && <ReasoningBlock data={msg.reasoning} />}
+                {msg.text && (
+                  <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 300, lineHeight: '20px', color: 'var(--rd-sys-color-content-primary)' }}>
+                    {msg.text}
+                  </p>
+                )}
                 <PlanStepsCard
                   data={msg.data}
                   showBuildCta={msg.showBuildCta}
@@ -254,7 +275,8 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
               </AgentMessage>
             );
             return null;
-          })}
+          });
+          })()}
         </div>
       </div>
 
@@ -262,23 +284,6 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
       {welcomeVariant === 'blank' ? (
         chatStarted && (
           <div className="chat-input-wrapper">
-            {/* Stop button — visible only while auto-population is running */}
-            {autoPopulating && (
-              <div className="auto-stop-row">
-                <Button
-                  variant="secondary"
-                  onClick={handleStopAutoPopulate}
-                  icon={
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                      <rect x="2" y="2" width="8" height="8" rx="1.5" fill="currentColor" />
-                    </svg>
-                  }
-                  iconPosition="leading"
-                >
-                  Stop generation
-                </Button>
-              </div>
-            )}
             <div className="prompt-bar" id="chat-prompt-bar">
               <textarea
                 className="agent-textarea"
@@ -287,15 +292,27 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
                 disabled={autoPopulating}
               ></textarea>
               <div className="prompt-bar-actions">
-                <button
-                  className="send-btn"
-                  id="chat-send-btn"
-                  title="Send"
-                  disabled={autoPopulating}
-                  style={autoPopulating ? { opacity: 0.35, cursor: 'default', pointerEvents: 'none' } : undefined}
-                >
-                  <img src="/spotter-assets/Primary buttton/Primary buttton/arrow-up-m.svg" width="16" height="16" alt="send" />
-                </button>
+                {autoPopulating ? (
+                  /* Pause button — replaces send icon while building */
+                  <button
+                    className="send-btn"
+                    title="Pause generation"
+                    onClick={handleStopAutoPopulate}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <rect x="2.5" y="1.5" width="3" height="11" rx="1" fill="white" />
+                      <rect x="8.5" y="1.5" width="3" height="11" rx="1" fill="white" />
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    className="send-btn"
+                    id="chat-send-btn"
+                    title="Send"
+                  >
+                    <img src="/spotter-assets/Primary buttton/Primary buttton/arrow-up-m.svg" width="16" height="16" alt="send" />
+                  </button>
+                )}
               </div>
             </div>
           </div>

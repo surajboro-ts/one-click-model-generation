@@ -14,15 +14,8 @@ interface PlanStepsCardProps {
 
 export const PlanStepsCard: React.FC<PlanStepsCardProps> = ({ data, showBuildCta, onBuild }) => (
   <div className={styles.card}>
-    {/* Body: goal + divider + steps */}
+    {/* Body: steps */}
     <div className={styles.body}>
-      <p className={styles.goal}>
-        <strong className={styles.goalLabel}>Goal: </strong>
-        {data.goal}
-      </p>
-
-      <div className={styles.divider} />
-
       <div className={styles.steps}>
         {data.steps.map((step, i) => (
           <div key={i} className={styles.step} style={{ opacity: step.state === 'pending' ? 0.45 : 1 }}>
