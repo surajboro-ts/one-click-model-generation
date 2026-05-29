@@ -48,7 +48,10 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     (window as any)._removeMsg = (id: string) =>
       setMessages(prev => prev.filter(m => m.id !== id));
     (window as any)._scrollMsgs = () => {
-      if (chatMsgsRef.current) chatMsgsRef.current.scrollTop = chatMsgsRef.current.scrollHeight;
+      const el = chatMsgsRef.current;
+      if (!el) return;
+      const last = el.lastElementChild as HTMLElement | null;
+      last?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
     (window as any)._updateReasoning = (id: string, reasoning: ReasoningData) =>
       setMessages(prev => prev.map(m =>
@@ -129,9 +132,21 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
     } as MessageItem]);
 
     setTimeout(() => {
-      if (chatMsgsRef.current) chatMsgsRef.current.scrollTop = chatMsgsRef.current.scrollHeight;
+      const el = chatMsgsRef.current;
+      if (!el) return;
+      const last = el.lastElementChild as HTMLElement | null;
+      last?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 60);
   };
+
+  // Auto-scroll to top of latest message whenever a new one arrives
+  useEffect(() => {
+    if (!messages.length) return;
+    const el = chatMsgsRef.current;
+    if (!el) return;
+    const last = el.lastElementChild as HTMLElement | null;
+    last?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [messages.length]);
 
   return (
     <div className="agent-panel" id="agent-panel">
@@ -204,7 +219,7 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ welcomeVariant }) => {
         <div className="chat-messages" id="chat-messages" ref={chatMsgsRef}>
           {messages.map((msg, idx) => {
             const isReadOnly = idx < messages.length - 1;
-            if (msg.kind === 'user') return <UserBubble key={msg.id} text={msg.text} />;
+            if (msg.kind === 'user') return <UserBubble key={msg.id} text={msg.text} html={msg.html} />;
             if (msg.kind === 'typing') return <TypingIndicator key={msg.id} label={msg.label} />;
             if (msg.kind === 'plan-steps') return (
               <AgentMessage key={msg.id}>

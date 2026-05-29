@@ -242,9 +242,11 @@ const PROMPT_BAR_SHADOW = '0px 2px 4px rgba(25,35,49,0.04), 0px 0px 4px rgba(25,
 
 // ─── Default prompt bar ────────────────────────────────────────────────────────
 function PromptBar({
-  onTextChange, onSubmit, connectionName, onConnectionClick, onShowConnectionDetails, initialText, submitDisabled,
+  onTextChange, onHtmlChange, onSubmit, connectionName, onConnectionClick, onShowConnectionDetails, initialText, submitDisabled,
 }: {
-  onTextChange: (text: string) => void; onSubmit: () => void;
+  onTextChange: (text: string) => void;
+  onHtmlChange?: (html: string) => void;
+  onSubmit: () => void;
   connectionName: string; onConnectionClick: () => void; onShowConnectionDetails: () => void;
   initialText?: string;
   submitDisabled?: boolean;
@@ -265,6 +267,7 @@ function PromptBar({
         placeholder={placeholder}
         initialText={initialText}
         onTextChange={onTextChange}
+        onHtmlChange={onHtmlChange}
         onFocusChange={setFocused}
         onSubmit={onSubmit}
       />
@@ -324,12 +327,14 @@ function MentionEditor({
   placeholder,
   initialText,
   onTextChange,
+  onHtmlChange,
   onFocusChange,
   onSubmit,
 }: {
   placeholder: string;
   initialText?: string;
   onTextChange: (text: string) => void;
+  onHtmlChange?: (html: string) => void;
   onFocusChange: (focused: boolean) => void;
   onSubmit: () => void;
 }) {
@@ -376,6 +381,7 @@ function MentionEditor({
     const empty = !text.trim() || text === '\n';
     setIsEmpty(empty);
     onTextChange(empty ? '' : text);
+    onHtmlChange?.(empty ? '' : editor.innerHTML);
     const mention = detectMention();
     setMentionQuery(mention);
     if (mention !== null) setActiveIdx(0);
@@ -1359,7 +1365,7 @@ const CLARIFYING_QUESTIONS: ClarifyQuestion[] = [
 // ─── Chat message types ────────────────────────────────────────────────────────
 
 type ChatMsg =
-  | { kind: 'user';       id: string; text: string }
+  | { kind: 'user';       id: string; text: string; html?: string }
   | { kind: 'reasoning';  id: string; data: ReasoningData; responseText?: string }
   | { kind: 'directions'; id: string; version: number; isCollapsed: boolean };
 
@@ -1375,7 +1381,16 @@ type ChatPhase =
 // Avatar + text inside the sunken card, with spacing.C (12 px) padding all around.
 // AgentRow matches this left padding so both avatars share the same x-position.
 
-function UserMsgRow({ text }: { text: string }) {
+function UserMsgRow({ text, html }: { text: string; html?: string }) {
+  const textStyle: React.CSSProperties = {
+    flex: 1,
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.light,
+    lineHeight: '22px',
+    color: systemColors.light['content-primary'],
+    whiteSpace: 'pre-wrap',
+    paddingTop: spacing.A,
+  };
   return (
     <div style={{
       display: 'flex', alignItems: 'flex-start', gap: spacing.C,
@@ -1388,17 +1403,11 @@ function UserMsgRow({ text }: { text: string }) {
         width={32} height={32} alt="User"
         style={{ borderRadius: '50%', flexShrink: 0 }}
       />
-      <div style={{
-        flex: 1,
-        fontSize: fontSize.sm,
-        fontWeight: fontWeight.light,
-        lineHeight: '22px',
-        color: systemColors.light['content-primary'],
-        whiteSpace: 'pre-line',
-        paddingTop: spacing.A,
-      }}>
-        {text}
-      </div>
+      {html ? (
+        <div style={textStyle} dangerouslySetInnerHTML={{ __html: html }} />
+      ) : (
+        <div style={textStyle}>{text}</div>
+      )}
     </div>
   );
 }
@@ -1437,33 +1446,22 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   const [chatPhase,      setChatPhase]      = useState<ChatPhase>('idle');
   const [clarifyStep,    setClarifyStep]    = useState(0);
   const [clarifyAnswers, setClarifyAnswers] = useState<Array<{ selections: string[]; freeText?: string }>>([]);
-  const [chatMessages,   setChatMessages]   = useState<ChatMsg[]>([]);
-  const [directions,      setDirections]      = useState<Direction[]>(MOCK_DIRECTIONS);
-  const [canvasDirection, setCanvasDirection] = useState<Direction | null>(null);
+  const [chatMessages,     setChatMessages]     = useState<ChatMsg[]>([]);
+  const [directions,        setDirections]        = useState<Direction[]>(MOCK_DIRECTIONS);
+  const [canvasDirection,   setCanvasDirection]   = useState<Direction | null>(null);
+  const [currentPromptHtml, setCurrentPromptHtml] = useState('');
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const lastMsgTopRef  = useRef<HTMLDivElement>(null);
   const reasoningMsgId = useRef<string>('');
 
   const sweepKey = usePeriodicSweep(4000);
   const SUBTITLE = "I'll build an AI-ready model for you in minutes";
 
-  // Auto-scroll when a new message is appended
+  // Auto-scroll: when a new message arrives, bring its top to the top of the chat.
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    if (!chatMessages.length) return;
+    lastMsgTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [chatMessages.length]);
-
-  // Scroll when the last reasoning message gains a responseText — this is
-  // an in-place update (no length change) so the above effect won't fire.
-  const reasoningMsgs = chatMessages
-    .filter((m): m is Extract<ChatMsg, { kind: 'reasoning' }> => m.kind === 'reasoning');
-  const lastReasoningResponseText =
-    reasoningMsgs.length > 0 ? reasoningMsgs[reasoningMsgs.length - 1].responseText : undefined;
-  useEffect(() => {
-    if (lastReasoningResponseText) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastReasoningResponseText]);
 
   // ── Reasoning helpers ─────────────────────────────────────────────────────
 
@@ -1622,13 +1620,15 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   const handleBuild = () => {
     if (!currentPromptText.trim()) return;
     const text = currentPromptText.trim();
+    const html = currentPromptHtml || undefined;
     setLastPrompt(text);
-    setChatMessages([{ kind: 'user', id: `u-${Date.now()}`, text }]);
+    setChatMessages([{ kind: 'user', id: `u-${Date.now()}`, text, html }]);
     setChatPhase('reasoning_initial');
     setClarifyStep(0);
     setClarifyAnswers([]);
     setDirections(MOCK_DIRECTIONS);
-    setCurrentPromptText(''); // clear draft after send
+    setCurrentPromptText('');
+    setCurrentPromptHtml('');
     setScreenState('chat');
   };
 
@@ -1663,10 +1663,12 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   const handleFollowUp = () => {
     if (!currentPromptText.trim()) return;
     const text = currentPromptText.trim();
-    setChatMessages(prev => [...prev, { kind: 'user', id: `u-${Date.now()}`, text }]);
+    const html = currentPromptHtml || undefined;
+    setChatMessages(prev => [...prev, { kind: 'user', id: `u-${Date.now()}`, text, html }]);
     setClarifyAnswers([]);
     setClarifyStep(0);
-    setCurrentPromptText(''); // clear draft after send
+    setCurrentPromptText('');
+    setCurrentPromptHtml('');
     // If an MRD is already shown, treat as a revision request; otherwise re-run initial reasoning
     setChatPhase(chatPhase === 'directions' ? 'reasoning_revision' : 'reasoning_initial');
   };
@@ -1820,6 +1822,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: 760, gap: spacing.C }}>
                   <PromptBar
                     onTextChange={setCurrentPromptText}
+                    onHtmlChange={setCurrentPromptHtml}
                     onSubmit={handleBuild}
                     connectionName={connectionName}
                     onConnectionClick={() => onChangeConnection?.()}
@@ -1877,14 +1880,19 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
               paddingBottom: spacing.J,
             }}>
               <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: spacing.D }}>
-                {chatMessages.map(msg => {
+                {chatMessages.map((msg, idx) => {
+                  const isLast = idx === chatMessages.length - 1;
                   if (msg.kind === 'user') {
-                    return <UserMsgRow key={msg.id} text={msg.text} />;
+                    return (
+                      <div key={msg.id} ref={isLast ? lastMsgTopRef : undefined}>
+                        <UserMsgRow text={msg.text} html={msg.html} />
+                      </div>
+                    );
                   }
 
                   if (msg.kind === 'reasoning') {
                     return (
-                      <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', gap: spacing.B }}>
+                      <div key={msg.id} ref={isLast ? lastMsgTopRef : undefined} style={{ display: 'flex', flexDirection: 'column', gap: spacing.B }}>
                         <AgentRow>
                           <ReasoningBlock data={msg.data} />
                         </AgentRow>
@@ -1909,7 +1917,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                       .filter((m): m is Extract<ChatMsg, { kind: 'directions' }> => m.kind === 'directions');
                     const isLatest = dirMsgs[dirMsgs.length - 1]?.id === msg.id;
                     return (
-                      <div key={msg.id} style={{
+                      <div key={msg.id} ref={isLast ? lastMsgTopRef : undefined} style={{
                         display: 'flex', flexDirection: 'column', gap: spacing.D,
                         animation: 'slideUpIn 0.35s cubic-bezier(0.4,0,0.2,1) both',
                       }}>
@@ -1950,7 +1958,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                                 // message list so the user sees their history in the right panel.
                                 (window as any).__ONBOARDING_HISTORY__ = chatMessages.map(m => {
                                   if (m.kind === 'user') {
-                                    return { kind: 'user', id: m.id, text: m.text };
+                                    return { kind: 'user', id: m.id, text: m.text, html: m.html };
                                   }
                                   if (m.kind === 'reasoning') {
                                     return {
@@ -1991,7 +1999,8 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
 
                   return null;
                 })}
-                <div ref={messagesEndRef} />
+                {/* Spacer so the last message can scroll to the top of the view */}
+                <div style={{ height: '60vh', flexShrink: 0 }} />
               </div>
             </div>
 
@@ -2015,6 +2024,7 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                        while SpotterModel is reasoning — the user can still type. */
                     <PromptBar
                       onTextChange={setCurrentPromptText}
+                      onHtmlChange={setCurrentPromptHtml}
                       onSubmit={handleFollowUp}
                       submitDisabled={chatPhase === 'reasoning_initial' || chatPhase === 'reasoning_post'}
                       initialText={currentPromptText || undefined}

@@ -40,7 +40,7 @@ export interface ResponseData {
 }
 
 export type MessageItem =
-  | { kind: 'user';       id: string; text: string }
+  | { kind: 'user';       id: string; text: string; html?: string }
   | { kind: 'typing';     id: string; label: string }
   | { kind: 'agent';      id: string; reasoning: ReasoningData; response: ResponseData | null }
   | { kind: 'plan-steps'; id: string; data: PlanStepsData; reasoning?: ReasoningData; showBuildCta?: boolean }
