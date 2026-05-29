@@ -1084,8 +1084,158 @@ const BUILD_PLAN: Record<string, DirectionPlan> = {
   },
 };
 
-// ── Demo variant type ─────────────────────────────────────────────────────────
-export type DemoVariant = 'option1' | 'option2';
+// ─── Model spec data — fed into window.__DME_AUTO_DATA__ for startAutoPopulate ──
+
+type SqlDataType = 'VARCHAR' | 'BIGINT' | 'INTEGER' | 'DATE' | 'FLOAT';
+type JoinType = 'INNER' | 'LEFT' | 'RIGHT' | 'FULL';
+type Cardinality = 'N:1' | '1:N' | '1:1' | 'N:N';
+
+interface ModelColumnDef {
+  name: string;
+  dataType: SqlDataType;
+  type: 'Dimension' | 'Metric';
+  description: string;
+  aiCtx: string;
+}
+
+interface ModelTableDef {
+  tableName: string;
+  tableType: 'Fact' | 'Dimension';
+  rowCount: string;
+  columns: ModelColumnDef[];
+}
+
+interface ModelRelationshipDef {
+  leftTable: string;
+  leftKey: string;
+  rightTable: string;
+  rightKey: string;
+  joinType: JoinType;
+  cardinality: Cardinality;
+}
+
+interface ModelFormulaDef {
+  name: string;
+  expression: string;
+  outputType: 'Metric' | 'Dimension';
+  baseTable: string;
+  description: string;
+}
+
+interface ModelSpec {
+  tables:        ModelTableDef[];
+  relationships: ModelRelationshipDef[];
+  formulas:      ModelFormulaDef[];
+}
+
+const MODEL_SPEC: Record<string, ModelSpec> = {
+  d1: {
+    tables: [
+      {
+        tableName: 'FACT_SALES_ORDERS',
+        tableType: 'Fact',
+        rowCount:  '85K rows',
+        columns: [
+          { name: 'order_id',     dataType: 'VARCHAR', type: 'Dimension', description: 'Unique order identifier. Primary key.',                        aiCtx: 'Unique identifier for each sales order' },
+          { name: 'order_date',   dataType: 'DATE',    type: 'Dimension', description: 'Date the order was placed, normalised to YYYY-MM-DD.',         aiCtx: 'Date the order was placed' },
+          { name: 'order_amount', dataType: 'BIGINT',  type: 'Metric',    description: 'Raw order value in USD at time of purchase.',                  aiCtx: 'Total revenue value of the order in USD' },
+          { name: 'order_status', dataType: 'VARCHAR', type: 'Dimension', description: 'Order status: won, lost, pending.',                            aiCtx: 'Current status of the order — won, lost, or pending' },
+          { name: 'region_id',    dataType: 'VARCHAR', type: 'Dimension', description: 'Join key → dim_regions. Use region_name for display.',         aiCtx: 'Sales region where the order originated' },
+          { name: 'rep_id',       dataType: 'VARCHAR', type: 'Dimension', description: 'Join key → dim_sales_reps. Use rep_name for display.',         aiCtx: 'Sales representative who owns the order' },
+        ],
+      },
+      {
+        tableName: 'DIM_REGIONS',
+        tableType: 'Dimension',
+        rowCount:  '12 rows',
+        columns: [
+          { name: 'region_id',   dataType: 'VARCHAR', type: 'Dimension', description: 'Primary key.',                                                  aiCtx: 'Unique region identifier' },
+          { name: 'region_name', dataType: 'VARCHAR', type: 'Dimension', description: 'Human-readable region label. Use for grouping and chart labels.',aiCtx: 'Human-readable name for the sales region' },
+          { name: 'territory',   dataType: 'VARCHAR', type: 'Dimension', description: 'Aggregated territory grouping: AMER, EMEA, APAC.',              aiCtx: 'Broad territory grouping (AMER, EMEA, APAC)' },
+        ],
+      },
+      {
+        tableName: 'DIM_SALES_REPS',
+        tableType: 'Dimension',
+        rowCount:  '48 rows',
+        columns: [
+          { name: 'rep_id',       dataType: 'VARCHAR', type: 'Dimension', description: 'Primary key.',                 aiCtx: 'Unique identifier for the sales representative' },
+          { name: 'rep_name',     dataType: 'VARCHAR', type: 'Dimension', description: 'Full name of the sales rep.',  aiCtx: 'Full name of the sales representative' },
+          { name: 'quota_target', dataType: 'BIGINT',  type: 'Metric',    description: 'Annual quota in USD.',         aiCtx: 'Annual sales quota assigned to the rep in USD' },
+        ],
+      },
+      {
+        tableName: 'DIM_DATE',
+        tableType: 'Dimension',
+        rowCount:  '1,826 rows',
+        columns: [
+          { name: 'date_key', dataType: 'DATE',    type: 'Dimension', description: 'Primary key in YYYYMMDD format. Join on order_date.', aiCtx: 'Calendar date key for time-based joins' },
+          { name: 'quarter',  dataType: 'VARCHAR', type: 'Dimension', description: 'Quarter label (Q1–Q4). Use for QoQ analysis.',        aiCtx: 'Fiscal quarter label for quarterly comparisons' },
+          { name: 'year',     dataType: 'INTEGER', type: 'Dimension', description: 'Calendar year. Use for year-over-year comparisons.',  aiCtx: 'Calendar year for year-over-year analysis' },
+          { name: 'month',    dataType: 'VARCHAR', type: 'Dimension', description: 'Month name. Use for monthly trend views.',            aiCtx: 'Month name for monthly trend analysis' },
+        ],
+      },
+    ],
+    relationships: [
+      { leftTable: 'fact_sales_orders', leftKey: 'region_id',  rightTable: 'dim_regions',    rightKey: 'region_id', joinType: 'INNER', cardinality: 'N:1' },
+      { leftTable: 'fact_sales_orders', leftKey: 'rep_id',     rightTable: 'dim_sales_reps', rightKey: 'rep_id',    joinType: 'LEFT',  cardinality: 'N:1' },
+      { leftTable: 'fact_sales_orders', leftKey: 'order_date', rightTable: 'dim_date',       rightKey: 'date_key',  joinType: 'INNER', cardinality: 'N:1' },
+    ],
+    formulas: [
+      { name: 'total_revenue',    expression: 'SUM(order_amount)',                                                    outputType: 'Metric', baseTable: 'fact_sales_orders', description: 'Sum of order_amount in USD. Primary revenue metric.' },
+      { name: 'quota_attainment', expression: 'total_revenue / quota_target',                                         outputType: 'Metric', baseTable: 'fact_sales_orders', description: "Revenue as a ratio of the rep's annual quota target." },
+      { name: 'deal_count',       expression: 'COUNT(DISTINCT order_id)',                                             outputType: 'Metric', baseTable: 'fact_sales_orders', description: 'Count of distinct closed deals per rep or region.' },
+      { name: 'yoy_growth',       expression: '(curr_quarter_rev - prev_year_quarter_rev)\n/ prev_year_quarter_rev', outputType: 'Metric', baseTable: 'fact_sales_orders', description: 'Year-over-year revenue growth using a LAG window partitioned by region.' },
+    ],
+  },
+  d2: {
+    tables: [
+      {
+        tableName: 'FACT_CUSTOMER_ACTIVITY',
+        tableType: 'Fact',
+        rowCount:  '120K rows',
+        columns: [
+          { name: 'activity_id',   dataType: 'VARCHAR', type: 'Dimension', description: 'Unique event identifier. Primary key.',          aiCtx: 'Unique identifier for each customer activity event' },
+          { name: 'customer_id',   dataType: 'VARCHAR', type: 'Dimension', description: 'Join key → dim_customers.',                     aiCtx: 'Customer who performed the activity' },
+          { name: 'activity_date', dataType: 'DATE',    type: 'Dimension', description: 'Date of the customer activity event.',           aiCtx: 'Date the activity occurred' },
+          { name: 'activity_type', dataType: 'VARCHAR', type: 'Dimension', description: 'Type of activity: login, feature_use, support.', aiCtx: 'Type of engagement event (login, feature use, support)' },
+        ],
+      },
+      {
+        tableName: 'DIM_CUSTOMERS',
+        tableType: 'Dimension',
+        rowCount:  '4,200 rows',
+        columns: [
+          { name: 'customer_id',    dataType: 'VARCHAR', type: 'Dimension', description: 'Primary key.',                                     aiCtx: 'Unique customer account identifier' },
+          { name: 'customer_name',  dataType: 'VARCHAR', type: 'Dimension', description: 'Account name. Use for display in dashboards.',     aiCtx: 'Account display name for dashboards and reports' },
+          { name: 'segment',        dataType: 'VARCHAR', type: 'Dimension', description: 'Segment: Enterprise, Mid-Market, SMB.',            aiCtx: 'Customer size segment (Enterprise, Mid-Market, SMB)' },
+          { name: 'tier',           dataType: 'VARCHAR', type: 'Dimension', description: 'Subscription tier: Platinum, Gold, Silver.',       aiCtx: 'Subscription tier (Platinum, Gold, Silver)' },
+          { name: 'contract_value', dataType: 'BIGINT',  type: 'Metric',    description: 'Annual contract value in USD.',                    aiCtx: 'Annual contract value in USD' },
+        ],
+      },
+      {
+        tableName: 'DIM_DATE',
+        tableType: 'Dimension',
+        rowCount:  '1,826 rows',
+        columns: [
+          { name: 'date_key', dataType: 'DATE',    type: 'Dimension', description: 'Primary key. Join on activity_date.',               aiCtx: 'Calendar date key for time-based joins' },
+          { name: 'month',    dataType: 'VARCHAR', type: 'Dimension', description: 'Month name. Use for monthly trend views.',           aiCtx: 'Month name for monthly trend analysis' },
+          { name: 'quarter',  dataType: 'VARCHAR', type: 'Dimension', description: 'Quarter label. Use for QoQ analysis.',              aiCtx: 'Quarter label for quarterly comparisons' },
+        ],
+      },
+    ],
+    relationships: [
+      { leftTable: 'fact_customer_activity', leftKey: 'customer_id',   rightTable: 'dim_customers', rightKey: 'customer_id', joinType: 'INNER', cardinality: 'N:1' },
+      { leftTable: 'fact_customer_activity', leftKey: 'activity_date', rightTable: 'dim_date',      rightKey: 'date_key',   joinType: 'INNER', cardinality: 'N:1' },
+    ],
+    formulas: [
+      { name: 'last_active_date',  expression: 'MAX(activity_date)',                                                   outputType: 'Dimension', baseTable: 'fact_customer_activity', description: 'Most recent activity date per customer. Signals recency.' },
+      { name: 'support_tickets',   expression: "COUNT(activity_id)\nWHERE activity_type = 'support'",                 outputType: 'Metric',    baseTable: 'fact_customer_activity', description: 'Count of support tickets. Elevated values flag at-risk accounts.' },
+      { name: 'nps_score',         expression: 'AVG(nps_value)\nOVER (RANGE 60 PRECEDING)',                           outputType: 'Metric',    baseTable: 'fact_customer_activity', description: 'Rolling 60-day NPS average. A drop >10 pts flags churn risk.' },
+      { name: 'churn_risk_score',  expression: '(0.4 * recency_score)\n+ (0.35 * ticket_trend)\n+ (0.25 * nps_drop)', outputType: 'Metric',    baseTable: 'fact_customer_activity', description: 'Weighted health score 0–100. 40% recency · 35% tickets · 25% NPS.' },
+    ],
+  },
+};
 
 // ── Agent avatar row — used in the chat stream for reasoning + response messages ─
 function AgentRow({ children }: { children: React.ReactNode }) {
@@ -1180,48 +1330,6 @@ function UserMsgRow({ text }: { text: string }) {
   );
 }
 
-// ─── Demo variant tab bar ─────────────────────────────────────────────────────
-// Floats in the top-right corner — visually "outside" the ThoughtSpot chrome so
-// it's clearly a demo navigation control, not part of the product UI.
-
-function DemoTabBar({ demoVariant, onSwitch }: { demoVariant: DemoVariant; onSwitch: (v: DemoVariant) => void }) {
-  const VARIANTS: { id: DemoVariant; label: string }[] = [
-    { id: 'option1', label: 'Option 1 — Reasoning only' },
-    { id: 'option2', label: 'Option 2 — Per-step reasoning' },
-  ];
-  return (
-    <div style={{
-      position: 'fixed', top: 12, right: 16, zIndex: 9999,
-      display: 'flex', gap: spacing.A,
-      backgroundColor: systemColors.light['background-base'],
-      border: `1px solid ${systemColors.light['border-divider']}`,
-      borderRadius: spacing.B, padding: spacing.A,
-      boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-    }}>
-      {VARIANTS.map(v => (
-        <button
-          key={v.id}
-          onClick={() => onSwitch(v.id)}
-          style={{
-            padding: `${spacing.A}px ${spacing.C}px`,
-            borderRadius: 6, border: 'none', cursor: 'pointer',
-            fontSize: 12, fontWeight: demoVariant === v.id ? 500 : 400,
-            fontFamily: fontFamily.primary,
-            backgroundColor: demoVariant === v.id
-              ? systemColors.light['background-information']
-              : 'transparent',
-            color: demoVariant === v.id
-              ? systemColors.light['content-brand']
-              : systemColors.light['content-secondary'],
-            transition: 'background-color 0.15s, color 0.15s',
-          }}
-        >
-          {v.label}
-        </button>
-      ))}
-    </div>
-  );
-}
 
 // ─── Main component ────────────────────────────────────────────────────────────
 
@@ -1231,10 +1339,6 @@ export interface ModelOnboardingScreenProps {
   onSkip: () => void;
   /** Re-opens the connection selection screen so the user can switch connections. */
   onChangeConnection?: () => void;
-  /** Current demo variant (option1 or option2). */
-  demoVariant: DemoVariant;
-  /** Called when the user switches demo variant. */
-  onVariantSwitch: (v: DemoVariant) => void;
 }
 
 export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
@@ -1242,8 +1346,6 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
   onBuild,
   onSkip,
   onChangeConnection,
-  demoVariant,
-  onVariantSwitch,
 }) => {
   const connectionName = connection.name;
   const [showConnDetails, setShowConnDetails] = useState(false);
@@ -1449,19 +1551,6 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
     setChatPhase('reasoning_initial');
   };
 
-  // ── Variant reset helper ──────────────────────────────────────────────────
-  const resetToPrompt = () => {
-    setScreenState('prompt');
-    setChatMessages([]);
-    setChatPhase('idle');
-    setClarifyAnswers([]);
-    setClarifyStep(0);
-    setSelectedId(null);
-    setCanvasDirection(null);
-    setDirections(MOCK_DIRECTIONS);
-  };
-
-
   const selectedDirection_ = directions.find(d => d.id === selectedId) ?? null;
 
   return (
@@ -1473,9 +1562,6 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
         fontFamily: fontFamily.primary, color: systemColors.light['content-primary'],
       }}
     >
-      {/* Demo variant tab bar */}
-      <DemoTabBar demoVariant={demoVariant} onSwitch={v => { onVariantSwitch(v); resetToPrompt(); }} />
-
       {/* Keyframes */}
       <style>{`
         @property --gradient-angle {
@@ -1748,13 +1834,20 @@ export const ModelOnboardingScreen: React.FC<ModelOnboardingScreenProps> = ({
                       size="large"
                       onClick={() => {
                         if (!selectedDirection_) return;
-                        const plan = BUILD_PLAN[selectedDirection_.id] ?? BUILD_PLAN['d1'];
-                        (window as any).__DEMO_DATA__ = {
-                          variant:   demoVariant,
-                          direction: selectedDirection_,
-                          plan:      { phases: plan.phases, steps: plan.steps },
+                        const spec       = MODEL_SPEC[selectedDirection_.id] ?? MODEL_SPEC['d1'];
+                        const planPhases = BUILD_PLAN[selectedDirection_.id]?.phases ?? BUILD_PLAN['d1'].phases;
+                        (window as any).__DME_AUTO_DATA__ = {
+                          goal:          selectedDirection_.goal,
+                          phases:        planPhases,
+                          tables:        spec.tables,
+                          relationships: spec.relationships,
+                          formulas:      spec.formulas,
                         };
-                        (window as any).__DME_CONFIG__ = { spotterModel: true, welcomeVariant: 'blank' };
+                        (window as any).__DME_CONFIG__ = {
+                          spotterModel:   true,
+                          welcomeVariant: 'blank',
+                          autoPopulate:   true,
+                        };
                         onBuild();
                       }}
                     >
